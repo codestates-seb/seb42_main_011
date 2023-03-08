@@ -1,10 +1,10 @@
-package com.mungfluencer;
+package com.mybuddy;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MungfluencerApplicationTests {
+class MyBuddyApplicationTests {
 
 	@Test
 	void contextLoads() {

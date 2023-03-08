@@ -1,4 +1,4 @@
-package com.mungfluencer.global.utils;
+package com.mybuddy.global.utils;
 
 import org.springframework.web.util.UriComponentsBuilder;
 
