@@ -1,3 +1,4 @@
+/*
 package com.mybuddy.global.auth.handler;
 
 import com.google.gson.Gson;
@@ -31,3 +32,4 @@ public class MemberAuthenticationFailureHandler implements AuthenticationFailure
         response.getWriter().write(gson.toJson(errorResponse, ErrorResponse.class));
     }
 }
+*/

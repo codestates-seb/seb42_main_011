@@ -1,3 +1,4 @@
+/*
 package com.mybuddy.global.auth.handler;
 
 import com.mybuddy.global.auth.utils.ErrorResponder;
@@ -21,3 +22,4 @@ public class MemberAccessDeniedHandler implements AccessDeniedHandler {
         log.warn("Forbidden error occurred: {}", accessDeniedException.getMessage());
     }
 }
+*/

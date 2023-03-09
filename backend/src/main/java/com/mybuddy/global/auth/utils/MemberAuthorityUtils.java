@@ -1,3 +1,4 @@
+/*
 package com.mybuddy.global.auth.utils;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -31,3 +32,4 @@ public class MemberAuthorityUtils {
         return USER_ROLES_STRING;
     }
 }
+*/

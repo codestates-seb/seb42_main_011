@@ -1,10 +1,10 @@
 package com.mybuddy.member.service;
 
-import com.mybuddy.global.auth.utils.MemberAuthorityUtils;
+//import com.mybuddy.global.auth.utils.MemberAuthorityUtils;
 import com.mybuddy.member.entity.Member;
 import com.mybuddy.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,19 +19,19 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
 
-    private final PasswordEncoder passwordEncoder;
+//    private final PasswordEncoder passwordEncoder;
 
-    private final MemberAuthorityUtils authorityUtils;
+//    private final MemberAuthorityUtils authorityUtils;
 
     @Override
     public Member createMember(Member member) {
         verifyIfEmailExists(member.getEmail());
 
-        String encryptedPassword = passwordEncoder.encode(member.getPassword());
-        member.setPassword(encryptedPassword);
+//        String encryptedPassword = passwordEncoder.encode(member.getPassword());
+//        member.setPassword(encryptedPassword);
 
-        List<String> roles = authorityUtils.createRoles(member.getEmail());
-        member.setRoles(roles);
+//        List<String> roles = authorityUtils.createRoles(member.getEmail());
+//        member.setRoles(roles);
 
         return memberRepository.save(member);
     }
