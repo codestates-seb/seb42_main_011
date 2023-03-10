@@ -1,12 +1,15 @@
 package com.mybuddy.amenity.entity;
 
 import com.mybuddy.bulletin_post.entity.BulletinPost;
+import com.mybuddy.comment.entity.Comment;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -34,9 +37,8 @@ public class Amenity {
     public Double longitude;
 
     @Setter
-    @ManyToOne
-    @JoinColumn(name = "BULLETIN_POST_ID")
-    public BulletinPost bulletinPost;
+    @OneToMany(mappedBy = "amenity")
+    private List<BulletinPost> bulletinPostList = new ArrayList<>();
 
     @Builder(builderClassName = "CreateNewAmenity", builderMethodName = "CreateNewAmenity")
     public Amenity (Long addressId, String amenityName, String address, Double latitude, Double longitude) {
