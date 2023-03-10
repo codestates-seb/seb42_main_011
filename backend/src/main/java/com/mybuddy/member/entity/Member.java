@@ -62,22 +62,22 @@ public class Member {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "member")
-//    private List<BulletinPost> bulletinPosts = new ArrayList<>();
+    @OneToMany(mappedBy = "member")
+    private List<BulletinPost> bulletinPosts = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "member")
-//    private List<Comment> comments = new ArrayList<>();
+    @OneToMany(mappedBy = "member")
+    private List<Comment> comments = new ArrayList<>();
 
 //    @OneToMany(mappedBy = "member")
 //    private List<Like> likes = new ArrayList<>();
 
-//    public void addBulletinPost(BulletinPost bulletinPost) {
-//        bulletinPosts.add(bulletinPost);
-//    }
+    public void addBulletinPost(BulletinPost bulletinPost) {
+        bulletinPosts.add(bulletinPost);
+    }
 
-//    public void addComment(Comment comment) {
-//        comments.add(comment);
-//    }
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
 
 //    public void addLike(Like like) {
 //        likes.add(like);

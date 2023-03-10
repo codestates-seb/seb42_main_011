@@ -1,11 +1,10 @@
 package com.mybuddy.member.mapper;
 
-import com.mybuddy.member.dto.MemberCreateDto;
-import com.mybuddy.member.dto.MemberListResponseDto;
-import com.mybuddy.member.dto.MemberPatchDto;
-import com.mybuddy.member.dto.MemberResponseDto;
+import com.mybuddy.member.dto.*;
 import com.mybuddy.member.entity.Member;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Named;
@@ -17,8 +16,34 @@ public interface MemberMapper {
 
     Member memberPatchDtoToMember(MemberPatchDto patchDto);
 
-    // @Mapping(source = "", target = "") : Mapping은 연관 관계 매핑 후 설정 예정.
-    MemberResponseDto memberToMemberResponseDto(Member member);
+    default MemberResponseDto memberToMemberResponseDto(Member member) {
+        if (member == null) {
+            return null;
+        }
+
+        List<MyBulletinPostDto> myBulletinPostDtos = member.getBulletinPosts().stream()
+                .map(bulletinPost -> MyBulletinPostDto.builder()
+                        .bulletinPostId(bulletinPost.getBulletinPostId())
+                        .photoUrl(bulletinPost.getPhotoUrl())
+                        .build())
+                .collect(Collectors.toList());
+
+        // List<MyAmenityDto> myAmenityDtos; 추후 반영 예정.
+
+        MemberResponseDto memberResponseDto = MemberResponseDto.builder()
+                .nickname(member.getNickname())
+                .dogName(member.getDogName())
+                .dogGender(member.getDogGender())
+                .aboutMe(member.getAboutMe())
+                .followerNumber(null)
+                .followeeNumber(null)
+                .profileUrl(member.getProfileUrl())
+                .myBulletinPostDtos(myBulletinPostDtos)
+                .myAmenityDtos(null)
+                .build();
+
+        return memberResponseDto;
+    }
 
     @Named("MTMLR")
     MemberListResponseDto memberToMemberListResponseDto(Member member);
