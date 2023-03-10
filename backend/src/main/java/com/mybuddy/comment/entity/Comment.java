@@ -1,11 +1,14 @@
 package com.mybuddy.comment.entity;
 
+import com.mybuddy.bulletin_post.entity.BulletinPost;
+import com.mybuddy.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+
 import java.time.LocalDateTime;
 
 @Getter
@@ -15,29 +18,29 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long commentId;
+    private Long commentId;
 
     @Column(length = 1000, nullable = false)
-    public String commentContent;
+    private String commentContent;
 
     @Column
-    public LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
     @Setter
     @Column
-    public LocalDateTime modifiedAt;
+    private LocalDateTime modifiedAt;
 
-    /*
 
+    @Setter
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
-    public Member member;
+    private Member member;
 
+    @Setter
     @ManyToOne
     @JoinColumn(name = "BULLETIN_POST_ID")
-    public BulletinPost bulletinPost;
+    private BulletinPost bulletinPost;
 
-     */
 
     public void updateContent(String commentContent) {
         this.commentContent = commentContent;
