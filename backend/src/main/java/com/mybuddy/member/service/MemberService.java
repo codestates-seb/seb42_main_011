@@ -1,6 +1,7 @@
 package com.mybuddy.member.service;
 
 import com.mybuddy.member.entity.Member;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,7 +16,7 @@ public interface MemberService {
 
     Member getMember(Long memberId);
 
-    List<Member> getMemberList();
+    Page<Member> getMemberList(int page, int size);
 
     void deleteMember(Long memberId);
 

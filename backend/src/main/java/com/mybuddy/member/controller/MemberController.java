@@ -1,5 +1,6 @@
 package com.mybuddy.member.controller;
 
+import com.mybuddy.global.utils.ApiMultiResponse;
 import com.mybuddy.global.utils.ApiSingleResponse;
 import com.mybuddy.global.utils.UriMaker;
 import com.mybuddy.member.dto.MemberPatchDto;
@@ -8,6 +9,7 @@ import com.mybuddy.member.entity.Member;
 import com.mybuddy.member.mapper.MemberMapper;
 import com.mybuddy.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/members")
@@ -63,9 +66,12 @@ public class MemberController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiSingleResponse> getMemberList() {
-        return new ResponseEntity(new ApiSingleResponse<>(HttpStatus.OK, "전체 회원 정보입니다.",
-                mapper.membersToMemberListResponseDtos(memberService.getMemberList())), HttpStatus.OK);
+    public ResponseEntity<ApiSingleResponse> getMemberList(@Positive @RequestParam int page,
+                                                           @Positive @RequestParam int size) {
+        Page<Member> pageMembers = memberService.getMemberList(page - 1, size);
+        List<Member> obtainedMembers = pageMembers.getContent();
+        return new ResponseEntity(new ApiMultiResponse<>(HttpStatus.OK, "전체 회원 정보입니다.",
+                mapper.membersToMemberListResponseDtos(obtainedMembers), pageMembers), HttpStatus.OK);
     }
 
     @DeleteMapping("/{member-id}")

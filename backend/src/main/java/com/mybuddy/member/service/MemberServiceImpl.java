@@ -7,6 +7,9 @@ import com.mybuddy.member.entity.Member;
 import com.mybuddy.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 //import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -75,12 +78,10 @@ public class MemberServiceImpl implements MemberService {
         return findExistMemberById(memberId);
     }
 
-    @Override
-    public List<Member> getMemberList() {
-        return memberRepository.findAll()
-                .stream()
-                .filter(member -> member.getMemberStatus() == Member.MemberStatus.ACTIVE)
-                .collect(Collectors.toList());
+    @Override // ADMIN 조회용으로 탈퇴 회원의 정보까지 모두 조회 가능.
+    public Page<Member> getMemberList(int page, int size) {
+        return memberRepository.findAll(PageRequest.of(page, size,
+                Sort.by("memberId").descending()));
     }
 
     @Override
