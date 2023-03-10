@@ -26,7 +26,7 @@ public class MemberResponseDto {
 
     private Long followeeNumber;
 
-    private String photoUrl;
+    private String profileUrl;
 
     private List<MyBulletinPostDto> myBulletinPostDtos;
 
@@ -34,7 +34,7 @@ public class MemberResponseDto {
 
     @Builder
     public MemberResponseDto(String nickname, String dogName, DogGender dogGender,
-                             String aboutMe, Long followerNumber, Long followeeNumber, String photoUrl,
+                             String aboutMe, Long followerNumber, Long followeeNumber, String profileUrl,
                              List<MyBulletinPostDto> myBulletinPostDtos, List<MyAmenityDto> myAmenityDtos) {
         this.nickname = nickname;
         this.dogName = dogName;
@@ -42,7 +42,7 @@ public class MemberResponseDto {
         this.aboutMe = aboutMe;
         this.followerNumber = followerNumber;
         this.followeeNumber = followeeNumber;
-        this.photoUrl = photoUrl;
+        this.profileUrl = profileUrl;
         this.myBulletinPostDtos = myBulletinPostDtos;
         this.myAmenityDtos = myAmenityDtos;
     }

@@ -18,15 +18,15 @@ public class MemberListResponseDto {
 
     private Long followeeNumber;
 
-    private String photoUrl;
+    private String profileUrl;
 
     @Builder
     public MemberListResponseDto(String nickname, String dogName, Long followerNumber,
-        Long followeeNumber, String photoUrl) {
+        Long followeeNumber, String profileUrl) {
         this.nickname = nickname;
         this.dogName = dogName;
         this.followerNumber = followerNumber;
         this.followeeNumber = followeeNumber;
-        this.photoUrl = photoUrl;
+        this.profileUrl = profileUrl;
     }
 }

@@ -1,12 +1,18 @@
 package com.mybuddy.member.service;
 
 //import com.mybuddy.global.auth.utils.MemberAuthorityUtils;
+
+import com.mybuddy.global.storage.StorageService;
 import com.mybuddy.member.entity.Member;
 import com.mybuddy.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 //import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,13 +25,22 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
 
+    private final StorageService storageService;
+
 //    private final PasswordEncoder passwordEncoder;
 
 //    private final MemberAuthorityUtils authorityUtils;
 
     @Override
-    public Member createMember(Member member) {
+    public Member createMember(Member member, MultipartFile profileImage) {
         verifyIfEmailExists(member.getEmail());
+
+        Optional.ofNullable(profileImage)
+                .ifPresent(storageService::storeImage);
+        Optional.ofNullable(profileImage)
+                .ifPresent(image -> member.setProfileUrl(
+                        storageService.getPath() + "/" + image.getOriginalFilename())
+                );
 
 //        String encryptedPassword = passwordEncoder.encode(member.getPassword());
 //        member.setPassword(encryptedPassword);
@@ -37,17 +52,23 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member updateMember(Member member) {
+    public Member updateMember(Member member, MultipartFile profileImage) {
         Member obtainedMember = findExistMemberById(member.getMemberId());
 
         Optional.ofNullable(member.getNickname())
                 .ifPresent(obtainedMember::setNickname);
         Optional.ofNullable(member.getDogName())
                 .ifPresent(obtainedMember::setDogName);
-        Optional.ofNullable(member.getLocation())
-                .ifPresent(obtainedMember::setLocation);
+        Optional.ofNullable(member.getAddress())
+                .ifPresent(obtainedMember::setAddress);
         Optional.ofNullable(member.getAboutMe())
                 .ifPresent(obtainedMember::setAboutMe);
+        Optional.ofNullable(profileImage)
+                .ifPresent(storageService::storeImage);
+        Optional.ofNullable(profileImage)
+                .ifPresent(image -> obtainedMember.setProfileUrl(
+                        storageService.getPath() + "/" + image.getOriginalFilename())
+                );
 
         return memberRepository.save(obtainedMember);
     }
@@ -57,12 +78,10 @@ public class MemberServiceImpl implements MemberService {
         return findExistMemberById(memberId);
     }
 
-    @Override
-    public List<Member> getMemberList() {
-        return memberRepository.findAll()
-                .stream()
-                .filter(member -> member.getMemberStatus() == Member.MemberStatus.ACTIVE)
-                .collect(Collectors.toList());
+    @Override // ADMIN 조회용으로 탈퇴 회원의 정보까지 모두 조회 가능.
+    public Page<Member> getMemberList(int page, int size) {
+        return memberRepository.findAll(PageRequest.of(page, size,
+                Sort.by("memberId").descending()));
     }
 
     @Override
