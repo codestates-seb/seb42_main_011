@@ -1,7 +1,14 @@
-import './styles/main.scss';
+import React, { Fragment } from 'react';
+
+import GlobalStyles from './styles/GlobalStyles';
 
 function App() {
-  return <div className="App">최초배포</div>;
+  return (
+    <Fragment>
+      <div> 최초배포 </div>
+      <GlobalStyles />
+    </Fragment>
+  );
 }
 
 export default App;
