@@ -13,7 +13,7 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring")
 public interface MemberMapper {
 
-    Member memberCreateDtoToMember(MemberCreateDto postDto);
+    Member memberCreateDtoToMember(MemberCreateDto createDto);
 
     Member memberPatchDtoToMember(MemberPatchDto patchDto);
 

@@ -45,6 +45,7 @@ public class Member {
     @Enumerated(value = EnumType.STRING)
     private DogGender dogGender;
 
+    @Setter
     @Column(length = 2000)
     private String profileUrl;
 
