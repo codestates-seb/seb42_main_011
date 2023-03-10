@@ -40,10 +40,10 @@ public class MemberController {
                                                         @RequestPart(required = false) MultipartFile profileImage) {
         Member member = memberService.createMember(mapper.memberCreateDtoToMember(createDto), profileImage);
 
-        URI location = UriMaker.getUri(MEMBER_DEFAULT_URL, member.getMemberId());
+        URI uriLocation = UriMaker.getUri(MEMBER_DEFAULT_URL, member.getMemberId());
         ApiSingleResponse response = new ApiSingleResponse(HttpStatus.CREATED, "회원이 생성되었습니다.");
 
-        return ResponseEntity.created(location).body(response);
+        return ResponseEntity.created(uriLocation).body(response);
     }
 
     @PatchMapping(value = "/{member-id}",

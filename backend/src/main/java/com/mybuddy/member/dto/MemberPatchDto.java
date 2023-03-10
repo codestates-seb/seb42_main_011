@@ -12,15 +12,15 @@ public class MemberPatchDto {
 
     private String dogName;
 
-    private String location;
+    private String address;
 
     private String aboutMe;
 
     @Builder
-    public MemberPatchDto(String nickname, String dogName, String location, String aboutMe) {
+    public MemberPatchDto(String nickname, String dogName, String address, String aboutMe) {
         this.nickname = nickname;
         this.dogName = dogName;
-        this.location = location;
+        this.address = address;
         this.aboutMe = aboutMe;
     }
 }
