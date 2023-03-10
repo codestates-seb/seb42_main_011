@@ -1,5 +1,6 @@
 package com.mybuddy.bulletin_post.entity;
 
+import com.mybuddy.amenity.entity.Amenity;
 import com.mybuddy.comment.entity.Comment;
 import com.mybuddy.global.audit.Auditable;
 import lombok.*;
@@ -25,10 +26,10 @@ public class BulletinPost extends Auditable {
 //    @JoinColumn(name = "MEMBER_ID")
 //    private Member member;
 
-////    bulletinPost, amenity N:1
-//    @ManyToOne
-//    @JoinColumn(name = "AMENITY_ID")
-//    private Amenity amenity;
+//    bulletinPost, amenity N:1
+    @ManyToOne
+    @JoinColumn(name = "AMENITY_ID")
+    private Amenity amenity;
 
     @Column(nullable = false)
     private String photoUrl;
