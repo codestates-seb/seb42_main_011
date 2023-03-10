@@ -17,5 +17,5 @@ public class CommentResponseDto {
         this.nickName = nickName;
         this.dogName = dogName;
     }
-    */
+
 }

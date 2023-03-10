@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 
+import com.mybuddy.comment.entity.Comment;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -56,8 +57,8 @@ public class Member {
 //    @OneToMany(mappedBy = "member")
 //    private List<BulletinPost> bulletinPosts = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "member")
-//    private List<Comment> comments = new ArrayList<>();
+    @OneToMany(mappedBy = "member")
+    private List<Comment> comments = new ArrayList<>();
 
 //    @OneToMany(mappedBy = "member")
 //    private List<Like> likes = new ArrayList<>();
@@ -90,9 +91,9 @@ public class Member {
 //        this.bulletinPosts = bulletinPosts;
 //    }
 
-//    public void setComments(List<Comment> comments) {
-//        this.comments = comments;
-//    }
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 
 //    public void setLikes(List<Like> likes) {
 //        this.likes = likes;

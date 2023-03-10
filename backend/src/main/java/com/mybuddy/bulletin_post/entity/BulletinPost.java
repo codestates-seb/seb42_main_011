@@ -37,8 +37,8 @@ public class BulletinPost extends Auditable {
     private String postContent;
 
 ////    bulletinPost, comment 1:N
-//    @OneToMany(mappedBy = "bulletinPost", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-//    private List<Comment> commentList = new ArrayList<>();
+    @OneToMany(mappedBy = "bulletinPost", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<Comment> commentList = new ArrayList<>();
 
 ////    bulletinPost, like 1:N
 //    @OneToMany(mappedBy = "bulletinPost", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})

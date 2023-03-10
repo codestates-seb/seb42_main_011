@@ -1,12 +1,16 @@
 package com.mybuddy.comment.service;
 
 
+import com.mybuddy.bulletin_post.entity.BulletinPost;
+import com.mybuddy.bulletin_post.repository.BulletinPostRepository;
 import com.mybuddy.comment.entity.Comment;
 import com.mybuddy.comment.repository.CommentRepository;
+import com.mybuddy.member.entity.Member;
+import com.mybuddy.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,18 +20,29 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
 
-    public Comment createComment(Comment comment) {
+    private final MemberRepository memberRepository;
+    private final BulletinPostRepository bulletinPostRepository;
+
+    @Transactional
+    public Comment createComment(Long bulletinPostId, Comment comment) {
+
+        Long memberId = 1L; // 로그인한 유저를 찾아오는 로직 추가
+        Member writer = memberRepository.findById(memberId).orElseThrow(()->new RuntimeException("커스텀 익셉션으로 대체 예정입니다."));
+        comment.setMember(writer);
 
         //BulletinPost의 verfied 검증 로직 추가
+        BulletinPost bulletinPost = bulletinPostRepository.findById(bulletinPostId).orElseThrow(()-> new RuntimeException("CUSTOM EXCEPTION으로 변경 예정"));
+        comment.setBulletinPost(bulletinPost);
 
         Comment createdComment = commentRepository.save(comment);
-
         return createdComment;
     }
-    //
+
+    @Transactional
     public List<Comment> getCommentsByBulletinPostId(Long bulletinPostId) {
 
         //BulletinPost의 verfied 검증 로직 추가
+        bulletinPostRepository.findById(bulletinPostId).orElseThrow(()-> new RuntimeException("CUSTOM EXCEPTION으로 변경 예정"));
 
         List<Comment> comments = commentRepository.findAll();
         //commentRepository.findByBulletinPostId(postId); 위는 정상적으로 작동하기 위한 findAll()이며, 이걸로 대체할 예정입니다.(2023.03.08 강지은)
@@ -35,9 +50,11 @@ public class CommentService {
         return comments;
     }
 
+    @Transactional
     public Comment updateComment(Comment updateComment) {
 
-        //로그인한 사용자의 리소스인지 확인하는 로직 추가
+        Long memberId = 1L; // 로그인한 유저를 찾아오는 로직 추가
+        //로그인한 사용자의 리소스인지 확인
 
         Comment comment = verifiedComment(updateComment.getCommentId());
 
@@ -46,6 +63,8 @@ public class CommentService {
 
         return comment;
     }
+
+    @Transactional
     public void deleteComment(Long commentId) {
 
         //로그인한 사용자의 리소스인지 확인하는 로직 추가
@@ -56,6 +75,6 @@ public class CommentService {
 
     private Comment verifiedComment(Long commentId) {
         return commentRepository.findById(commentId)
-                .orElseThrow( () -> new RuntimeException() );
+                .orElseThrow( () -> new RuntimeException("custom exception으로 변경 예정") );
     }
 }

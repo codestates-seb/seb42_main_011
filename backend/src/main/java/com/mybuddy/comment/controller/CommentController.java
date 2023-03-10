@@ -30,7 +30,10 @@ public class CommentController {
 
     @PostMapping
     public ResponseEntity<ApiSingleResponse> createComment(@Valid @RequestBody CommentCreateDto commentCreateDto) {
-        Comment comment = commentService.createComment(commentMapper.CommentCreateDtoToComment(commentCreateDto));
+
+        Long bulletinPostId = commentCreateDto.getBulletinPostId();
+
+        Comment comment = commentService.createComment(bulletinPostId ,commentMapper.CommentCreateDtoToComment(commentCreateDto));
         URI uri = UriMaker.getUri(defaultUrl, comment.getCommentId());
         CommentResponseDto commentResponseDto = commentMapper.CommentToCommentResponseDto(comment);
         ApiSingleResponse response = new ApiSingleResponse(HttpStatus.CREATED,"댓글이 생성되었습니다", commentResponseDto);
