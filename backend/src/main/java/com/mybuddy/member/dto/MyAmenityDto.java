@@ -14,15 +14,15 @@ public class MyAmenityDto {
 
     private String amenityName;
 
-    private String location;
+    private String address;
 
     private String photoUrl;
 
     @Builder
-    public MyAmenityDto(Long amenityId, String amenityName, String location, String photoUrl) {
+    public MyAmenityDto(Long amenityId, String amenityName, String address, String photoUrl) {
         this.amenityId = amenityId;
         this.amenityName = amenityName;
-        this.location = location;
+        this.address = address;
         this.photoUrl = photoUrl;
     }
 }

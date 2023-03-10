@@ -2,6 +2,7 @@ package com.mybuddy.member.mapper;
 
 import com.mybuddy.member.dto.*;
 import com.mybuddy.member.entity.Member;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,15 @@ public interface MemberMapper {
                         .build())
                 .collect(Collectors.toList());
 
-        // List<MyAmenityDto> myAmenityDtos; 추후 반영 예정.
+        List<MyAmenityDto> myAmenityDtos = member.getBulletinPosts().stream()
+                .map(bulletinPost -> bulletinPost.getAmenity())
+                .map(amenity -> MyAmenityDto.builder()
+                        .amenityId(amenity.getAmenityId())
+                        .amenityName(amenity.getAmenityName())
+                        .address(amenity.getAddress())
+                        .photoUrl(null) // Amenity에 photoUrl 추가 필요.
+                        .build())
+                .collect(Collectors.toList());
 
         MemberResponseDto memberResponseDto = MemberResponseDto.builder()
                 .nickname(member.getNickname())
@@ -39,7 +48,7 @@ public interface MemberMapper {
                 .followeeNumber(null)
                 .profileUrl(member.getProfileUrl())
                 .myBulletinPostDtos(myBulletinPostDtos)
-                .myAmenityDtos(null)
+                .myAmenityDtos(myAmenityDtos)
                 .build();
 
         return memberResponseDto;
