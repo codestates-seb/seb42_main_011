@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class MemberPostDto {
+public class MemberCreateDto {
 
     @Email
     @NotBlank
@@ -32,8 +32,8 @@ public class MemberPostDto {
     private DogGender dogGender;
 
     @Builder
-    public MemberPostDto(String email, String password, String nickname, String dogName,
-        DogGender dogGender) {
+    public MemberCreateDto(String email, String password, String nickname, String dogName,
+                           DogGender dogGender) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;

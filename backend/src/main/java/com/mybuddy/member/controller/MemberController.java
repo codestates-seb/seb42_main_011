@@ -3,7 +3,7 @@ package com.mybuddy.member.controller;
 import com.mybuddy.global.utils.ApiSingleResponse;
 import com.mybuddy.global.utils.UriMaker;
 import com.mybuddy.member.dto.MemberPatchDto;
-import com.mybuddy.member.dto.MemberPostDto;
+import com.mybuddy.member.dto.MemberCreateDto;
 import com.mybuddy.member.entity.Member;
 import com.mybuddy.member.mapper.MemberMapper;
 import com.mybuddy.member.service.MemberService;
@@ -31,8 +31,8 @@ public class MemberController {
     private final MemberMapper mapper;
 
     @PostMapping // 첨부 파일 업로드 RequestPart는 추후 추가 예정.
-    public ResponseEntity<ApiSingleResponse> postMember(@Valid @RequestBody MemberPostDto postDto) {
-        Member member = memberService.createMember(mapper.memberPostDtoToMember(postDto));
+    public ResponseEntity<ApiSingleResponse> postMember(@Valid @RequestBody MemberCreateDto postDto) {
+        Member member = memberService.createMember(mapper.memberCreateDtoToMember(postDto));
 
         URI location = UriMaker.getUri(MEMBER_DEFAULT_URL, member.getMemberId());
         ApiSingleResponse response = new ApiSingleResponse(HttpStatus.CREATED, "회원이 생성되었습니다.");

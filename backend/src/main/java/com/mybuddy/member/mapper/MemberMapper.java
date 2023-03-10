@@ -1,20 +1,19 @@
 package com.mybuddy.member.mapper;
 
+import com.mybuddy.member.dto.MemberCreateDto;
 import com.mybuddy.member.dto.MemberListResponseDto;
 import com.mybuddy.member.dto.MemberPatchDto;
-import com.mybuddy.member.dto.MemberPostDto;
 import com.mybuddy.member.dto.MemberResponseDto;
 import com.mybuddy.member.entity.Member;
 import java.util.List;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring")
 public interface MemberMapper {
 
-    Member memberPostDtoToMember(MemberPostDto postDto);
+    Member memberCreateDtoToMember(MemberCreateDto postDto);
 
     Member memberPatchDtoToMember(MemberPatchDto patchDto);
 

@@ -44,8 +44,8 @@ public class MemberServiceImpl implements MemberService {
                 .ifPresent(obtainedMember::setNickname);
         Optional.ofNullable(member.getDogName())
                 .ifPresent(obtainedMember::setDogName);
-        Optional.ofNullable(member.getLocation())
-                .ifPresent(obtainedMember::setLocation);
+        Optional.ofNullable(member.getAddress())
+                .ifPresent(obtainedMember::setAddress);
         Optional.ofNullable(member.getAboutMe())
                 .ifPresent(obtainedMember::setAboutMe);
 

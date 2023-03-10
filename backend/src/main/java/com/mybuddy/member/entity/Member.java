@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 
+import com.mybuddy.bulletin_post.entity.BulletinPost;
+import com.mybuddy.comment.entity.Comment;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +18,7 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter
     private Long memberId;
 
     @Setter
@@ -26,12 +29,15 @@ public class Member {
     @Column(nullable = false, length = 255)
     private String password;
 
+    @Setter
     @Column(nullable = false, unique = true)
     private String nickname;
 
+    @Setter
     @Column(length = 200)
     private String aboutMe;
 
+    @Setter
     @Column(nullable = false, length = 20)
     private String dogName;
 
@@ -40,11 +46,13 @@ public class Member {
     private DogGender dogGender;
 
     @Column(length = 2000)
-    private String photoUrl;
+    private String profileUrl;
 
+    @Setter
     @Column
-    private String location;
+    private String address;
 
+    @Setter
     @Column
     @Enumerated(value = EnumType.STRING)
     private MemberStatus memberStatus = MemberStatus.ACTIVE; // Excluded from Builder
@@ -62,45 +70,21 @@ public class Member {
 //    @OneToMany(mappedBy = "member")
 //    private List<Like> likes = new ArrayList<>();
 
-    public void setMemberId(Long memberId) {
-        this.memberId = memberId;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public void setAboutMe(String aboutMe) {
-        this.aboutMe = aboutMe;
-    }
-
-    public void setDogName(String dogName) {
-        this.dogName = dogName;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public void setMemberStatus(MemberStatus memberStatus) {
-        this.memberStatus = memberStatus;
-    }
-
-//    public void setBulletinPosts(List<BulletinPost> bulletinPosts) {
-//        this.bulletinPosts = bulletinPosts;
+//    public void addBulletinPost(BulletinPost bulletinPost) {
+//        bulletinPosts.add(bulletinPost);
 //    }
 
-//    public void setComments(List<Comment> comments) {
-//        this.comments = comments;
+//    public void addComment(Comment comment) {
+//        comments.add(comment);
 //    }
 
-//    public void setLikes(List<Like> likes) {
-//        this.likes = likes;
+//    public void addLike(Like like) {
+//        likes.add(like);
 //    }
 
     @Builder
     public Member(Long memberId, String email, String password, String nickname, String aboutMe,
-        String dogName, DogGender dogGender, String photoUrl, String location) {
+                  String dogName, DogGender dogGender, String profileUrl, String address) {
         this.memberId = memberId;
         this.email = email;
         this.password = password;
@@ -108,8 +92,8 @@ public class Member {
         this.aboutMe = aboutMe;
         this.dogName = dogName;
         this.dogGender = dogGender;
-        this.photoUrl = photoUrl;
-        this.location = location;
+        this.profileUrl = profileUrl;
+        this.address = address;
     }
 
     public enum DogGender {
