@@ -16,7 +16,7 @@ public interface CommentMapper {
 
         return Comment
                 .CreateNewComment()
-                .commentContent(commentCreateDto.commentContent)
+                .commentContent(commentCreateDto.getCommentContent())
                 .build();
     }
     default Comment CommentUpdateDtoToComment(CommentUpdateDto commentUpdateDto) {
@@ -26,12 +26,28 @@ public interface CommentMapper {
 
         return Comment
                 .UpdateComment()
-                .commentId(commentUpdateDto.commentId)
+                .commentId(commentUpdateDto.getCommentId())
                 .commentContent(commentUpdateDto.getCommentContent())
                 .build();
 
     }
-    CommentResponseDto CommentToCommentResponseDto(Comment comment);
+
+    default CommentResponseDto CommentToCommentResponseDto(Comment comment) {
+        if ( comment == null ) {
+            return null;
+        }
+
+        CommentResponseDto commentResponseDto = CommentResponseDto
+                .builder()
+                .commentContent(comment.getCommentContent())
+                .dogName(comment.getMember().getDogName())
+                .memberId(comment.getMember().getMemberId())
+                .nickName(comment.getMember().getNickname())
+                .build();
+
+        return commentResponseDto;
+    }
+
     List<CommentResponseDto> CommentListToCommentResponseDtoList(List<Comment> commentList);
 }
 

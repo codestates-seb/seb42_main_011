@@ -25,15 +25,15 @@ public class BulletinPostDto {
 
         private String postContent;
 
-//        private long addressId;
-//
-//        private String amenityName;
-//
-//        private String address;
-//
-//        private double longitude;
-//
-//        private double latitude;
+        private long addressId;
+
+        private String amenityName;
+
+        private String address;
+
+        private double longitude;
+
+        private double latitude;
 
     }
 

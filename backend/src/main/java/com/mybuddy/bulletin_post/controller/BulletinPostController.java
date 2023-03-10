@@ -1,5 +1,9 @@
 package com.mybuddy.bulletin_post.controller;
 
+import com.mybuddy.amenity.dto.AmenityCreateDto;
+import com.mybuddy.amenity.entity.Amenity;
+import com.mybuddy.amenity.mapper.AmenityMapper;
+import com.mybuddy.amenity.service.AmenityService;
 import com.mybuddy.bulletin_post.dto.BulletinPostDto;
 import com.mybuddy.bulletin_post.entity.BulletinPost;
 import com.mybuddy.bulletin_post.mapper.BulletinPostMapper;
@@ -26,10 +30,14 @@ public class BulletinPostController {
 //    private final static String BULLETIN_POST_DEFAULT_URL = "/bulletin-posts"; 필요 없는데..?
     private final BulletinPostService bulletinPostService;
     private final BulletinPostMapper bulletinPostMapper;
+    private final AmenityMapper amenityMapper;
+    private final AmenityService amenityService;
 
-    public BulletinPostController(BulletinPostService bulletinPostService, BulletinPostMapper bulletinPostMapper) {
+    public BulletinPostController(BulletinPostService bulletinPostService, BulletinPostMapper bulletinPostMapper, AmenityMapper amenityMapper, AmenityService amenityService) {
         this.bulletinPostService = bulletinPostService;
         this.bulletinPostMapper = bulletinPostMapper;
+        this.amenityMapper = amenityMapper;
+        this.amenityService = amenityService;
     }
 
     @PostMapping
@@ -40,11 +48,12 @@ public class BulletinPostController {
 //        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        UserDetails userDetails = (UserDetails)principal;
 //        long memberId = principal.getMemberId();
-
+        AmenityCreateDto amenityCreateDto = amenityMapper.BullletinPostCreateDtoToAmenityCreateDto(bulletinPostCreateDto);
+        Amenity amenity = amenityService.findDBAmenity(amenityCreateDto);
 
 //        image 저장시 밑의 걸로 바꿔줘야함
         BulletinPost bulletinPost =
-                bulletinPostService.createBulletinPost(bulletinPostMapper.bulletinPostCreateDtoToBulletinPost(bulletinPostCreateDto));
+                bulletinPostService.createBulletinPost(bulletinPostMapper.bulletinPostCreateDtoToBulletinPost(bulletinPostCreateDto), amenity);
 //        BulletinPost bulletinPost =
 //                bulletinPostService.createBulletinPost(bulletinPostMapper.bulletinPostCreateDtoToBulletinPost(bulletinPostCreateDto),multipartFile);
 
@@ -80,7 +89,7 @@ public class BulletinPostController {
         BulletinPost bulletinPost = bulletinPostService.findBulletinPost(bulletinPostId);
 
         return new ResponseEntity<>(
-                new ApiSingleResponse<>(HttpStatus.OK, "message",bulletinPostMapper.BulletinPostToBulletinPostResponseDto(bulletinPost))
+                new ApiSingleResponse<>(HttpStatus.OK, "message", bulletinPostMapper.BulletinPostToBulletinPostResponseDto(bulletinPost))
                 , HttpStatus.OK);
     }
 
@@ -92,7 +101,7 @@ public class BulletinPostController {
         Page<BulletinPost> pageBulletinPosts = bulletinPostService.findBulletinPosts(page - 1, size);
         List<BulletinPost> bulletinPosts = pageBulletinPosts.getContent();
         return new ResponseEntity<>(
-                new ApiMultiResponse<>(bulletinPostMapper.bulletinPostsToBulletinPostResponseForFeedDtos(bulletinPosts),
+                new ApiMultiResponse<>(HttpStatus.OK, "message", bulletinPostMapper.bulletinPostsToBulletinPostResponseForFeedDtos(bulletinPosts),
                         pageBulletinPosts),
                 HttpStatus.OK);
     }
@@ -105,7 +114,7 @@ public class BulletinPostController {
         Page<BulletinPost> pageBulletinPosts = bulletinPostService.findBulletinPostsByMemberId(memberId, page - 1, size);
         List<BulletinPost> bulletinPosts = pageBulletinPosts.getContent();
         return new ResponseEntity<>(
-                new ApiMultiResponse<>(bulletinPostMapper.bulletinPostsToBulletinPostResponseDtos(bulletinPosts),
+                new ApiMultiResponse<>(HttpStatus.OK, "message", bulletinPostMapper.bulletinPostsToBulletinPostResponseDtos(bulletinPosts),
                         pageBulletinPosts),
                 HttpStatus.OK);
     }

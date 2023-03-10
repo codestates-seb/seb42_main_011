@@ -1,13 +1,23 @@
+// 기본 색 변수
 $black: #000;
-$dark: #191a20;
-$primary: #181818;
-$secondary: #eee;
-$tertiary: #d9d9d9;
-
-$background-broder: #f9f2ed; //bg보다 그다음 밝은색
-$background: #f5f5f5; // 흰색 다음으로 밝은색 => bg색
-$white: #fff;
-
+$black-light-1:#181818;
+$white: #ffffff;
+$white-darker-1: #f5f5f5; // 흰색 다음으로 밝은색 => bg색
+$white-darker-2: #f9f2ed; //bg보다 그다음 밝은색
 $orange: #ffb562;
 $blue: #3ab0ff;
 $red: #f87474;
+$gray: #eeeeee;
+$gray-darker-1: #d9d9d9;
+
+// proxy 변수
+$color-primary: $blue;
+$color-secondary: $orange;
+$color-tertiary: $red;
+$color-dark-0:$black;
+$color-dark-1:$black-light-1;
+$color-dark-2:$gray-darker-1;
+$color-dark-3:$gray;
+$color-light-0:$white;
+$color-light-1:$white-darker-1;
+$color-light-2:$white-darker-2;

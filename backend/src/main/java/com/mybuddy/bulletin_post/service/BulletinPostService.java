@@ -1,5 +1,6 @@
 package com.mybuddy.bulletin_post.service;
 
+import com.mybuddy.amenity.entity.Amenity;
 import com.mybuddy.bulletin_post.entity.BulletinPost;
 import com.mybuddy.bulletin_post.repository.BulletinPostRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class BulletinPostService {
 
     private final BulletinPostRepository bulletinPostRepository;
 
-    public BulletinPost createBulletinPost(BulletinPost bulletinPost) {
+    public BulletinPost createBulletinPost(BulletinPost bulletinPost, Amenity amenity) {
 
 //        multipartFile을 S3에 저장하고 해당 photoUrl 가져오는 service 메서드
 
@@ -34,6 +35,10 @@ public class BulletinPostService {
 
         //임시
         bulletinPost.setPhotoUrl("/photoUrl/blah/blah/blah");
+
+        //amenity 연결
+        bulletinPost.setAmenity(amenity);
+        amenity.setBulletinPost(bulletinPost);
 
         BulletinPost createdBulletinPost = bulletinPostRepository.save(bulletinPost);
 
