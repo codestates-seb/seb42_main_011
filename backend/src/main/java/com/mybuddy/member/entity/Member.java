@@ -1,17 +1,13 @@
 package com.mybuddy.member.entity;
 
 import java.util.ArrayList;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import java.util.List;
+import javax.persistence.*;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
@@ -22,9 +18,11 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
+    @Setter
     @Column(nullable = false, unique = true, length = 50)
     private String email;
 
+    @Setter
     @Column(nullable = false, length = 255)
     private String password;
 
@@ -50,6 +48,10 @@ public class Member {
     @Column
     @Enumerated(value = EnumType.STRING)
     private MemberStatus memberStatus = MemberStatus.ACTIVE; // Excluded from Builder
+
+    @Setter
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
 
 //    @OneToMany(mappedBy = "member")
 //    private List<BulletinPost> bulletinPosts = new ArrayList<>();
