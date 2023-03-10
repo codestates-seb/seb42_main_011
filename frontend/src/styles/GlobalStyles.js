@@ -9,20 +9,20 @@ const GlobalStyles = createGlobalStyle`
   * {
     margin: 0;
     padding: 0;
-    font-family: $font-main;
+    font-family: var(--font-main);
     box-sizing: border-box;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   html {
-    font-family: $font-main;
-    font-size: $font-size-16;
+    font-family: var(--font-main);
+    font-size: var(--font-size-16);
   }
 
   body {
-    font-family: $font-main;
-    color: $primary;
+    font-family: var(--font-main);
+    color: var(--color-dark-0);
   }
 
   h1 {
