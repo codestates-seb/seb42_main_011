@@ -38,7 +38,6 @@ public class BulletinPostService {
 
         //amenity 연결
         bulletinPost.setAmenity(amenity);
-        amenity.setBulletinPost(bulletinPost);
 
         BulletinPost createdBulletinPost = bulletinPostRepository.save(bulletinPost);
 
