@@ -80,7 +80,7 @@ public class BulletinPostController {
         BulletinPost bulletinPost = bulletinPostService.findBulletinPost(bulletinPostId);
 
         return new ResponseEntity<>(
-                new ApiSingleResponse<>(HttpStatus.OK, "message",bulletinPostMapper.BulletinPostToBulletinPostResponseDto(bulletinPost))
+                new ApiSingleResponse<>(HttpStatus.OK, "message", bulletinPostMapper.BulletinPostToBulletinPostResponseDto(bulletinPost))
                 , HttpStatus.OK);
     }
 
@@ -92,7 +92,7 @@ public class BulletinPostController {
         Page<BulletinPost> pageBulletinPosts = bulletinPostService.findBulletinPosts(page - 1, size);
         List<BulletinPost> bulletinPosts = pageBulletinPosts.getContent();
         return new ResponseEntity<>(
-                new ApiMultiResponse<>(bulletinPostMapper.bulletinPostsToBulletinPostResponseForFeedDtos(bulletinPosts),
+                new ApiMultiResponse<>(HttpStatus.OK, "message", bulletinPostMapper.bulletinPostsToBulletinPostResponseForFeedDtos(bulletinPosts),
                         pageBulletinPosts),
                 HttpStatus.OK);
     }
@@ -105,7 +105,7 @@ public class BulletinPostController {
         Page<BulletinPost> pageBulletinPosts = bulletinPostService.findBulletinPostsByMemberId(memberId, page - 1, size);
         List<BulletinPost> bulletinPosts = pageBulletinPosts.getContent();
         return new ResponseEntity<>(
-                new ApiMultiResponse<>(bulletinPostMapper.bulletinPostsToBulletinPostResponseDtos(bulletinPosts),
+                new ApiMultiResponse<>(HttpStatus.OK, "message", bulletinPostMapper.bulletinPostsToBulletinPostResponseDtos(bulletinPosts),
                         pageBulletinPosts),
                 HttpStatus.OK);
     }
