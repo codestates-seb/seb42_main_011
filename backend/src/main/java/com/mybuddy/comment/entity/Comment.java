@@ -15,17 +15,17 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long commentId;
+    private Long commentId;
 
     @Column(length = 1000, nullable = false)
-    public String commentContent;
+    private String commentContent;
 
     @Column
-    public LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
     @Setter
     @Column
-    public LocalDateTime modifiedAt;
+    private LocalDateTime modifiedAt;
 
     /*
 

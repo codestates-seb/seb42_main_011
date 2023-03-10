@@ -1,14 +1,21 @@
 package com.mybuddy.comment.dto;
 
-public class CommentResponseDto {
-    public String commentContent ;
+import lombok.Builder;
+import lombok.Getter;
 
-    /*
-    public MemberCommentDto member;
-    "member" : {
-        "memberId":3,
-        "nickname":"지은",
-        "dogName":"몽이"
+@Getter
+public class CommentResponseDto {
+    private String commentContent ;
+    private Long memberId;
+    private String nickName;
+    private String dogName;
+
+    @Builder
+    public CommentResponseDto(String commentContent, Long memberId, String nickName, String dogName) {
+        this.commentContent = commentContent;
+        this.memberId = memberId;
+        this.nickName = nickName;
+        this.dogName = dogName;
     }
     */
 }
