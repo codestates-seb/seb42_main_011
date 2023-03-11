@@ -36,7 +36,7 @@ public class MemberController {
     private final MemberMapper mapper;
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<ApiSingleResponse> postMember(@Valid @RequestPart MemberCreateDto createDto,
+    public ResponseEntity<ApiSingleResponse> createMember(@Valid @RequestPart MemberCreateDto createDto,
                                                         @RequestPart(required = false) MultipartFile profileImage) {
         Member member = memberService.createMember(mapper.memberCreateDtoToMember(createDto), profileImage);
 
@@ -66,7 +66,7 @@ public class MemberController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiSingleResponse> getMemberList(@Positive @RequestParam int page,
+    public ResponseEntity<ApiMultiResponse> getMemberList(@Positive @RequestParam int page,
                                                            @Positive @RequestParam int size) {
         Page<Member> pageMembers = memberService.getMemberList(page - 1, size);
         List<Member> obtainedMembers = pageMembers.getContent();
