@@ -1,0 +1,42 @@
+.modal {
+  width: 448px;
+  height: 622px;
+  border: 1.5px solid var(--color-dark-0);
+}
+
+.modal__container--outer {
+  /* 안쪽 박스 가운데정렬 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+  border: var(--border); /* 수정 */
+  border-radius: 10px;
+}
+
+.modal__container--inner {
+  width: 408px;
+  height: 582px;
+  border: var(--border); /* 수정 */
+  border-radius: 5px;
+}
+
+.modal__title {
+  font-family: var(--font-title);
+  font-size: var(--font-size-50);
+  /* 텍스트 테두리 넣기: offset-x offset-y color 순, 쉼표로 구분하면 여러 개의 그림자를 넣는다. */
+  text-shadow: -2px -2px black, 2px 2px black, 2px -2px black, -2px 2px black; 
+  line-height: var(--line-height-50);
+  color: var(--color-light-0);
+}
+
+.modal__title2 {
+  font-family: var(--font-title);
+  font-size: var(--font-size-50);
+  font-weight: 900;
+  -webkit-text-stroke: 0.5px black;
+  line-height: var(--line-height-50);
+  color: var(--color-light-0);
+}

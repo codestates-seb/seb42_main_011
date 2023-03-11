@@ -1,11 +1,14 @@
 import React, { Fragment } from 'react';
+import Modal from './components/UI/Modal';
 
 import GlobalStyles from './styles/GlobalStyles';
 
 function App() {
   return (
     <Fragment>
-      <div> 최초배포 </div>
+      <div>
+        <Modal title="USER DELETE"><div>hey</div></Modal>
+      </div>
       <GlobalStyles />
     </Fragment>
   );
