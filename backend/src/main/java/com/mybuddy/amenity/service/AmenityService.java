@@ -1,6 +1,7 @@
 package com.mybuddy.amenity.service;
 
 import com.mybuddy.amenity.dto.AmenityCreateDto;
+import com.mybuddy.amenity.dto.AmenityResponseDto;
 import com.mybuddy.amenity.entity.Amenity;
 import com.mybuddy.amenity.mapper.AmenityMapper;
 import com.mybuddy.amenity.repository.AmenityRepository;
@@ -50,8 +51,9 @@ public class AmenityService {
     }
 
     @Transactional
-    public List<Amenity> getRecommendAmenities(String state, String region){
-        List<Amenity> recommendAmenities = amenityRepository.findByStateRegion(state,region);
+    public List<AmenityResponseDto> getRecommendAmenities(String state, String region){
+
+        List<AmenityResponseDto> recommendAmenities = amenityRepository.findByStateRegion(state,region);
         return recommendAmenities;
     }
 }

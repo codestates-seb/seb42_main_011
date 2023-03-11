@@ -12,4 +12,6 @@ public class AmenityResponseDto {
     private String address;
     private Double longitude;
     private Double latitude;
+
+    private Long bulletinPostCount;
 }

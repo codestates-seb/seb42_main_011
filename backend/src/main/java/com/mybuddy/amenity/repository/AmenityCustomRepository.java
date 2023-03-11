@@ -1,5 +1,6 @@
 package com.mybuddy.amenity.repository;
 
+import com.mybuddy.amenity.dto.AmenityResponseDto;
 import com.mybuddy.amenity.entity.Amenity;
 
 import java.util.List;
@@ -10,5 +11,5 @@ public interface AmenityCustomRepository {
 
     List<Amenity> findByBulletinPostId(Long bulletinPostId);
 
-    List<Amenity> findByStateRegion(String state, String region);
+    List<AmenityResponseDto> findByStateRegion(String state, String region);
 }
