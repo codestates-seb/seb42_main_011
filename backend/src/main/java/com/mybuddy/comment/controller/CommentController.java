@@ -19,14 +19,14 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/comments")
+@RequestMapping("/api/v1/comments")
 @RequiredArgsConstructor
 public class CommentController {
 
     private final CommentService commentService;
     private final CommentMapper commentMapper;
 
-    private final static String defaultUrl = "/comments";
+    private final static String defaultUrl = "/api/v1/comments";
 
     @PostMapping
     public ResponseEntity<ApiSingleResponse> createComment(@Valid @RequestBody CommentCreateDto commentCreateDto) {
