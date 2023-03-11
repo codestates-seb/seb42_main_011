@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/amenities")
+@RequestMapping("/api/v1/amenities")
 @RestController
 @RequiredArgsConstructor
 public class AmenityController {
 
-    private static final String DEFAULT_URL = "/amenities";
+    private static final String DEFAULT_URL = "/api/v1/amenities";
     private final AmenityService amenityService;
     private final AmenityMapper amenityMapper;
 
