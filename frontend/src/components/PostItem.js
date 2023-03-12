@@ -12,6 +12,9 @@ const ItemBox = styled.div`
   width: 300px;
   height: 468px;
   overflow: hidden;
+  &:hover{
+    box-shadow: 10px 10px;
+  };
 `;
 
 const PostImage = styled.img`
