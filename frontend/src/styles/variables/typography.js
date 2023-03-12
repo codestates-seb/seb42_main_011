@@ -1,7 +1,7 @@
 import { css } from 'styled-components';
 
 const typography = css`
-  --font-main: 'Noto Sans KR', sans - serif;
+  --font-main: 'Noto Sans KR', sans-serif;
   --font-title: 'Bangers', cursive;
 
   --font-size-10: 10px;
