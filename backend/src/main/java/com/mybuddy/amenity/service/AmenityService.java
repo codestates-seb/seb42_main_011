@@ -39,7 +39,7 @@ public class AmenityService {
 
     @Transactional
     public Amenity createAmenity(AmenityCreateDto amenityCreateDto) {
-        Amenity amenity = amenityMapper.AmenityCreateDtoToAmenity(amenityCreateDto);
+        Amenity amenity = amenityMapper.amenityCreateDtoToAmenity(amenityCreateDto);
         return amenityRepository.save(amenity);
     }
 
