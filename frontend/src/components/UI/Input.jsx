@@ -14,7 +14,7 @@ const StyledInput = styled.input`
 
   width: var(--input-box-width);
   height: 50px;
-  border: 1.5px solid #000;
+  border: var(--border);
   border-radius: 5px;
   background-color: var(--color-light-1);
   text-indent: 10px;
