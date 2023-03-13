@@ -46,7 +46,6 @@ public class Comment {
         this.commentContent = commentContent;
         this.modifiedAt = LocalDateTime.now();
     }
-
     @Builder(builderClassName = "CreateNewComment", builderMethodName = "CreateNewComment")
     public Comment (String commentContent) {
         this.commentContent = commentContent;
@@ -58,4 +57,15 @@ public class Comment {
         this.commentId = commentId;
         this.commentContent = commentContent;
     }
+
+    @Builder(builderClassName = "testComment", builderMethodName = "testComment")
+    public Comment(Long commentId, String commentContent, LocalDateTime createdAt, LocalDateTime modifiedAt, Member member, BulletinPost bulletinPost) {
+        this.commentId = commentId;
+        this.commentContent = commentContent;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
+        this.member = member;
+        this.bulletinPost = bulletinPost;
+    }
+
 }
