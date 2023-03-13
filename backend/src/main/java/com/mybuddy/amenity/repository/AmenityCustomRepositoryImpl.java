@@ -22,7 +22,7 @@ import static com.querydsl.core.types.Projections.bean;
 public class AmenityCustomRepositoryImpl implements AmenityCustomRepository{
 
     private final JPAQueryFactory queryFactory;
-    private final BulletinPostMapper bulletinPostMapper;
+
     @Override
     public Amenity findByAddressId(Long addressId) {
 
