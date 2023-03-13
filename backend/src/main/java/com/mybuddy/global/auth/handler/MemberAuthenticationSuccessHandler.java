@@ -1,4 +1,3 @@
-/*
 package com.mybuddy.global.auth.handler;
 
 import lombok.extern.slf4j.Slf4j;
@@ -19,4 +18,3 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
         log.info("# Authenticated successfully!");
     }
 }
-*/

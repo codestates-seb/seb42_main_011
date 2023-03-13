@@ -1,4 +1,3 @@
-/*
 package com.mybuddy.global.auth.filter;
 
 import com.mybuddy.global.auth.jwt.JwtTokenizer;
@@ -70,4 +69,3 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }
-*/

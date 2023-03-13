@@ -1,4 +1,3 @@
-/*
 package com.mybuddy.global.auth.config;
 
 import com.mybuddy.global.auth.filter.JwtAuthenticationFilter;
@@ -101,4 +100,3 @@ public class SecurityConfiguration {
         }
     }
 }
-*/
