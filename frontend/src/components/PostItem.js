@@ -4,10 +4,10 @@ import styled from 'styled-components'
 // border, line-height를 피그마와 비슷해보이게 rem단위 사용해서 바꿔봤습니다..
 
 const ItemBox = styled.div`
-  margin-left: 30px;
+
   display: flex;
   flex-direction: column;
-  border: 0.13rem solid var(--color-dark-0);
+  border: var(--border);
   border-radius: 5px;
   width: 300px;
   height: 468px;
@@ -27,8 +27,8 @@ const PostImage = styled.img`
 const PostBox = styled.div`
   padding: 10px 10px 13px 10px;
   color: var(--color-dark-0);
-  border-top: 0.13rem solid var(--color-dark-0);
-  border-bottom: 0.13rem solid var(--color-dark-0);
+  border-top: var(--border);
+  border-bottom: var(--border);
   /* 텍스트 줄바꿈을 위해서 넣어 둠 */
   white-space: pre-line;
   /* 줄바꿈 : 단어 기준 */ 
@@ -84,7 +84,9 @@ function PostItem({ photoUrl, postContent, commentCount, nickname, dogName, crea
         <div className='postitem__profile'>
           {nickname}🏠{dogName}
         </div>
-        <span className='postitem__createdAt'>{createdAt}</span>
+        <span className='postitem__createdAt'>
+          {createdAt}
+        </span>
       </MetaBox>
     </ItemBox>
   );
