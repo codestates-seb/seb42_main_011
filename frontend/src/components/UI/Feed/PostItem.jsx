@@ -72,7 +72,7 @@ function PostItem({ photoUrl, postContent, commentCount, nickname, dogName, crea
       <PostBox>
         <ContentBox>{postContent}</ContentBox>
         <CommentBox>
-          <img src="comment.svg" alt="" />
+          <img src="icon/comment.svg" alt="" />
           <span>{commentCount}개</span>
         </CommentBox>
       </PostBox>
