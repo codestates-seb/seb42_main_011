@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
-import styled, { css } from 'styled-components';
-import './modal.css';
+import styled from 'styled-components';
 
 function Modal({ children, titleImage }) {
   const ModalOutside = styled.div`
