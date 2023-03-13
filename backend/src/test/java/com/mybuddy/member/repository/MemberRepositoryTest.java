@@ -49,6 +49,23 @@ public class MemberRepositoryTest {
     }
 
     @Test
+    public void findByNicknameTest() {
+        Optional<Member> optionalMember = memberRepository.findByNickname(member.getNickname());
+        Member obtainedMember = optionalMember.orElseThrow(() ->
+                new LogicException(LogicExceptionCode.MEMBER_NOT_FOUND));
+
+        assertEquals(obtainedMember.getMemberId(), member.getMemberId());
+        assertEquals(obtainedMember.getEmail(), member.getEmail());
+        assertEquals(obtainedMember.getPassword(), member.getPassword());
+        assertEquals(obtainedMember.getNickname(), member.getNickname());
+        assertEquals(obtainedMember.getAboutMe(), member.getAboutMe());
+        assertEquals(obtainedMember.getDogName(), member.getDogName());
+        assertEquals(obtainedMember.getDogGender(), member.getDogGender());
+        assertEquals(obtainedMember.getProfileUrl(), member.getProfileUrl());
+        assertEquals(obtainedMember.getAddress(), member.getAddress());
+    }
+
+    @Test
     public void findByMemberIdAndMemberStatusIsTest() {
         Optional<Member> optionalMember = memberRepository
                 .findByMemberIdAndMemberStatusIs(member.getMemberId(), Member.MemberStatus.ACTIVE);

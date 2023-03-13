@@ -154,6 +154,22 @@ public class MemberServiceTest {
         assertThrows(LogicException.class, executable);
     }
 
+    @DisplayName("회원 별명 존재 예외 처리 로직 (Service)")
+    @Test
+    public void verifyIfNicknameExistsExceptionTest() {
+        // Given
+        Member obtainedMember = MockTestData.MockMember.getMember();
+
+        given(memberRepository.findByNickname(Mockito.anyString()))
+                .willReturn(Optional.of(obtainedMember));
+
+        // When
+        Executable executable = () -> memberService.verifyIfNicknameExists(obtainedMember.getNickname());
+
+        // Then
+        assertThrows(LogicException.class, executable);
+    }
+
     @DisplayName("회원 찾기 예외 처리 로직 (Service)")
     @Test
     public void findExistMemberByIdExceptionTest() {
