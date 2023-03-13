@@ -35,6 +35,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member createMember(Member member, MultipartFile profileImage) {
         verifyIfEmailExists(member.getEmail());
+        verifyIfNicknameExists(member.getNickname());
 
         Optional.ofNullable(profileImage)
                 .ifPresent(storageService::storeImage);
@@ -100,6 +101,14 @@ public class MemberServiceImpl implements MemberService {
 
         if (optionalMember.isPresent())
             throw new LogicException(LogicExceptionCode.MEMBER_ALREADY_EXISTS);
+    }
+
+    @Override
+    public void verifyIfNicknameExists(String nickname) {
+        Optional<Member> optionalMember = memberRepository.findByNickname(nickname);
+
+        if (optionalMember.isPresent())
+            throw new LogicException(LogicExceptionCode.NICKNAME_ALREADY_EXISTS);
     }
 
     @Override
