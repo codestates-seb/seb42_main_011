@@ -74,7 +74,7 @@ public class BulletinPostController {
 
         //해당 amenity 저장되어있는지 여부 확인후 없으면 저장, 아니면 create 코드
         AmenityCreateDto amenityCreateDto = amenityMapper.BullletinPostPatchDtoToAmenityCreateDto(bulletinPostPatchDto);
-        Amenity amenity = amenityService.findDBAmenity(amenityCreateDto);
+        Amenity amenity = amenityService.obtainedAmenity(amenityCreateDto);
 
         BulletinPost bulletinPost =
                 bulletinPostService.updateBulletinPost(bulletinPostMapper.bulletinPostPatchDtoToBulletinPost(bulletinPostPatchDto), amenity, photoImage);
