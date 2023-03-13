@@ -26,5 +26,6 @@ module.exports = {
       },
     ],
     'react/jsx-fragments': ['off'],
+    'react/jsx-props-no-spreading': 'off',
   },
 };
