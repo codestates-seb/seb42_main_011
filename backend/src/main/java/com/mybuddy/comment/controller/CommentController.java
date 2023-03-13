@@ -26,7 +26,7 @@ public class CommentController {
     private final CommentService commentService;
     private final CommentMapper commentMapper;
 
-    private final static String defaultUrl = "/api/v1/comments";
+    private static final String COMMENT_DEFAULT_URL = "/api/v1/comments";
 
     @PostMapping
     public ResponseEntity<ApiSingleResponse> createComment(@Valid @RequestBody CommentCreateDto commentCreateDto) {
@@ -34,7 +34,7 @@ public class CommentController {
         Long bulletinPostId = commentCreateDto.getBulletinPostId();
 
         Comment comment = commentService.createComment(bulletinPostId ,commentMapper.commentCreateDtoToComment(commentCreateDto));
-        URI uri = UriMaker.getUri(defaultUrl, comment.getCommentId());
+        URI uri = UriMaker.getUri(COMMENT_DEFAULT_URL, comment.getCommentId());
         CommentResponseDto commentResponseDto = commentMapper.commentToCommentResponseDto(comment);
         ApiSingleResponse response = new ApiSingleResponse(HttpStatus.CREATED,"댓글이 생성되었습니다", commentResponseDto);
         return ResponseEntity.created(uri).body(response);
