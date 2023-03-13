@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 import com.mybuddy.bulletin_post.entity.BulletinPost;
 import com.mybuddy.comment.entity.Comment;
+import com.mybuddy.global.audit.Auditable;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Member {
+public class Member extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

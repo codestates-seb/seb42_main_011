@@ -36,14 +36,14 @@ public class MemberController {
     private final MemberMapper mapper;
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<ApiSingleResponse> postMember(@Valid @RequestPart MemberCreateDto createDto,
+    public ResponseEntity<ApiSingleResponse> createMember(@Valid @RequestPart MemberCreateDto createDto,
                                                         @RequestPart(required = false) MultipartFile profileImage) {
         Member member = memberService.createMember(mapper.memberCreateDtoToMember(createDto), profileImage);
 
-        URI location = UriMaker.getUri(MEMBER_DEFAULT_URL, member.getMemberId());
+        URI uriLocation = UriMaker.getUri(MEMBER_DEFAULT_URL, member.getMemberId());
         ApiSingleResponse response = new ApiSingleResponse(HttpStatus.CREATED, "회원이 생성되었습니다.");
 
-        return ResponseEntity.created(location).body(response);
+        return ResponseEntity.created(uriLocation).body(response);
     }
 
     @PatchMapping(value = "/{member-id}",
@@ -66,7 +66,7 @@ public class MemberController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiSingleResponse> getMemberList(@Positive @RequestParam int page,
+    public ResponseEntity<ApiMultiResponse> getMemberList(@Positive @RequestParam int page,
                                                            @Positive @RequestParam int size) {
         Page<Member> pageMembers = memberService.getMemberList(page - 1, size);
         List<Member> obtainedMembers = pageMembers.getContent();
