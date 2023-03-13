@@ -59,7 +59,7 @@ function Profile({photoUrl, dogName}) {
       <ProfileName>
         {dogName}
         <div className='profileitem__svg--button'>
-          <img src="arrow-right.svg" alt="" /> 
+          <img src="icon/arrow-right.svg" alt="" /> 
         </div>
       </ProfileName>
     </ProfileBox>
