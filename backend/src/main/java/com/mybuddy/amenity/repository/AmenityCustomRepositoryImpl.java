@@ -35,47 +35,8 @@ public class AmenityCustomRepositoryImpl implements AmenityCustomRepository{
                 .fetchOne();
     }
 
-    //특정 장소와 태그된 게시글들 페이지네이션 처리해 반환
-    @Override
-    public AmenityWithBulletinPost findAmenityWithBulletinPostByAmenityId(Long amenityId, PageRequest pageRequest) {
 
-
-        QAmenity amenity = QAmenity.amenity;
-        QBulletinPost bulletinPost = QBulletinPost.bulletinPost;
-
-        // 일단 작동하는 코드입니다.
-        // BulletinPost가 페이징처리되어 지속적으로 요청이 오는데, a를 계속 조회하면 효율성이 떨어짐.
-        // Amenity 1개 조회와, AmenityId로 BulletinPostList를 조회하도록 분리가 필요.
-        // 나중에 bulletinPost custom repository 생성되면 수정 필요 (2023.03.12 강지은)
-        QueryResults<BulletinPost> queryResults = queryFactory
-                    .selectFrom(bulletinPost)
-                    .where(bulletinPost.amenity.amenityId.eq(amenityId))
-                    .offset(pageRequest.getOffset())
-                    .limit(pageRequest.getPageSize())
-                    .fetchResults();
-
-        Amenity a = queryFactory
-                .select(amenity)
-                .from(amenity)
-                .where(amenity.amenityId.eq(amenityId))
-                .fetchOne();
-
-        List<BulletinPost> findList = queryResults.getResults();
-        Page<BulletinPost> page = new PageImpl<>(queryResults.getResults(), pageRequest, queryResults.getTotal());
-
-        return AmenityWithBulletinPost.builder()
-                .addressId(a.addressId)
-                .amenityName(a.amenityName)
-                .address(a.address)
-                .longitude(a.longitude)
-                .latitude(a.latitude)
-                .bulletinPosts(bulletinPostMapper.bulletinPostsToBulletinPostResponseForFeedDtos(findList))
-                .page(page)
-                .build();
-
-    }
-
-    //해당 게시글에 태그된 장소를 가져옴
+    //추천
     @Override
     public List<AmenityResponseDto> findByStateRegion(String state, String region) {
 
@@ -85,7 +46,7 @@ public class AmenityCustomRepositoryImpl implements AmenityCustomRepository{
         QBulletinPost bulletinPost = QBulletinPost.bulletinPost;
 
         //BulletinPost와 join하여 데이터가 많은 수로 카운트 해 상위 몇개만 전달할지, 전체적으로 전달할지 고민
-        //연관관계 미적용이라 쿼리 이후에 반영. 현재는 키워드 포함한 모든 데이터를 반환함(2023.03.10 강지은)
+        //연관관계 미적용이라 쿼리 이후에 반영. 현재는 키워드 포함한 모든 데이터를 반환함 (2023.03.10 강지은)
         List<AmenityResponseDto> amenities  = queryFactory
                 .select(bean(AmenityResponseDto.class,
                         amenity.amenityId.as("amenityId"),
@@ -104,5 +65,21 @@ public class AmenityCustomRepositoryImpl implements AmenityCustomRepository{
                 .fetch();
 
         return amenities;
+    }
+
+    //bulletinPostCustomRepositoryImpl로 이동시킬 예정입니다. (2023.03.13 강지은)
+    @Override
+    public Page<BulletinPost>  findTaggedBulletinPostByAmenityId(Long amenityId, PageRequest pageRequest) {
+
+        QBulletinPost bulletinPost = QBulletinPost.bulletinPost;
+
+        QueryResults<BulletinPost> queryResults = queryFactory
+                .selectFrom(bulletinPost)
+                .where(bulletinPost.amenity.amenityId.eq(amenityId))
+                .offset(pageRequest.getOffset())
+                .limit(pageRequest.getPageSize())
+                .fetchResults();
+
+        return new PageImpl<>(queryResults.getResults(), pageRequest, queryResults.getTotal());
     }
 }

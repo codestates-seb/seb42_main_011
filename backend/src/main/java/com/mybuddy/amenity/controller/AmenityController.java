@@ -23,30 +23,27 @@ public class AmenityController {
     private final AmenityService amenityService;
     private final AmenityMapper amenityMapper;
 
-
-    //테스트용으로 제작한 핸들러 메서드이고 정상 작동하는 것을 확인 후에 삭제할 예정입니다. (2023.03.09 강지은)
-    @PostMapping
-    public ResponseEntity<Amenity> createAmenity(@RequestBody AmenityCreateDto amenityCreateDto) {
-
-        //BulletinPost생성시 body로 전달받은 Amenity 정보를
-        //AmenityCreateDto에 담고, 아래와 같이 호출하면 정상 작동합니다.
-        //데이터베이스에 해당 장소가 존재할 경우 그 장소의 엔티티를 반환,
-        //데이터베이스에 해당 장소가 존재하지 않으면 새로 생성한 엔티티를 반환합니다.
-
-        Amenity amenity = amenityService.findDBAmenity(amenityCreateDto);
-
-        return ResponseEntity.ok(amenity);
-    }
+    private final BulletinPostMapper bulletinPostMapper;
 
 
     @GetMapping("{amenity-id}")
-    public ResponseEntity<ApiSingleResponse> findAmenityWithBulletinPostByAmenityId(@PathVariable("amenity-id") Long amenityId,
-                                                                        @RequestParam(name = "page") int page,
-                                                                        @RequestParam(name = "size") int size) {
+    public ResponseEntity<ApiSingleResponse> getAmenity(@PathVariable("amenity-id") Long amenityId) {
 
-        AmenityWithBulletinPost amenityWithBulletinPost = amenityService.getAmenityWithBulletinPost(amenityId, page - 1, size);
+        Amenity amenity = amenityService.getAmenityInfo(amenityId);
+        AmenityResponseDto amenityResponseDto = amenityMapper.amenityToAmenityResponseDto(amenity);
+        ApiSingleResponse response = new ApiSingleResponse<>(HttpStatus.OK,"장소 정보 반환", amenityResponseDto);
+        return ResponseEntity.ok(response);
+    }
 
-        ApiSingleResponse response = new ApiSingleResponse<>(HttpStatus.OK,"장소와 그 장소가 태그된 게시물들 반환", amenityWithBulletinPost);
+    @GetMapping("{amenity-id}/bulletin-posts")
+    public ResponseEntity<ApiMultiResponse> findTaggedBulletinPostByAmenityId(@PathVariable("amenity-id") Long amenityId,
+                                                                                    @RequestParam(name = "page") int page,
+                                                                                    @RequestParam(name = "size") int size) {
+
+        Page<BulletinPost> pageResult = amenityService.findTaggedBulletinPostList(amenityId, page - 1, size);
+        List<BulletinPost> bulletinPosts = pageResult.getContent();
+        ApiMultiResponse response = new ApiMultiResponse<>(HttpStatus.OK,"장소가 태그된 게시물들 반환",
+                bulletinPostMapper.bulletinPostsToBulletinPostResponseForFeedDtos(bulletinPosts), pageResult);
         return ResponseEntity.ok(response);
     }
 
