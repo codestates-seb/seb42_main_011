@@ -2,14 +2,12 @@ package com.mybuddy.amenity.controller;
 
 import com.mybuddy.amenity.dto.AmenityCreateDto;
 import com.mybuddy.amenity.dto.AmenityResponseDto;
+import com.mybuddy.amenity.dto.AmenityWithBulletinPost;
 import com.mybuddy.amenity.entity.Amenity;
 import com.mybuddy.amenity.mapper.AmenityMapper;
 import com.mybuddy.amenity.service.AmenityService;
-import com.mybuddy.bulletin_post.entity.BulletinPost;
-import com.mybuddy.global.utils.ApiMultiResponse;
 import com.mybuddy.global.utils.ApiSingleResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,16 +40,14 @@ public class AmenityController {
 
 
     @GetMapping("{amenity-id}")
-    public void getAmenityWithBulletinPost(@PathVariable("amenity-id") Long amenityId,
-                                           @RequestParam(name = "page") String page,
-                                            @RequestParam(name = "size") String size) {
+    public ResponseEntity<ApiSingleResponse> findAmenityWithBulletinPostByAmenityId(@PathVariable("amenity-id") Long amenityId,
+                                                                        @RequestParam(name = "page") int page,
+                                                                        @RequestParam(name = "size") int size) {
 
-//        Page<BulletinPost> pageBulletinPosts = bulletinPostService.findAmenityBulletinPosts(page - 1, size);
-//        List<BulletinPost> bulletinPosts = pageBulletinPosts.getContent();
-//        return new ResponseEntity<>(
-//                new ApiMultiResponse<>(HttpStatus.OK, "message", bulletinPostMapper.bulletinPostsToBulletinPostResponseForFeedDtos(bulletinPosts),
-//                        pageBulletinPosts),
-//                HttpStatus.OK);
+        AmenityWithBulletinPost amenityWithBulletinPost = amenityService.getAmenityWithBulletinPost(amenityId, page - 1, size);
+
+        ApiSingleResponse response = new ApiSingleResponse<>(HttpStatus.OK,"장소와 그 장소가 태그된 게시물들 반환", amenityWithBulletinPost);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping

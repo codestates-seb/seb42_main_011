@@ -2,10 +2,13 @@ package com.mybuddy.amenity.service;
 
 import com.mybuddy.amenity.dto.AmenityCreateDto;
 import com.mybuddy.amenity.dto.AmenityResponseDto;
+import com.mybuddy.amenity.dto.AmenityWithBulletinPost;
 import com.mybuddy.amenity.entity.Amenity;
 import com.mybuddy.amenity.mapper.AmenityMapper;
 import com.mybuddy.amenity.repository.AmenityRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -39,15 +42,15 @@ public class AmenityService {
 
     @Transactional
     public Amenity createAmenity(AmenityCreateDto amenityCreateDto) {
-        Amenity amenity = amenityMapper.AmenityCreateDtoToAmenity(amenityCreateDto);
+        Amenity amenity = amenityMapper.amenityCreateDtoToAmenity(amenityCreateDto);
         return amenityRepository.save(amenity);
     }
 
     @Transactional
-    public void getAmenityWithBulletinPost(Long amenityId) {
+    public AmenityWithBulletinPost getAmenityWithBulletinPost(Long amenityId, int page, int size) {
 
-        //해당 amenity id 가 태그된 bulletin post들이 페이지 처리되어 반환..
-        //bulletinPostRepository.findByAmenityId(amenityId);
+        return amenityRepository.findAmenityWithBulletinPostByAmenityId(amenityId,
+                PageRequest.of(page, size, Sort.by("bulletinPostId").descending()));
     }
 
     @Transactional
