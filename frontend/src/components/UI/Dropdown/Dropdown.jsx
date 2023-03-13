@@ -82,6 +82,7 @@ const DropdownList = styled.ul`
   left: 0;
   z-index: 1;
   width: var(--dropdown-width);
+  box-shadow: inherit;
 `;
 
 const SelectedOption = styled.p`
