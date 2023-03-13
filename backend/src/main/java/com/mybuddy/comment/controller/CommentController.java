@@ -19,23 +19,23 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/comments")
+@RequestMapping("/api/v1/comments")
 @RequiredArgsConstructor
 public class CommentController {
 
     private final CommentService commentService;
     private final CommentMapper commentMapper;
 
-    private final static String defaultUrl = "/comments";
+    private final static String defaultUrl = "/api/v1/comments";
 
     @PostMapping
     public ResponseEntity<ApiSingleResponse> createComment(@Valid @RequestBody CommentCreateDto commentCreateDto) {
 
         Long bulletinPostId = commentCreateDto.getBulletinPostId();
 
-        Comment comment = commentService.createComment(bulletinPostId ,commentMapper.CommentCreateDtoToComment(commentCreateDto));
+        Comment comment = commentService.createComment(bulletinPostId ,commentMapper.commentCreateDtoToComment(commentCreateDto));
         URI uri = UriMaker.getUri(defaultUrl, comment.getCommentId());
-        CommentResponseDto commentResponseDto = commentMapper.CommentToCommentResponseDto(comment);
+        CommentResponseDto commentResponseDto = commentMapper.commentToCommentResponseDto(comment);
         ApiSingleResponse response = new ApiSingleResponse(HttpStatus.CREATED,"댓글이 생성되었습니다", commentResponseDto);
         return ResponseEntity.created(uri).body(response);
     }
@@ -45,7 +45,7 @@ public class CommentController {
     public ResponseEntity<ApiSingleResponse> getComments(@RequestParam(name = "bulletinPostId") @Positive Long postId) {
         //bulletinPost 엔티티 생성후 제작
         List<Comment> commentList = commentService.getCommentsByBulletinPostId(postId);
-        List<CommentResponseDto> commentResponseDtos = commentMapper.CommentListToCommentResponseDtoList(commentList);
+        List<CommentResponseDto> commentResponseDtos = commentMapper.commentListToCommentResponseDtoList(commentList);
 
         ApiSingleResponse response = new ApiSingleResponse(HttpStatus.OK,"게시물에 해당하는 댓글 정보입니다.", commentResponseDtos);
 
@@ -57,8 +57,8 @@ public class CommentController {
                                                            @Valid @RequestBody CommentUpdateDto commentUpdateDto) {
 
         commentUpdateDto.setCommentId(commentId);
-        Comment updatedComment = commentService.updateComment(commentMapper.CommentUpdateDtoToComment(commentUpdateDto));
-        CommentResponseDto commentResponseDto = commentMapper.CommentToCommentResponseDto(updatedComment);
+        Comment updatedComment = commentService.updateComment(commentMapper.commentUpdateDtoToComment(commentUpdateDto));
+        CommentResponseDto commentResponseDto = commentMapper.commentToCommentResponseDto(updatedComment);
 
         ApiSingleResponse response = new ApiSingleResponse(HttpStatus.OK,"댓글이 수정되었습니다", commentResponseDto);
         return ResponseEntity.ok(response);

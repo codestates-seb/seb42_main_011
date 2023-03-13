@@ -10,7 +10,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
-    default Comment CommentCreateDtoToComment(CommentCreateDto commentCreateDto){
+    default Comment commentCreateDtoToComment(CommentCreateDto commentCreateDto){
         if ( commentCreateDto == null )
             return null;
 
@@ -19,7 +19,7 @@ public interface CommentMapper {
                 .commentContent(commentCreateDto.getCommentContent())
                 .build();
     }
-    default Comment CommentUpdateDtoToComment(CommentUpdateDto commentUpdateDto) {
+    default Comment commentUpdateDtoToComment(CommentUpdateDto commentUpdateDto) {
 
         if ( commentUpdateDto == null )
             return null;
@@ -32,7 +32,7 @@ public interface CommentMapper {
 
     }
 
-    default CommentResponseDto CommentToCommentResponseDto(Comment comment) {
+    default CommentResponseDto commentToCommentResponseDto(Comment comment) {
         if ( comment == null ) {
             return null;
         }
@@ -48,6 +48,6 @@ public interface CommentMapper {
         return commentResponseDto;
     }
 
-    List<CommentResponseDto> CommentListToCommentResponseDtoList(List<Comment> commentList);
+    List<CommentResponseDto> commentListToCommentResponseDtoList(List<Comment> commentList);
 }
 

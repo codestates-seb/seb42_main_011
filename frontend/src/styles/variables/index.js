@@ -6,6 +6,7 @@ const variables = css`
   :root {
     ${color}
     ${typography}
+    --border: 1.5px solid var(--color-dark-0);
   }
 `;
 

@@ -2,8 +2,11 @@ package com.mybuddy.member.service;
 
 //import com.mybuddy.global.auth.utils.MemberAuthorityUtils;
 
+import com.mybuddy.global.exception.LogicException;
+import com.mybuddy.global.exception.LogicExceptionCode;
 import com.mybuddy.global.storage.StorageService;
 import com.mybuddy.member.entity.Member;
+import com.mybuddy.member.entity.Member.MemberStatus;
 import com.mybuddy.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 //import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,9 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -88,7 +89,7 @@ public class MemberServiceImpl implements MemberService {
     public void deleteMember(Long memberId) {
         Member obtainedMember = findExistMemberById(memberId);
 
-        obtainedMember.setMemberStatus(Member.MemberStatus.DELETED);
+        obtainedMember.setMemberStatus(MemberStatus.DELETED);
 
         memberRepository.save(obtainedMember);
     }
@@ -98,19 +99,16 @@ public class MemberServiceImpl implements MemberService {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
 
         if (optionalMember.isPresent())
-            throw new RuntimeException();
+            throw new LogicException(LogicExceptionCode.MEMBER_ALREADY_EXISTS);
     }
 
     @Override
     public Member findExistMemberById(Long memberId) {
-        Optional<Member> optionalMember = memberRepository.findById(memberId);
+        Optional<Member> optionalMember = memberRepository
+                .findByMemberIdAndMemberStatusIs(memberId, MemberStatus.ACTIVE);
 
         Member obtainedMember = optionalMember
-                .orElseThrow(() -> new RuntimeException());
-
-        if (obtainedMember.getMemberStatus() == Member.MemberStatus.DELETED) {
-            throw new RuntimeException();
-        }
+                .orElseThrow(() -> new LogicException(LogicExceptionCode.MEMBER_NOT_FOUND));
 
         return obtainedMember;
     }

@@ -48,8 +48,8 @@ public class BulletinPostController {
 //        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        UserDetails userDetails = (UserDetails)principal;
 //        long memberId = principal.getMemberId();
-        AmenityCreateDto amenityCreateDto = amenityMapper.BullletinPostCreateDtoToAmenityCreateDto(bulletinPostCreateDto);
-        Amenity amenity = amenityService.findDBAmenity(amenityCreateDto);
+        AmenityCreateDto amenityCreateDto = amenityMapper.bulletinPostCreateDtoToAmenityCreateDto(bulletinPostCreateDto);
+        Amenity amenity = amenityService.obtainedAmenity(amenityCreateDto);
 
 //        image 저장시 밑의 걸로 바꿔줘야함
         BulletinPost bulletinPost =

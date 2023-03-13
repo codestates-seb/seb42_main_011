@@ -12,12 +12,12 @@ import java.util.List;
 public interface AmenityMapper {
 
 
-    Amenity AmenityCreateDtoToAmenity(AmenityCreateDto amenityCreateDto);
-    AmenityResponseDto AmenityToAmenityResponseDto(Amenity amenity);
+    Amenity amenityCreateDtoToAmenity(AmenityCreateDto amenityCreateDto);
+    AmenityResponseDto amenityToAmenityResponseDto(Amenity amenity);
 
     List<AmenityResponseDto> AmenityListToAmenityResponseDto(List<Amenity> amenityList);
 
-    default AmenityCreateDto BullletinPostCreateDtoToAmenityCreateDto(BulletinPostDto.Create bulletinPostCreateDto) {
+    default AmenityCreateDto bulletinPostCreateDtoToAmenityCreateDto(BulletinPostDto.Create bulletinPostCreateDto) {
         if ( bulletinPostCreateDto == null ) {
             return null;
         }
