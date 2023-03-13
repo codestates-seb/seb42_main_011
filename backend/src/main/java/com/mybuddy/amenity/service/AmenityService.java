@@ -6,7 +6,10 @@ import com.mybuddy.amenity.dto.AmenityWithBulletinPost;
 import com.mybuddy.amenity.entity.Amenity;
 import com.mybuddy.amenity.mapper.AmenityMapper;
 import com.mybuddy.amenity.repository.AmenityRepository;
+import com.mybuddy.bulletin_post.entity.BulletinPost;
+import com.mybuddy.bulletin_post.repository.BulletinPostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,7 @@ public class AmenityService {
     private final AmenityMapper amenityMapper;
     private final AmenityRepository amenityRepository;
 
+    private final BulletinPostRepository bulletinPostRepository;
 
     /**
      * Return the {@code Amenity} in database
@@ -29,7 +33,7 @@ public class AmenityService {
      * if. amenity exists in the database already, returns it.
      * else. create a new one and return
      */
-    public Amenity findDBAmenity(AmenityCreateDto amenityCreateDto ) {
+    public Amenity obtainedAmenity(AmenityCreateDto amenityCreateDto) {
 
         //amenity addressid로 찾고, 존재하면 넘기기
         Amenity findAmenity = amenityRepository.findByAddressId(amenityCreateDto.getAddressId());
@@ -47,10 +51,16 @@ public class AmenityService {
     }
 
     @Transactional
-    public AmenityWithBulletinPost getAmenityWithBulletinPost(Long amenityId, int page, int size) {
+    public Page<BulletinPost> findTaggedBulletinPostList(Long amenityId, int page, int size) {
 
-        return amenityRepository.findAmenityWithBulletinPostByAmenityId(amenityId,
+        //bulletinPostRepository로 변경 예정 (2023.03.13 강지은)
+        return amenityRepository.findTaggedBulletinPostByAmenityId(amenityId,
                 PageRequest.of(page, size, Sort.by("bulletinPostId").descending()));
+    }
+
+    @Transactional
+    public Amenity getAmenityInfo(Long amenityId) {
+        return amenityRepository.findById(amenityId).orElseThrow(()-> new RuntimeException("amenity data가 없다."));
     }
 
     @Transactional
