@@ -16,7 +16,7 @@ const VARIANTS = {
     --btn-hover-bg-color: var(--color-secondary);
     --btn-box-width: 107px;
     --btn-box-height: 36px;
-    --btn-box-border: 1.5px solid var(--color-dark-0);
+    --btn-box-border: var(--border);
     --btn-box-border-radius: 5px;
     --btn-box-shadow: 3px 3px 0 0 var(--color-dark-0);
     --btn-hover-translate: translate(-0.25rem, -0.25rem);
@@ -27,7 +27,7 @@ const VARIANTS = {
     --btn-hover-bg-color: var(--color-tertiary);
     --btn-box-width: 135px;
     --btn-box-height: 45px;
-    --btn-box-border: 1.5px solid var(--color-dark-0);
+    --btn-box-border: var(--border);
     --btn-box-border-radius: 5px;
     --btn-box-shadow: 3px 3px 0 0 var(--color-dark-0);
     --btn-hover-translate: translate(-0.25rem, -0.25rem);
@@ -38,7 +38,7 @@ const VARIANTS = {
     --btn-hover-bg-color: var(--color-secondary);
     --btn-box-width: 200px;
     --btn-box-height: 40px;
-    --btn-box-border: 1.5px solid var(--color-dark-0);
+    --btn-box-border: var(--border);
     --btn-box-border-radius: 5px;
     --btn-box-shadow: 3px 3px 0 0 var(--color-dark-0);
     --btn-hover-translate: translate(-0.25rem, -0.25rem);
@@ -48,28 +48,30 @@ const VARIANTS = {
     --btn-bg-color: var(--color-dark-0);
     --btn-hover-bg-color: var(--color-secondary);
     --btn-box-width: 150px;
-    --btn-box-height: 69px;
-    --btn-border-bottom: 1.5px solid var(--color-dark-0);
-    --btn-border-left: 1.5px solid var(--color-dark-0);
+    --btn-box-height: 70px;
+    --btn-border-bottom: var(--border);
+    --btn-border-left: var(--border);
   `,
   headersecondary: css`
     ${baseStyles}
     --btn-color: var(--color-dark-0);
     --btn-bg-color: var(--color-light-0);
     --btn-hover-bg-color: var(--color-tertiary);
+    --btn-box-width: 150px;
+    --btn-box-height: 70px;
     --btn-box-border-radius: 0 10px 0 0;
-    --btn-border-left: 1.5px solid var(--color-dark-0);
-    --btn-box-border-radius: 0 10px 0 0;
-    --btn-border-left: 1.5px solid var(--color-dark-0);
-    --btn-border-bottom: 1.5px solid var(--color-dark-0);
+    --btn-border-left: var(--border);
+    --btn-border-bottom: var(--border);
   `,
   headertertiary: css`
     ${baseStyles}
     --btn-color: var(--color-dark-0);
     --btn-bg-color: var(--color-light-0);
     --btn-hover-bg-color: var(--color-primary);
-    --btn-border-left: 1.5px solid var(--color-dark-0);
-    --btn-border-bottom: 1.5px solid var(--color-dark-0);
+    --btn-box-width: 150px;
+    --btn-box-height: 70px;
+    --btn-border-left: var(--border);
+    --btn-border-bottom: var(--border);
   `,
 };
 
