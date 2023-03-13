@@ -25,5 +25,7 @@ module.exports = {
         peerDependencies: false,
       },
     ],
+    'react/jsx-fragments': ['off'],
+    'react/jsx-props-no-spreading': 'off',
   },
 };

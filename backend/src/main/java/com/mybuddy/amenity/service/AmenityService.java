@@ -1,10 +1,17 @@
 package com.mybuddy.amenity.service;
 
 import com.mybuddy.amenity.dto.AmenityCreateDto;
+import com.mybuddy.amenity.dto.AmenityResponseDto;
+import com.mybuddy.amenity.dto.AmenityWithBulletinPost;
 import com.mybuddy.amenity.entity.Amenity;
 import com.mybuddy.amenity.mapper.AmenityMapper;
 import com.mybuddy.amenity.repository.AmenityRepository;
+import com.mybuddy.bulletin_post.entity.BulletinPost;
+import com.mybuddy.bulletin_post.repository.BulletinPostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -17,6 +24,7 @@ public class AmenityService {
     private final AmenityMapper amenityMapper;
     private final AmenityRepository amenityRepository;
 
+    private final BulletinPostRepository bulletinPostRepository;
 
     /**
      * Return the {@code Amenity} in database
@@ -25,7 +33,7 @@ public class AmenityService {
      * if. amenity exists in the database already, returns it.
      * else. create a new one and return
      */
-    public Amenity findDBAmenity(AmenityCreateDto amenityCreateDto ) {
+    public Amenity obtainedAmenity(AmenityCreateDto amenityCreateDto) {
 
         //amenity addressid로 찾고, 존재하면 넘기기
         Amenity findAmenity = amenityRepository.findByAddressId(amenityCreateDto.getAddressId());
@@ -38,20 +46,27 @@ public class AmenityService {
 
     @Transactional
     public Amenity createAmenity(AmenityCreateDto amenityCreateDto) {
-        Amenity amenity = amenityMapper.AmenityCreateDtoToAmenity(amenityCreateDto);
+        Amenity amenity = amenityMapper.amenityCreateDtoToAmenity(amenityCreateDto);
         return amenityRepository.save(amenity);
     }
 
     @Transactional
-    public void getAmenityWithBulletinPost(Long amenityId) {
+    public Page<BulletinPost> findTaggedBulletinPostList(Long amenityId, int page, int size) {
 
-        //해당 amenity id 가 태그된 bulletin post들이 페이지 처리되어 반환..
-        //bulletinPostRepository.findByAmenityId(amenityId);
+        //bulletinPostRepository로 변경 예정 (2023.03.13 강지은)
+        return amenityRepository.findTaggedBulletinPostByAmenityId(amenityId,
+                PageRequest.of(page, size, Sort.by("bulletinPostId").descending()));
     }
 
     @Transactional
-    public List<Amenity> getRecommendAmenities(String state, String region){
-        List<Amenity> recommendAmenities = amenityRepository.findByStateRegion(state,region);
+    public Amenity getAmenityInfo(Long amenityId) {
+        return amenityRepository.findById(amenityId).orElseThrow(()-> new RuntimeException("amenity data가 없다."));
+    }
+
+    @Transactional
+    public List<AmenityResponseDto> getRecommendAmenities(String state, String region){
+
+        List<AmenityResponseDto> recommendAmenities = amenityRepository.findByStateRegion(state,region);
         return recommendAmenities;
     }
 }
