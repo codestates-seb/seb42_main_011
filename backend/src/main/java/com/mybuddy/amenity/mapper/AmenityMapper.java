@@ -33,7 +33,7 @@ public interface AmenityMapper {
 
         return amenityCreateDto;
     }
-    default AmenityCreateDto BullletinPostPatchDtoToAmenityCreateDto(BulletinPostDto.Patch bulletinPostPatchDto) {
+    default AmenityCreateDto bulletinPostPatchDtoToAmenityCreateDto(BulletinPostDto.Patch bulletinPostPatchDto) {
         if ( bulletinPostPatchDto == null ) {
             return null;
         }
