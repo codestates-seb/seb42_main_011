@@ -51,7 +51,7 @@ public class BulletinPostController {
 
 
         //해당 amenity 저장되어있는지 여부 확인후 없으면 저장, 아니면 create 코드
-        AmenityCreateDto amenityCreateDto = amenityMapper.bulletinPostCreateDtoToAmenityCreateDto(bulletinPostCreateDto);
+        AmenityCreateDto amenityCreateDto = amenityMapper.bulletinPostDtoToAmenityCreateDto(bulletinPostCreateDto);
         Amenity amenity = amenityService.obtainedAmenity(amenityCreateDto);
 
 
@@ -73,7 +73,7 @@ public class BulletinPostController {
         bulletinPostPatchDto.setBulletinPostId(bulletinPostId);
 
         //해당 amenity 저장되어있는지 여부 확인후 없으면 저장, 아니면 create 코드
-        AmenityCreateDto amenityCreateDto = amenityMapper.bulletinPostPatchDtoToAmenityCreateDto(bulletinPostPatchDto);
+        AmenityCreateDto amenityCreateDto = amenityMapper.bulletinPostDtoToAmenityCreateDto(bulletinPostPatchDto);
         Amenity amenity = amenityService.obtainedAmenity(amenityCreateDto);
 
         BulletinPost bulletinPost =

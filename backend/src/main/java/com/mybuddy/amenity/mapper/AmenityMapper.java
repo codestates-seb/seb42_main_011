@@ -17,34 +17,18 @@ public interface AmenityMapper {
 
     List<AmenityResponseDto> AmenityListToAmenityResponseDto(List<Amenity> amenityList);
 
-    default AmenityCreateDto bulletinPostCreateDtoToAmenityCreateDto(BulletinPostDto.Create bulletinPostCreateDto) {
-        if ( bulletinPostCreateDto == null ) {
+    default <T extends BulletinPostDto.InnerParent> AmenityCreateDto bulletinPostDtoToAmenityCreateDto(T bulletinPostDto) {
+        if ( bulletinPostDto == null ) {
             return null;
         }
 
         AmenityCreateDto amenityCreateDto = AmenityCreateDto
                 .builder()
-                .addressId(bulletinPostCreateDto.getAddressId())
-                .amenityName(bulletinPostCreateDto.getAmenityName())
-                .address(bulletinPostCreateDto.getAddress())
-                .longitude(bulletinPostCreateDto.getLongitude())
-                .latitude(bulletinPostCreateDto.getLongitude())
-                .build();
-
-        return amenityCreateDto;
-    }
-    default AmenityCreateDto bulletinPostPatchDtoToAmenityCreateDto(BulletinPostDto.Patch bulletinPostPatchDto) {
-        if ( bulletinPostPatchDto == null ) {
-            return null;
-        }
-
-        AmenityCreateDto amenityCreateDto = AmenityCreateDto
-                .builder()
-                .addressId(bulletinPostPatchDto.getAddressId())
-                .amenityName(bulletinPostPatchDto.getAmenityName())
-                .address(bulletinPostPatchDto.getAddress())
-                .longitude(bulletinPostPatchDto.getLongitude())
-                .latitude(bulletinPostPatchDto.getLongitude())
+                .addressId(bulletinPostDto.getAddressId())
+                .amenityName(bulletinPostDto.getAmenityName())
+                .address(bulletinPostDto.getAddress())
+                .longitude(bulletinPostDto.getLongitude())
+                .latitude(bulletinPostDto.getLongitude())
                 .build();
 
         return amenityCreateDto;
