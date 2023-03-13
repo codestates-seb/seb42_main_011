@@ -17,7 +17,7 @@ public interface AmenityMapper {
 
     List<AmenityResponseDto> AmenityListToAmenityResponseDto(List<Amenity> amenityList);
 
-    default AmenityCreateDto bullletinPostCreateDtoToAmenityCreateDto(BulletinPostDto.Create bulletinPostCreateDto) {
+    default AmenityCreateDto bulletinPostCreateDtoToAmenityCreateDto(BulletinPostDto.Create bulletinPostCreateDto) {
         if ( bulletinPostCreateDto == null ) {
             return null;
         }

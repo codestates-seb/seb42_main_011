@@ -33,7 +33,7 @@ public class AmenityService {
      * if. amenity exists in the database already, returns it.
      * else. create a new one and return
      */
-    public Amenity findDBAmenity(AmenityCreateDto amenityCreateDto ) {
+    public Amenity obtainedAmenity(AmenityCreateDto amenityCreateDto) {
 
         //amenity addressid로 찾고, 존재하면 넘기기
         Amenity findAmenity = amenityRepository.findByAddressId(amenityCreateDto.getAddressId());
