@@ -39,7 +39,10 @@ const InnerFrame = styled.div`
   overflow: hidden;
 `;
 
-function Layout({ displayHeader = false, displayBgimg = false }) {
+function Layout({ 
+  displayHeader = false, 
+  displayBgimg = false,
+ }) {
   return (
     <Wrapper>
       <Container>
