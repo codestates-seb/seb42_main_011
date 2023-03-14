@@ -12,7 +12,7 @@ import java.util.List;
 
 public class MockTestData {
 
-        public static class MockComment {
+    public static class MockComment {
         public static Comment getComment() {
             return Comment.testComment()
                     .commentId(1L)
