@@ -14,14 +14,16 @@ const Wrapper = styled.div`
 const Container = styled.div`
   background-color: var(--color-light-2);
   width: 100%;
-  min-height: calc(100vh - 63px);
+  /* min-height: calc(100vh - 63px); */
+  height: calc(100vh - 63px);
   margin: 0 auto;
   border-radius: 10px;
 `;
 
 const Frame = styled.div`
   width: 100%;
-  min-height: calc(100vh - 133px);
+  /* min-height: calc(100vh - 133px); */
+  height: 100%;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   padding: 30px;
@@ -29,10 +31,12 @@ const Frame = styled.div`
 
 const InnerFrame = styled.div`
   width: 100%;
-  min-height: calc(100vh - 193px);
+  /* min-height: calc(100vh - 193px); */
+  /* height: calc(100vh - 193px); */
   background-color: var(--color-light-0);
   border: var(--border);
   border-radius: 10px;
+  overflow: hidden;
 `;
 
 function Layout({ displayHeader = false, displayBgimg = false }) {

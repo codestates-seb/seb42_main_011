@@ -6,6 +6,7 @@ const FooterComponent = styled.footer`
   color: var(--color-light-0);
   background-color: var(--color-dark-0);
   text-align: center;
+  line-height: 2px;
   padding: 20px 0 8px;
   font-size: var(--font-size-13);
   font-weight: 500;
