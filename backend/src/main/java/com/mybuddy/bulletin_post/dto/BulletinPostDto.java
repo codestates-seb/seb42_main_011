@@ -66,7 +66,7 @@ public class BulletinPostDto {
         private String amenityName;
 
         private long likeCount;
-        private int likeChosen;
+        private int likeByUser;
 
         private List<CommentResponseDto> commentList;
         private long commentCount;
