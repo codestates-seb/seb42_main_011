@@ -66,20 +66,4 @@ public class AmenityCustomRepositoryImpl implements AmenityCustomRepository{
 
         return amenities;
     }
-
-    //bulletinPostCustomRepositoryImpl로 이동시킬 예정입니다. (2023.03.13 강지은)
-    @Override
-    public Page<BulletinPost>  findTaggedBulletinPostByAmenityId(Long amenityId, PageRequest pageRequest) {
-
-        QBulletinPost bulletinPost = QBulletinPost.bulletinPost;
-
-        QueryResults<BulletinPost> queryResults = queryFactory
-                .selectFrom(bulletinPost)
-                .where(bulletinPost.amenity.amenityId.eq(amenityId))
-                .offset(pageRequest.getOffset())
-                .limit(pageRequest.getPageSize())
-                .fetchResults();
-
-        return new PageImpl<>(queryResults.getResults(), pageRequest, queryResults.getTotal());
-    }
 }

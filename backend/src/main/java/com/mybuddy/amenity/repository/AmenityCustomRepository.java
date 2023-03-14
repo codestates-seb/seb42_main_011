@@ -12,8 +12,5 @@ public interface AmenityCustomRepository {
 
     Amenity findByAddressId(Long addressId);
 
-    //BulletinPostCustomRepository로 이동할 예정입니다(2023.03.13 강지은)
-    Page<BulletinPost> findTaggedBulletinPostByAmenityId(Long amenityId, PageRequest pageRequest);
-
     List<AmenityResponseDto> findByStateRegion(String state, String region);
 }
