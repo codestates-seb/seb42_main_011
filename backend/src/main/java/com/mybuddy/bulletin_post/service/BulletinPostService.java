@@ -57,10 +57,13 @@ public class BulletinPostService {
 
         //findExistMemberById(Long memberId) 가져오기? 로그인 사용자 확인하기?
 
+        Long memberId = 1L;
+        Member foundMember = memberService.findExistMemberById(memberId);
+        updateBulletinPost.setMember(foundMember);
 
-        BulletinPost bulletinPost = findVerifiedBulletinPost(updateBulletinPost.getBulletinPostId());
+        BulletinPost foundBulletinPost = findVerifiedBulletinPost(updateBulletinPost.getBulletinPostId());
 
-        BulletinPost tempBulletinPost = customBeanUtils.copyNonNullProperties(updateBulletinPost, bulletinPost);
+        BulletinPost bulletinPost = customBeanUtils.copyNonNullProperties(updateBulletinPost, foundBulletinPost);
 
         Optional.ofNullable(photoImage)
                 .ifPresent(storageService::storeImage);
@@ -89,14 +92,15 @@ public class BulletinPostService {
 
     public Page<BulletinPost> findBulletinPosts(int page, int size) {
 
-        //findExistMemberById(Long memberId) 가져오기
+        //로그인 멤버 가져오기
         //if 로그인 확인시 //팔로잉 하는 계정들에서.
 
-//        Pageable pageable = PageRequest.of(page, size);
-//        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "likeCount 고쳐서쓰기"));
-//
-//        bulletinPostCustomRepositoryImpl에다가 findAllFollowingPostsByMemberId(memberId, (PageRequest.of(page, size)) 메서드
-//        Optional<Page<BulletinPost>> optionalPage = bulletinPostRepository.findAllFollowingPostsByMemberId(memberId, (PageRequest.of(page, size));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+
+//        if 로그인유저
+
+//        bulletinPostCustomRepositoryImpl에 findAllFollowingPostsByMemberId(memberId, pageable) 메서드
+//        Optional<Page<BulletinPost>> optionalPage = bulletinPostRepository.findAllFollowingPostsByMemberId(memberId, pageable);
 //
 //        Page<BulletinPost> findPage =
 //                optionalPage.orElseThrow(() ->
@@ -105,14 +109,13 @@ public class BulletinPostService {
 
 //        else 비로그인시 find All 이거 그대로.
 
-        Page<BulletinPost> bulletinPosts = bulletinPostRepository.findAll(PageRequest.of(page, size));
+        Page<BulletinPost> bulletinPosts = bulletinPostRepository.findAll(pageable);
 
         return bulletinPosts;
     }
 
     public Page<BulletinPost> findBulletinPostsByMemberId(long memberId, int page, int size) {
 
-        //findExistMemberById(Long memberId) 가져오기??
 
         Pageable pageable = PageRequest.of(page, size);
 
@@ -121,12 +124,8 @@ public class BulletinPostService {
         Page<BulletinPost> findPage =
                 optionalPage.orElseThrow(() ->
                         new RuntimeException());
-        return findPage;
 
-        //임시
-//        Page<BulletinPost> bulletinPosts = bulletinPostRepository.findAll(PageRequest.of(page, size));
-//
-//        return bulletinPosts;
+        return findPage;
     }
 
 

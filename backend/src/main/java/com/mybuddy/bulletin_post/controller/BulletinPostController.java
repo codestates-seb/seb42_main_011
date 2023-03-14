@@ -51,6 +51,7 @@ public class BulletinPostController {
 
 
         //해당 amenity 저장되어있는지 여부 확인후 없으면 저장, 아니면 create 코드
+        //이 로직이 컨트롤러에 잇는게 맞나 싶은데 patch도 마찬가지고.. bulletinPostToAmentiyCreateDto로 변경해서 bulletinpost 서비스 단에서 해결해도 되지 않나? 그럼 서비스메서드 파라미터도 줄고 간단해질텐데, 매핑도 수정하는게 어렵지 않고.. 이걸 수정하면 dto를 묶을 필요가 없엇을지도..
         AmenityCreateDto amenityCreateDto = amenityMapper.bulletinPostDtoToAmenityCreateDto(bulletinPostCreateDto);
         Amenity amenity = amenityService.obtainedAmenity(amenityCreateDto);
 

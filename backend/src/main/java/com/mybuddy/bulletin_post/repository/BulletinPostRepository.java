@@ -13,5 +13,8 @@ public interface BulletinPostRepository extends JpaRepository<BulletinPost, Long
 
     Optional<Page<BulletinPost>> findByMemberMemberId(long memberId, Pageable pageable);
 
-    //해당 장소 id를 파라미터로 받는 findFirstPost()메서드가 있다고 가정하고 해당 사진의 URL을 반환하는걸 작성
+     //어메니티 서비스에 있던 getAmenityWithBulletinPost 메서드를  findByAmenityId 메서드로 수정
+//    Optional<Page<BulletinPost>> findByAmenityAmenityId(long amenityId, Pageable pageable);
+
+
 }

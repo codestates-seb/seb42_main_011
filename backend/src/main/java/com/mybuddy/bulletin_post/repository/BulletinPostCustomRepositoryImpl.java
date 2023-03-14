@@ -1,14 +1,38 @@
 package com.mybuddy.bulletin_post.repository;
 
+import com.mybuddy.bulletin_post.entity.BulletinPost;
+import com.mybuddy.bulletin_post.entity.QBulletinPost;
+import com.mybuddy.member.entity.Member;
+import com.mybuddy.member.entity.QMember;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class BulletinPostCustomRepositoryImpl implements BulletinPostCustomRepository {
 
     private final JPAQueryFactory queryFactory;
 
-//    어메니티 서비스 클래스에 있던 getAmenityWithBulletinPost 이 메서드가 BulletinPostCustomRepositoryImpl의  findByAmenityId 메서드로 작성
+
+    //follow 구현 후 수정
+//    @Override
+//    public Optional<Page<BulletinPost>> findAllFollowingPostsByMemberId(long memberId, Pageable pageable) {
+//        QBulletinPost bulletinPost = new QBulletinPost("bulletinPost");
+//
+//        return Optional.ofNullable(
+//                queryFactory
+//                        .select(bulletinPost)
+//                        .from(bulletinPost)
+//                        .where(bulletinPost.member.eq())
+////                        .fetchOne()
+//                        .fetch()
+//        );
+//    }
 
 
+
+    //해당 장소 id를 파라미터로 받는 findFirstPost()메서드가 있다고 가정하고 해당 사진의 URL을 반환하는걸 작성
 }
