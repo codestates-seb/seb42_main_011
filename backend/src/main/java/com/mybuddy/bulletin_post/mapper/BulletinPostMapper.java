@@ -45,6 +45,7 @@ public interface BulletinPostMapper {
         List<CommentResponseDto> commentLists = bulletinPost.getCommentList().stream()
                 .map(comment -> {
                     CommentResponseDto commentResponse = new CommentResponseDto(
+                            comment.getCommentId(),
                             comment.getCommentContent(),
                             comment.getMember().getMemberId(),
                             comment.getMember().getNickname(),
@@ -90,6 +91,7 @@ public interface BulletinPostMapper {
         List<CommentResponseDto> commentLists = bulletinPost.getCommentList().stream()
                 .map(comment -> {
                     CommentResponseDto commentResponse = new CommentResponseDto(
+                            comment.getCommentId(),
                             comment.getCommentContent(),
                             comment.getMember().getMemberId(),
                             comment.getMember().getNickname(),
