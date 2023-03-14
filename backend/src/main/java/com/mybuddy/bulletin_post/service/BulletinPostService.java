@@ -95,7 +95,7 @@ public class BulletinPostService {
         //로그인 멤버 가져오기
         //if 로그인 확인시 //팔로잉 하는 계정들에서.
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
 
 //        if 로그인유저
 
@@ -109,7 +109,7 @@ public class BulletinPostService {
 
 //        else 비로그인시 find All 이거 그대로.
 
-        Page<BulletinPost> bulletinPosts = bulletinPostRepository.findAll(pageable);
+        Page<BulletinPost> bulletinPosts = bulletinPostRepository.findAll(pageRequest);
 
         return bulletinPosts;
     }
@@ -117,7 +117,7 @@ public class BulletinPostService {
     public Page<BulletinPost> findBulletinPostsByMemberId(long memberId, int page, int size) {
 
 
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("bulletinPostId").descending());
 
         Optional<Page<BulletinPost>> optionalPage = bulletinPostRepository.findByMemberMemberId(memberId, pageable);
 
