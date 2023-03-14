@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../UI/Button';
+import { ReactComponent as MainLogo } from '../../assets/logo/logo.svg';
 
 const HeaderWrapper = styled.header`
   width: 100%;
@@ -19,7 +20,7 @@ const Nav = styled.nav`
   align-items: start;
 `;
 
-const Logo = styled.img`
+const Logo = styled(MainLogo)`
   width: 170px;
   height: 58px;
   margin: 11px 0 2px 23px;
@@ -32,7 +33,8 @@ const MenuWrapper = styled.div`
   margin: 21px 0;
 `;
 
-const MenuButton = styled.div``;
+/* 나중에 조건부 렌더링 위해 남겨둠 */
+const MenuButtonWrapper = styled.div``;
 
 const MenuUl = styled.ul`
   display: flex;
@@ -67,7 +69,7 @@ function Header() {
       <Nav>
         <Link to="/">
           <h1>
-            <Logo src="./images/logo.svg" alt="my buddy logo" />
+            <Logo />
           </h1>
         </Link>
         <MenuWrapper>
@@ -77,11 +79,11 @@ function Header() {
             <Menu>추천장소</Menu>
           </MenuUl>
         </MenuWrapper>
-        <MenuButton>
+        <MenuButtonWrapper>
           <Link to="/login">
             <Login variant="headersecondary">로그인</Login>
           </Link>
-        </MenuButton>
+        </MenuButtonWrapper>
       </Nav>
     </HeaderWrapper>
   );
