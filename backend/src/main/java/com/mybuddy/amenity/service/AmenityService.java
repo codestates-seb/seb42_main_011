@@ -23,7 +23,6 @@ public class AmenityService {
 
     private final AmenityMapper amenityMapper;
     private final AmenityRepository amenityRepository;
-
     private final BulletinPostRepository bulletinPostRepository;
 
     /**
@@ -53,8 +52,7 @@ public class AmenityService {
     @Transactional
     public Page<BulletinPost> findTaggedBulletinPostList(Long amenityId, int page, int size) {
 
-        //bulletinPostRepository로 변경 예정 (2023.03.13 강지은)
-        return amenityRepository.findTaggedBulletinPostByAmenityId(amenityId,
+        return bulletinPostRepository.findByAmenityId(amenityId,
                 PageRequest.of(page, size, Sort.by("bulletinPostId").descending()));
     }
 
