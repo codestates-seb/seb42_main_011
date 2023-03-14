@@ -41,6 +41,10 @@ public class BulletinPostService {
 //        Member member = bulletinPost.getMember();
 //        Member foundMember = memberService.findExistMemberById(member.getMemberId());
 
+        Long memberId = 1L;
+        Member foundMember = memberService.findExistMemberById(memberId);
+        bulletinPost.setMember(foundMember);
+
         //amenity 연결
         bulletinPost.setAmenity(amenity);
 

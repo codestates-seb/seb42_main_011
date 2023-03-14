@@ -1,59 +1,49 @@
 package com.mybuddy.bulletin_post.dto;
 
-import com.mybuddy.bulletin_post.service.BulletinPostService;
 import com.mybuddy.comment.dto.CommentResponseDto;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class BulletinPostDto {
 
-
     @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class Create {
-
+    public static abstract class InnerParent {
         private String postContent;
-
         private long addressId;
-
         private String amenityName;
-
         private String address;
-
         private double longitude;
-
         private double latitude;
 
+        public InnerParent(String postContent, long addressId, String amenityName, String address, double longitude, double latitude) {
+            this.postContent = postContent;
+            this.addressId = addressId;
+            this.amenityName = amenityName;
+            this.address = address;
+            this.longitude = longitude;
+            this.latitude = latitude;
+        }
     }
 
     @Getter
     @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class Patch {
+    public static class Create extends InnerParent {
+        public Create(String postContent, long addressId, String amenityName, String address, double longitude, double latitude) {
+            super(postContent, addressId, amenityName, address, longitude, latitude);
+        }
+    }
 
+    @Getter
+    @Setter
+    public static class Patch extends InnerParent {
         private long bulletinPostId;
 
-        private String postContent;
-
-        private long addressId;
-
-        private String amenityName;
-
-        private String address;
-
-        private double longitude;
-
-        private double latitude;
-
+        @Builder
+        public Patch(String postContent, long addressId, String amenityName, String address, double longitude, double latitude) {
+            super(postContent, addressId, amenityName, address, longitude, latitude);
+        }
     }
 
     @Getter
@@ -100,5 +90,4 @@ public class BulletinPostDto {
         private long commentCount;
 
     }
-
 }
