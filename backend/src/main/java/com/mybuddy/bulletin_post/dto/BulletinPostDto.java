@@ -1,6 +1,7 @@
 package com.mybuddy.bulletin_post.dto;
 
 import com.mybuddy.bulletin_post.service.BulletinPostService;
+import com.mybuddy.comment.dto.CommentResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,14 +9,10 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class BulletinPostDto {
 
-    private static BulletinPostService bulletinPostService;
-
-    public BulletinPostDto(BulletinPostService bulletinPostService) {
-        this.bulletinPostService = bulletinPostService;
-    }
 
     @Getter
     @Setter
@@ -44,17 +41,18 @@ public class BulletinPostDto {
     public static class Patch {
 
         private long bulletinPostId;
+
         private String postContent;
 
-//        private long addressId;
-//
-//        private String amenityName;
-//
-//        private String address;
-//
-//        private double longitude;
-//
-//        private double latitude;
+        private long addressId;
+
+        private String amenityName;
+
+        private String address;
+
+        private double longitude;
+
+        private double latitude;
 
     }
 
@@ -69,20 +67,19 @@ public class BulletinPostDto {
         private String postContent;
         private LocalDateTime createdAt;
 
-//        private long memberId;
-//        private String nickname;
-//        private String dogName;
-//        private String profileUrl;
-//
-//        private long amenityId;
-//        private String amenityName;
+        private long memberId;
+        private String nickname;
+        private String dogName;
+        private String profileUrl;
 
-//        private long likeCount;
-//        private int likeChosen;
+        private long amenityId;
+        private String amenityName;
 
+        private long likeCount;
+        private int likeChosen;
 
-//        private List<CommentResponseDto> commentList;
-//        private long commentCount = commentList.size();
+        private List<CommentResponseDto> commentList;
+        private long commentCount;
 
     }
     @Getter
@@ -95,16 +92,12 @@ public class BulletinPostDto {
         private String photoUrl;
         private String postContent;
 
-//        private long memberId;
-//        private String nickname;
-//        private String dogName;
+        private long memberId;
+        private String nickname;
+        private String dogName;
 
-
-//        Feed용 Single Response는 댓글 가져오지 않고 댓글 수만 가져오므로 이게 맞나.
-//        private long commentCount = bullentinPostService.getCommentCount(bulletinPostId);
-
-//        private List<CommentResponseDto> commentList;
-//        private long commentCount = commentList.size();
+        private List<CommentResponseDto> commentList;
+        private long commentCount;
 
     }
 

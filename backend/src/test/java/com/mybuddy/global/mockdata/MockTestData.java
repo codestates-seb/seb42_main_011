@@ -1,5 +1,6 @@
 package com.mybuddy.global.mockdata;
 
+import com.mybuddy.comment.entity.Comment;
 import com.mybuddy.member.dto.*;
 import com.mybuddy.member.entity.Member;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,15 @@ import org.springframework.data.domain.Sort;
 import java.util.List;
 
 public class MockTestData {
+
+        public static class MockComment {
+        public static Comment getComment() {
+            return Comment.testComment()
+                    .commentId(1L)
+                    .commentContent("우와 콩이가 너무 귀여워요")
+                    .build();
+        }
+    }
 
     public static class MockMember {
 

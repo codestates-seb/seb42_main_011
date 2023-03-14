@@ -2,9 +2,9 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 
 const StyledCard = styled.div`
-  border: 1.5px solid var(--black);
+  border: var(--border);
   border-radius: ${({ borderRadius }) => borderRadius};
-  background: var(--white);
+  background: var(--color-light-0);
 
   ${({ isHoverTranslate }) =>
     isHoverTranslate &&

@@ -33,4 +33,20 @@ public interface AmenityMapper {
 
         return amenityCreateDto;
     }
+    default AmenityCreateDto bulletinPostPatchDtoToAmenityCreateDto(BulletinPostDto.Patch bulletinPostPatchDto) {
+        if ( bulletinPostPatchDto == null ) {
+            return null;
+        }
+
+        AmenityCreateDto amenityCreateDto = AmenityCreateDto
+                .builder()
+                .addressId(bulletinPostPatchDto.getAddressId())
+                .amenityName(bulletinPostPatchDto.getAmenityName())
+                .address(bulletinPostPatchDto.getAddress())
+                .longitude(bulletinPostPatchDto.getLongitude())
+                .latitude(bulletinPostPatchDto.getLongitude())
+                .build();
+
+        return amenityCreateDto;
+    }
 }
