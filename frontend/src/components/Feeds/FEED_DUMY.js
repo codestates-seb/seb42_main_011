@@ -6,7 +6,7 @@ export default {
         'https://images.unsplash.com/photo-1561037404-61cd46aa615b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
       postContent:
         '우리 귀여운 이알디 구경하세요~>.<우리 귀여운 이알디 구경하세요~>.<우리 귀여운 이알디 구경하세요~>.<우리 귀여운 이알디 구경하세요~>.<우리 귀여운 이알디 구경하세요~>.<우리 귀여운 이알디 구경하세요~>.<우리 귀여운 이알디 구경하세요~>.<우리 귀여운 이알디 구경하세요~>.<우리 귀여운 이알디 구경하세요~>.<',
-      createdAt: '2023-03-07T16:17:04.0141668',
+      createdAt: '2023-03-15T13:17:04.0141668',
 
       memberId: 1,
       nickname: '지은',
@@ -20,7 +20,7 @@ export default {
         'https://images.unsplash.com/photo-1561037404-61cd46aa615b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
       postContent:
         '우리 귀여운 이알디 구경하세요~>.< 우리 귀여운 이알디 구경하세요~>.<우리 귀여운 이알디 구경하세요~>.<우리 귀여운 이알디 구경하세요~>.<우리 귀여운 이알디 구경하세요~>.<',
-      createdAt: '2023-03-07T16:17:04.0141668',
+      createdAt: '2023-03-15T16:17:04.0141668',
 
       memberId: 1,
       nickname: '지은',
@@ -33,7 +33,7 @@ export default {
       photoUrl:
         'https://images.unsplash.com/photo-1561037404-61cd46aa615b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
       postContent: '우리 귀여운 이알디 구경하세요~>.<',
-      createdAt: '2023-03-07T16:17:04.0141668',
+      createdAt: '2023-01-07T16:17:04.0141668',
 
       memberId: 1,
       nickname: '지은',
