@@ -12,6 +12,12 @@ const LoginComponent = styled.div`
   width: 55vw;
   padding: 20px 53px;
   position: relative;
+  @media screen and (max-height: 700px) {
+    height: 573px;
+  }
+  @media screen and (min-height: 701px) {
+    height: calc(100vh - 133px);
+  }
 `;
 
 const ImageWrapper = styled.aside`
