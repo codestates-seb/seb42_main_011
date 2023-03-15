@@ -28,11 +28,11 @@ const Label = styled.label`
   font-weight: bold;
 `;
 
-function Input({ variant = 'regular', id, label, type = 'text', flexGrow }) {
+function Input({ variant = 'edit', id, label, type = 'text', ...props }) {
   return (
     <div>
       <Label htmlFor={id}>{label}</Label>
-      <StyledInput id={id} type={type} variant={variant} flexGrow={flexGrow} />
+      <StyledInput id={id} type={type} variant={variant} {...props} />
     </div>
   );
 }

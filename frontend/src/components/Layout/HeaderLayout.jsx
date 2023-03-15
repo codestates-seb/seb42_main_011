@@ -1,7 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import ImagePage from '../../Pages/ImagePage';
-import UserPage from '../../Pages/UserPage';
 import Footer from './Footer';
 import Header from './Header';
 
@@ -28,6 +27,7 @@ const Frame = styled.div`
 
 const InnerFrame = styled.div`
   background-color: var(--color-light-0);
+  height: calc(100vh - 200px);
   width: calc(100vw - 100px);
   border: var(--border);
   border-radius: 10px;
@@ -40,10 +40,9 @@ const InnerFrame = styled.div`
     `}
 `;
 
-function Layout({
+function HeaderLayout({
   displayHeader = false,
   displayBgimg = false,
-  displayProfile = false,
   displayFlex = false,
 }) {
   return (
@@ -52,7 +51,6 @@ function Layout({
         {displayHeader && <Header />}
         <Frame>
           <InnerFrame displayFlex={displayFlex}>
-            {displayProfile && <UserPage />}
             {displayBgimg ? <ImagePage /> : <Outlet />}
           </InnerFrame>
         </Frame>
@@ -62,4 +60,4 @@ function Layout({
   );
 }
 
-export default Layout;
+export default HeaderLayout;
