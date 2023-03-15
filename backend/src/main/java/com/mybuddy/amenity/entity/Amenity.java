@@ -19,22 +19,22 @@ public class Amenity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long amenityId;
+    private Long amenityId;
 
     @Column(nullable = false)
-    public String amenityName;
+    private String amenityName;
 
     @Column(nullable = false)
-    public Long addressId;
+    private Long addressId;
 
     @Column(nullable = false)
-    public String address;
+    private String address;
 
     @Column(nullable = false)
-    public Double latitude;
+    private Double latitude;
 
     @Column(nullable = false)
-    public Double longitude;
+    private Double longitude;
 
     @Setter
     @OneToMany(mappedBy = "amenity")
@@ -42,6 +42,16 @@ public class Amenity {
 
     @Builder(builderClassName = "CreateNewAmenity", builderMethodName = "CreateNewAmenity")
     public Amenity (Long addressId, String amenityName, String address, Double latitude, Double longitude) {
+        this.addressId = addressId;
+        this.amenityName = amenityName;
+        this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    @Builder(builderClassName = "TestAmenity", builderMethodName = "TestAmenity")
+    public Amenity (Long amenityId, Long addressId, String amenityName, String address, Double latitude, Double longitude) {
+        this.amenityId = amenityId;
         this.addressId = addressId;
         this.amenityName = amenityName;
         this.address = address;
