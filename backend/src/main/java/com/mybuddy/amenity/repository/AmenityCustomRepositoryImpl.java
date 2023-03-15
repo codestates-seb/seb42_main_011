@@ -1,18 +1,11 @@
 package com.mybuddy.amenity.repository;
 
 import com.mybuddy.amenity.dto.AmenityResponseDto;
-import com.mybuddy.amenity.dto.AmenityWithBulletinPost;
 import com.mybuddy.amenity.entity.Amenity;
 import com.mybuddy.amenity.entity.QAmenity;
-import com.mybuddy.bulletin_post.entity.BulletinPost;
 import com.mybuddy.bulletin_post.entity.QBulletinPost;
-import com.mybuddy.bulletin_post.mapper.BulletinPostMapper;
-import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 

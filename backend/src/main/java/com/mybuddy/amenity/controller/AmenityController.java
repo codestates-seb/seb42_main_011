@@ -1,8 +1,7 @@
 package com.mybuddy.amenity.controller;
 
-import com.mybuddy.amenity.dto.AmenityCreateDto;
+
 import com.mybuddy.amenity.dto.AmenityResponseDto;
-import com.mybuddy.amenity.dto.AmenityWithBulletinPost;
 import com.mybuddy.amenity.entity.Amenity;
 import com.mybuddy.amenity.mapper.AmenityMapper;
 import com.mybuddy.amenity.service.AmenityService;
@@ -17,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequestMapping("/api/v1/amenities")
 @RestController
