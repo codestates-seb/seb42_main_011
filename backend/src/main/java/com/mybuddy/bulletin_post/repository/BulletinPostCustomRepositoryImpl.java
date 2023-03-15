@@ -45,6 +45,7 @@ public class BulletinPostCustomRepositoryImpl implements BulletinPostCustomRepos
                 .where(bulletinPost.amenity.amenityId.eq(amenityId))
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
+                .orderBy(bulletinPost.bulletinPostId.desc())
                 .fetchResults();
 
         return new PageImpl<>(queryResults.getResults(), pageRequest, queryResults.getTotal());
