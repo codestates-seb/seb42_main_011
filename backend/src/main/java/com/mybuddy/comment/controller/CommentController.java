@@ -40,18 +40,6 @@ public class CommentController {
         return ResponseEntity.created(uri).body(response);
     }
 
-    //게시물에 딸려 정보가 응답되므로 없어질 가능성이 큽니다. (2023.03.08 강지은)
-    @GetMapping
-    public ResponseEntity<ApiSingleResponse> getComments(@RequestParam(name = "bulletinPostId") @Positive Long postId) {
-        //bulletinPost 엔티티 생성후 제작
-        List<Comment> commentList = commentService.getCommentsByBulletinPostId(postId);
-        List<CommentResponseDto> commentResponseDtos = commentMapper.commentListToCommentResponseDtoList(commentList);
-
-        ApiSingleResponse response = new ApiSingleResponse(HttpStatus.OK,"게시물에 해당하는 댓글 정보입니다.", commentResponseDtos);
-
-        return ResponseEntity.ok(response);
-    }
-
     @PatchMapping("{comment-id}")
     public ResponseEntity<ApiSingleResponse> updateComment(@PathVariable("comment-id") @Positive Long commentId,
                                                            @Valid @RequestBody CommentUpdateDto commentUpdateDto) {
@@ -67,7 +55,6 @@ public class CommentController {
     @DeleteMapping("{comment-id}")
     public ResponseEntity deleteComment(@PathVariable("comment-id") @Positive  Long commentId) {
         commentService.deleteComment(commentId);
-//        return ResponseEntity.noContent();
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 
 public class MockTestData {
 
-        public static class MockComment {
+    public static class MockComment {
         public static Comment getComment() {
             return Comment.testComment()
                     .commentId(1L)
@@ -94,8 +94,8 @@ public class MockTestData {
                     .dogName("왕밤톨")
                     .dogGender(com.mybuddy.member.entity.Member.DogGender.MALE)
                     .aboutMe("왕밤톨입니다.")
-                    .followerNumber(null)
-                    .followeeNumber(null)
+                    .followerNumber(0L)
+                    .followeeNumber(0L)
                     .profileUrl("www.mybuddy.com/bamtol-the-king.png")
                     .myBulletinPostDtos(getMyBulletinPostDtos())
                     .myAmenityDtos(getMyAmenityDtos())
@@ -106,16 +106,16 @@ public class MockTestData {
             MemberListResponseDto listResponseDto1 = MemberListResponseDto.builder()
                     .nickname("김코딩")
                     .dogName("왕밤톨")
-                    .followerNumber(null)
-                    .followeeNumber(null)
+                    .followerNumber(0L)
+                    .followeeNumber(0L)
                     .profileUrl("www.mybuddy.com/bamtol-the-king.png")
                     .build();
 
             MemberListResponseDto listResponseDto2 = MemberListResponseDto.builder()
                     .nickname("홍길동")
                     .dogName("뭉치")
-                    .followerNumber(null)
-                    .followeeNumber(null)
+                    .followerNumber(0L)
+                    .followeeNumber(0L)
                     .profileUrl("www.mybuddy.com/ordinary-dog.png")
                     .build();
 

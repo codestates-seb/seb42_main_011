@@ -22,7 +22,7 @@ import javax.validation.constraints.Positive;
 import java.util.List;
 
 @RestController
-@RequestMapping("/bulletin-posts")
+@RequestMapping("/api/v1/bulletin-posts")
 @Validated
 @Slf4j
 public class BulletinPostController {
@@ -41,7 +41,7 @@ public class BulletinPostController {
     }
 
     @PostMapping
-    public ResponseEntity postBulletinPost(@RequestPart BulletinPostDto.Create bulletinPostCreateDto, @RequestPart(value = "file") MultipartFile photoImage) {
+    public ResponseEntity createBulletinPost(@RequestPart BulletinPostDto.Create createDto, @RequestPart MultipartFile photoImage) {
 
 
 //        member service 에서 로그인 멤버아이디 가져오는 메서드 가져오면 될듯!!
@@ -51,37 +51,38 @@ public class BulletinPostController {
 
 
         //해당 amenity 저장되어있는지 여부 확인후 없으면 저장, 아니면 create 코드
-        AmenityCreateDto amenityCreateDto = amenityMapper.bulletinPostDtoToAmenityCreateDto(bulletinPostCreateDto);
-        Amenity amenity = amenityService.obtainedAmenity(amenityCreateDto);
+        //이 로직이 컨트롤러에 잇는게 맞나 싶은데 patch도 마찬가지고.. bulletinPostToAmentiyCreateDto로 변경해서 bulletinpost 서비스 단에서 해결해도 되지 않나? 그럼 서비스메서드 파라미터도 줄고 간단해질텐데, 매핑도 수정하는게 어렵지 않고.. 이걸 수정하면 dto를 묶을 필요가 없엇을지도..
+        AmenityCreateDto amenityCreateDto = amenityMapper.bulletinPostDtoToAmenityCreateDto(createDto);
+        Amenity amenity = amenityService.findDBAmenity(amenityCreateDto);
 
 
         BulletinPost bulletinPost =
-                bulletinPostService.createBulletinPost(bulletinPostMapper.bulletinPostCreateDtoToBulletinPost(bulletinPostCreateDto), amenity, photoImage);
+                bulletinPostService.createBulletinPost(bulletinPostMapper.bulletinPostCreateDtoToBulletinPost(createDto), amenity, photoImage);
 
         return new ResponseEntity<>(
                 new ApiSingleResponse<>(HttpStatus.OK,"게시물이 생성되었습니다.",bulletinPostMapper.bulletinPostToBulletinPostResponseDto(bulletinPost)), HttpStatus.OK);
     }
 
     @PatchMapping("/{post-id}")
-    public ResponseEntity patchBulletinPost(@PathVariable("post-id") @Positive long bulletinPostId, @RequestBody BulletinPostDto.Patch bulletinPostPatchDto, @RequestPart(value = "file", required = false) MultipartFile photoImage) {
+    public ResponseEntity patchBulletinPost(@PathVariable("post-id") @Positive long bulletinPostId, @RequestPart BulletinPostDto.Patch patchDto, @RequestPart(required = false) MultipartFile photoImage) {
 
 //        member service 에서 로그인 멤버아이디 가져오는 메서드 가져오면 될듯!!
 //        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        UserDetails userDetails = (UserDetails)principal;
 //        long memberId = principal.getMemberId();
 
-        bulletinPostPatchDto.setBulletinPostId(bulletinPostId);
+        patchDto.setBulletinPostId(bulletinPostId);
 
         //해당 amenity 저장되어있는지 여부 확인후 없으면 저장, 아니면 create 코드
-        AmenityCreateDto amenityCreateDto = amenityMapper.bulletinPostDtoToAmenityCreateDto(bulletinPostPatchDto);
-        Amenity amenity = amenityService.obtainedAmenity(amenityCreateDto);
+        AmenityCreateDto amenityCreateDto = amenityMapper.bulletinPostDtoToAmenityCreateDto(patchDto);
+        Amenity amenity = amenityService.findDBAmenity(amenityCreateDto);
 
         BulletinPost bulletinPost =
-                bulletinPostService.updateBulletinPost(bulletinPostMapper.bulletinPostPatchDtoToBulletinPost(bulletinPostPatchDto), amenity, photoImage);
+                bulletinPostService.updateBulletinPost(bulletinPostMapper.bulletinPostPatchDtoToBulletinPost(patchDto), amenity, photoImage);
 
 
         return new ResponseEntity<>(
-                new ApiSingleResponse<>(HttpStatus.OK,"게시물이 생성되었습니다.",bulletinPostMapper.bulletinPostToBulletinPostResponseDto(bulletinPost)), HttpStatus.OK);
+                new ApiSingleResponse<>(HttpStatus.OK,"게시물이 수정되었습니다.",bulletinPostMapper.bulletinPostToBulletinPostResponseDto(bulletinPost)), HttpStatus.OK);
     }
 
 
@@ -92,7 +93,7 @@ public class BulletinPostController {
         BulletinPost bulletinPost = bulletinPostService.findBulletinPost(bulletinPostId);
 
         return new ResponseEntity<>(
-                new ApiSingleResponse<>(HttpStatus.OK, "message", bulletinPostMapper.bulletinPostToBulletinPostResponseDto(bulletinPost))
+                new ApiSingleResponse<>(HttpStatus.OK, "게시물 1개 조회", bulletinPostMapper.bulletinPostToBulletinPostResponseDto(bulletinPost))
                 , HttpStatus.OK);
     }
 
@@ -105,7 +106,7 @@ public class BulletinPostController {
         List<BulletinPost> bulletinPosts = pageBulletinPosts.getContent();
 
         return new ResponseEntity<>(
-                new ApiMultiResponse<>(HttpStatus.OK, "message", bulletinPostMapper.bulletinPostsToBulletinPostResponseForFeedDtos(bulletinPosts),
+                new ApiMultiResponse<>(HttpStatus.OK, "게시물 피드", bulletinPostMapper.bulletinPostsToBulletinPostResponseForFeedDtos(bulletinPosts),
                         pageBulletinPosts),
                 HttpStatus.OK);
     }
@@ -119,7 +120,7 @@ public class BulletinPostController {
         List<BulletinPost> bulletinPosts = pageBulletinPosts.getContent();
 
         return new ResponseEntity<>(
-                new ApiMultiResponse<>(HttpStatus.OK, "message", bulletinPostMapper.bulletinPostsToBulletinPostResponseDtos(bulletinPosts),
+                new ApiMultiResponse<>(HttpStatus.OK, "해당 멤버의 게시물 조회", bulletinPostMapper.bulletinPostsToBulletinPostResponseDtos(bulletinPosts),
                         pageBulletinPosts),
                 HttpStatus.OK);
     }

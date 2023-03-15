@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface BulletinPostMapper {
 
-    //    amenity를 따로 set 해주니까 필요 없을수도..? 매핑 오류가 안난다면
 //    @Mapping(source = "addressId", target = "amenity.addressId")
 //    @Mapping(source = "amenityName", target = "amenity.amenityName")
 //    @Mapping(source = "address", target = "amenity.address")
@@ -23,7 +22,6 @@ public interface BulletinPostMapper {
 //    @Mapping(source = "latitude", target = "amenity.latitude")
     BulletinPost bulletinPostCreateDtoToBulletinPost(BulletinPostDto.Create requestBody);
 
-    //    amenity를 따로 set 해주니까 필요 없을수도..? 매핑 오류가 안난다면
 //    @Mapping(source = "addressId", target = "amenity.addressId")
 //    @Mapping(source = "amenityName", target = "amenity.amenityName")
 //    @Mapping(source = "address", target = "amenity.address")
@@ -45,6 +43,7 @@ public interface BulletinPostMapper {
         List<CommentResponseDto> commentLists = bulletinPost.getCommentList().stream()
                 .map(comment -> {
                     CommentResponseDto commentResponse = new CommentResponseDto(
+                            comment.getCommentId(),
                             comment.getCommentContent(),
                             comment.getMember().getMemberId(),
                             comment.getMember().getNickname(),
@@ -90,6 +89,7 @@ public interface BulletinPostMapper {
         List<CommentResponseDto> commentLists = bulletinPost.getCommentList().stream()
                 .map(comment -> {
                     CommentResponseDto commentResponse = new CommentResponseDto(
+                            comment.getCommentId(),
                             comment.getCommentContent(),
                             comment.getMember().getMemberId(),
                             comment.getMember().getNickname(),
