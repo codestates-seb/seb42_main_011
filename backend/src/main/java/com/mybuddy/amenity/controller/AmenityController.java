@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequestMapping("/api/v1/amenities")
 @RestController
@@ -56,7 +55,7 @@ public class AmenityController {
                                                                    @RequestParam(name = "region") String region) {
 
         List<AmenityResponseDto> amenityList = amenityService.getRecommendAmenities(state,region);
-        ApiSingleResponse response = new ApiSingleResponse(HttpStatus.OK,"지역에서 추천하는 장소 리스트입니다.", amenityList);
+        ApiSingleResponse response = new ApiSingleResponse(HttpStatus.OK,"해당 지역의 추천 장소 리스트", amenityList);
 
         return ResponseEntity.ok(response);
     }

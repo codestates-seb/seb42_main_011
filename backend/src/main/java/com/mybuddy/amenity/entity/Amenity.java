@@ -48,4 +48,14 @@ public class Amenity {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+
+    @Builder(builderClassName = "TestAmenity", builderMethodName = "TestAmenity")
+    public Amenity (Long amenityId, Long addressId, String amenityName, String address, Double latitude, Double longitude) {
+        this.amenityId = amenityId;
+        this.addressId = addressId;
+        this.amenityName = amenityName;
+        this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 }
