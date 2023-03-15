@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { elapsedTime } from '../../../utils/time';
 
 const ItemBox = styled.li`
   display: flex;
@@ -91,6 +92,7 @@ const FeedInfosCreateAt = styled.span`
 `;
 
 function PostItem({
+  bulletinPostId,
   photoUrl,
   postContent,
   commentCount,
@@ -98,8 +100,10 @@ function PostItem({
   dogName,
   createdAt,
 }) {
+  const displayTimeText = elapsedTime(createdAt);
+
   return (
-    <ItemBox>
+    <ItemBox data-post-id={bulletinPostId}>
       <PostImage src={photoUrl} />
       <PostBox>
         <ContentBox>{postContent}</ContentBox>
@@ -112,7 +116,7 @@ function PostItem({
         <FeedInfosName>
           {nickname}🏠{dogName}
         </FeedInfosName>
-        <FeedInfosCreateAt>{createdAt}</FeedInfosCreateAt>
+        <FeedInfosCreateAt>{displayTimeText}</FeedInfosCreateAt>
       </FeedInfos>
     </ItemBox>
   );
