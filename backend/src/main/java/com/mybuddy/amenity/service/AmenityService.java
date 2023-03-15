@@ -2,7 +2,6 @@ package com.mybuddy.amenity.service;
 
 import com.mybuddy.amenity.dto.AmenityCreateDto;
 import com.mybuddy.amenity.dto.AmenityResponseDto;
-import com.mybuddy.amenity.dto.AmenityWithBulletinPost;
 import com.mybuddy.amenity.entity.Amenity;
 import com.mybuddy.amenity.mapper.AmenityMapper;
 import com.mybuddy.amenity.repository.AmenityRepository;
