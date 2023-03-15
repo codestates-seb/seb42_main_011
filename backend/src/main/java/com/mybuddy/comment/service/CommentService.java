@@ -44,8 +44,7 @@ public class CommentService {
         //BulletinPost의 verfied 검증 로직 추가
         bulletinPostRepository.findById(bulletinPostId).orElseThrow(()-> new RuntimeException("CUSTOM EXCEPTION으로 변경 예정"));
 
-        List<Comment> comments = commentRepository.findAll();
-        //commentRepository.findByBulletinPostId(postId); 위는 정상적으로 작동하기 위한 findAll()이며, 이걸로 대체할 예정입니다.(2023.03.08 강지은)
+        List<Comment> comments = commentRepository.findByBulletinPostId(bulletinPostId);
 
         return comments;
     }
