@@ -103,7 +103,7 @@ public class MemberControllerTest {
         actions
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", is(startsWith(MEMBER_DEFAULT_URL))))
-                .andDo(document("Post-Member",
+                .andDo(document("create-member",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestPartBody(
@@ -178,7 +178,7 @@ public class MemberControllerTest {
         // Then
         actions
                 .andExpect(status().isOk())
-                .andDo(document("Patch-Member",
+                .andDo(document("patch-member",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
 //                        pathParameters(
@@ -257,7 +257,7 @@ public class MemberControllerTest {
                         .value(responseDto.getMyAmenityDtos().get(0).getAmenityId()))
                 .andExpect(jsonPath("$.data.myAmenityDtos[1].amenityId")
                         .value(responseDto.getMyAmenityDtos().get(1).getAmenityId()))
-                .andDo(document("Get-Member",
+                .andDo(document("get-member",
                         preprocessResponse(prettyPrint()),
                         pathParameters(
                                 List.of(parameterWithName("member-id").description("회원 식별자"))
@@ -366,7 +366,7 @@ public class MemberControllerTest {
                         .value(listResponseDtos.get(0).getProfileUrl()))
                 .andExpect(jsonPath("$.data[1].profileUrl")
                         .value(listResponseDtos.get(1).getProfileUrl()))
-                .andDo(document("Get-Members-for-Admin",
+                .andDo(document("get-members-for-admin",
                         preprocessResponse(prettyPrint()),
                         requestParameters(
                                 List.of(
@@ -438,7 +438,7 @@ public class MemberControllerTest {
         actions
                 .andExpect(status().isNoContent())
                 .andExpect(jsonPath("$.data").doesNotExist())
-                .andDo(document("Delete-Member",
+                .andDo(document("delete-member",
                         pathParameters(
                                 parameterWithName("member-id").description("회원 식별자")
                         )
