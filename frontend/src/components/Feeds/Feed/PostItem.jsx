@@ -10,7 +10,6 @@ const ItemBox = styled.li`
   width: 300px;
 
   &:hover {
-    transform: translate3d(-0.625rem, -0.625rem, 0.1rem);
     box-shadow: 10px 10px 0 0 var(--color-dark-0);
   }
 `;
