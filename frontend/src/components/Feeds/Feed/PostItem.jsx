@@ -1,12 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { elapsedTime } from '../../../utils/time';
+import Card from '../../UI/Card/Card';
 
-const ItemBox = styled.li`
+const ItemBox = styled(Card)`
   display: flex;
   flex-direction: column;
-  border: var(--border);
-  border-radius: 5px;
   overflow: hidden;
   width: 300px;
 
@@ -103,7 +102,7 @@ function PostItem({
   const displayTimeText = elapsedTime(createdAt);
 
   return (
-    <ItemBox data-post-id={bulletinPostId}>
+    <ItemBox data-post-id={bulletinPostId} tag="li" borderRadius="5px">
       <PostImage src={photoUrl} />
       <PostBox>
         <ContentBox>{postContent}</ContentBox>
