@@ -37,7 +37,8 @@ public class FollowController {
 
         URI uriLocation = UriMaker.getUri(FOLLOW_DEFAULT_URL, follow.getFollowId());
 
-        ApiSingleResponse response = new ApiSingleResponse(HttpStatus.CREATED, "'좋아요'가 생성되었습니다.");
+        ApiSingleResponse response = new ApiSingleResponse(HttpStatus.CREATED,
+                follow.getFollowee().getNickname() + "님을 팔로우 하였습니다.");
 
         return ResponseEntity.created(uriLocation).body(response);
     }
