@@ -6,7 +6,6 @@ import { ReactComponent as MybuddyLogo } from '../assets/logo/logo_navy.svg';
 const LoginWrapper = styled.section`
   display: flex;
   justify-content: space-between;
-  min-height: calc(100vh - 193px);
 `;
 const LoginComponent = styled.div`
   flex-grow: 2;
@@ -18,16 +17,14 @@ const LoginComponent = styled.div`
 const ImageWrapper = styled.aside`
   flex-grow: 0;
   position: relative;
-  max-height: calc(100vh - 193px);
-  min-height: 90vh;
+  max-height: calc(100vh - 126px);
   width: 45vw;
 `;
 const BackgroundImage = styled.img`
   width: 100%;
-  max-height: calc(100vh - 193px);
-  min-height: 90vh;
+  height: 90vh;
+  max-height: calc(100vh - 130px);
   object-fit: cover;
-  vertical-align: middle;
   overflow-clip-margin: content-box;
   overflow: clip;
 `;
