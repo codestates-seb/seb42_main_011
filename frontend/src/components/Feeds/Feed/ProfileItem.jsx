@@ -1,18 +1,19 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 
-const ProfileBox = styled.div`
+const ProfileBox = styled.li`
+  flex: 0 0 226px;
+
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   overflow: hidden;
-  width: 226px;
   height: 310px;
-  
+
   /* border */
   border: var(--border);
   border-radius: 110px 110px 5px 5px;
-  
+
   /* 프로필 사진 */
   background-image: url(${props => props.url});
   background-repeat: no-repeat;
@@ -23,7 +24,7 @@ const ProfileBox = styled.div`
   &:hover {
     transform: translate(-0.25rem, -0.25rem);
     box-shadow: 3px 3px 0 0 var(--color-dark-0);
-  };
+  }
 `;
 
 const ProfileName = styled.div`
@@ -50,20 +51,20 @@ const ProfileName = styled.div`
     &:hover {
       cursor: pointer;
     }
-  };
+  }
 `;
 
-function Profile({photoUrl, dogName}) {
+function ProfileItem({ photoUrl, dogName }) {
   return (
     <ProfileBox url={photoUrl}>
       <ProfileName>
         {dogName}
-        <div className='profileitem__svg--button'>
-          <img src="icon/arrow-right.svg" alt="" /> 
+        <div className="profileitem__svg--button">
+          <img src="icon/arrow-right.svg" alt="" />
         </div>
       </ProfileName>
     </ProfileBox>
-  )
+  );
 }
 
-export default Profile
+export default ProfileItem;

@@ -286,10 +286,10 @@ public class MemberControllerTest {
                                                 .type(JsonFieldType.STRING)
                                                 .description("강아지 소개"),
                                         fieldWithPath("data.followerNumber")
-                                                .type(JsonFieldType.NULL)
+                                                .type(JsonFieldType.NUMBER)
                                                 .description("팔로워 수"),
                                         fieldWithPath("data.followeeNumber")
-                                                .type(JsonFieldType.NULL)
+                                                .type(JsonFieldType.NUMBER)
                                                 .description("팔로잉 수"),
                                         fieldWithPath("data.profileUrl")
                                                 .type(JsonFieldType.STRING)
@@ -393,10 +393,10 @@ public class MemberControllerTest {
                                                 .type(JsonFieldType.STRING)
                                                 .description("강아지 이름"),
                                         fieldWithPath("data[].followerNumber")
-                                                .type(JsonFieldType.NULL)
+                                                .type(JsonFieldType.NUMBER)
                                                 .description("팔로워 수"),
                                         fieldWithPath("data[].followeeNumber")
-                                                .type(JsonFieldType.NULL)
+                                                .type(JsonFieldType.NUMBER)
                                                 .description("팔로잉 수"),
                                         fieldWithPath("data[].profileUrl")
                                                 .type(JsonFieldType.STRING)
