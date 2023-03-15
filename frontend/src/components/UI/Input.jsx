@@ -12,12 +12,14 @@ const VARIANTS = {
 const StyledInput = styled.input`
   ${({ variant }) => VARIANTS[variant]}
 
-  width: var(--input-box-width);
-  height: 50px;
+  /* width: var(--input-box-width); */
+  width: 100%;
+  /* height: 50px; */
   border: var(--border);
   border-radius: 5px;
   background-color: var(--color-light-1);
   text-indent: 10px;
+  flex-grow: ${props => props.flexGrow};
 `;
 
 const Label = styled.label`
@@ -26,11 +28,11 @@ const Label = styled.label`
   font-weight: bold;
 `;
 
-function Input({ variant = 'edit', id, label, type = 'text' }) {
+function Input({ variant = 'regular', id, label, type = 'text', flexGrow }) {
   return (
     <div>
       <Label htmlFor={id}>{label}</Label>
-      <StyledInput id={id} type={type} variant={variant} />
+      <StyledInput id={id} type={type} variant={variant} flexGrow={flexGrow} />
     </div>
   );
 }

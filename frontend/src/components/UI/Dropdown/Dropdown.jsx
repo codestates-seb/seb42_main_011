@@ -30,7 +30,7 @@ const VARIANTS = {
 
 const SIZES = {
   lz: css`
-    --dropdown-width: 605px;
+    --dropdown-width: 100%;
     --dropdown-height: 50px;
     --dropdown-font-size: var(--font-size-16);
     --dropdown-padding: 15px;
@@ -89,7 +89,9 @@ const SelectedOption = styled.p`
   flex: 1 1 0;
 `;
 
-const DropdownButton = styled.button`
+const DropdownButton = styled.button.attrs({
+  type: 'button',
+})`
   background-color: var(--dropdown-button-bg-color);
   color: var(--dropdown-color);
   border: ${({ isDisplayBorder }) => (isDisplayBorder ? 'var(--border)' : '')};
@@ -151,6 +153,7 @@ function Dropdown({
   variant = 'primary',
   size = 'lz',
   isDisplayBorder = true,
+  labelText,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(defaultDlsplayText);
@@ -170,6 +173,12 @@ function Dropdown({
     setIsOpen(false);
     onSelect(dropdownOption);
   };
+  
+  const Label = styled.span`
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+  `;
 
   return (
     <DropdownContainer
@@ -177,6 +186,7 @@ function Dropdown({
       variant={variant}
       size={size}
     >
+      <Label>{labelText}</Label>
       <DropdownButton
         isDisplayBorder={isDisplayBorder}
         isOpen={isOpen}

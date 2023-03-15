@@ -39,21 +39,20 @@ const dogGender = ['여자', '남자'];
 
 function SignupPage() {
   return (
-  // <FormContainer>
-  //   <Title>회원가입</Title>
-  //   <SignupForm>
-  //     <Input variant='large' label='닉네임' id='name' type='text' flexGrow='1' />
-  //     <Input variant='large' label='이메일' id='email' type='email' flexGrow='1' />
-  //     <Input variant='large' label='비밀번호' id='password' type='password' flexGrow='1' />
-  //     <Input variant='large' label='비밀번호 확인' id='password-retype' type='password' flexGrow='1' />
-  //     <Input variant='large' label='강아지 이름' id='dogname' type='text' flexGrow='1' />
-  //     <Dropdown id="dropdown" options={dogGender} labelText="강아지 성별" flexGrow='1' />
-  //     <ButtonContainer>
-  //       <Button variant='large'>회원가입</Button>
-  //     </ButtonContainer>
-  //   </SignupForm>
-  // </FormContainer>
-  <>Signup</>
+  <FormContainer>
+    <Title>회원가입</Title>
+    <SignupForm>
+      <Input variant='large' label='닉네임' id='name' type='text' flexGrow='1' />
+      <Input variant='large' label='이메일' id='email' type='email' flexGrow='1' />
+      <Input variant='large' label='비밀번호' id='password' type='password' flexGrow='1' />
+      <Input variant='large' label='비밀번호 확인' id='password-retype' type='password' flexGrow='1' />
+      <Input variant='large' label='강아지 이름' id='dogname' type='text' flexGrow='1' />
+      <Dropdown id="dropdown" options={dogGender} labelText="강아지 성별" flexGrow='1' />
+      <ButtonContainer>
+        <Button variant='large'>회원가입</Button>
+      </ButtonContainer>
+    </SignupForm>
+  </FormContainer>
   );
 }
 
