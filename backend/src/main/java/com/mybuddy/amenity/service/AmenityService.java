@@ -31,15 +31,15 @@ public class AmenityService {
      * if. amenity exists in the database already, returns it.
      * else. create a new one and return
      */
-    public Amenity obtainedAmenity(AmenityCreateDto amenityCreateDto) {
+    public Amenity findDBAmenity(AmenityCreateDto amenityCreateDto) {
 
         //amenity addressid로 찾고, 존재하면 넘기기
-        Amenity findAmenity = amenityRepository.findByAddressId(amenityCreateDto.getAddressId());
+        Amenity obtainedAmenity = amenityRepository.findByAddressId(amenityCreateDto.getAddressId());
 
-        if (findAmenity == null) //안존재하면 createAmenity
+        if (obtainedAmenity == null) //안존재하면 createAmenity
             return createAmenity(amenityCreateDto);
         else                        //존재하므로 바로 외부로 넘겨줌
-            return findAmenity;
+            return obtainedAmenity;
     }
 
     @Transactional
