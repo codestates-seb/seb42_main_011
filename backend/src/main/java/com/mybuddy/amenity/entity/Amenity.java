@@ -18,7 +18,7 @@ import java.util.List;
 public class Amenity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long amenityId;
 
     @Column(nullable = false)
