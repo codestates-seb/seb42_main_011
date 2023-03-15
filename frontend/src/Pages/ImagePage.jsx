@@ -27,6 +27,7 @@ const ImageWrapper = styled.aside`
   display: flex;
   flex-direction: column;
 `;
+
 const BackgroundImage = styled.img`
   width: 100%;
   @media screen and (max-height: 700px) {
@@ -37,6 +38,11 @@ const BackgroundImage = styled.img`
   }
   object-fit: cover;
   flex-grow: 1;
+  height: 90vh;
+  max-height: calc(100vh - 130px);
+  object-fit: cover;
+  overflow-clip-margin: content-box;
+  overflow: clip;
 `;
 
 const ImageLogo = styled(MybuddyLogo)`

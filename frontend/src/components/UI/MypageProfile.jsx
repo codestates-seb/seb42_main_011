@@ -5,9 +5,10 @@ const ProfileImage = styled.img`
   width: 469px;
   height: 666px;
   border-radius: inherit;
-  background: var(--white);
+  background: var(--color-light-0);
   transform: translate(-0.625rem, -0.625rem);
-  border-radius: 220px 220px 10px 10px;
+  border-radius: 300px 300px 10px 10px;
+  border: var(--border);
   box-shadow: 0.625rem 0.625rem 0 0 var(--color-dark-0);
 `;
 
