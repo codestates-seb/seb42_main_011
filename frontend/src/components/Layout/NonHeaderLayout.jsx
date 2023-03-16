@@ -39,7 +39,7 @@ const InnerFrame = styled.div`
       display: flex;
       justify-content: center;
     `}
-  overflow-y: scroll;
+  overflow-y: auto;
 `;
 
 function NonHeaderLayout({

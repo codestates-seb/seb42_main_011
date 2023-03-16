@@ -10,6 +10,17 @@ const FormContainer = styled.section`
   flex-direction: column;
   /* min-width: 500px; */
   /* min-height: 594px; */
+  position: relative;
+`;
+
+const SignupLink = styled.a.attrs({
+  href: "/signup",
+})`
+  position: absolute;
+  font-size: var(--font-size-20);
+  top: -50px;
+  right: 10px;
+  border-bottom: 1px solid var(--color-dark-0);
 `;
 
 const Title = styled.div`
@@ -30,7 +41,9 @@ const LoginForm = styled.form`
   row-gap: 30px;
 `;
 
-const ForgotPassword = styled.a`
+const ForgotPassword = styled.a.attrs({
+  href: "/password/find",
+})`
   text-decoration: none;
   font-size: var(--font-size-13);
   opacity: 50%;
@@ -54,6 +67,7 @@ const ButtonContainer = styled.div`
 function LoginPage() {
   return (
     <FormContainer>
+      <SignupLink>회원가입</SignupLink>
       <Title>로그인</Title>
       <LoginForm>
         <Input variant='regular' label='이메일' id='email' type='email' />
@@ -66,7 +80,7 @@ function LoginPage() {
         </ButtonContainer>
       </LoginForm>
     </FormContainer>
-  )
-};
+  );
+}
 
 export default LoginPage;

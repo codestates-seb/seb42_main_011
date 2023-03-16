@@ -1,7 +1,5 @@
-/* eslint-disable no-unused-vars */
 import React from 'react';
 import styled from 'styled-components';
-// import womanIcon from '../assets/icons/icon-woman.svg';
 import Input from '../components/UI/Input';
 import DropdownGender from '../components/UI/Dropdown/DropdownGender';
 import Button from '../components/UI/Button';
@@ -11,11 +9,9 @@ const FormContainer = styled.section`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  /* min-height: 647px; */
   @media screen and (min-height: 1050px){
     height: 737px;
   }
-  /* min-width: 100px; */
 `;
 
 const Title = styled.div`
@@ -42,7 +38,7 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 30px;
 `;
 
 const dogGender = ['여자', '남자'];

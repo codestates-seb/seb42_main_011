@@ -3,14 +3,11 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Button from '../components/UI/Button';
 
-
 const FormContainer = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  /* min-width: 500px; */
-  /* min-height: 594px; */
   height: calc(100vh - 300px);
 `;
 
@@ -29,10 +26,6 @@ const ErrorText = styled.div`
 const Title = styled.div`
   font-size: 20px;
   font-weight: 700;
-  /* margin-top: 70px; */
-  /* flex-grow: 1; */
-  /* justify-self: flex-start; */
-  /* align-self: flex-end; */
   margin-bottom: 16px;
 `;
 
@@ -40,8 +33,6 @@ const Caption = styled.p`
   text-align: center;
   font-size: var(--font-size-16);
   white-space: pre-line;
-  /* color: var(--color-tertiary); */
-  /* font-weight: 700; */
   line-height: 37px;
 `;
 
@@ -49,12 +40,10 @@ const CaptionText = '찾으려는 페이지의 주소가 잘못 입력되었거�
 
 
 const ButtonContainer = styled.div`
-  /* align-self: flex-start; */
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 50px;
-  /* flex-grow: 1; */
 `;
 
 function ErrorPage() {

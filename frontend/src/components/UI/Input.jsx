@@ -9,14 +9,13 @@ const VARIANTS = {
   large: css`
     --input-box-width: 100%;
     --input-short-width: 100%;
-    --input-long-width: 480px
+    --input-long-width: 480px;
   `,
 };
 
 const StyledInput = styled.input`
   ${({ variant }) => VARIANTS[variant]}
   width: var(--input-box-width);
-  /* width: 100%; */
   @media screen and (min-height: 1050px){
     height: 50px;
   }

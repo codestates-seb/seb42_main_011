@@ -8,8 +8,6 @@ const FormContainer = styled.section`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  /* min-width: 500px; */
-  /* min-height: 594px; */
 `;
 
 const Title = styled.div`
@@ -35,9 +33,6 @@ const FindForm = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* @media screen and (max-width: 625px) {
-    align-items: stretch;
-  } */
   row-gap: 30px;
 `;
 
