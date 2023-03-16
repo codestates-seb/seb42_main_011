@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { elapsedTime } from '../../../utils/time';
+import { ReactComponent as Commentlogo } from '../../../assets/icons/icon-comment.svg';
 import Card from '../../UI/Card/Card';
 
 const ItemBox = styled(Card)`
@@ -8,9 +9,14 @@ const ItemBox = styled(Card)`
   flex-direction: column;
   overflow: hidden;
   width: 300px;
-
+  background-color: var(--color-light-0);
   &:hover {
     box-shadow: 10px 10px 0 0 var(--color-dark-0);
+  }
+
+  @media (max-width: 1363px) {
+    width: 85%;
+    height: 88%;
   }
 `;
 
@@ -19,6 +25,10 @@ const PostImage = styled.img`
   height: 300px;
   /* 정사각형 아닌 사진은 비율 그대로 확대되도록 */
   object-fit: cover;
+  @media (max-width: 1363px) {
+    width: 100%;
+    object-fit: cover;
+  }
 `;
 
 const PostBox = styled.div`
@@ -31,6 +41,11 @@ const PostBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  @media (max-width: 1363px) {
+    height: 35%;
+    font-size: 14px;
+  }
 `;
 
 const ContentBox = styled.p`
@@ -62,11 +77,15 @@ const CommentBox = styled.div`
   flex-direction: row;
   align-items: center;
   padding-left: 3px;
+
+  @media (max-width: 1363px) {
+    margin-top: -10px;
+  }
 `;
 
 const Comment = styled.span`
   margin-left: 4px;
-  font-size: 13px;
+  font-size: var(--font-size-13);
   line-height: 19px;
 `;
 
@@ -107,7 +126,7 @@ function PostItem({
       <PostBox>
         <ContentBox>{postContent}</ContentBox>
         <CommentBox>
-          <img src="icon/comment.svg" alt="" />
+          <Commentlogo alt="" />
           <Comment>{commentCount}개</Comment>
         </CommentBox>
       </PostBox>

@@ -22,6 +22,9 @@ const FeedWrapper = styled.div`
 const FeedContainer = styled.div`
   padding: 0 90px;
   height: 100%;
+  @media (max-width: 1363px) {
+    padding: 0 1%;
+  }
 `;
 
 const SEARCH_OPTIONS = [

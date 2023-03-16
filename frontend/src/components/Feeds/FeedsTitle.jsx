@@ -29,6 +29,7 @@ const TitleContainer = styled.div`
   position: absolute;
   display: flex;
   flex-direction: column;
+  z-index: 1;
 `;
 
 const Title = styled.h2`
@@ -52,18 +53,32 @@ const PageDescription = styled.p`
   padding-top: 32px;
 `;
 
-const FriendSearchForm = styled.form`
-  position: relative;
+const FriendSearchWrapper = styled.div`
   display: flex;
   gap: 16px;
   justify-content: center;
   align-items: center;
   width: 100%;
+  min-width: 1000px;
+`;
+
+const FriendSearchForm = styled.form`
+  position: sticky;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  @media (max-width: 1200px) {
+    width: 45%;
+    margin-left: 8%;
+  }
 `;
 
 const FriendSearchInput = styled(SearchInput)`
   flex: 0 1 500px;
   height: 50px;
+  width: 100%;
 `;
 
 function FeedsTitle({ title, description, serachOptions, onSearch }) {
@@ -99,16 +114,21 @@ function FeedsTitle({ title, description, serachOptions, onSearch }) {
           <PageDescription>{description}</PageDescription>
         </TitleContainer>
         {isDisplaySearchInput() && (
-          <FriendSearchForm>
-            <FriendSearchInput
-              onKeyDown={handleSubmit}
-              name="search"
-              id="search"
-              placeholder="검색"
-              onChange={onChange}
-            />
-            <DropdownFriend defaultDlsplayText="필터" options={serachOptions} />
-          </FriendSearchForm>
+          <FriendSearchWrapper>
+            <FriendSearchForm>
+              <FriendSearchInput
+                onKeyDown={handleSubmit}
+                name="search"
+                id="search"
+                placeholder="검색"
+                onChange={onChange}
+              />
+              <DropdownFriend
+                defaultDlsplayText="필터"
+                options={serachOptions}
+              />
+            </FriendSearchForm>
+          </FriendSearchWrapper>
         )}
       </FeedHeaderConatiner>
     </FeedHeader>
