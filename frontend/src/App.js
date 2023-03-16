@@ -1,14 +1,16 @@
-import React, { Fragment } from 'react';
+import React from 'react';
+import ModalProvider from './components/UI/Modal/ModalProvider';
 import Router from './Router';
-
 import GlobalStyles from './styles/GlobalStyles';
+
+// Create a client
 
 function App() {
   return (
-    <Fragment>
+    <ModalProvider>
       <Router />
       <GlobalStyles />
-    </Fragment>
+    </ModalProvider>
   );
 }
 

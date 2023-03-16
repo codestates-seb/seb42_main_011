@@ -1,5 +1,8 @@
 package com.mybuddy.global.mockdata;
 
+import com.mybuddy.amenity.dto.AmenityResponseDto;
+import com.mybuddy.amenity.entity.Amenity;
+import com.mybuddy.bulletin_post.dto.BulletinPostDto;
 import com.mybuddy.comment.entity.Comment;
 import com.mybuddy.member.dto.*;
 import com.mybuddy.member.entity.Member;
@@ -8,6 +11,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MockTestData {
@@ -18,6 +22,80 @@ public class MockTestData {
                     .commentId(1L)
                     .commentContent("우와 콩이가 너무 귀여워요")
                     .build();
+        }
+    }
+
+    public static class MockAmenity {
+        public static Amenity getAmenity() {
+            return Amenity.TestAmenity()
+                    .amenityId(1L)
+                    .addressId(147221121221L)
+                    .amenityName("강아지 놀이터")
+                    .address("서울 광진구 어디로 348")
+                    .longitude(126.12834637823106)
+                    .latitude(126.12834637823106)
+                    .build();
+        }
+        public static AmenityResponseDto getAmenityResponseDto() {
+            return AmenityResponseDto.builder()
+                    .amenityId(1L)
+                    .addressId(147221121221L)
+                    .amenityName("강아지 놀이터")
+                    .address("서울 광진구 어디로 348")
+                    .longitude(126.12834637823106)
+                    .latitude(126.12834637823106)
+                    .build();
+        }
+
+        public static List<BulletinPostDto.ResponseForFeed> getListBulletinPostFeed() {
+
+            BulletinPostDto.ResponseForFeed responseForFeed1 = BulletinPostDto.ResponseForFeed.builder()
+                    .bulletinPostId(1L)
+                    .photoUrl("s3.mybuddy.image/userid-1.png")
+                    .postContent("게시물 내용입니다.")
+                    .memberId(1L)
+                    .nickname("코딩김")
+                    .dogName("왕밤톨")
+                    .commentList(new ArrayList<>())
+                    .commentCount(0)
+                    .build();
+
+
+            BulletinPostDto.ResponseForFeed responseForFeed2= BulletinPostDto.ResponseForFeed.builder()
+                    .bulletinPostId(1L)
+                    .photoUrl("s3.mybuddy.image/userid-1.png")
+                    .postContent("게시물 내용입니다.")
+                    .memberId(1L)
+                    .nickname("코딩김")
+                    .dogName("왕밤톨")
+                    .commentList(new ArrayList<>())
+                    .commentCount(0)
+                    .build();
+
+            return List.of(responseForFeed1, responseForFeed2);
+        }
+
+        public static List<AmenityResponseDto> getRecommentAmenityList(){
+            AmenityResponseDto amenity1 = AmenityResponseDto.builder()
+                    .amenityId(1L)
+                    .addressId(147221121221L)
+                    .amenityName("강아지 놀이터")
+                    .address("서울 광진구 어디로 348")
+                    .longitude(126.12834637823106)
+                    .latitude(36.128346378212108)
+                    .bulletinPostCount(15L)
+                    .build();
+            AmenityResponseDto amenity2 = AmenityResponseDto.builder()
+                    .amenityId(2L)
+                    .addressId(32212482121L)
+                    .amenityName("강아지 병원")
+                    .address("서울 광진구 아무로 12")
+                    .longitude(126.1283467825107)
+                    .latitude(36.128346378212106)
+                    .bulletinPostCount(10L)
+                    .build();
+
+            return List.of(amenity1, amenity2);
         }
     }
 
