@@ -8,7 +8,10 @@ public enum LogicExceptionCode {
     MEMBER_ALREADY_EXISTS(409, "Member already exists"),
     NICKNAME_ALREADY_EXISTS(409, "Nickname already exists"),
     BULLETIN_POST_NOT_FOUND(404, "Post not found"),
-    COMMENT_NOT_FOUND(404, "Comment not found");
+    COMMENT_NOT_FOUND(404, "Comment not found"),
+    FOLLOW_NOT_POSSIBLE(403, "You cannot follow yourself"),
+    FOLLOW_NOT_FOUND(404, "Follow data not found"),
+    FOLLOW_ALREADY_EXISTS(409, "Follow data already exists");
 
 
     @Getter
