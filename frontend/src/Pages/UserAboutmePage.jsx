@@ -40,7 +40,7 @@ function UserAboutmePage({ userdata }) {
   const location = useLocation();
   let AboumeButton;
 
-  // Title logo, Dummydata change
+  // Button change by location
   if (location.pathname.includes('/mypage')) {
     AboumeButton = <Button variant="medium">수정</Button>;
   } else if (location.pathname.includes('/friendpage')) {
