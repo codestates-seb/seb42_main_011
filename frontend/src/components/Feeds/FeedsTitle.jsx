@@ -53,13 +53,15 @@ const PageDescription = styled.p`
 
 const FriendSearchForm = styled.form`
   position: relative;
-  top: 50%;
-  left: calc(50% - 164px);
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 `;
 
 const FriendSearchInput = styled(SearchInput)`
   flex: 0 1 500px;
-
   height: 50px;
 `;
 
@@ -94,7 +96,6 @@ function FeedsTitle({ title, description, serachOptions, onSearch }) {
         </TitleContainer>
         {isDisplaySearchInput() && (
           <FriendSearchForm>
-            <DropdownFriend options={serachOptions} />
             <FriendSearchInput
               onKeyDown={handleSubmit}
               name="search"
@@ -102,6 +103,7 @@ function FeedsTitle({ title, description, serachOptions, onSearch }) {
               placeholder="검색"
               onChange={onChange}
             />
+            <DropdownFriend defaultDlsplayText="필터" options={serachOptions} />
           </FriendSearchForm>
         )}
       </FeedHeaderConatiner>
