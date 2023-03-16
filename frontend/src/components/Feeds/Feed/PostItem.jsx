@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
+import { elapsedTime } from '../../../utils/time';
+import Card from '../../UI/Card/Card';
 
-const ItemBox = styled.li`
+const ItemBox = styled(Card)`
   display: flex;
   flex-direction: column;
-  border: var(--border);
-  border-radius: 5px;
   overflow: hidden;
   width: 300px;
 
@@ -91,6 +91,7 @@ const FeedInfosCreateAt = styled.span`
 `;
 
 function PostItem({
+  bulletinPostId,
   photoUrl,
   postContent,
   commentCount,
@@ -98,8 +99,10 @@ function PostItem({
   dogName,
   createdAt,
 }) {
+  const displayTimeText = elapsedTime(createdAt);
+
   return (
-    <ItemBox>
+    <ItemBox data-post-id={bulletinPostId} tag="li" borderRadius="5px">
       <PostImage src={photoUrl} />
       <PostBox>
         <ContentBox>{postContent}</ContentBox>
@@ -112,7 +115,7 @@ function PostItem({
         <FeedInfosName>
           {nickname}🏠{dogName}
         </FeedInfosName>
-        <FeedInfosCreateAt>{createdAt}</FeedInfosCreateAt>
+        <FeedInfosCreateAt>{displayTimeText}</FeedInfosCreateAt>
       </FeedInfos>
     </ItemBox>
   );

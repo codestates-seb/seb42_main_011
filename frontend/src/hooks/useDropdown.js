@@ -7,7 +7,11 @@ export default function useDropdown({
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(defaultDlsplayText);
 
-  const handleDropdownToggle = () => {
+  const handleDropdownToggle = event => {
+    if (event?.target.closest('button')?.type === 'submit') {
+      event.preventDefault();
+    }
+
     setIsOpen(!isOpen);
   };
 

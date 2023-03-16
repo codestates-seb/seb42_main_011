@@ -1,24 +1,24 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const StyledFeeds = styled.ul`
+  ${({ colWidth }) =>
+    css`
+      --col-width: ${colWidth};
+    `}
+
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fill, var(--col-width));
   justify-content: center;
   gap: 90px;
-
-  @media (max-width: 1600px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  @media (max-width: 1200px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 48px;
-  }
 `;
 
-function Feeds({ children }) {
-  return <StyledFeeds>{children}</StyledFeeds>;
+function Feeds({ children, onClick, colWidth = '300px' }) {
+  return (
+    <StyledFeeds colWidth={colWidth} onClick={onClick}>
+      {children}
+    </StyledFeeds>
+  );
 }
 
 export default Feeds;
