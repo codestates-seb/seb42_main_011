@@ -30,7 +30,7 @@ function HomePage() {
 
   const handleClick = event => {
     const $li = event.target.closest('li');
-
+    console.log($li);
     if (!$li) {
       return;
     }
@@ -42,7 +42,7 @@ function HomePage() {
 
   return (
     <Container>
-      <FeedsTitle title="mypage" description="친구들의 피드를 확인해보세요!" />
+      <FeedsTitle title="home" description="친구들의 피드를 확인해보세요!" />
       <FeedWrapper>
         <FeedContainer>
           <Feeds onClick={handleClick}>
