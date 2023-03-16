@@ -29,6 +29,7 @@ const TitleContainer = styled.div`
   position: absolute;
   display: flex;
   flex-direction: column;
+  z-index: 1;
 `;
 
 const Title = styled.h2`
@@ -53,12 +54,13 @@ const PageDescription = styled.p`
 `;
 
 const FriendSearchForm = styled.form`
-  position: relative;
+  position: sticky;
   display: flex;
   gap: 16px;
   justify-content: center;
   align-items: center;
   width: 100%;
+  min-width: 1150px;
 `;
 
 const FriendSearchInput = styled(SearchInput)`
