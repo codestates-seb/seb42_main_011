@@ -7,10 +7,12 @@ const LoginWrapper = styled.section`
   display: flex;
   justify-content: space-between;
   /* min-height: 573px; */
-  min-width: 415px;
+  /* min-width: 425px; */
   /* @media screen and (max-width: 800px){
     min-width: 400px;
   } */
+  /* min-height: 790px; */
+  /* overflow-y: scroll; */
 `;
 const LoginComponent = styled.div`
   flex-grow: 2;
@@ -23,10 +25,10 @@ const LoginComponent = styled.div`
   @media screen and (min-height: 701px) {
     height: calc(100vh - 133px);
   } */
-  overflow-y: scroll;
+  /* overflow-y: scroll;
   ::-webkit-scrollbar {
     background: none;
-  }
+  } */
 `;
 
 const ImageWrapper = styled.aside`
@@ -51,7 +53,7 @@ const BackgroundImage = styled.img`
   object-fit: cover;
   flex-grow: 1;
   height: 90vh;
-  max-height: calc(100vh - 130px);
+  /* max-height: calc(100vh - 130px); */
   object-fit: cover;
   overflow-clip-margin: content-box;
   overflow: clip;

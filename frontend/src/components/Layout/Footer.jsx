@@ -11,7 +11,7 @@ const FooterComponent = styled.footer`
   font-size: var(--font-size-13);
   font-weight: 500;
 
-  height: 54px;
+  height: 50px;
   transform: translateZ(1rem);
 `;
 

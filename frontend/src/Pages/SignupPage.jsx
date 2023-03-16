@@ -12,7 +12,10 @@ const FormContainer = styled.div`
   align-items: center;
   flex-direction: column;
   /* min-height: 647px; */
-  min-width: 100px;
+  @media screen and (min-height: 1050px){
+    height: 737px;
+  }
+  /* min-width: 100px; */
 `;
 
 const Title = styled.div`
@@ -27,6 +30,10 @@ const SignupForm = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
+  @media screen and (min-width: 1174px){
+    align-items: center;
+  }
+
   row-gap: 20px;
   margin-bottom: 50px;
 `;

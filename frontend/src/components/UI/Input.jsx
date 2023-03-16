@@ -13,7 +13,13 @@ const StyledInput = styled.input`
   ${({ variant }) => VARIANTS[variant]}
   /* width: var(--input-box-width); */
   width: 100%;
-  height: 50px;
+  @media screen and (min-height: 1050px){
+    height: 50px;
+  }
+  @media screen and (min-width: 1174px){
+    width: 480px;
+  }
+  min-height: 40px;
   border: var(--border);
   border-radius: 5px;
   background-color: var(--color-light-1);

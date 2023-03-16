@@ -28,7 +28,7 @@ const DropdownListItem = styled.li`
   display: flex;
   align-items: center;
   width: 605px;
-  height: 50px;
+  min-height: 40px;
 
   &:hover {
     color: var(--color-light-0);
@@ -71,7 +71,7 @@ const DropdownButton = styled.button`
   align-items: center;
   position: relative;
   width: 100%;
-  height: 50px;
+  height: 40px;
   min-height: 35px;
 
   ${Down} {
@@ -99,6 +99,13 @@ const DropdownContainer = styled.div`
     justify-content: flex-start;
     text-align: left;
     padding: 0 15px;
+  }
+  min-height: 40px;
+  @media screen and (min-height: 1050px){
+    height: 50px;
+  }
+  @media screen and (min-width: 1174px){
+    width: 480px;
   }
 `;
 
