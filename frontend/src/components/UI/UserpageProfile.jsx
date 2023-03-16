@@ -12,8 +12,8 @@ const ProfileImage = styled.img`
   box-shadow: 0.625rem 0.625rem 0 0 var(--color-dark-0);
 `;
 
-function MypageProfile({ image, alt = '', ...props }) {
+function UserpageProfile({ image, alt = '', ...props }) {
   return <ProfileImage src={image} alt={alt} {...props} />;
 }
 
-export default MypageProfile;
+export default UserpageProfile;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../UI/Button';
 import { ReactComponent as MainLogo } from '../../assets/logo/logo.svg';
@@ -43,7 +43,14 @@ const MenuUl = styled.ul`
   line-height: 29px;
 `;
 
-const Menu = styled.li`
+const LinkStyle = styled.li`
+  .selected {
+    color: var(--color-tertiary);
+    font-weight: bold;
+  }
+`;
+
+const Menu = styled.div`
   font-size: var(--font-size-20);
   font-weight: 500;
   &:hover {
@@ -74,7 +81,15 @@ function Header() {
         </Link>
         <MenuWrapper>
           <MenuUl>
-            <Menu>홈</Menu>
+            <LinkStyle>
+              <NavLink
+                end
+                className={({ isActive }) => (isActive ? 'selected' : '')}
+                to="/"
+              >
+                <Menu>홈</Menu>
+              </NavLink>
+            </LinkStyle>
             <Menu>친구찾기</Menu>
             <Menu>추천장소</Menu>
           </MenuUl>

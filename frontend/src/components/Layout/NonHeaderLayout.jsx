@@ -27,7 +27,6 @@ const Frame = styled.div`
 
 const InnerFrame = styled.div`
   background-color: var(--color-light-0);
-  height: calc(100vh - 200px);
   width: calc(100vw - 100px);
   border: var(--border);
   border-radius: 10px;
