@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import FEED_DUMY from '../components/Feeds/FEED_DUMY';
 import Feeds from '../components/Feeds/Feeds';
 import FeedsTitle from '../components/Feeds/FeedsTitle';
-import FEED_DUMY from '../components/Feeds/FEED_DUMY';
-import PostItem from '../components/Feeds/PostItem';
+import PostItem from '../components/Feeds/Feed/PostItem';
 
 const Container = styled.article`
   width: 100%;
@@ -16,31 +16,36 @@ const Container = styled.article`
 
 const FeedWrapper = styled.div`
   width: 100%;
-  height: 640px;
-  padding-bottom: 10px;
-  min-height: calc(100vh- 180px);
-  overflow-clip-margin: content-box;
-  overflow-y: auto;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  ::-webkit-scrollbar {
-    display: none;
-  }
+  padding-bottom: 40px;
 `;
 
 const FeedContainer = styled.div`
   padding: 0 90px;
+  height: 100%;
 `;
 
 function HomePage() {
   const [data] = useState(FEED_DUMY.data);
+  // const navigate = useNavigate();
+
+  const handleClick = event => {
+    const $li = event.target.closest('li');
+
+    if (!$li) {
+      return;
+    }
+
+    const { postId } = $li.dataset;
+
+    console.log(postId);
+  };
 
   return (
     <Container>
       <FeedsTitle title="mypage" description="친구들의 피드를 확인해보세요!" />
       <FeedWrapper>
         <FeedContainer>
-          <Feeds>
+          <Feeds onClick={handleClick}>
             {data.map(
               ({
                 bulletinPostId,
@@ -53,6 +58,7 @@ function HomePage() {
               }) => (
                 <PostItem
                   key={bulletinPostId}
+                  bulletinPostId={bulletinPostId}
                   photoUrl={photoUrl}
                   postContent={postContent}
                   commentCount={commentCount}

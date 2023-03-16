@@ -17,8 +17,8 @@ const StyledFeeds = styled.ul`
   }
 `;
 
-function Feeds({ children }) {
-  return <StyledFeeds>{children}</StyledFeeds>;
+function Feeds({ children, onClick }) {
+  return <StyledFeeds onClick={onClick}>{children}</StyledFeeds>;
 }
 
 export default Feeds;
