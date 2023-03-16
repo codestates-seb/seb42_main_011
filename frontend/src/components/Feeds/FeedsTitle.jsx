@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import HomeLogo from '../../assets/logo/home_logo.svg';
+import FriendLogo from '../../assets/logo/frined_logo.svg';
 import useInputs from '../../hooks/useInputs';
 import SearchInput from '../UI/SearchInput/SearchInput';
 import DropdownFriend from '../UI/Dropdown/DropdownFriend';
@@ -90,7 +91,10 @@ function FeedsTitle({ title, description, serachOptions, onSearch }) {
       <FeedHeaderConatiner>
         <TitleContainer>
           <Title>
-            <LogoImage src={HomeLogo} alt={title} />
+            <LogoImage
+              src={title === 'home' ? HomeLogo : FriendLogo}
+              alt={title}
+            />
           </Title>
           <PageDescription>{description}</PageDescription>
         </TitleContainer>
