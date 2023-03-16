@@ -8,6 +8,9 @@ import UserAboutmePage from './Pages/UserAboutmePage';
 import UserFeedPage from './Pages/UserFeedPage';
 import UserPlacePage from './Pages/UserPlacePage';
 import NonHeaderLayout from './components/Layout/NonHeaderLayout';
+import FindPasswordPage from './Pages/FindPasswordPage';
+import ResetPasswordPage from './Pages/ResetPasswordPage';
+import ByePage from './Pages/ByePage';
 
 function Router() {
   return (
@@ -16,6 +19,9 @@ function Router() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="*" element={<ErrorPage />} />
+        <Route path="/password/find" element={<FindPasswordPage />} />
+        <Route path="/password/reset" element={<ResetPasswordPage />} />
+        <Route path="/bye" element={<ByePage />} />
       </Route>
 
       <Route element={<Layout displayHeader />}>

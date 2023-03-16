@@ -89,7 +89,7 @@ function ImagePage() {
       </LoginComponent>
       <ImageWrapper>
         <BackgroundImage
-          src="./images/mybuddy_background_nologo.svg"
+          src="/images/mybuddy_background_nologo.svg"
           alt="마이버디 배경"
         />
         <ImageLogo />
