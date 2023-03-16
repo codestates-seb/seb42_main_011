@@ -10,7 +10,17 @@ const StyledFeeds = styled.ul`
   display: grid;
   grid-template-columns: repeat(auto-fill, var(--col-width));
   justify-content: center;
-  gap: 90px;
+  /* gap: 90px; */
+
+  grid-gap: 40px 90px;
+
+  @media (max-width: 1363px) {
+    width: 90vw;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 280px);
+    grid-gap: 0px 1px;
+    padding-left: 30px;
+  }
 `;
 
 function Feeds({ children, onClick, colWidth = '300px' }) {
