@@ -36,7 +36,7 @@ const ButtonContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 10px;
-`
+`;
 
 const dogGender = ['여자', '남자'];
 

@@ -120,7 +120,10 @@ function DropdownGender({ onSelect, defaultDlsplayText = '선택하세요' }) {
       <DropdownLabel>강아지 성별</DropdownLabel>
       <DropdownButton isOpen={isOpen} onClick={handleDropdownToggle}>
         <SelectedOption>
-          {selectedOption === 'man' ? <Man /> : <Woman />}
+          {{
+            man: <Man />,
+            woman: <Woman />,
+          }[selectedOption] || selectedOption}
         </SelectedOption>
         <Down />
       </DropdownButton>

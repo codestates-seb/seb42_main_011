@@ -9,6 +9,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +52,8 @@ public interface BulletinPostMapper {
                     );
                     return commentResponse;
                 }
-                ).collect(Collectors.toList());
+                ).sorted(Comparator.comparingLong(CommentResponseDto::getCommentId).reversed())
+                .collect(Collectors.toList());
 
         //like count, like chosen 추후수정
 //        likeCount = bulletinPostService.getLikeCount(bulletinPostId);
