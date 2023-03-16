@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 // import womanIcon from '../assets/icons/icon-woman.svg';
 import Input from '../components/UI/Input';
-import Dropdown from '../components/UI/Dropdown/Dropdown';
+import DropdownGender from '../components/UI/Dropdown/DropdownGender';
 import Button from '../components/UI/Button';
 
 const FormContainer = styled.div`
@@ -11,6 +11,8 @@ const FormContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  /* min-height: 647px; */
+  min-width: 100px;
 `;
 
 const Title = styled.div`
@@ -26,6 +28,7 @@ const SignupForm = styled.form`
   justify-content: center;
   align-items: stretch;
   row-gap: 20px;
+  margin-bottom: 50px;
 `;
 
 const ButtonContainer = styled.div`
@@ -42,12 +45,12 @@ function SignupPage() {
   <FormContainer>
     <Title>회원가입</Title>
     <SignupForm>
-      <Input variant='large' label='닉네임' id='name' type='text' flexGrow='1' />
-      <Input variant='large' label='이메일' id='email' type='email' flexGrow='1' />
-      <Input variant='large' label='비밀번호' id='password' type='password' flexGrow='1' />
-      <Input variant='large' label='비밀번호 확인' id='password-retype' type='password' flexGrow='1' />
-      <Input variant='large' label='강아지 이름' id='dogname' type='text' flexGrow='1' />
-      <Dropdown id="dropdown" options={dogGender} labelText="강아지 성별" flexGrow='1' />
+      <Input variant='large' label='닉네임' id='name' type='text' />
+      <Input variant='large' label='이메일' id='email' type='email' />
+      <Input variant='large' label='비밀번호' id='password' type='password' />
+      <Input variant='large' label='비밀번호 확인' id='password-retype' type='password' />
+      <Input variant='large' label='강아지 이름' id='dogname' type='text' />
+      <DropdownGender id="dropdown" options={dogGender} labelText="강아지 성별" />
       <ButtonContainer>
         <Button variant='large'>회원가입</Button>
       </ButtonContainer>

@@ -70,8 +70,9 @@ const DropdownButton = styled.button`
   display: flex;
   align-items: center;
   position: relative;
-  width: 605px;
+  width: 100%;
   height: 50px;
+  min-height: 35px;
 
   ${Down} {
     transform: rotate(0deg);
@@ -89,6 +90,7 @@ const DropdownButton = styled.button`
 `;
 
 const DropdownContainer = styled.div`
+  flex-grow: 1;
   position: relative;
   display: inline-block;
   font-size: var(--font-size-16);
@@ -100,6 +102,12 @@ const DropdownContainer = styled.div`
   }
 `;
 
+const DropdownLabel = styled.div`
+  color: var(--color-dark-0);
+  font-weight: 700;
+  margin-bottom: 10px;
+`;
+
 function DropdownGender({ onSelect, defaultDlsplayText = '선택하세요' }) {
   const [isOpen, selectedOption, handleDropdownToggle, handleOptionSelect] =
     useDropdown({
@@ -109,6 +117,7 @@ function DropdownGender({ onSelect, defaultDlsplayText = '선택하세요' }) {
 
   return (
     <DropdownContainer>
+      <DropdownLabel>강아지 성별</DropdownLabel>
       <DropdownButton isOpen={isOpen} onClick={handleDropdownToggle}>
         <SelectedOption>
           {selectedOption === 'man' ? <Man /> : <Woman />}

@@ -6,21 +6,33 @@ import { ReactComponent as MybuddyLogo } from '../assets/logo/logo_navy.svg';
 const LoginWrapper = styled.section`
   display: flex;
   justify-content: space-between;
+  /* min-height: 573px; */
+  min-width: 415px;
+  /* @media screen and (max-width: 800px){
+    min-width: 400px;
+  } */
 `;
 const LoginComponent = styled.div`
   flex-grow: 2;
   width: 55vw;
   padding: 20px 53px;
   position: relative;
-  @media screen and (max-height: 700px) {
+  /* @media screen and (max-height: 700px) {
     height: 573px;
   }
   @media screen and (min-height: 701px) {
     height: calc(100vh - 133px);
+  } */
+  overflow-y: scroll;
+  ::-webkit-scrollbar {
+    background: none;
   }
 `;
 
 const ImageWrapper = styled.aside`
+  @media screen and (max-width: 800px) {
+    display: none;
+  }
   flex-grow: 0;
   position: relative;
   width: 45vw;
@@ -30,12 +42,12 @@ const ImageWrapper = styled.aside`
 
 const BackgroundImage = styled.img`
   width: 100%;
-  @media screen and (max-height: 700px) {
+  /* @media screen and (max-height: 700px) {
     height: 573px;
   }
   @media screen and (min-height: 701px) {
     height: calc(100vh - 133px);
-  }
+  } */
   object-fit: cover;
   flex-grow: 1;
   height: 90vh;
