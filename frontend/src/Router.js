@@ -8,6 +8,7 @@ import UserAboutmePage from './Pages/UserAboutmePage';
 import UserFeedPage from './Pages/UserFeedPage';
 import UserPlacePage from './Pages/UserPlacePage';
 import NonHeaderLayout from './components/Layout/NonHeaderLayout';
+import FriendSearchPage from './Pages/FriendSearchPage';
 
 function Router() {
   return (
@@ -20,6 +21,7 @@ function Router() {
 
       <Route element={<Layout displayHeader />}>
         <Route path="/" element={<HomePage />} />
+        <Route path="/friend" element={<FriendSearchPage />} />
       </Route>
 
       <Route element={<Layout displayHeader displayProfile displayFlex />}>
