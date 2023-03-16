@@ -1,5 +1,6 @@
 package com.mybuddy.global.mockdata;
 
+import com.mybuddy.amenity.dto.AmenityMyPageResponse;
 import com.mybuddy.amenity.dto.AmenityResponseDto;
 import com.mybuddy.amenity.entity.Amenity;
 import com.mybuddy.bulletin_post.dto.BulletinPostDto;
@@ -148,15 +149,15 @@ public class MockTestData {
             return List.of(bulletinPostDto1, bulletinPostDto2);
         }
 
-        public static List<MyAmenityDto> getMyAmenityDtos() {
-            MyAmenityDto amenityDto1 = MyAmenityDto.builder()
+        public static List<AmenityMyPageResponse> getMyAmenityDtos() {
+            AmenityMyPageResponse amenityDto1 = AmenityMyPageResponse.builder()
                     .amenityId(1L)
                     .amenityName("애견카페1")
                     .address("서울시 강북구 xx")
                     .photoUrl("www.dog-cafe1.com/map.png")
                     .build();
 
-            MyAmenityDto amenityDto2 = MyAmenityDto.builder()
+            AmenityMyPageResponse amenityDto2 = AmenityMyPageResponse.builder()
                     .amenityId(2L)
                     .amenityName("애견카페2")
                     .address("서울시 강북구 xx")

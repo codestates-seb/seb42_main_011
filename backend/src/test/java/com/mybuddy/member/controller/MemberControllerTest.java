@@ -1,6 +1,7 @@
 package com.mybuddy.member.controller;
 
 import com.google.gson.Gson;
+import com.mybuddy.amenity.service.AmenityService;
 import com.mybuddy.global.mockdata.MockTestData;
 import com.mybuddy.member.dto.*;
 import com.mybuddy.member.entity.Member;
@@ -61,6 +62,9 @@ public class MemberControllerTest {
 
     @MockBean
     private MemberMapper mapper;
+
+    @MockBean
+    private AmenityService amenityService;
 
     @Autowired
     private Gson gson;
@@ -219,7 +223,7 @@ public class MemberControllerTest {
 
         given(memberService.getMember(Mockito.anyLong()))
                 .willReturn(new Member());
-        given(mapper.memberToMemberResponseDto(Mockito.any(Member.class)))
+        given(mapper.memberToMemberResponseDto(Mockito.any(Member.class), Mockito.any(AmenityService.class)))
                 .willReturn(responseDto);
 
         // When
