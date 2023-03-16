@@ -6,7 +6,7 @@ import Input from '../components/UI/Input';
 import DropdownGender from '../components/UI/Dropdown/DropdownGender';
 import Button from '../components/UI/Button';
 
-const FormContainer = styled.div`
+const FormContainer = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;

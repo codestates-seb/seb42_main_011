@@ -29,6 +29,9 @@ const LoginComponent = styled.div`
   ::-webkit-scrollbar {
     background: none;
   } */
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
 `;
 
 const ImageWrapper = styled.aside`
@@ -40,6 +43,7 @@ const ImageWrapper = styled.aside`
   width: 45vw;
   display: flex;
   flex-direction: column;
+  height: inherit;
 `;
 
 const BackgroundImage = styled.img`
@@ -52,8 +56,9 @@ const BackgroundImage = styled.img`
   } */
   object-fit: cover;
   flex-grow: 1;
-  height: 90vh;
-  /* max-height: calc(100vh - 130px); */
+  /* height: 85vh; */
+  
+  height: calc(100vh - 133px);
   object-fit: cover;
   overflow-clip-margin: content-box;
   overflow: clip;
