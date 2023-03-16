@@ -1,5 +1,6 @@
 package com.mybuddy.member.controller;
 
+import com.mybuddy.amenity.service.AmenityService;
 import com.mybuddy.global.utils.ApiMultiResponse;
 import com.mybuddy.global.utils.ApiSingleResponse;
 import com.mybuddy.global.utils.UriMaker;
@@ -32,6 +33,7 @@ public class MemberController {
     private final String MEMBER_DEFAULT_URL = "/api/v1/members";
 
     private final MemberService memberService;
+    private final AmenityService amenityService;
 
     private final MemberMapper mapper;
 
@@ -62,7 +64,7 @@ public class MemberController {
     @GetMapping("/{member-id}")
     public ResponseEntity<ApiSingleResponse> getMember(@Positive @PathVariable("member-id") Long memberId) {
         return new ResponseEntity(new ApiSingleResponse<>(HttpStatus.OK, "회원 정보입니다.",
-                mapper.memberToMemberResponseDto(memberService.getMember(memberId))), HttpStatus.OK);
+                mapper.memberToMemberResponseDto(memberService.getMember(memberId), amenityService)), HttpStatus.OK);
     }
 
     @GetMapping

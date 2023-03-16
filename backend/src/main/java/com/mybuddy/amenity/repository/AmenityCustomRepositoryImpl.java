@@ -59,4 +59,21 @@ public class AmenityCustomRepositoryImpl implements AmenityCustomRepository{
 
         return amenities;
     }
+
+    @Override
+    public List<Amenity> findByMemberId(Long memberId) {
+
+        QAmenity amenity = QAmenity.amenity;
+        QBulletinPost bulletinPost = QBulletinPost.bulletinPost;
+
+        return queryFactory
+                .select(amenity)
+                .distinct()
+                .from(amenity)
+                .leftJoin(bulletinPost)
+                .on(bulletinPost.amenity.amenityId.eq(amenity.amenityId))
+                .where(bulletinPost.member.memberId.eq(memberId))
+                .orderBy(amenity.amenityId.desc())
+                .fetch();
+    }
 }

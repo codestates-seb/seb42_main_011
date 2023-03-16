@@ -1,5 +1,6 @@
 package com.mybuddy.member.dto;
 
+import com.mybuddy.amenity.dto.AmenityMyPageResponse;
 import com.mybuddy.member.entity.Member.DogGender;
 
 import java.util.List;
@@ -30,12 +31,12 @@ public class MemberResponseDto {
 
     private List<MyBulletinPostDto> myBulletinPostDtos;
 
-    private List<MyAmenityDto> myAmenityDtos;
+    private List<AmenityMyPageResponse> myAmenityDtos;
 
     @Builder
     public MemberResponseDto(String nickname, String dogName, DogGender dogGender,
                              String aboutMe, Long followerNumber, Long followeeNumber, String profileUrl,
-                             List<MyBulletinPostDto> myBulletinPostDtos, List<MyAmenityDto> myAmenityDtos) {
+                             List<MyBulletinPostDto> myBulletinPostDtos, List<AmenityMyPageResponse> myAmenityDtos) {
         this.nickname = nickname;
         this.dogName = dogName;
         this.dogGender = dogGender;

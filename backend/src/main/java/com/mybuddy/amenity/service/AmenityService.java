@@ -1,6 +1,7 @@
 package com.mybuddy.amenity.service;
 
 import com.mybuddy.amenity.dto.AmenityCreateDto;
+import com.mybuddy.amenity.dto.AmenityMyPageResponse;
 import com.mybuddy.amenity.dto.AmenityResponseDto;
 import com.mybuddy.amenity.entity.Amenity;
 import com.mybuddy.amenity.mapper.AmenityMapper;
@@ -14,9 +15,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AmenityService {
 
@@ -42,28 +45,48 @@ public class AmenityService {
             return obtainedAmenity;
     }
 
-    @Transactional
     public Amenity createAmenity(AmenityCreateDto amenityCreateDto) {
         Amenity amenity = amenityMapper.amenityCreateDtoToAmenity(amenityCreateDto);
         return amenityRepository.save(amenity);
     }
 
-    @Transactional
     public Page<BulletinPost> findTaggedBulletinPostList(Long amenityId, int page, int size) {
 
         return bulletinPostRepository.findByAmenityId(amenityId,
                 PageRequest.of(page, size, Sort.by("bulletinPostId").descending()));
     }
 
-    @Transactional
     public Amenity getAmenityInfo(Long amenityId) {
         return amenityRepository.findById(amenityId).orElseThrow(()-> new RuntimeException("amenity data가 없다."));
     }
 
-    @Transactional
     public List<AmenityResponseDto> getRecommendAmenities(String state, String region){
 
         List<AmenityResponseDto> recommendAmenities = amenityRepository.findByStateRegion(state,region);
         return recommendAmenities;
+    }
+
+    public List<AmenityMyPageResponse> getMemberAmenity(Long memberId) {
+
+        List<Amenity> memberAmenityList = amenityRepository.findByMemberId(memberId);
+
+        //반환 데이터 생성
+        List<AmenityMyPageResponse> myPageAmenityList = new ArrayList<>( memberAmenityList.size() );
+
+        for (int i=0; i<memberAmenityList.size(); i++ ) {
+            Amenity amenity = memberAmenityList.get(i);
+
+            int bulletinPostCount = amenity.getBulletinPostList().size();
+            myPageAmenityList.add(
+                    AmenityMyPageResponse.builder()
+                            .amenityId(amenity.getAmenityId())
+                            .amenityName(amenity.getAmenityName())
+                            .address(amenity.getAddress())
+                            .photoUrl(amenity.getBulletinPostList().get(bulletinPostCount-1).getPhotoUrl())
+                            .build()
+            );
+        }
+
+        return myPageAmenityList;
     }
 }

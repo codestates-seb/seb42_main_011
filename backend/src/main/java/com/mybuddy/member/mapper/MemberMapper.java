@@ -1,5 +1,7 @@
 package com.mybuddy.member.mapper;
 
+import com.mybuddy.amenity.dto.AmenityMyPageResponse;
+import com.mybuddy.amenity.service.AmenityService;
 import com.mybuddy.member.dto.*;
 import com.mybuddy.member.entity.Member;
 
@@ -17,7 +19,7 @@ public interface MemberMapper {
 
     Member memberPatchDtoToMember(MemberPatchDto patchDto);
 
-    default MemberResponseDto memberToMemberResponseDto(Member member) {
+    default MemberResponseDto memberToMemberResponseDto(Member member, AmenityService amenityService) {
         if (member == null) {
             return null;
         }
@@ -29,15 +31,7 @@ public interface MemberMapper {
                         .build())
                 .collect(Collectors.toList());
 
-        List<MyAmenityDto> myAmenityDtos = member.getBulletinPosts().stream()
-                .map(bulletinPost -> bulletinPost.getAmenity())
-                .map(amenity -> MyAmenityDto.builder()
-                        .amenityId(amenity.getAmenityId())
-                        .amenityName(amenity.getAmenityName())
-                        .address(amenity.getAddress())
-                        .photoUrl(null) // Amenity에 photoUrl 추가 필요.
-                        .build())
-                .collect(Collectors.toList());
+        List<AmenityMyPageResponse> myAmenities = amenityService.getMemberAmenity(member.getMemberId());
 
         MemberResponseDto memberResponseDto = MemberResponseDto.builder()
                 .nickname(member.getNickname())
@@ -48,7 +42,7 @@ public interface MemberMapper {
                 .followeeNumber(null)
                 .profileUrl(member.getProfileUrl())
                 .myBulletinPostDtos(myBulletinPostDtos)
-                .myAmenityDtos(myAmenityDtos)
+                .myAmenityDtos(myAmenities)
                 .build();
 
         return memberResponseDto;
