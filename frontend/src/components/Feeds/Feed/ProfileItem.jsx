@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const ProfileBox = styled.li`
-  flex: 0 0 226px;
+  width: 226px;
 
   display: flex;
   flex-direction: column;
@@ -14,17 +14,18 @@ const ProfileBox = styled.li`
   border: var(--border);
   border-radius: 110px 110px 5px 5px;
 
-  /* 프로필 사진 */
-  background-image: url(${props => props.url});
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-
   /* 호버 */
   &:hover {
     transform: translate(-0.25rem, -0.25rem);
     box-shadow: 3px 3px 0 0 var(--color-dark-0);
   }
+`;
+
+const ProifleImage = styled.img`
+  object-fit: cover;
+  object-position: center;
+  width: inherit;
+  height: inherit;
 `;
 
 const ProfileName = styled.div`
@@ -54,11 +55,12 @@ const ProfileName = styled.div`
   }
 `;
 
-function ProfileItem({ photoUrl, dogName }) {
+function ProfileItem({ memberId, photoUrl, name }) {
   return (
-    <ProfileBox url={photoUrl}>
+    <ProfileBox data-member-id={memberId}>
+      <ProifleImage src={photoUrl} alt={`${name} 프로필 사진`} />
       <ProfileName>
-        {dogName}
+        {name}
         <div className="profileitem__svg--button">
           <img src="icon/arrow-right.svg" alt="" />
         </div>

@@ -1,24 +1,55 @@
 import React from 'react';
-import styled from 'styled-components';
+import { useLocation } from 'react-router-dom';
+import styled, { css } from 'styled-components';
 
 const StyledFeeds = styled.ul`
+  ${({ colWidth }) =>
+    css`
+      --col-width: ${colWidth};
+    `}
+
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fill, var(--col-width));
   justify-content: center;
-  gap: 90px;
+  grid-gap: 40px 90px;
 
-  @media (max-width: 1600px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  ${({ location }) =>
+    location.pathname === '/' &&
+    css`
+      @media (max-width: 1363px) {
+        width: 90vw;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 280px);
+        padding-left: 30px;
+        grid-gap: 0px 1px;
+      }
+    `}
 
-  @media (max-width: 1200px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 48px;
-  }
+  ${({ location }) =>
+    location.pathname === '/friend' &&
+    css`
+      width: 90vw;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 280px);
+      grid-gap: 51px 0px;
+      @media (max-width: 1433px) and (min-width: 1363px) {
+        padding-left: 0px;
+        margin-left: -6%;
+      }
+      @media (max-width: 1363px) {
+        padding-left: 25px;
+      }
+    `}
 `;
 
-function Feeds({ children }) {
-  return <StyledFeeds>{children}</StyledFeeds>;
+function Feeds({ children, onClick, colWidth = '300px' }) {
+  const location = useLocation();
+
+  return (
+    <StyledFeeds colWidth={colWidth} onClick={onClick} location={location}>
+      {children}
+    </StyledFeeds>
+  );
 }
 
 export default Feeds;
