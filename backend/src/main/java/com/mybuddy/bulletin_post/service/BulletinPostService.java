@@ -7,6 +7,7 @@ import com.mybuddy.comment.entity.Comment;
 import com.mybuddy.comment.service.CommentService;
 import com.mybuddy.global.storage.StorageService;
 import com.mybuddy.global.utils.CustomBeanUtils;
+import com.mybuddy.like.entity.Like;
 import com.mybuddy.member.entity.Member;
 import com.mybuddy.member.service.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -123,19 +124,19 @@ public class BulletinPostService {
 
         Optional<Page<BulletinPost>> optionalPage = bulletinPostRepository.findByMemberMemberId(memberId, pageable);
 
-        Page<BulletinPost> findPage =
+        Page<BulletinPost> bulletinPostPage =
                 optionalPage.orElseThrow(() ->
                         new RuntimeException());
 
-        return findPage;
+        return bulletinPostPage;
     }
 
 
     public void deleteBulletinPost(long bulletinPostId) {
 
-        BulletinPost findBulletinPost = findVerifiedBulletinPost(bulletinPostId);
+        BulletinPost obtainedBulletinPost = findVerifiedBulletinPost(bulletinPostId);
 
-        bulletinPostRepository.delete(findBulletinPost);
+        bulletinPostRepository.delete(obtainedBulletinPost);
     }
 
 
@@ -144,11 +145,11 @@ public class BulletinPostService {
         Optional<BulletinPost> optionalBulletinPost =
                 bulletinPostRepository.findById(bulletinPostId);
 
-        BulletinPost findBulletinPost =
+        BulletinPost obtainedBulletinPost =
                 optionalBulletinPost.orElseThrow(() ->
                         new RuntimeException());
 
-        return findBulletinPost;
+        return obtainedBulletinPost;
     }
 
     public long getCommentCount(long bulletinPostId) {
@@ -161,20 +162,23 @@ public class BulletinPostService {
         return commentCount;
     }
 
-//    public long getLikeCount(long bulletinPostId) {
-//
-//        BulletinPost bulletinPost = findVerifiedBulletinPost(bulletinPostId);
-//        List<Like> likeList = bulletinPost.getLikeList();
-//        long likeCount = likeList.size();
-//
-//        return likeCount;
-//    }
+    public long getLikeCount(long bulletinPostId) {
 
-//    이렇게 해야할지 아니면 아예 likeservice 에서 findExistLikeByMemberId를 getLikeChosen 메서드명으로 해서 바로 소환해야할지..?
-//    public long getLikeChosen(long bulletinPostId, long memberId) {
+        //일단은 리스트째로 가져왔는데 like 세오는 쿼리문 만들기.
+        BulletinPost bulletinPost = findVerifiedBulletinPost(bulletinPostId);
+        List<Like> likeList = bulletinPost.getLikes();
+        if (likeList.isEmpty()) return 0;
+        else {
+            return likeList.size();
+        }
+    }
+
+
+
+//    public long getLikeByUser(long bulletinPostId, long memberId) {
 //
-//        //이 메서드 결과 값을 if로 나눠서 0 또는 1로
-//        long OneIfExist = likeService.findExistLikeByMemberId(long bulletinPostId, long memberId);
+//        //이 메서드 결과 값을 if로 나눠서 0 또는 1로?
+//        long OneIfExist = likeService.findExistLikeByMemberId( bulletinPostId, memberId);
 //
 //        return OneIfExist;
 //    }
