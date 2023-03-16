@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 const UserTab = styled.div`
   width: 100%;
@@ -30,7 +30,7 @@ const LinkStyle = styled.li`
   border-right: var(--border);
   &:hover {
     color: var(--color-light-0);
-    background-color: var(--color-primary);
+    background-color: var(--color-dark-2);
   }
   &:last-child {
     border-right: none;
@@ -63,6 +63,7 @@ const Menu = styled.div`
 `;
 
 function UserTabMenu() {
+  const location = useLocation();
   return (
     <UserTab>
       <Tabmenu>
@@ -70,7 +71,9 @@ function UserTabMenu() {
           <NavLink
             end
             className={({ isActive }) => (isActive ? 'selected' : '')}
-            to="/mypage"
+            to={
+              location.pathname.includes('/mypage') ? '/mypage' : '/friendpage'
+            }
           >
             <Menu>소개</Menu>
           </NavLink>
@@ -79,7 +82,11 @@ function UserTabMenu() {
           <NavLink
             end
             className={({ isActive }) => (isActive ? 'selected' : '')}
-            to="/mypage/feed"
+            to={
+              location.pathname.includes('/mypage')
+                ? '/mypage/feed'
+                : '/friendpage/feed'
+            }
           >
             <Menu>일기</Menu>
           </NavLink>
@@ -88,7 +95,11 @@ function UserTabMenu() {
           <NavLink
             end
             className={({ isActive }) => (isActive ? 'selected' : '')}
-            to="/mypage/place"
+            to={
+              location.pathname.includes('/mypage')
+                ? '/mypage/place'
+                : '/friendpage/place'
+            }
           >
             <Menu>추천</Menu>
           </NavLink>
