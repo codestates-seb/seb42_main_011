@@ -1,11 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import HomeLogo from '../../assets/logo/home_logo.svg';
+import useInputs from '../../hooks/useInputs';
+import SearchInput from '../UI/SearchInput/SearchInput';
+import DropdownFriend from '../UI/Dropdown/DropdownFriend';
 
-const Container = styled.div`
+const FeedHeader = styled.section`
   width: 100%;
+  height: 180px;
   display: flex;
-  flex-direction: column;
   align-self: flex-start;
   position: -webkit-sticky;
   position: sticky;
@@ -13,6 +16,18 @@ const Container = styled.div`
   background-color: var(--color-light-0);
   z-index: 99;
   padding-bottom: 16px;
+`;
+
+const FeedHeaderConatiner = styled.div`
+  width: 100%;
+  position: relative;
+  display: flex;
+`;
+
+const TitleContainer = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Title = styled.h2`
@@ -36,14 +51,61 @@ const PageDescription = styled.p`
   padding-top: 32px;
 `;
 
-function FeedsTitle({ title, description }) {
+const FriendSearchForm = styled.form`
+  position: relative;
+  top: 50%;
+  left: calc(50% - 164px);
+`;
+
+const FriendSearchInput = styled(SearchInput)`
+  flex: 0 1 500px;
+
+  height: 50px;
+`;
+
+function FeedsTitle({ title, description, serachOptions, onSearch }) {
+  const [form, onChange, reset] = useInputs({
+    search: '',
+  });
+
+  const handleSubmit = event => {
+    if (event.key === 'Enter') {
+      onSearch({ searchValue: form.search });
+      reset();
+    }
+  };
+
+  const isDisplaySearchInput = () => {
+    if (onSearch && typeof onSearch === 'function') {
+      return true;
+    }
+
+    return false;
+  };
+
   return (
-    <Container>
-      <Title>
-        <LogoImage src={HomeLogo} alt={title} />
-      </Title>
-      <PageDescription>{description}</PageDescription>
-    </Container>
+    <FeedHeader>
+      <FeedHeaderConatiner>
+        <TitleContainer>
+          <Title>
+            <LogoImage src={HomeLogo} alt={title} />
+          </Title>
+          <PageDescription>{description}</PageDescription>
+        </TitleContainer>
+        {isDisplaySearchInput() && (
+          <FriendSearchForm>
+            <DropdownFriend options={serachOptions} />
+            <FriendSearchInput
+              onKeyDown={handleSubmit}
+              name="search"
+              id="search"
+              placeholder="검색"
+              onChange={onChange}
+            />
+          </FriendSearchForm>
+        )}
+      </FeedHeaderConatiner>
+    </FeedHeader>
   );
 }
 

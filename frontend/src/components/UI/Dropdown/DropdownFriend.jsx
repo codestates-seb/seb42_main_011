@@ -8,7 +8,7 @@ const DropdownListItem = styled.li`
   display: flex;
   align-items: center;
   width: 91px;
-  height: 30px;
+  height: 50px;
 
   border-left: var(--border);
   border-right: var(--border);
@@ -46,7 +46,7 @@ const DropdownButton = styled.button`
   align-items: center;
   position: relative;
   width: 91px;
-  height: 30px;
+  height: 50px;
 
   svg {
     transform: rotate(0deg);
@@ -85,17 +85,21 @@ function DropdownFriend({
       defaultDlsplayText,
     });
 
+  const displaySelectedText =
+    options.filter(option => option.value === selectedOption)[0]?.name ||
+    defaultDlsplayText;
+
   return (
     <DropdownContainer>
       <DropdownButton isOpen={isOpen} onClick={handleDropdownToggle}>
-        <SelectedOption>{selectedOption}</SelectedOption>
+        <SelectedOption>{displaySelectedText}</SelectedOption>
         <IconDown />
       </DropdownButton>
       {isOpen && (
         <DropdownList onClick={handleOptionSelect}>
-          {options.map(option => (
-            <DropdownListItem data-dropdown-option={option} key={option}>
-              {option}
+          {options.map(({ name, value }) => (
+            <DropdownListItem data-dropdown-option={value} key={value}>
+              {name}
             </DropdownListItem>
           ))}
         </DropdownList>
