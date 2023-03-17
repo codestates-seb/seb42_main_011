@@ -250,14 +250,14 @@ public class MemberControllerTest {
                         .value(responseDto.getFolloweeNumber()))
                 .andExpect(jsonPath("$.data.profileUrl")
                         .value(responseDto.getProfileUrl()))
-                .andExpect(jsonPath("$.data.myBulletinPostDtos[0].bulletinPostId")
-                        .value(responseDto.getMyBulletinPostDtos().get(0).getBulletinPostId()))
-                .andExpect(jsonPath("$.data.myBulletinPostDtos[1].bulletinPostId")
-                        .value(responseDto.getMyBulletinPostDtos().get(1).getBulletinPostId()))
-                .andExpect(jsonPath("$.data.myAmenityDtos[0].amenityId")
-                        .value(responseDto.getMyAmenityDtos().get(0).getAmenityId()))
-                .andExpect(jsonPath("$.data.myAmenityDtos[1].amenityId")
-                        .value(responseDto.getMyAmenityDtos().get(1).getAmenityId()))
+                .andExpect(jsonPath("$.data.bulletinPostForMyPageResponseDtos[0].bulletinPostId")
+                        .value(responseDto.getBulletinPostForMyPageResponseDtos().get(0).getBulletinPostId()))
+                .andExpect(jsonPath("$.data.bulletinPostForMyPageResponseDtos[1].bulletinPostId")
+                        .value(responseDto.getBulletinPostForMyPageResponseDtos().get(1).getBulletinPostId()))
+                .andExpect(jsonPath("$.data.amenityForMyPageResponseDtos[0].amenityId")
+                        .value(responseDto.getAmenityForMyPageResponseDtos().get(0).getAmenityId()))
+                .andExpect(jsonPath("$.data.amenityForMyPageResponseDtos[1].amenityId")
+                        .value(responseDto.getAmenityForMyPageResponseDtos().get(1).getAmenityId()))
                 .andDo(document("get-member",
                         preprocessResponse(prettyPrint()),
                         pathParameters(
@@ -295,24 +295,27 @@ public class MemberControllerTest {
                                         fieldWithPath("data.profileUrl")
                                                 .type(JsonFieldType.STRING)
                                                 .description("Profile URL 주소"),
-                                        fieldWithPath("data.myBulletinPostDtos[].bulletinPostId")
+                                        fieldWithPath("data.bulletinPostForMyPageResponseDtos[].bulletinPostId")
                                                 .type(JsonFieldType.NUMBER)
                                                 .description("게시물 식별자"),
-                                        fieldWithPath("data.myBulletinPostDtos[].photoUrl")
+                                        fieldWithPath("data.bulletinPostForMyPageResponseDtos[].photoUrl")
                                                 .type(JsonFieldType.STRING)
                                                 .description("게시물 사진 URL"),
-                                        fieldWithPath("data.myAmenityDtos[].amenityId")
+                                        fieldWithPath("data.amenityForMyPageResponseDtos[].amenityId")
                                                 .type(JsonFieldType.NUMBER)
                                                 .description("편의시설 식별자"),
-                                        fieldWithPath("data.myAmenityDtos[].amenityName")
+                                        fieldWithPath("data.amenityForMyPageResponseDtos[].amenityName")
                                                 .type(JsonFieldType.STRING)
                                                 .description("편의시설 이름"),
-                                        fieldWithPath("data.myAmenityDtos[].address")
+                                        fieldWithPath("data.amenityForMyPageResponseDtos[].address")
                                                 .type(JsonFieldType.STRING)
                                                 .description("편의시설 주소"),
-                                        fieldWithPath("data.myAmenityDtos[].photoUrl")
+                                        fieldWithPath("data.amenityForMyPageResponseDtos[].photoUrl")
                                                 .type(JsonFieldType.STRING)
-                                                .description("편의시설 사진 URL")
+                                                .description("편의시설 사진 URL"),
+                                        fieldWithPath("data.amenityForMyPageResponseDtos[].postCreatedAt")
+                                                .type(JsonFieldType.STRING)
+                                                .description("편의시설 추천한 게시물 등록 시간 (내부용)")
                                 )
                         )
                 ));

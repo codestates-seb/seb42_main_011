@@ -1,8 +1,10 @@
 package com.mybuddy.global.mockdata;
 
+import com.mybuddy.amenity.dto.AmenityForMyPageResponseDto;
 import com.mybuddy.amenity.dto.AmenityResponseDto;
 import com.mybuddy.amenity.entity.Amenity;
 import com.mybuddy.bulletin_post.dto.BulletinPostDto;
+import com.mybuddy.bulletin_post.dto.BulletinPostForMyPageResponseDto;
 import com.mybuddy.comment.entity.Comment;
 import com.mybuddy.follow.dto.FollowResponseDto;
 import com.mybuddy.follow.entity.Follow;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -188,13 +191,13 @@ public class MockTestData {
                     .build();
         }
 
-        public static List<MyBulletinPostDto> getMyBulletinPostDtos() {
-            MyBulletinPostDto bulletinPostDto1 = MyBulletinPostDto.builder()
+        public static List<BulletinPostForMyPageResponseDto> getBulletinPostForMyPageResponseDtos() {
+            BulletinPostForMyPageResponseDto bulletinPostDto1 = BulletinPostForMyPageResponseDto.builder()
                     .bulletinPostId(1L)
                     .photoUrl("www.mybuddy.com/another-bamtol1.png")
                     .build();
 
-            MyBulletinPostDto bulletinPostDto2 = MyBulletinPostDto.builder()
+            BulletinPostForMyPageResponseDto bulletinPostDto2 = BulletinPostForMyPageResponseDto.builder()
                     .bulletinPostId(2L)
                     .photoUrl("www.mybuddy.com/another-bamtol2.png")
                     .build();
@@ -202,19 +205,21 @@ public class MockTestData {
             return List.of(bulletinPostDto1, bulletinPostDto2);
         }
 
-        public static List<MyAmenityDto> getMyAmenityDtos() {
-            MyAmenityDto amenityDto1 = MyAmenityDto.builder()
+        public static List<AmenityForMyPageResponseDto> getAmenityForMyPageResponseDtos() {
+            AmenityForMyPageResponseDto amenityDto1 = AmenityForMyPageResponseDto.builder()
                     .amenityId(1L)
                     .amenityName("애견카페1")
                     .address("서울시 강북구 xx")
                     .photoUrl("www.dog-cafe1.com/map.png")
+                    .postCreatedAt(LocalDateTime.now())
                     .build();
 
-            MyAmenityDto amenityDto2 = MyAmenityDto.builder()
+            AmenityForMyPageResponseDto amenityDto2 = AmenityForMyPageResponseDto.builder()
                     .amenityId(2L)
                     .amenityName("애견카페2")
                     .address("서울시 강북구 xx")
                     .photoUrl("www.dog-cafe2.com/map.png")
+                    .postCreatedAt(LocalDateTime.now())
                     .build();
 
             return List.of(amenityDto1, amenityDto2);
@@ -229,8 +234,8 @@ public class MockTestData {
                     .followerNumber(0L)
                     .followeeNumber(0L)
                     .profileUrl("www.mybuddy.com/bamtol-the-king.png")
-                    .myBulletinPostDtos(getMyBulletinPostDtos())
-                    .myAmenityDtos(getMyAmenityDtos())
+                    .bulletinPostForMyPageResponseDtos(getBulletinPostForMyPageResponseDtos())
+                    .amenityForMyPageResponseDtos(getAmenityForMyPageResponseDtos())
                     .build();
         }
 
