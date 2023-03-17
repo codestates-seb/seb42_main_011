@@ -379,6 +379,10 @@ public class MemberControllerTest {
                         .value(listResponseDtos.get(0).getProfileUrl()))
                 .andExpect(jsonPath("$.data[1].profileUrl")
                         .value(listResponseDtos.get(1).getProfileUrl()))
+                .andExpect(jsonPath("$.data[0].memberStatus")
+                        .value(listResponseDtos.get(0).getMemberStatus().toString()))
+                .andExpect(jsonPath("$.data[1].memberStatus")
+                        .value(listResponseDtos.get(1).getMemberStatus().toString()))
                 .andDo(document("get-members-for-admin",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
@@ -420,6 +424,9 @@ public class MemberControllerTest {
                                         fieldWithPath("data[].profileUrl")
                                                 .type(JsonFieldType.STRING)
                                                 .description("Profile URL 주소"),
+                                        fieldWithPath("data[].memberStatus")
+                                                .type(JsonFieldType.STRING)
+                                                .description("회원 계정 활성 상태"),
                                         fieldWithPath("pageInfo.page")
                                                 .type(JsonFieldType.NUMBER)
                                                 .description("현재 페이지"),

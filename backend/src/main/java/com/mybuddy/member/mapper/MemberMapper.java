@@ -102,6 +102,7 @@ public interface MemberMapper {
                 .followerNumber(numberOfUserAsFollowee)
                 .followeeNumber(numberOfUserAsFollower)
                 .profileUrl(member.getProfileUrl())
+                .memberStatus(member.getMemberStatus())
                 .build();
 
         return memberListResponseDto;

@@ -246,6 +246,7 @@ public class MockTestData {
                     .followerNumber(0L)
                     .followeeNumber(0L)
                     .profileUrl("www.mybuddy.com/bamtol-the-king.png")
+                    .memberStatus(Member.MemberStatus.ACTIVE)
                     .build();
 
             MemberListResponseDto listResponseDto2 = MemberListResponseDto.builder()
@@ -254,6 +255,7 @@ public class MockTestData {
                     .followerNumber(0L)
                     .followeeNumber(0L)
                     .profileUrl("www.mybuddy.com/ordinary-dog.png")
+                    .memberStatus(Member.MemberStatus.ACTIVE)
                     .build();
 
             return List.of(listResponseDto1, listResponseDto2);
