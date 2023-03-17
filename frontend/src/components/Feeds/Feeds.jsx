@@ -18,7 +18,6 @@ const StyledFeeds = styled.ul`
     css`
       @media (max-width: 1363px) {
         width: 90vw;
-        display: grid;
         grid-template-columns: repeat(auto-fill, 280px);
         padding-left: 30px;
         grid-gap: 0px 1px;
@@ -32,13 +31,6 @@ const StyledFeeds = styled.ul`
       display: grid;
       grid-template-columns: repeat(auto-fill, 280px);
       grid-gap: 51px 0px;
-      @media (max-width: 1433px) and (min-width: 1363px) {
-        padding-left: 0px;
-        margin-left: -6%;
-      }
-      @media (max-width: 1363px) {
-        padding-left: 25px;
-      }
     `}
 `;
 
