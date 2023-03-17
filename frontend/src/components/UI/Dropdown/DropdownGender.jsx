@@ -28,7 +28,7 @@ const DropdownListItem = styled.li`
   display: flex;
   align-items: center;
   width: 605px;
-  height: 50px;
+  min-height: 40px;
 
   &:hover {
     color: var(--color-light-0);
@@ -70,8 +70,9 @@ const DropdownButton = styled.button`
   display: flex;
   align-items: center;
   position: relative;
-  width: 605px;
-  height: 50px;
+  width: 100%;
+  height: 40px;
+  min-height: 35px;
 
   ${Down} {
     transform: rotate(0deg);
@@ -89,6 +90,7 @@ const DropdownButton = styled.button`
 `;
 
 const DropdownContainer = styled.div`
+  flex-grow: 1;
   position: relative;
   display: inline-block;
   font-size: var(--font-size-16);
@@ -98,6 +100,19 @@ const DropdownContainer = styled.div`
     text-align: left;
     padding: 0 15px;
   }
+  min-height: 40px;
+  @media screen and (min-height: 1050px){
+    height: 50px;
+  }
+  @media screen and (min-width: 1174px){
+    width: 480px;
+  }
+`;
+
+const DropdownLabel = styled.div`
+  color: var(--color-dark-0);
+  font-weight: 700;
+  margin-bottom: 10px;
 `;
 
 function DropdownGender({ onSelect, defaultDlsplayText = '선택하세요' }) {
@@ -109,6 +124,7 @@ function DropdownGender({ onSelect, defaultDlsplayText = '선택하세요' }) {
 
   return (
     <DropdownContainer>
+      <DropdownLabel>강아지 성별</DropdownLabel>
       <DropdownButton isOpen={isOpen} onClick={handleDropdownToggle}>
         <SelectedOption>
           {{
