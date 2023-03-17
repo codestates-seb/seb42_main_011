@@ -129,7 +129,7 @@ public class MockTestData {
 
         public static Member getSecondMember() {
             return Member.builder()
-                    .memberId(2L)
+                    .memberId(3L)
                     .email("hgd@mybuddy.com")
                     .password("asdf1234")
                     .nickname("홍길동")
@@ -143,7 +143,7 @@ public class MockTestData {
 
         public static List<Member> getMemberList() {
             Member member1 = Member.builder()
-                    .memberId(1L)
+                    .memberId(2L)
                     .email("kimcoding@mybuddy.com")
                     .password("asdf1234")
                     .nickname("김코딩")
@@ -155,7 +155,7 @@ public class MockTestData {
                     .build();
 
             Member member2 = Member.builder()
-                    .memberId(2L)
+                    .memberId(3L)
                     .email("hgd@mybuddy.com")
                     .password("asdf1234")
                     .nickname("홍길동")
