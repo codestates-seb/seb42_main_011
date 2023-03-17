@@ -8,6 +8,7 @@ import com.mybuddy.bulletin_post.entity.BulletinPost;
 import com.mybuddy.comment.entity.Comment;
 import com.mybuddy.follow.entity.Follow;
 import com.mybuddy.global.audit.Auditable;
+import com.mybuddy.like.entity.Like;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -70,8 +71,8 @@ public class Member extends Auditable {
     @OneToMany(mappedBy = "member")
     private List<Comment> comments = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "member")
-//    private List<Like> likes = new ArrayList<>();
+    @OneToMany(mappedBy = "member")
+    private List<Like> likes = new ArrayList<>();
 
     @OneToMany(mappedBy = "follower")
     private List<Follow> followers = new ArrayList<>();
@@ -87,9 +88,9 @@ public class Member extends Auditable {
         comments.add(comment);
     }
 
-//    public void addLike(Like like) {
-//        likes.add(like);
-//    }
+    public void addLike(Like like) {
+        likes.add(like);
+    }
 
     public void addFollower(Follow follower) {
         followers.add(follower);
