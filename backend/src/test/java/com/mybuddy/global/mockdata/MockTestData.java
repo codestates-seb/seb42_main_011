@@ -1,10 +1,12 @@
 package com.mybuddy.global.mockdata;
 
+import com.mybuddy.amenity.dto.AmenityCreateDto;
 import com.mybuddy.amenity.dto.AmenityForMyPageResponseDto;
 import com.mybuddy.amenity.dto.AmenityResponseDto;
 import com.mybuddy.amenity.entity.Amenity;
 import com.mybuddy.bulletin_post.dto.BulletinPostDto;
 import com.mybuddy.bulletin_post.dto.BulletinPostForMyPageResponseDto;
+import com.mybuddy.bulletin_post.entity.BulletinPost;
 import com.mybuddy.comment.entity.Comment;
 import com.mybuddy.follow.dto.FollowResponseDto;
 import com.mybuddy.follow.entity.Follow;
@@ -31,6 +33,16 @@ public class MockTestData {
     }
 
     public static class MockAmenity {
+
+        public static AmenityCreateDto getAmenityCreateDto() {
+            return AmenityCreateDto.builder()
+                    .addressId(147221121221L)
+                    .amenityName("강아지 놀이터")
+                    .address("서울 광진구 어디로 348")
+                    .longitude(126.12834637823106)
+                    .latitude(126.12834637823106)
+                    .build();
+        }
         public static Amenity getAmenity() {
             return Amenity.TestAmenity()
                     .amenityId(1L)
@@ -79,6 +91,23 @@ public class MockTestData {
 
             return List.of(responseForFeed1, responseForFeed2);
         }
+        public static List<BulletinPost> getListBulletinPost() {
+
+            BulletinPost bulletinPost1 = BulletinPost.builder()
+                    .bulletinPostId(1L)
+                    .postContent("게시물 1.")
+                    .amenity(Amenity.TestAmenity().amenityId(1L).build())
+                    .build();
+
+            BulletinPost bulletinPost2 = BulletinPost.builder()
+                    .bulletinPostId(2L)
+                    .postContent("게시물 2.")
+                    .amenity(Amenity.TestAmenity().amenityId(1L).build())
+                    .build();
+
+            return List.of(bulletinPost1, bulletinPost2);
+        }
+
 
         public static List<AmenityResponseDto> getRecommentAmenityList(){
             AmenityResponseDto amenity1 = AmenityResponseDto.builder()
