@@ -25,7 +25,6 @@ include::{snippets}/create-member/http-response.adoc[]
 .response-header
 include::{snippets}/create-member/response-headers.adoc[]
 
-////
 === 회원 수정
 .curl-request
 include::{snippets}/update-member/curl-request.adoc[]
@@ -190,3 +189,78 @@ include::{snippets}/get-recommend-amenity-state-region/http-response.adoc[]
 
 .response-fields
 include::{snippets}/get-recommend-amenity-state-region/response-fields.adoc[]
+
+
+== 팔로우
+=== 회원 팔로우
+.curl-request
+include::{snippets}/create-follow/curl-request.adoc[]
+
+.http-request
+include::{snippets}/create-follow/http-request.adoc[]
+
+.request-headers
+include::{snippets}/create-follow/request-headers.adoc[]
+
+.request-query-parameter
+include::{snippets}/create-follow/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/create-follow/http-response.adoc[]
+
+.response-header
+include::{snippets}/create-follow/response-headers.adoc[]
+
+=== 팔로워 목록 조회
+.curl-request
+include::{snippets}/get-follower-list/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-follower-list/http-request.adoc[]
+
+.request-headers
+include::{snippets}/get-follower-list/request-headers.adoc[]
+
+.request-query-parameters
+include::{snippets}/get-follower-list/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/get-follower-list/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-follower-list/response-fields.adoc[]
+
+=== 팔로우 회원 목록 조회
+.curl-request
+include::{snippets}/get-followee-list/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-followee-list/http-request.adoc[]
+
+.request-headers
+include::{snippets}/get-followee-list/request-headers.adoc[]
+
+.request-query-parameters
+include::{snippets}/get-followee-list/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/get-followee-list/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-followee-list/response-fields.adoc[]
+
+=== 회원 탈퇴
+.curl-request
+include::{snippets}/delete-follow/curl-request.adoc[]
+
+.http-request
+include::{snippets}/delete-follow/http-request.adoc[]
+
+.request-headers
+include::{snippets}/delete-follow/request-headers.adoc[]
+
+.request-query-parameters
+include::{snippets}/delete-follow/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/delete-follow/http-response.adoc[]
