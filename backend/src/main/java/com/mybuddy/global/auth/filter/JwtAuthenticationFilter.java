@@ -1,4 +1,3 @@
-/*
 package com.mybuddy.global.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -81,4 +80,3 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         return refreshToken;
     }
 }
-*/

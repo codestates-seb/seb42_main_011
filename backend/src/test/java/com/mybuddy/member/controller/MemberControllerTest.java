@@ -43,12 +43,13 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.snippet.Attributes.key;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(MemberController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
-//@WithMockUser(username = "kimcoding@mybuddy.com", roles = {"USER"})
+@WithMockUser(username = "kimcoding@mybuddy.com", roles = {"USER"})
 public class MemberControllerTest {
 
     private final String MEMBER_DEFAULT_URL = "/api/v1/members";
@@ -95,7 +96,7 @@ public class MemberControllerTest {
                         multipart(MEMBER_DEFAULT_URL)
                                 .file(createDto)
                                 .file(profileImage)
-                                //.with(csrf())
+                                .with(csrf())
                                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 );
 
@@ -227,7 +228,7 @@ public class MemberControllerTest {
                 mockMvc.perform(
                         get(MEMBER_DEFAULT_URL + "/{member-id}",
                                 MockTestData.MockMember.getMember().getMemberId())
-                                //.with(csrf())
+                                .with(csrf())
                                 .accept(MediaType.APPLICATION_JSON)
                 );
 
@@ -337,7 +338,7 @@ public class MemberControllerTest {
                 mockMvc.perform(
                         get(MEMBER_DEFAULT_URL)
                                 .params(queryParams)
-                                //.with(csrf())
+                                .with(csrf())
                                 .accept(MediaType.APPLICATION_JSON)
                 );
 
@@ -371,8 +372,8 @@ public class MemberControllerTest {
                         requestParameters(
                                 List.of(
                                         parameterWithName("page").description("페이지 번호"),
-                                        parameterWithName("size").description("페이지 당 회원 수")
-                                        //parameterWithName("_csrf").ignored()
+                                        parameterWithName("size").description("페이지 당 회원 수"),
+                                        parameterWithName("_csrf").ignored()
                                 )
                         ),
                         responseFields(
@@ -430,7 +431,7 @@ public class MemberControllerTest {
         ResultActions actions =
                 mockMvc.perform(
                         delete(MEMBER_DEFAULT_URL + "/{member-id}", member.getMemberId())
-                                //.with(csrf())
+                                .with(csrf())
                                 .accept(MediaType.APPLICATION_JSON)
                 );
 

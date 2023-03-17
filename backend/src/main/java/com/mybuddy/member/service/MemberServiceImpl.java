@@ -1,6 +1,7 @@
 package com.mybuddy.member.service;
 
-//import com.mybuddy.global.auth.utils.MemberAuthorityUtils;
+import com.mybuddy.global.auth.dto.PrincipalDto;
+import com.mybuddy.global.auth.utils.MemberAuthorityUtils;
 
 import com.mybuddy.global.exception.LogicException;
 import com.mybuddy.global.exception.LogicExceptionCode;
@@ -9,7 +10,9 @@ import com.mybuddy.member.entity.Member;
 import com.mybuddy.member.entity.Member.MemberStatus;
 import com.mybuddy.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-//import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -17,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
+import java.util.List;
 import java.util.Optional;
 
 @Transactional
@@ -28,9 +33,9 @@ public class MemberServiceImpl implements MemberService {
 
     private final StorageService storageService;
 
-//    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-//    private final MemberAuthorityUtils authorityUtils;
+    private final MemberAuthorityUtils authorityUtils;
 
     @Override
     public Member createMember(Member member, MultipartFile profileImage) {
@@ -44,17 +49,18 @@ public class MemberServiceImpl implements MemberService {
                         storageService.getPath() + "/" + image.getOriginalFilename())
                 );
 
-//        String encryptedPassword = passwordEncoder.encode(member.getPassword());
-//        member.setPassword(encryptedPassword);
+        String encryptedPassword = passwordEncoder.encode(member.getPassword());
+        member.setPassword(encryptedPassword);
 
-//        List<String> roles = authorityUtils.createRoles(member.getEmail());
-//        member.setRoles(roles);
+        List<String> roles = authorityUtils.createRoles(member.getEmail());
+        member.setRoles(roles);
 
         return memberRepository.save(member);
     }
 
     @Override
     public Member updateMember(Member member, MultipartFile profileImage) {
+        compareLoginUserIdToMemberId(member.getMemberId());
         Member obtainedMember = findExistMemberById(member.getMemberId());
 
         Optional.ofNullable(member.getNickname())
@@ -88,6 +94,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void deleteMember(Long memberId) {
+        compareLoginUserIdToMemberId(memberId);
         Member obtainedMember = findExistMemberById(memberId);
 
         obtainedMember.setMemberStatus(MemberStatus.DELETED);
@@ -120,5 +127,41 @@ public class MemberServiceImpl implements MemberService {
                 .orElseThrow(() -> new LogicException(LogicExceptionCode.MEMBER_NOT_FOUND));
 
         return obtainedMember;
+    }
+
+    @Override
+    public void compareLoginUserIdToMemberId(Long memberId) {
+        if (!memberId.equals(getLoginUserId()))
+            throw new LogicException(LogicExceptionCode.MEMBER_UNAUTHORIZED);
+    }
+
+    protected Long getLoginUserId() {
+        Long loginUserId = null;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof PrincipalDto) {
+            PrincipalDto principal = (PrincipalDto) authentication.getPrincipal();
+            loginUserId = principal.getLoginUserId();
+        }
+
+        return loginUserId;
+    }
+
+    @PostConstruct
+    private Member registerMemberAsAdmin() {
+        Member admin = Member.builder()
+                .memberId(1L)
+                .email("admin@mybuddy.com")
+                .password("admin")
+                .nickname("admin")
+                .dogName("admin")
+                .dogGender(Member.DogGender.MALE)
+                .build();
+
+        String encryptedPassword = passwordEncoder.encode(admin.getPassword());
+        admin.setPassword(encryptedPassword);
+
+        List<String> roles = authorityUtils.createRoles(admin.getEmail());
+        admin.setRoles(roles);
+        return memberRepository.save(admin);
     }
 }
