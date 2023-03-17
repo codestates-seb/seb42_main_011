@@ -1,20 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from "react-router-dom";
 import Input from '../components/UI/Input';
 import Button from '../components/UI/Button';
+
 
 const FormContainer = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  /* min-width: 500px; */
-  /* min-height: 594px; */
   position: relative;
 `;
 
-const SignupLink = styled.a.attrs({
-  href: "/signup",
+const SignupLink = styled.button.attrs({
+  type: "button",
 })`
   position: absolute;
   font-size: var(--font-size-20);
@@ -35,14 +35,11 @@ const LoginForm = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* @media screen and (max-width: 625px) {
-    align-items: stretch;
-  } */
   row-gap: 30px;
 `;
 
-const ForgotPassword = styled.a.attrs({
-  href: "/password/find",
+const ForgotPassword = styled.button.attrs({
+  type: "button",
 })`
   text-decoration: none;
   font-size: var(--font-size-13);
@@ -67,13 +64,13 @@ const ButtonContainer = styled.div`
 function LoginPage() {
   return (
     <FormContainer>
-      <SignupLink>회원가입</SignupLink>
+      <Link to="/signup"><SignupLink>회원가입</SignupLink></Link>
       <Title>로그인</Title>
       <LoginForm>
         <Input variant='regular' label='이메일' id='email' type='email' />
         <PasswordContainer>
           <Input variant='regular' label='비밀번호' id='password' type='password' />
-          <ForgotPassword>비밀번호를 잊어버렸나요?</ForgotPassword>
+          <Link to="/password/find"><ForgotPassword>비밀번호를 잊어버렸나요?</ForgotPassword></Link>
         </PasswordContainer>
         <ButtonContainer>
           <Button variant='large'>로그인</Button>

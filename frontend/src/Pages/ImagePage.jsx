@@ -23,7 +23,6 @@ const ImageWrapper = styled.aside`
   width: 45vw;
   display: flex;
   flex-direction: column;
-  height: inherit;
 `;
 
 const BackgroundImage = styled.img`

@@ -27,7 +27,13 @@ const DropdownListItem = styled.li`
   cursor: pointer;
   display: flex;
   align-items: center;
-  width: 605px;
+  /* width: 605px; */
+  @media screen and (min-height: 1050px){
+    height: 50px;
+  }
+  @media screen and (min-width: 1174px){
+    width: 480px;
+  }
   min-height: 40px;
 
   &:hover {
@@ -54,7 +60,13 @@ const DropdownList = styled.ul`
   top: 100%;
   left: 0;
   z-index: 1;
-  width: 605px;
+  /* width: 605px; */
+  @media screen and (min-height: 1050px){
+    height: 50px;
+  }
+  @media screen and (min-width: 1174px){
+    width: 480px;
+  }
   box-shadow: inherit;
 `;
 
