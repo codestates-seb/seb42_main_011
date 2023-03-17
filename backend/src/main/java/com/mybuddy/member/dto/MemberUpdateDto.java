@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class MemberPatchDto {
+public class MemberUpdateDto {
 
     private final String nickname;
 
@@ -15,7 +15,7 @@ public class MemberPatchDto {
     private final String aboutMe;
 
     @Builder
-    public MemberPatchDto(String nickname, String dogName, String address, String aboutMe) {
+    public MemberUpdateDto(String nickname, String dogName, String address, String aboutMe) {
         this.nickname = nickname;
         this.dogName = dogName;
         this.address = address;

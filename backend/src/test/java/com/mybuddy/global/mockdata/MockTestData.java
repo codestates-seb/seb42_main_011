@@ -182,8 +182,8 @@ public class MockTestData {
                     .build();
         }
 
-        public static MemberPatchDto getMemberPatchDto() {
-            return MemberPatchDto.builder()
+        public static MemberUpdateDto getMemberPatchDto() {
+            return MemberUpdateDto.builder()
                     .nickname("김코딩")
                     .dogName("왕밤톨")
                     .address("서울시 강북구")

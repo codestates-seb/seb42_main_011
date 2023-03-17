@@ -28,27 +28,26 @@ include::{snippets}/create-member/response-headers.adoc[]
 ////
 === 회원 수정
 .curl-request
-include::{snippets}/patch-member/curl-request.adoc[]
+include::{snippets}/update-member/curl-request.adoc[]
 
 .http-request
-include::{snippets}/patch-member/http-request.adoc[]
+include::{snippets}/update-member/http-request.adoc[]
 
-// Bearer token 관련 (추후 추가)
-// .request-headers
-// include::{snippets}/patch-member/request-headers.adoc[]
+.request-headers
+include::{snippets}/update-member/request-headers.adoc[]
 
+// RestDocs의 문제로 path-parameter의 정보를 get에서 가지고 옴.
 .request-path-parameters
-include::{snippets}/patch-member/path-parameters.adoc[]
+include::{snippets}/get-member/path-parameters.adoc[]
 
 .request-fields
-include::{snippets}/patch-member/request-part-patchDto-fields.adoc[]
+include::{snippets}/update-member/request-part-patchDto-fields.adoc[]
 
 .request-part
-include::{snippets}/patch-member/request-parts.adoc[]
+include::{snippets}/update-member/request-parts.adoc[]
 
 .http-response
-include::{snippets}/patch-member/http-response.adoc[]
-////
+include::{snippets}/update-member/http-response.adoc[]
 
 === 회원 상세 조회
 .curl-request
@@ -60,9 +59,8 @@ include::{snippets}/get-member/http-request.adoc[]
 .request-path-parameters
 include::{snippets}/get-member/path-parameters.adoc[]
 
-// Bearer token 관련 (추후 추가)
-// .request-headers
-// include::{snippets}/get-member/request-headers.adoc[]
+.request-headers
+include::{snippets}/get-member/request-headers.adoc[]
 
 .http-response
 include::{snippets}/get-member/http-response.adoc[]
@@ -80,9 +78,8 @@ include::{snippets}/get-members-for-admin/http-request.adoc[]
 .request-query-parameters
 include::{snippets}/get-members-for-admin/request-parameters.adoc[]
 
-// Bearer token 관련 (추후 추가)
-// .request-headers
-// include::{snippets}/get-members-for-admin/request-headers.adoc[]
+.request-headers
+include::{snippets}/get-members-for-admin/request-headers.adoc[]
 
 .http-response
 include::{snippets}/get-members-for-admin/http-response.adoc[]
@@ -97,9 +94,8 @@ include::{snippets}/delete-member/curl-request.adoc[]
 .http-request
 include::{snippets}/delete-member/http-request.adoc[]
 
-// Bearer token 관련 (추후 추가)
-// .request-headers
-// include::{snippets}/delete-member/request-headers.adoc[]
+.request-headers
+include::{snippets}/delete-member/request-headers.adoc[]
 
 .request-path-parameters
 include::{snippets}/delete-member/path-parameters.adoc[]

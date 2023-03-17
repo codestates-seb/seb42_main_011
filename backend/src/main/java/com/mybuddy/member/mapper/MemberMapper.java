@@ -5,7 +5,6 @@ import com.mybuddy.bulletin_post.dto.BulletinPostForMyPageResponseDto;
 import com.mybuddy.member.dto.*;
 import com.mybuddy.member.entity.Member;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.BinaryOperator;
@@ -21,7 +20,7 @@ public interface MemberMapper {
 
     Member memberCreateDtoToMember(MemberCreateDto createDto);
 
-    Member memberPatchDtoToMember(MemberPatchDto patchDto);
+    Member memberUpdateDtoToMember(MemberUpdateDto patchDto);
 
     default MemberResponseDto memberToMemberResponseDto(Member member) {
         if (member == null) {
