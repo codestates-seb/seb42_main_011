@@ -24,10 +24,13 @@ public class MemberRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
 
+    Member admin = MockTestData.MockMember.getAdmin();
+
     Member member = MockTestData.MockMember.getMember();
 
     @BeforeAll
     public void init() {
+        memberRepository.save(admin);
         memberRepository.save(member);
     }
 

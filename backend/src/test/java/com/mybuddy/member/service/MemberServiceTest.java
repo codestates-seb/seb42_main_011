@@ -1,5 +1,6 @@
 package com.mybuddy.member.service;
 
+import com.mybuddy.global.auth.utils.MemberAuthorityUtils;
 import com.mybuddy.global.exception.LogicException;
 import com.mybuddy.global.mockdata.MockTestData;
 import com.mybuddy.global.storage.StorageService;
@@ -20,8 +21,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,6 +40,12 @@ public class MemberServiceTest {
     @Mock
     private StorageService storageService;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private MemberAuthorityUtils authorityUtils;
+
     @Spy
     @InjectMocks
     private MemberServiceImpl memberService;
@@ -50,7 +59,12 @@ public class MemberServiceTest {
                 MediaType.IMAGE_PNG_VALUE, "image".getBytes(StandardCharsets.UTF_8));
 
         doNothing().when(memberService).verifyIfEmailExists(Mockito.anyString());
+        doNothing().when(memberService).verifyIfNicknameExists(Mockito.anyString());
         doNothing().when(storageService).storeImage(profileImage);
+        given(passwordEncoder.encode(Mockito.anyString()))
+                .willReturn("asdf1234");
+        given(authorityUtils.createRoles(Mockito.anyString()))
+                .willReturn(List.of("USER"));
         given(memberRepository.save(Mockito.any(Member.class)))
                 .willReturn(member);
 
@@ -69,6 +83,7 @@ public class MemberServiceTest {
         MockMultipartFile profileImage = new MockMultipartFile("profileImage", "image.png",
                 MediaType.IMAGE_PNG_VALUE, "image".getBytes(StandardCharsets.UTF_8));
 
+        doNothing().when(memberService).compareLoginUserIdToMemberId(Mockito.anyLong());
         given(memberRepository.findByMemberIdAndMemberStatusIs(
                 Mockito.anyLong(), Mockito.any(MemberStatus.class)))
                 .willReturn(Optional.of(new Member()));
@@ -125,6 +140,7 @@ public class MemberServiceTest {
         // Given
         Member obtainedMember = MockTestData.MockMember.getMember();
 
+        doNothing().when(memberService).compareLoginUserIdToMemberId(Mockito.anyLong());
         given(memberRepository.findByMemberIdAndMemberStatusIs(
                 Mockito.anyLong(), Mockito.any(MemberStatus.class)))
                 .willReturn(Optional.of(new Member()));
@@ -180,6 +196,20 @@ public class MemberServiceTest {
 
         // When
         Executable executable = () -> memberService.findExistMemberById(1L);
+
+        // Then
+        assertThrows(LogicException.class, executable);
+    }
+
+    @DisplayName("로그인 회원 및 리소스 식별자 비교 예외 처리 로직 (Service)")
+    @Test
+    public void compareLoginUserIdToMemberIdExceptionTest() {
+        // Given
+        given(memberService.getLoginUserId())
+                .willReturn(2L);
+
+        // When
+        Executable executable = () -> memberService.compareLoginUserIdToMemberId(1L);
 
         // Then
         assertThrows(LogicException.class, executable);

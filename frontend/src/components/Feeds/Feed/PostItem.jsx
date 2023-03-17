@@ -7,22 +7,22 @@ import Card from '../../UI/Card/Card';
 const ItemBox = styled(Card)`
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   width: 300px;
   background-color: var(--color-light-0);
   &:hover {
     box-shadow: 10px 10px 0 0 var(--color-dark-0);
   }
-
   @media (max-width: 1363px) {
     width: 85%;
     height: 88%;
   }
+  z-index: 10;
 `;
 
 const PostImage = styled.img`
-  width: 300px;
-  height: 300px;
+  width: 100%;
+  height: 299px;
+  aspect-ratio: 1/1;
   /* 정사각형 아닌 사진은 비율 그대로 확대되도록 */
   object-fit: cover;
   @media (max-width: 1363px) {

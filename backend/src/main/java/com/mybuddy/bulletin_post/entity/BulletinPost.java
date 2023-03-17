@@ -3,6 +3,7 @@ package com.mybuddy.bulletin_post.entity;
 import com.mybuddy.amenity.entity.Amenity;
 import com.mybuddy.comment.entity.Comment;
 import com.mybuddy.global.audit.Auditable;
+import com.mybuddy.like.entity.Like;
 import com.mybuddy.member.entity.Member;
 import lombok.*;
 
@@ -40,11 +41,11 @@ public class BulletinPost extends Auditable {
 
 //    bulletinPost, comment 1:N
     @OneToMany(mappedBy = "bulletinPost", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<Comment> commentList = new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
 
-////    bulletinPost, like 1:N
-//    @OneToMany(mappedBy = "bulletinPost", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-//    private List<Like> likeList = new ArrayList<>();
+//    bulletinPost, like 1:N
+    @OneToMany(mappedBy = "bulletinPost", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<Like> likes = new ArrayList<>();
 
 
 
@@ -63,19 +64,18 @@ public class BulletinPost extends Auditable {
     }
 
     public void setComment(Comment comment) {
-        this.commentList.add(comment);
+        this.comments.add(comment);
         if (comment.getBulletinPost() != this) {
             comment.setBulletinPost(this);
         }
     }
 
-//    public void setLike(Like like) {
-//        this.likeList.add(like);
-//        if (like.getBulletinPost() != this) {
-//            like.setBulletinPost(this);
-//        }
-//    }
-//
+    public void setLike(Like like) {
+        this.likes.add(like);
+        if (like.getBulletinPost() != this) {
+            like.setBulletinPost(this);
+        }
+    }
 
 
 }

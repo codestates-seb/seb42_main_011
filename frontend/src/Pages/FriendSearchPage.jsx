@@ -7,23 +7,24 @@ import ProfileItem from '../components/Feeds/Feed/ProfileItem';
 
 const Container = styled.article`
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  height: 100%;
   gap: 16px;
 `;
 
 const FeedWrapper = styled.div`
   width: 100%;
-  padding-bottom: 40px;
+  height: 77.3%;
 `;
 
 const FeedContainer = styled.div`
-  padding: 0 90px;
+  margin: 0 auto;
+  padding: 0 3.5%;
   height: 100%;
-  @media (max-width: 1363px) {
-    padding: 0 1%;
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  ::-webkit-scrollbar {
+    display: none;
   }
 `;
 
@@ -57,7 +58,7 @@ function FriendSearchPage() {
     <Container>
       <FeedsTitle
         title="mypage"
-        description="친구들의 피드를 확인해보세요!"
+        description="다른 친구들을 찾아보세요!"
         onSearch={onSearch}
         serachOptions={SEARCH_OPTIONS}
       />

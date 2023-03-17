@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.List;
@@ -37,7 +38,7 @@ public class MemberController {
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ApiSingleResponse> createMember(@Valid @RequestPart MemberCreateDto createDto,
-                                                        @RequestPart(required = false) MultipartFile profileImage) {
+                                                          @RequestPart(required = false) MultipartFile profileImage) {
         Member member = memberService.createMember(mapper.memberCreateDtoToMember(createDto), profileImage);
 
         URI uriLocation = UriMaker.getUri(MEMBER_DEFAULT_URL, member.getMemberId());
@@ -50,7 +51,7 @@ public class MemberController {
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ApiSingleResponse> patchMember(@Valid @RequestPart MemberPatchDto patchDto,
                                                          @RequestPart(required = false) MultipartFile profileImage,
-                                                         @Positive @PathVariable("member-id") Long memberId) {
+                                                         @Min(2L) @PathVariable("member-id") Long memberId) {
         Member member = mapper.memberPatchDtoToMember(patchDto);
         member.setMemberId(memberId);
         memberService.updateMember(member, profileImage);
@@ -60,14 +61,14 @@ public class MemberController {
     }
 
     @GetMapping("/{member-id}")
-    public ResponseEntity<ApiSingleResponse> getMember(@Positive @PathVariable("member-id") Long memberId) {
+    public ResponseEntity<ApiSingleResponse> getMember(@Min(2L) @PathVariable("member-id") Long memberId) {
         return new ResponseEntity(new ApiSingleResponse<>(HttpStatus.OK, "회원 정보입니다.",
                 mapper.memberToMemberResponseDto(memberService.getMember(memberId))), HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<ApiMultiResponse> getMemberList(@Positive @RequestParam int page,
-                                                           @Positive @RequestParam int size) {
+                                                          @Positive @RequestParam int size) {
         Page<Member> pageMembers = memberService.getMemberList(page - 1, size);
         List<Member> obtainedMembers = pageMembers.getContent();
         return new ResponseEntity(new ApiMultiResponse<>(HttpStatus.OK, "전체 회원 정보입니다.",
@@ -75,7 +76,7 @@ public class MemberController {
     }
 
     @DeleteMapping("/{member-id}")
-    public ResponseEntity deleteMember(@Positive @PathVariable("member-id") Long memberId) {
+    public ResponseEntity deleteMember(@Min(2L) @PathVariable("member-id") Long memberId) {
         memberService.deleteMember(memberId);
 
         return ResponseEntity.noContent().build();
