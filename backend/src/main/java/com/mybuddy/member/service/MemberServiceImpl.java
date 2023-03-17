@@ -63,7 +63,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member updateMember(Member member, MultipartFile profileImage) {
-        compareLoginUserIdToMemberId(member.getMemberId());
+//        compareLoginUserIdToMemberId(member.getMemberId());
         Member obtainedMember = findExistMemberById(member.getMemberId());
 
         Member updatedMember = customBeanUtils.copyNonNullProperties(member, obtainedMember);
@@ -91,7 +91,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void deleteMember(Long memberId) {
-        compareLoginUserIdToMemberId(memberId);
+//        compareLoginUserIdToMemberId(memberId);
         Member obtainedMember = findExistMemberById(memberId);
 
         obtainedMember.setMemberStatus(MemberStatus.DELETED);

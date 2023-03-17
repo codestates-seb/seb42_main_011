@@ -87,7 +87,7 @@ public class MemberServiceTest {
         MockMultipartFile profileImage = new MockMultipartFile("profileImage", "image.png",
                 MediaType.IMAGE_PNG_VALUE, "image".getBytes(StandardCharsets.UTF_8));
 
-        doNothing().when(memberService).compareLoginUserIdToMemberId(Mockito.anyLong());
+//        doNothing().when(memberService).compareLoginUserIdToMemberId(Mockito.anyLong());
         given(memberRepository.findByMemberIdAndMemberStatusIs(
                 Mockito.anyLong(), Mockito.any(MemberStatus.class)))
                 .willReturn(Optional.of(new Member()));
@@ -146,7 +146,7 @@ public class MemberServiceTest {
         // Given
         Member obtainedMember = MockTestData.MockMember.getMember();
 
-        doNothing().when(memberService).compareLoginUserIdToMemberId(Mockito.anyLong());
+//        doNothing().when(memberService).compareLoginUserIdToMemberId(Mockito.anyLong());
         given(memberRepository.findByMemberIdAndMemberStatusIs(
                 Mockito.anyLong(), Mockito.any(MemberStatus.class)))
                 .willReturn(Optional.of(new Member()));
