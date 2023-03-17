@@ -28,8 +28,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -40,6 +39,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
+import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -81,6 +81,7 @@ public class FollowControllerTest {
                                 .param("followeeId", "1")
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
+                                .header("Authorization", "")
                                 .with(csrf())
                                 .content(content)
                 );
@@ -92,6 +93,11 @@ public class FollowControllerTest {
                 .andDo(document("create-follow",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
+                        requestHeaders(
+                                headerWithName("Authorization")
+                                        .attributes(key("constraints").value(""))
+                                        .description("Access Token")
+                        ),
                         requestParameters(
                                 List.of(
                                         parameterWithName("followeeId").description("팔로잉 대상 회원 식별자"),
@@ -124,6 +130,7 @@ public class FollowControllerTest {
                 mockMvc.perform(
                         get(FOLLOW_DEFAULT_URL + "/follower")
                                 .params(queryParams)
+                                .header("Authorization", "")
                                 .with(csrf())
                                 .accept(MediaType.APPLICATION_JSON)
                 );
@@ -152,6 +159,11 @@ public class FollowControllerTest {
                 .andDo(document("get-follower-list",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
+                        requestHeaders(
+                                headerWithName("Authorization")
+                                        .attributes(key("constraints").value(""))
+                                        .description("Access Token")
+                        ),
                         requestParameters(
                                 List.of(
                                         parameterWithName("page").description("페이지 번호"),
@@ -219,6 +231,7 @@ public class FollowControllerTest {
                 mockMvc.perform(
                         get(FOLLOW_DEFAULT_URL + "/followee")
                                 .params(queryParams)
+                                .header("Authorization", "")
                                 .with(csrf())
                                 .accept(MediaType.APPLICATION_JSON)
                 );
@@ -247,6 +260,11 @@ public class FollowControllerTest {
                 .andDo(document("get-followee-list",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
+                        requestHeaders(
+                                headerWithName("Authorization")
+                                        .attributes(key("constraints").value(""))
+                                        .description("Access Token")
+                        ),
                         requestParameters(
                                 List.of(
                                         parameterWithName("page").description("페이지 번호"),
@@ -307,6 +325,7 @@ public class FollowControllerTest {
                 mockMvc.perform(
                         delete(FOLLOW_DEFAULT_URL)
                                 .param("followeeId", "1")
+                                .header("Authorization", "")
                                 .with(csrf())
                                 .accept(MediaType.APPLICATION_JSON)
                 );
@@ -317,6 +336,11 @@ public class FollowControllerTest {
                 .andExpect(jsonPath("$.data").doesNotExist())
                 .andDo(document("delete-follow",
                         preprocessRequest(prettyPrint()),
+                        requestHeaders(
+                                headerWithName("Authorization")
+                                        .attributes(key("constraints").value(""))
+                                        .description("Access Token")
+                        ),
                         requestParameters(
                                 List.of(
                                         parameterWithName("followeeId").description("팔로잉 대상 회원 식별자"),
