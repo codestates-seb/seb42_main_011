@@ -1,9 +1,15 @@
 package com.mybuddy.member.mapper;
 
+import com.mybuddy.amenity.dto.AmenityForMyPageResponseDto;
+import com.mybuddy.bulletin_post.dto.BulletinPostForMyPageResponseDto;
 import com.mybuddy.member.dto.*;
 import com.mybuddy.member.entity.Member;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.mapstruct.IterableMapping;
@@ -22,22 +28,37 @@ public interface MemberMapper {
             return null;
         }
 
-        List<MyBulletinPostDto> myBulletinPostDtos = member.getBulletinPosts().stream()
-                .map(bulletinPost -> MyBulletinPostDto.builder()
-                        .bulletinPostId(bulletinPost.getBulletinPostId())
-                        .photoUrl(bulletinPost.getPhotoUrl())
-                        .build())
-                .collect(Collectors.toList());
+        List<BulletinPostForMyPageResponseDto> bulletinPostForMyPageResponseDtos =
+                member.getBulletinPosts().stream()
+                        .map(bulletinPost -> BulletinPostForMyPageResponseDto.builder()
+                                .bulletinPostId(bulletinPost.getBulletinPostId())
+                                .photoUrl(bulletinPost.getPhotoUrl())
+                                .build())
+                        .sorted(Comparator.comparingLong(
+                                BulletinPostForMyPageResponseDto::getBulletinPostId).reversed())
+                        .collect(Collectors.toList());
 
-        List<MyAmenityDto> myAmenityDtos = member.getBulletinPosts().stream()
-                .map(bulletinPost -> bulletinPost.getAmenity())
-                .map(amenity -> MyAmenityDto.builder()
-                        .amenityId(amenity.getAmenityId())
-                        .amenityName(amenity.getAmenityName())
-                        .address(amenity.getAddress())
-                        .photoUrl(null) // Amenity에 photoUrl 추가 필요.
-                        .build())
-                .collect(Collectors.toList());
+        List<AmenityForMyPageResponseDto> amenityForMyPageResponseDtos =
+                member.getBulletinPosts().stream()
+                        .map(bulletinPost -> {
+                            AmenityForMyPageResponseDto amenityForMyPageResponseDto =
+                                    AmenityForMyPageResponseDto.builder()
+                                            .amenityId(bulletinPost.getAmenity().getAmenityId())
+                                            .amenityName(bulletinPost.getAmenity().getAmenityName())
+                                            .address(bulletinPost.getAmenity().getAddress())
+                                            .photoUrl(bulletinPost.getPhotoUrl())
+                                            .postCreatedAt(bulletinPost.getCreatedAt())
+                                            .build();
+                            return amenityForMyPageResponseDto;
+                        })
+                        .collect(Collectors.toMap(AmenityForMyPageResponseDto::getAmenityId,
+                                Function.identity(), BinaryOperator.maxBy(Comparator.comparing(
+                                        AmenityForMyPageResponseDto::getPostCreatedAt))))
+                        .values()
+                        .stream()
+                        .sorted(Comparator.comparingLong(
+                                AmenityForMyPageResponseDto::getAmenityId).reversed())
+                        .collect(Collectors.toList());
 
         /**
          * 연관 관계 매핑은 memberId를 중심으로 연결되므로 followerNumber를 count할 경우
@@ -55,8 +76,8 @@ public interface MemberMapper {
                 .followerNumber(numberOfUserAsFollowee)
                 .followeeNumber(numberOfUserAsFollower)
                 .profileUrl(member.getProfileUrl())
-                .myBulletinPostDtos(myBulletinPostDtos)
-                .myAmenityDtos(myAmenityDtos)
+                .bulletinPostForMyPageResponseDtos(bulletinPostForMyPageResponseDtos)
+                .amenityForMyPageResponseDtos(amenityForMyPageResponseDtos)
                 .build();
 
         return memberResponseDto;
