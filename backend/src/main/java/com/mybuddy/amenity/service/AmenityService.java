@@ -17,6 +17,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AmenityService {
 
@@ -42,26 +43,22 @@ public class AmenityService {
             return obtainedAmenity;
     }
 
-    @Transactional
     public Amenity createAmenity(AmenityCreateDto amenityCreateDto) {
         Amenity amenity = amenityMapper.amenityCreateDtoToAmenity(amenityCreateDto);
         return amenityRepository.save(amenity);
     }
 
-    @Transactional
     public Page<BulletinPost> findTaggedBulletinPostList(Long amenityId, int page, int size) {
 
         return bulletinPostRepository.findByAmenityId(amenityId,
                 PageRequest.of(page, size, Sort.by("bulletinPostId").descending()));
     }
 
-    @Transactional
     public Amenity getAmenityInfo(Long amenityId) {
         return amenityRepository.findById(amenityId).orElseThrow(()-> new RuntimeException("amenity data가 없다."));
     }
 
-    @Transactional
-    public List<AmenityResponseDto> getRecommendAmenities(String state, String region){
+    public List<AmenityResponseDto> getRecommendAmenitiesByStateRegion(String state, String region){
 
         List<AmenityResponseDto> recommendAmenities = amenityRepository.findByStateRegion(state,region);
         return recommendAmenities;

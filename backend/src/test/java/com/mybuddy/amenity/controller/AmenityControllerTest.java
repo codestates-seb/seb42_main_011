@@ -203,7 +203,7 @@ public class AmenityControllerTest {
 
         List<AmenityResponseDto> recomendList = MockTestData.MockAmenity.getRecommentAmenityList();
 
-        given(amenityService.getRecommendAmenities(Mockito.anyString(),Mockito.anyString())).willReturn(recomendList);
+        given(amenityService.getRecommendAmenitiesByStateRegion(Mockito.anyString(),Mockito.anyString())).willReturn(recomendList);
 
         //when
         ResultActions resultActions = mockMvc.perform(
