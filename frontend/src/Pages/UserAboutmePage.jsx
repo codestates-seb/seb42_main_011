@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useLocation } from 'react-router-dom';
 import Button from '../components/UI/Button';
 
 const AboutMe = styled.div`
@@ -16,7 +17,7 @@ const AboutMe = styled.div`
 `;
 
 const AboutMeContent = styled.div`
-  width: 70%;
+  width: 100%;
   min-width: 376px;
   white-space: pre-wrap;
   display: flex;
@@ -28,13 +29,29 @@ const AboutMeContent = styled.div`
   margin-bottom: 50px;
 `;
 
+const FollowButton = styled(Button)`
+  background-color: var(--color-secondary);
+  &:hover {
+    background-color: var(--color-secondary);
+  }
+`;
+
 function UserAboutmePage({ userdata }) {
+  const location = useLocation();
+  let AboumeButton;
+
+  // Button change by location
+  if (location.pathname.includes('/mypage')) {
+    AboumeButton = <Button variant="medium">수정</Button>;
+  } else if (location.pathname.includes('/friendpage')) {
+    AboumeButton = <FollowButton variant="medium">팔로우</FollowButton>;
+  }
   return (
     <div>
       {userdata.map(({ id, data }) => (
         <AboutMe key={id}>
           <AboutMeContent>{data.aboutMe}</AboutMeContent>
-          <Button variant="medium">수정</Button>
+          {AboumeButton}
         </AboutMe>
       ))}
     </div>

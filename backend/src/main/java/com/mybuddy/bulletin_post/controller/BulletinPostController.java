@@ -56,6 +56,7 @@ public class BulletinPostController {
     public ResponseEntity createBulletinPost(@RequestPart BulletinPostDto.Create createDto, @RequestPart MultipartFile photoImage) {
 
 
+//        member service 에서 로그인 멤버아이디 가져오는 메서드 가져오면 될듯!!
 //        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        UserDetails userDetails = (UserDetails)principal;
 //        long memberId = principal.getMemberId();
@@ -76,6 +77,7 @@ public class BulletinPostController {
     @PatchMapping("/{post-id}")
     public ResponseEntity patchBulletinPost(@PathVariable("post-id") @Positive long bulletinPostId, @RequestPart BulletinPostDto.Patch patchDto, @RequestPart(required = false) MultipartFile photoImage) {
 
+//        member service 에서 로그인 멤버아이디 가져오는 메서드 가져오면 될듯!!
 //        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        UserDetails userDetails = (UserDetails)principal;
 //        long memberId = principal.getMemberId();

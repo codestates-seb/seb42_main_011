@@ -2,21 +2,17 @@ package com.mybuddy.follow.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
-@NoArgsConstructor
 public class FollowResponseDto {
 
-    private Long memberId;
+    private final Long memberId;
 
-    private String nickname;
+    private final String nickname;
 
-    private String dogName;
+    private final String dogName;
 
-    private String profileUrl;
+    private final String profileUrl;
 
     @Builder
     public FollowResponseDto(Long memberId, String nickname, String dogName, String profileUrl) {

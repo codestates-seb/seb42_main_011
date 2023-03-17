@@ -5,6 +5,7 @@ import FriendLogo from '../../assets/logo/frined_logo.svg';
 import useInputs from '../../hooks/useInputs';
 import SearchInput from '../UI/SearchInput/SearchInput';
 import DropdownFriend from '../UI/Dropdown/DropdownFriend';
+import { ReactComponent as FriendShape } from '../../assets/shape/friend_shape.svg';
 
 const FeedHeader = styled.section`
   width: 100%;
@@ -15,6 +16,7 @@ const FeedHeader = styled.section`
   position: sticky;
   top: 0;
   background-color: var(--color-light-0);
+  background-color: unset;
   z-index: 99;
   padding-bottom: 16px;
 `;
@@ -59,7 +61,7 @@ const FriendSearchWrapper = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  min-width: 1000px;
+  min-width: 800px;
 `;
 
 const FriendSearchForm = styled.form`
@@ -68,17 +70,21 @@ const FriendSearchForm = styled.form`
   gap: 16px;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  @media (max-width: 1200px) {
-    width: 45%;
-    margin-left: 8%;
-  }
+  width: 40%;
+  z-index: 10;
 `;
 
 const FriendSearchInput = styled(SearchInput)`
-  flex: 0 1 500px;
   height: 50px;
   width: 100%;
+`;
+
+const FreindGreenShpate = styled(FriendShape)`
+  position: fixed;
+  width: 250px;
+  height: 400px;
+  top: 20px;
+  right: 40px;
 `;
 
 function FeedsTitle({ title, description, serachOptions, onSearch }) {
@@ -130,6 +136,7 @@ function FeedsTitle({ title, description, serachOptions, onSearch }) {
             </FriendSearchForm>
           </FriendSearchWrapper>
         )}
+        {title === 'home' ? null : <FreindGreenShpate />}
       </FeedHeaderConatiner>
     </FeedHeader>
   );

@@ -3,6 +3,7 @@ package com.mybuddy.bulletin_post.service;
 import com.mybuddy.amenity.entity.Amenity;
 import com.mybuddy.bulletin_post.entity.BulletinPost;
 import com.mybuddy.bulletin_post.repository.BulletinPostRepository;
+import com.mybuddy.comment.entity.Comment;
 import com.mybuddy.comment.service.CommentService;
 import com.mybuddy.global.storage.StorageService;
 import com.mybuddy.global.utils.CustomBeanUtils;
@@ -83,8 +84,6 @@ public class BulletinPostService {
         BulletinPost updatedBulletinPost = bulletinPostRepository.save(bulletinPost);
 
         return updatedBulletinPost;
-
-
     }
 
     public BulletinPost findBulletinPost(long bulletinPostId) {
@@ -93,6 +92,8 @@ public class BulletinPostService {
 
         return bulletinPost;
     }
+
+
 
 
     public Page<BulletinPost> findBulletinPosts(int page, int size) {
