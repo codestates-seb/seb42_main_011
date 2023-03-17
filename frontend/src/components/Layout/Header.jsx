@@ -90,7 +90,15 @@ function Header() {
                 <Menu>홈</Menu>
               </NavLink>
             </LinkStyle>
-            <Menu>친구찾기</Menu>
+            <LinkStyle>
+              <NavLink
+                end
+                className={({ isActive }) => (isActive ? 'selected' : '')}
+                to="/friend"
+              >
+                <Menu>친구찾기</Menu>
+              </NavLink>
+            </LinkStyle>
             <Menu>추천장소</Menu>
           </MenuUl>
         </MenuWrapper>

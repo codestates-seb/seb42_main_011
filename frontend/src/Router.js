@@ -11,6 +11,7 @@ import NonHeaderLayout from './components/Layout/NonHeaderLayout';
 import FindPasswordPage from './Pages/FindPasswordPage';
 import ResetPasswordPage from './Pages/ResetPasswordPage';
 import ByePage from './Pages/ByePage';
+import FriendSearchPage from './Pages/FriendSearchPage';
 
 function Router() {
   return (
@@ -26,6 +27,7 @@ function Router() {
 
       <Route element={<Layout displayHeader />}>
         <Route path="/" element={<HomePage />} />
+        <Route path="/friend" element={<FriendSearchPage />} />
       </Route>
 
       <Route element={<Layout displayHeader displayProfile displayFlex />}>

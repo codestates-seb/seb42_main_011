@@ -9,6 +9,7 @@ const DropdownListItem = styled.li`
   align-items: center;
   width: 91px;
   height: 50px;
+  background-color: var(--color-light-0);
 
   border-left: var(--border);
   border-right: var(--border);
@@ -24,12 +25,11 @@ const DropdownListItem = styled.li`
 `;
 
 const DropdownList = styled.ul`
-  background-color: var(--color-light-0);
   text-align: inherit;
   position: absolute;
   top: 100%;
   z-index: 1;
-  width: 91px;
+  width: 100px;
   box-shadow: inherit;
 `;
 
@@ -45,10 +45,12 @@ const DropdownButton = styled.button`
   display: flex;
   align-items: center;
   position: relative;
-  width: 91px;
+  width: 100px;
   height: 50px;
+  font-weight: 500;
 
   svg {
+    margin-right: 3px;
     transform: rotate(0deg);
   }
 
@@ -68,6 +70,7 @@ const DropdownContainer = styled.div`
   font-size: var(--font-size-13);
 
   ${DropdownListItem}, ${DropdownButton} {
+    width: 100px;
     justify-content: center;
     text-align: center;
     padding-right: 3px;

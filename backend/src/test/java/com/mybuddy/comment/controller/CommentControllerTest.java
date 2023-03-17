@@ -67,7 +67,7 @@ public class CommentControllerTest {
 
         bulletinPost = new BulletinPost(
                 1L, member, null,
-                "url","게시글입니다.", new ArrayList<>()
+                "url","게시글입니다.", new ArrayList<>(),new ArrayList<>()
         );
     }
 
