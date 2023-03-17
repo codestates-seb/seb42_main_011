@@ -51,15 +51,15 @@ const validateUser = ({ email, password, nickname, dogName, dogGender }) => {
 
   const regex = /^.*(?=^.{8,20}$)(?=.*d)(?=.*[a-z])(?=.*[!@#$%^&+=]).*$/gi;
 
-  if (password.length < 8 || regex.test(password)) {
+  if (!regex.test(password)) {
     messages.push('패스워드 유효성 실패');
   }
 
-  if (nickname.length < 10) {
+  if (nickname.length === 0 || nickname.length > 10) {
     messages.push('닉네임 유효성 실패');
   }
 
-  if (dogName.length < 10) {
+  if (dogName.length === 0 || dogName.length > 10) {
     messages.push('강아지 이름 유효성 실패');
   }
 
