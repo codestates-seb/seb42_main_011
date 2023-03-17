@@ -53,13 +53,14 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .antMatchers("/h2/**").permitAll()
-                        .antMatchers(HttpMethod.POST, "/api/*/members").permitAll()
-                        .antMatchers(HttpMethod.PATCH, "/api/*/members/**").hasRole("USER")
-                        .antMatchers(HttpMethod.GET, "/api/*/members").hasRole("ADMIN")
-                        .antMatchers(HttpMethod.GET, "/api/*/members/**").hasAnyRole("USER", "ADMIN")
-                        .antMatchers(HttpMethod.DELETE, "/api/*/members/**").hasRole("USER")
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
+//                        .antMatchers("/h2/**").permitAll()
+//                        .antMatchers(HttpMethod.POST, "/api/*/members").permitAll()
+//                        .antMatchers(HttpMethod.PATCH, "/api/*/members/**").hasRole("USER")
+//                        .antMatchers(HttpMethod.GET, "/api/*/members").hasRole("ADMIN")
+//                        .antMatchers(HttpMethod.GET, "/api/*/members/**").hasAnyRole("USER", "ADMIN")
+//                        .antMatchers(HttpMethod.DELETE, "/api/*/members/**").hasRole("USER")
+//                        .anyRequest().authenticated()
                 );
 
         return http.build();
