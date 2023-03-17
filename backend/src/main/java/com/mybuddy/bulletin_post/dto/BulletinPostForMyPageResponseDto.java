@@ -2,8 +2,6 @@ package com.mybuddy.bulletin_post.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 public class BulletinPostForMyPageResponseDto {

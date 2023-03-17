@@ -1,41 +1,39 @@
 package com.mybuddy.member.dto;
 
+import com.mybuddy.amenity.dto.AmenityForMyPageResponseDto;
+import com.mybuddy.bulletin_post.dto.BulletinPostForMyPageResponseDto;
 import com.mybuddy.member.entity.Member.DogGender;
 
 import java.util.List;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
-@NoArgsConstructor
 public class MemberResponseDto {
 
-    private String nickname;
+    private final String nickname;
 
-    private String dogName;
+    private final String dogName;
 
-    private DogGender dogGender;
+    private final DogGender dogGender;
 
-    private String aboutMe;
+    private final String aboutMe;
 
-    private Long followerNumber;
+    private final Long followerNumber;
 
-    private Long followeeNumber;
+    private final Long followeeNumber;
 
-    private String profileUrl;
+    private final String profileUrl;
 
-    private List<MyBulletinPostDto> myBulletinPostDtos;
+    private final List<BulletinPostForMyPageResponseDto> bulletinPostForMyPageResponseDtos;
 
-    private List<MyAmenityDto> myAmenityDtos;
+    private final List<AmenityForMyPageResponseDto> amenityForMyPageResponseDtos;
 
     @Builder
     public MemberResponseDto(String nickname, String dogName, DogGender dogGender,
                              String aboutMe, Long followerNumber, Long followeeNumber, String profileUrl,
-                             List<MyBulletinPostDto> myBulletinPostDtos, List<MyAmenityDto> myAmenityDtos) {
+                             List<BulletinPostForMyPageResponseDto> bulletinPostForMyPageResponseDtos, List<AmenityForMyPageResponseDto> amenityForMyPageResponseDtos) {
         this.nickname = nickname;
         this.dogName = dogName;
         this.dogGender = dogGender;
@@ -43,7 +41,7 @@ public class MemberResponseDto {
         this.followerNumber = followerNumber;
         this.followeeNumber = followeeNumber;
         this.profileUrl = profileUrl;
-        this.myBulletinPostDtos = myBulletinPostDtos;
-        this.myAmenityDtos = myAmenityDtos;
+        this.bulletinPostForMyPageResponseDtos = bulletinPostForMyPageResponseDtos;
+        this.amenityForMyPageResponseDtos = amenityForMyPageResponseDtos;
     }
 }
