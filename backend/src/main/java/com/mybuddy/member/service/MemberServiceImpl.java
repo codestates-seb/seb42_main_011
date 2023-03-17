@@ -6,6 +6,7 @@ import com.mybuddy.global.auth.utils.MemberAuthorityUtils;
 import com.mybuddy.global.exception.LogicException;
 import com.mybuddy.global.exception.LogicExceptionCode;
 import com.mybuddy.global.storage.StorageService;
+import com.mybuddy.global.utils.CustomBeanUtils;
 import com.mybuddy.member.entity.Member;
 import com.mybuddy.member.entity.Member.MemberStatus;
 import com.mybuddy.member.repository.MemberRepository;
@@ -32,6 +33,8 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
 
     private final StorageService storageService;
+
+    private final CustomBeanUtils<Member> customBeanUtils;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -63,22 +66,16 @@ public class MemberServiceImpl implements MemberService {
         compareLoginUserIdToMemberId(member.getMemberId());
         Member obtainedMember = findExistMemberById(member.getMemberId());
 
-        Optional.ofNullable(member.getNickname())
-                .ifPresent(obtainedMember::setNickname);
-        Optional.ofNullable(member.getDogName())
-                .ifPresent(obtainedMember::setDogName);
-        Optional.ofNullable(member.getAddress())
-                .ifPresent(obtainedMember::setAddress);
-        Optional.ofNullable(member.getAboutMe())
-                .ifPresent(obtainedMember::setAboutMe);
+        Member updatedMember = customBeanUtils.copyNonNullProperties(member, obtainedMember);
+
         Optional.ofNullable(profileImage)
                 .ifPresent(storageService::storeImage);
         Optional.ofNullable(profileImage)
-                .ifPresent(image -> obtainedMember.setProfileUrl(
+                .ifPresent(image -> updatedMember.setProfileUrl(
                         storageService.getPath() + "/" + image.getOriginalFilename())
                 );
 
-        return memberRepository.save(obtainedMember);
+        return memberRepository.save(updatedMember);
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.mybuddy.global.auth.utils.MemberAuthorityUtils;
 import com.mybuddy.global.exception.LogicException;
 import com.mybuddy.global.mockdata.MockTestData;
 import com.mybuddy.global.storage.StorageService;
+import com.mybuddy.global.utils.CustomBeanUtils;
 import com.mybuddy.member.entity.Member;
 import com.mybuddy.member.entity.Member.MemberStatus;
 import com.mybuddy.member.repository.MemberRepository;
@@ -39,6 +40,9 @@ public class MemberServiceTest {
 
     @Mock
     private StorageService storageService;
+
+    @Mock
+    private CustomBeanUtils<Member> customBeanUtils;
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -87,6 +91,8 @@ public class MemberServiceTest {
         given(memberRepository.findByMemberIdAndMemberStatusIs(
                 Mockito.anyLong(), Mockito.any(MemberStatus.class)))
                 .willReturn(Optional.of(new Member()));
+        given(customBeanUtils.copyNonNullProperties(Mockito.any(Member.class), Mockito.any(Member.class)))
+                .willReturn(new Member());
         doNothing().when(storageService).storeImage(profileImage);
         given(memberRepository.save(Mockito.any(Member.class)))
                 .willReturn(member);
