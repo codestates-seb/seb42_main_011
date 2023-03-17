@@ -2,6 +2,8 @@ package com.mybuddy.follow.service;
 
 import com.mybuddy.follow.entity.Follow;
 import com.mybuddy.follow.repository.FollowRepository;
+import com.mybuddy.global.exception.LogicException;
+import com.mybuddy.global.exception.LogicExceptionCode;
 import com.mybuddy.member.entity.Member;
 import com.mybuddy.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,7 +51,7 @@ public class FollowServiceImpl implements FollowService {
 
         // if (followeeId.equals(getLoginUserId()))
         if (followeeId.equals(loginUser.getMemberId()))
-            throw new RuntimeException();
+            throw new LogicException(LogicExceptionCode.FOLLOW_NOT_POSSIBLE);
 
         Follow newFollow = Follow.builder()
                 .follower(loginUser)
@@ -64,6 +67,7 @@ public class FollowServiceImpl implements FollowService {
         List<Follow> followList = followRepository.findFollowListByFolloweeId(loginUser.getMemberId());
         List<Member> followerList = followList.stream()
                 .map(following -> memberService.getMember(following.getFollower().getMemberId()))
+                .sorted(Comparator.comparingLong(Member::getMemberId).reversed())
                 .collect(Collectors.toList());
 
         return new PageImpl<>(followerList, PageRequest.of(page, size,
@@ -76,6 +80,7 @@ public class FollowServiceImpl implements FollowService {
         List<Follow> followList = followRepository.findFollowListByFollowerId(loginUser.getMemberId());
         List<Member> followeeList = followList.stream()
                 .map(following -> memberService.getMember(following.getFollowee().getMemberId()))
+                .sorted(Comparator.comparingLong(Member::getMemberId).reversed())
                 .collect(Collectors.toList());
 
         return new PageImpl<>(followeeList, PageRequest.of(page, size,
@@ -88,7 +93,7 @@ public class FollowServiceImpl implements FollowService {
                 followRepository.findByFollowerIdAndFolloweeId(loginUser.getMemberId(), followeeId);
 
         if (obtainedFollow.isEmpty())
-            throw new RuntimeException();
+            throw new LogicException(LogicExceptionCode.FOLLOW_NOT_FOUND);
 
         followRepository.delete(obtainedFollow.get());
     }
@@ -98,6 +103,6 @@ public class FollowServiceImpl implements FollowService {
         Optional<Follow> optionalFollow = followRepository.findByFolloweeId(followeeId);
 
         if (optionalFollow.isPresent())
-            throw new RuntimeException();
+            throw new LogicException(LogicExceptionCode.FOLLOW_ALREADY_EXISTS);
     }
 }
