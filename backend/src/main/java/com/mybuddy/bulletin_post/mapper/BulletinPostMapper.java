@@ -3,19 +3,22 @@ package com.mybuddy.bulletin_post.mapper;
 import com.mybuddy.amenity.entity.Amenity;
 import com.mybuddy.bulletin_post.dto.BulletinPostDto;
 import com.mybuddy.bulletin_post.entity.BulletinPost;
+import com.mybuddy.bulletin_post.service.BulletinPostService;
 import com.mybuddy.comment.dto.CommentResponseDto;
+import com.mybuddy.like.entity.Like;
+import com.mybuddy.like.service.LikeService;
 import com.mybuddy.member.entity.Member;
+import lombok.RequiredArgsConstructor;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface BulletinPostMapper {
 
-    //    amenity를 따로 set 해주니까 필요 없을수도..? 매핑 오류가 안난다면
 //    @Mapping(source = "addressId", target = "amenity.addressId")
 //    @Mapping(source = "amenityName", target = "amenity.amenityName")
 //    @Mapping(source = "address", target = "amenity.address")
@@ -23,7 +26,6 @@ public interface BulletinPostMapper {
 //    @Mapping(source = "latitude", target = "amenity.latitude")
     BulletinPost bulletinPostCreateDtoToBulletinPost(BulletinPostDto.Create requestBody);
 
-    //    amenity를 따로 set 해주니까 필요 없을수도..? 매핑 오류가 안난다면
 //    @Mapping(source = "addressId", target = "amenity.addressId")
 //    @Mapping(source = "amenityName", target = "amenity.amenityName")
 //    @Mapping(source = "address", target = "amenity.address")
@@ -33,7 +35,7 @@ public interface BulletinPostMapper {
 
 
 
-    default BulletinPostDto.Response bulletinPostToBulletinPostResponseDto(BulletinPost bulletinPost) {
+    default BulletinPostDto.Response bulletinPostToBulletinPostResponseDto(BulletinPost bulletinPost, BulletinPostService bulletinPostService, LikeService likeService) {
 
         if ( bulletinPost == null ) {
             return null;
@@ -42,9 +44,10 @@ public interface BulletinPostMapper {
         Member member = bulletinPost.getMember();
         Amenity amenity = bulletinPost.getAmenity();
 
-        List<CommentResponseDto> commentLists = bulletinPost.getCommentList().stream()
+        List<CommentResponseDto> commentLists = bulletinPost.getComments().stream()
                 .map(comment -> {
                     CommentResponseDto commentResponse = new CommentResponseDto(
+                            comment.getCommentId(),
                             comment.getCommentContent(),
                             comment.getMember().getMemberId(),
                             comment.getMember().getNickname(),
@@ -52,11 +55,12 @@ public interface BulletinPostMapper {
                     );
                     return commentResponse;
                 }
-                ).collect(Collectors.toList());
+                ).sorted(Comparator.comparingLong(CommentResponseDto::getCommentId).reversed())
+                .collect(Collectors.toList());
 
-        //like count, like chosen 추후수정
-//        likeCount = bulletinPostService.getLikeCount(bulletinPostId);
-//        likeChosen = bullentinPostService.getLikeChosen(bulletinPostId, memberId);
+
+        long likeCount = bulletinPostService.getLikeCount(bulletinPost.getBulletinPostId());
+        int likeByUser = likeService.findExistLikeByMemberId(bulletinPost.getBulletinPostId(), member.getMemberId());
         BulletinPostDto.Response bulletinPostResponseDto = new BulletinPostDto.Response(
                 bulletinPost.getBulletinPostId(),
                 bulletinPost.getPhotoUrl(),
@@ -68,8 +72,8 @@ public interface BulletinPostMapper {
                 member.getProfileUrl(),
                 amenity.getAmenityId(),
                 amenity.getAmenityName(),
-                1,
-                2,
+                likeCount,
+                likeByUser,
                 commentLists,
                 commentLists.size()
         );
@@ -87,17 +91,19 @@ public interface BulletinPostMapper {
 
         Member member = bulletinPost.getMember();
 
-        List<CommentResponseDto> commentLists = bulletinPost.getCommentList().stream()
-                .map(comment -> {
-                    CommentResponseDto commentResponse = new CommentResponseDto(
-                            comment.getCommentContent(),
-                            comment.getMember().getMemberId(),
-                            comment.getMember().getNickname(),
-                            comment.getMember().getDogName()
-                    );
-                    return commentResponse;
-                }
-                ).collect(Collectors.toList());
+        //commentList null로 반환하기로해서.. 혹시 모르니 남겨둠.
+//        List<CommentResponseDto> commentLists = bulletinPost.getComments().stream()
+//                .map(comment -> {
+//                    CommentResponseDto commentResponse = new CommentResponseDto(
+//                            comment.getCommentId(),
+//                            comment.getCommentContent(),
+//                            comment.getMember().getMemberId(),
+//                            comment.getMember().getNickname(),
+//                            comment.getMember().getDogName()
+//                    );
+//                    return commentResponse;
+//                }
+//                ).collect(Collectors.toList());
 
         BulletinPostDto.ResponseForFeed bulletinPostResponseForFeedDto = new BulletinPostDto.ResponseForFeed(
                 bulletinPost.getBulletinPostId(),
@@ -106,8 +112,8 @@ public interface BulletinPostMapper {
                 member.getMemberId(),
                 member.getNickname(),
                 member.getDogName(),
-                commentLists,
-                commentLists.size()
+                null,
+                bulletinPost.getComments().size()
         );
 
         return bulletinPostResponseForFeedDto;

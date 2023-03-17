@@ -1,18 +1,11 @@
 package com.mybuddy.amenity.repository;
 
 import com.mybuddy.amenity.dto.AmenityResponseDto;
-import com.mybuddy.amenity.dto.AmenityWithBulletinPost;
 import com.mybuddy.amenity.entity.Amenity;
 import com.mybuddy.amenity.entity.QAmenity;
-import com.mybuddy.bulletin_post.entity.BulletinPost;
 import com.mybuddy.bulletin_post.entity.QBulletinPost;
-import com.mybuddy.bulletin_post.mapper.BulletinPostMapper;
-import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
@@ -65,21 +58,5 @@ public class AmenityCustomRepositoryImpl implements AmenityCustomRepository{
                 .fetch();
 
         return amenities;
-    }
-
-    //bulletinPostCustomRepositoryImpl로 이동시킬 예정입니다. (2023.03.13 강지은)
-    @Override
-    public Page<BulletinPost>  findTaggedBulletinPostByAmenityId(Long amenityId, PageRequest pageRequest) {
-
-        QBulletinPost bulletinPost = QBulletinPost.bulletinPost;
-
-        QueryResults<BulletinPost> queryResults = queryFactory
-                .selectFrom(bulletinPost)
-                .where(bulletinPost.amenity.amenityId.eq(amenityId))
-                .offset(pageRequest.getOffset())
-                .limit(pageRequest.getPageSize())
-                .fetchResults();
-
-        return new PageImpl<>(queryResults.getResults(), pageRequest, queryResults.getTotal());
     }
 }

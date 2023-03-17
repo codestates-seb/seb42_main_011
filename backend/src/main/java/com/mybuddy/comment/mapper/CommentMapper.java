@@ -39,6 +39,7 @@ public interface CommentMapper {
 
         CommentResponseDto commentResponseDto = CommentResponseDto
                 .builder()
+                .commentId(comment.getCommentId())
                 .commentContent(comment.getCommentContent())
                 .dogName(comment.getMember().getDogName())
                 .memberId(comment.getMember().getMemberId())

@@ -6,7 +6,9 @@ import javax.persistence.*;
 
 import com.mybuddy.bulletin_post.entity.BulletinPost;
 import com.mybuddy.comment.entity.Comment;
+import com.mybuddy.follow.entity.Follow;
 import com.mybuddy.global.audit.Auditable;
+import com.mybuddy.like.entity.Like;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -69,8 +71,14 @@ public class Member extends Auditable {
     @OneToMany(mappedBy = "member")
     private List<Comment> comments = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "member")
-//    private List<Like> likes = new ArrayList<>();
+    @OneToMany(mappedBy = "member")
+    private List<Like> likes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "follower")
+    private List<Follow> followers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "followee")
+    private List<Follow> followees = new ArrayList<>();
 
     public void addBulletinPost(BulletinPost bulletinPost) {
         bulletinPosts.add(bulletinPost);
@@ -80,9 +88,17 @@ public class Member extends Auditable {
         comments.add(comment);
     }
 
-//    public void addLike(Like like) {
-//        likes.add(like);
-//    }
+    public void addLike(Like like) {
+        likes.add(like);
+    }
+
+    public void addFollower(Follow follower) {
+        followers.add(follower);
+    }
+
+    public void addFollowee(Follow followee) {
+        followees.add(followee);
+    }
 
     @Builder
     public Member(Long memberId, String email, String password, String nickname, String aboutMe,

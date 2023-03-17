@@ -1,8 +1,7 @@
 package com.mybuddy.amenity.controller;
 
-import com.mybuddy.amenity.dto.AmenityCreateDto;
+
 import com.mybuddy.amenity.dto.AmenityResponseDto;
-import com.mybuddy.amenity.dto.AmenityWithBulletinPost;
 import com.mybuddy.amenity.entity.Amenity;
 import com.mybuddy.amenity.mapper.AmenityMapper;
 import com.mybuddy.amenity.service.AmenityService;
@@ -56,7 +55,7 @@ public class AmenityController {
                                                                    @RequestParam(name = "region") String region) {
 
         List<AmenityResponseDto> amenityList = amenityService.getRecommendAmenities(state,region);
-        ApiSingleResponse response = new ApiSingleResponse(HttpStatus.OK,"지역에서 추천하는 장소 리스트입니다.", amenityList);
+        ApiSingleResponse response = new ApiSingleResponse(HttpStatus.OK,"해당 지역의 추천 장소 리스트", amenityList);
 
         return ResponseEntity.ok(response);
     }

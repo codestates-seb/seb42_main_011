@@ -106,3 +106,91 @@ include::{snippets}/Delete-Member/path-parameters.adoc[]
 
 .http-response
 include::{snippets}/Delete-Member/http-response.adoc[]
+
+
+
+== 댓글
+
+=== 댓글 등록
+.http-request
+include::{snippets}/create-comment/http-request.adoc[]
+
+.request-fields
+include::{snippets}/create-comment/request-fields.adoc[]
+
+.http-response
+include::{snippets}/create-comment/http-response.adoc[]
+
+.response-fields
+include::{snippets}/create-comment/response-fields.adoc[]
+
+
+=== 댓글 수정
+.http-request
+include::{snippets}/update-comment/http-request.adoc[]
+
+.request-fields
+include::{snippets}/update-comment/request-fields.adoc[]
+
+.path-parameters
+include::{snippets}/update-comment/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/update-comment/http-response.adoc[]
+
+.response-fields
+include::{snippets}/update-comment/response-fields.adoc[]
+
+
+=== 댓글 삭제
+.http-request
+include::{snippets}/delete-comment/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/delete-comment/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/delete-comment/http-response.adoc[]
+
+
+
+
+== 장소
+
+=== 장소 1개 정보 얻기
+.http-request
+include::{snippets}/get-amenity/http-request.adoc[]
+
+.http-response
+include::{snippets}/get-amenity/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-amenity/response-fields.adoc[]
+
+
+=== 장소가 태그된 게시물 정보 얻기
+.http-request
+include::{snippets}/get-tagged-bulletin-post-list/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/get-tagged-bulletin-post-list/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/get-tagged-bulletin-post-list/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-tagged-bulletin-post-list/response-fields.adoc[]
+
+
+=== 지역 필터링을 이용한 추천 장소 리스트 가져오기
+.http-request
+include::{snippets}/get-recommend-amenity-state-region/http-request.adoc[]
+
+.request-parameters
+include::{snippets}/get-recommend-amenity-state-region/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/get-recommend-amenity-state-region/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-recommend-amenity-state-region/response-fields.adoc[]

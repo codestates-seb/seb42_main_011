@@ -7,6 +7,7 @@ import com.mybuddy.comment.entity.Comment;
 import com.mybuddy.comment.service.CommentService;
 import com.mybuddy.global.storage.StorageService;
 import com.mybuddy.global.utils.CustomBeanUtils;
+import com.mybuddy.like.entity.Like;
 import com.mybuddy.member.entity.Member;
 import com.mybuddy.member.service.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -15,12 +16,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class BulletinPostService {
 
@@ -57,10 +60,13 @@ public class BulletinPostService {
 
         //findExistMemberById(Long memberId) 가져오기? 로그인 사용자 확인하기?
 
+        Long memberId = 1L;
+        Member foundMember = memberService.findExistMemberById(memberId);
+        updateBulletinPost.setMember(foundMember);
 
-        BulletinPost bulletinPost = findVerifiedBulletinPost(updateBulletinPost.getBulletinPostId());
+        BulletinPost foundBulletinPost = findVerifiedBulletinPost(updateBulletinPost.getBulletinPostId());
 
-        BulletinPost tempBulletinPost = customBeanUtils.copyNonNullProperties(updateBulletinPost, bulletinPost);
+        BulletinPost bulletinPost = customBeanUtils.copyNonNullProperties(updateBulletinPost, foundBulletinPost);
 
         Optional.ofNullable(photoImage)
                 .ifPresent(storageService::storeImage);
@@ -89,14 +95,15 @@ public class BulletinPostService {
 
     public Page<BulletinPost> findBulletinPosts(int page, int size) {
 
-        //findExistMemberById(Long memberId) 가져오기
+        //로그인 멤버 가져오기
         //if 로그인 확인시 //팔로잉 하는 계정들에서.
 
-//        Pageable pageable = PageRequest.of(page, size);
-//        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "likeCount 고쳐서쓰기"));
-//
-//        bulletinPostCustomRepositoryImpl에다가 findAllFollowingPostsByMemberId(memberId, (PageRequest.of(page, size)) 메서드
-//        Optional<Page<BulletinPost>> optionalPage = bulletinPostRepository.findAllFollowingPostsByMemberId(memberId, (PageRequest.of(page, size));
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+
+//        if 로그인유저
+
+//        bulletinPostCustomRepositoryImpl에 findAllFollowingPostsByMemberId(memberId, pageable) 메서드
+//        Optional<Page<BulletinPost>> optionalPage = bulletinPostRepository.findAllFollowingPostsByMemberId(memberId, pageable);
 //
 //        Page<BulletinPost> findPage =
 //                optionalPage.orElseThrow(() ->
@@ -105,36 +112,31 @@ public class BulletinPostService {
 
 //        else 비로그인시 find All 이거 그대로.
 
-        Page<BulletinPost> bulletinPosts = bulletinPostRepository.findAll(PageRequest.of(page, size));
+        Page<BulletinPost> bulletinPosts = bulletinPostRepository.findAll(pageRequest);
 
         return bulletinPosts;
     }
 
     public Page<BulletinPost> findBulletinPostsByMemberId(long memberId, int page, int size) {
 
-        //findExistMemberById(Long memberId) 가져오기??
 
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("bulletinPostId").descending());
 
         Optional<Page<BulletinPost>> optionalPage = bulletinPostRepository.findByMemberMemberId(memberId, pageable);
 
-        Page<BulletinPost> findPage =
+        Page<BulletinPost> bulletinPostPage =
                 optionalPage.orElseThrow(() ->
                         new RuntimeException());
-        return findPage;
 
-        //임시
-//        Page<BulletinPost> bulletinPosts = bulletinPostRepository.findAll(PageRequest.of(page, size));
-//
-//        return bulletinPosts;
+        return bulletinPostPage;
     }
 
 
     public void deleteBulletinPost(long bulletinPostId) {
 
-        BulletinPost findBulletinPost = findVerifiedBulletinPost(bulletinPostId);
+        BulletinPost obtainedBulletinPost = findVerifiedBulletinPost(bulletinPostId);
 
-        bulletinPostRepository.delete(findBulletinPost);
+        bulletinPostRepository.delete(obtainedBulletinPost);
     }
 
 
@@ -143,11 +145,11 @@ public class BulletinPostService {
         Optional<BulletinPost> optionalBulletinPost =
                 bulletinPostRepository.findById(bulletinPostId);
 
-        BulletinPost findBulletinPost =
+        BulletinPost obtainedBulletinPost =
                 optionalBulletinPost.orElseThrow(() ->
                         new RuntimeException());
 
-        return findBulletinPost;
+        return obtainedBulletinPost;
     }
 
     public long getCommentCount(long bulletinPostId) {
@@ -160,20 +162,23 @@ public class BulletinPostService {
         return commentCount;
     }
 
-//    public long getLikeCount(long bulletinPostId) {
-//
-//        BulletinPost bulletinPost = findVerifiedBulletinPost(bulletinPostId);
-//        List<Like> likeList = bulletinPost.getLikeList();
-//        long likeCount = likeList.size();
-//
-//        return likeCount;
-//    }
+    public long getLikeCount(long bulletinPostId) {
 
-//    이렇게 해야할지 아니면 아예 likeservice 에서 findExistLikeByMemberId를 getLikeChosen 메서드명으로 해서 바로 소환해야할지..?
-//    public long getLikeChosen(long bulletinPostId, long memberId) {
+        //일단은 리스트째로 가져왔는데 like 세오는 쿼리문 만들기.
+        BulletinPost bulletinPost = findVerifiedBulletinPost(bulletinPostId);
+        List<Like> likeList = bulletinPost.getLikes();
+        if (likeList.isEmpty()) return 0;
+        else {
+            return likeList.size();
+        }
+    }
+
+
+
+//    public long getLikeByUser(long bulletinPostId, long memberId) {
 //
-//        //이 메서드 결과 값을 if로 나눠서 0 또는 1로
-//        long OneIfExist = likeService.findExistLikeByMemberId(long bulletinPostId, long memberId);
+//        //이 메서드 결과 값을 if로 나눠서 0 또는 1로?
+//        long OneIfExist = likeService.findExistLikeByMemberId( bulletinPostId, memberId);
 //
 //        return OneIfExist;
 //    }

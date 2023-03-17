@@ -21,15 +21,22 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.core.parameters.P;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(CommentController.class)
@@ -53,13 +60,14 @@ public class CommentControllerTest {
 
     private static Member member;
     private static BulletinPost bulletinPost;
+
     @BeforeAll
     static void init() {
         member = MockTestData.MockMember.getMember();
 
         bulletinPost = new BulletinPost(
                 1L, member, null,
-                "url","게시글입니다.", new ArrayList<>()
+                "url","게시글입니다.", new ArrayList<>(),new ArrayList<>()
         );
     }
 
@@ -78,6 +86,7 @@ public class CommentControllerTest {
         String content = gson.toJson(createDto);
 
         CommentResponseDto responseDto = CommentResponseDto.builder()
+                .commentId(comment.getCommentId())
                 .commentContent(comment.getCommentContent())
                 .memberId(member.getMemberId())
                 .nickName(member.getNickname())
@@ -100,10 +109,34 @@ public class CommentControllerTest {
 //                .andExpect(header().string("Location", is(startsWith(COMMENT_DEFAULT_URL))))
                 .andExpect(jsonPath("$.code",is("201")))
                 .andExpect(jsonPath("$.message",is("댓글이 생성되었습니다")))
+                .andExpect(jsonPath("$.data.commentId").value(comment.getCommentId()))
                 .andExpect(jsonPath("$.data.commentContent",is(comment.getCommentContent())))
                 .andExpect(jsonPath("$.data.memberId").value(member.getMemberId()))
                 .andExpect(jsonPath("$.data.nickName",is(member.getNickname())))
-                .andExpect(jsonPath("$.data.dogName",is(member.getDogName())));
+                .andExpect(jsonPath("$.data.dogName",is(member.getDogName())))
+                .andDo(document(
+                        "create-comment",
+                        requestFields(
+                                List.of(
+                                        fieldWithPath("bulletinPostId").type(JsonFieldType.NUMBER).description("게시글 식별자"),
+                                        fieldWithPath("commentContent").type(JsonFieldType.STRING).description("댓글 내용")
+                                )
+                        ),
+                        responseFields(
+                                List.of(
+                                        fieldWithPath("code").type(JsonFieldType.STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(JsonFieldType.STRING).description("상태 코드 메세지"),
+                                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
+                                        fieldWithPath("data.commentId").type(JsonFieldType.NUMBER).description("댓글 식별자"),
+                                        fieldWithPath("data.commentContent").type(JsonFieldType.STRING).description("댓글 내용"),
+                                        fieldWithPath("data.memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
+                                        fieldWithPath("data.nickName").type(JsonFieldType.STRING).description("견주 닉네임"),
+                                        fieldWithPath("data.dogName").type(JsonFieldType.STRING).description("강아지 이름")
+
+                                )
+                        )
+
+                ));
 
     }
 
@@ -121,9 +154,8 @@ public class CommentControllerTest {
 
         String content = gson.toJson(updateDto);
 
-        Comment originalComment =  MockTestData.MockComment.getComment();
-
         CommentResponseDto responseDto = CommentResponseDto.builder()
+                .commentId(commentId)
                 .commentContent(updateContent)
                 .memberId(member.getMemberId())
                 .nickName(member.getNickname())
@@ -145,11 +177,37 @@ public class CommentControllerTest {
         resultActions.andExpect(status().isOk())
                 .andExpect(jsonPath("$.code",is("200")))
                 .andExpect(jsonPath("$.message",is("댓글이 수정되었습니다")))
+                .andExpect(jsonPath("$.data.commentId").value(commentId))
                 .andExpect(jsonPath("$.data.commentContent",is(updateContent)))
-                .andExpect(jsonPath("$.data.memberId").value(member.getMemberId()))  //member.getMemberId()
+                .andExpect(jsonPath("$.data.memberId").value(member.getMemberId()))
                 .andExpect(jsonPath("$.data.nickName",is(member.getNickname())))
-                .andExpect(jsonPath("$.data.dogName",is(member.getDogName())));
+                .andExpect(jsonPath("$.data.dogName",is(member.getDogName())))
+                .andDo(
+                        document(
+                                "update-comment",
+                                pathParameters(
+                                        parameterWithName("comment-id").description("댓글 식별자 ID")
+                                ),
+                                requestFields(
+                                        List.of(
+                                                fieldWithPath("commentContent").type(JsonFieldType.STRING).description("댓글 내용")
+                                        )
+                                ),
+                                responseFields(
+                                        List.of(
+                                                fieldWithPath("code").type(JsonFieldType.STRING).description("상태 코드"),
+                                                fieldWithPath("message").type(JsonFieldType.STRING).description("상태 코드 메세지"),
+                                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
+                                                fieldWithPath("data.commentId").type(JsonFieldType.NUMBER).description("댓글 식별자"),
+                                                fieldWithPath("data.commentContent").type(JsonFieldType.STRING).description("댓글 내용"),
+                                                fieldWithPath("data.memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
+                                                fieldWithPath("data.nickName").type(JsonFieldType.STRING).description("견주 닉네임"),
+                                                fieldWithPath("data.dogName").type(JsonFieldType.STRING).description("강아지 이름")
 
+                                        )
+                                )
+                        )
+                );
     }
 
     @DisplayName("댓글 삭제")
@@ -163,12 +221,20 @@ public class CommentControllerTest {
         //when
         ResultActions actions = mockMvc.perform(
                 RestDocumentationRequestBuilders
-                        .delete(COMMENT_DEFAULT_URL+"/{question-id}", commentId)
+                        .delete(COMMENT_DEFAULT_URL+"/{comment-id}", commentId)
         );
 
         //then
         actions
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent())
+                .andDo(
+                        document(
+                                "delete-comment",
+                                pathParameters(
+                                        parameterWithName("comment-id").description("댓글 식별자 ID")
+                                )
+                        )
+                );
     }
 
 }

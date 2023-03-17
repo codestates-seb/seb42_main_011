@@ -12,7 +12,22 @@ import java.util.List;
 public interface AmenityMapper {
 
 
-    Amenity amenityCreateDtoToAmenity(AmenityCreateDto amenityCreateDto);
+
+    default Amenity amenityCreateDtoToAmenity(AmenityCreateDto amenityCreateDto) {
+        if ( amenityCreateDto == null ) {
+            return null;
+        }
+
+        Amenity amenity = Amenity.CreateNewAmenity()
+                .address(amenityCreateDto.getAddress())
+                .amenityName(amenityCreateDto.getAmenityName())
+                .addressId(amenityCreateDto.getAddressId())
+                .longitude(amenityCreateDto.getLongitude())
+                .latitude(amenityCreateDto.getLatitude())
+                .build();
+
+        return amenity;
+    }
     AmenityResponseDto amenityToAmenityResponseDto(Amenity amenity);
 
     List<AmenityResponseDto> AmenityListToAmenityResponseDto(List<Amenity> amenityList);

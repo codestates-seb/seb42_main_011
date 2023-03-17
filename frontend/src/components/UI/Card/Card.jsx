@@ -4,7 +4,6 @@ import styled, { css } from 'styled-components';
 const StyledCard = styled.div`
   border: var(--border);
   border-radius: ${({ borderRadius }) => borderRadius};
-  background: var(--color-light-0);
 
   ${({ isHoverTranslate }) =>
     isHoverTranslate &&
@@ -28,6 +27,8 @@ function Card({
   isHoverTranslate = false,
   isTranslate = false,
   children,
+  className,
+  tag = 'div',
   ...props
 }) {
   return (
@@ -35,6 +36,8 @@ function Card({
       isHoverTranslate={isHoverTranslate}
       isTranslate={isTranslate}
       borderRadius={borderRadius}
+      className={className}
+      as={tag}
       {...props}
     >
       {children}

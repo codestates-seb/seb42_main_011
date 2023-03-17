@@ -66,7 +66,7 @@ public class BulletinPostDto {
         private String amenityName;
 
         private long likeCount;
-        private int likeChosen;
+        private int likeByUser;
 
         private List<CommentResponseDto> commentList;
         private long commentCount;
@@ -74,7 +74,6 @@ public class BulletinPostDto {
     }
     @Getter
     @Setter
-    @AllArgsConstructor
     @NoArgsConstructor
     public static class ResponseForFeed {
 
@@ -89,5 +88,16 @@ public class BulletinPostDto {
         private List<CommentResponseDto> commentList;
         private long commentCount;
 
+        @Builder
+        public ResponseForFeed(long bulletinPostId, String photoUrl, String postContent, long memberId, String nickname, String dogName, List<CommentResponseDto> commentList, long commentCount) {
+            this.bulletinPostId = bulletinPostId;
+            this.photoUrl = photoUrl;
+            this.postContent = postContent;
+            this.memberId = memberId;
+            this.nickname = nickname;
+            this.dogName = dogName;
+            this.commentList = commentList;
+            this.commentCount = commentCount;
+        }
     }
 }
