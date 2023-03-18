@@ -2,16 +2,18 @@ import React from 'react';
 import styled from 'styled-components';
 import { elapsedTime } from '../../../utils/time';
 import { ReactComponent as Commentlogo } from '../../../assets/icons/icon-comment.svg';
-import Card from '../../UI/Card/Card';
+import Card from '../Card/Card';
 
 const ItemBox = styled(Card)`
   display: flex;
   flex-direction: column;
   width: 300px;
   background-color: var(--color-light-0);
+
   &:hover {
     box-shadow: 10px 10px 0 0 var(--color-dark-0);
   }
+
   @media (max-width: 1363px) {
     width: 85%;
     height: 88%;
@@ -25,6 +27,7 @@ const PostImage = styled.img`
   aspect-ratio: 1/1;
   /* 정사각형 아닌 사진은 비율 그대로 확대되도록 */
   object-fit: cover;
+
   @media (max-width: 1363px) {
     width: 100%;
     object-fit: cover;
@@ -51,11 +54,8 @@ const PostBox = styled.div`
 const ContentBox = styled.p`
   line-height: 1.4rem;
   padding-bottom: 12px;
-  /* display: flex;
-  align-items: center; */
   height: 72px;
 
-  /* 텍스트 줄바꿈을 위해서 넣어 둠 */
   width: 100%;
   display: inline-block;
 
@@ -63,7 +63,6 @@ const ContentBox = styled.p`
   overflow: hidden;
   text-overflow: ellipsis;
 
-  /* 여러 줄 자르기 추가 스타일 */
   white-space: normal;
   text-align: left;
   word-wrap: break-word;
@@ -94,9 +93,6 @@ const FeedInfos = styled.div`
   flex-direction: row;
   justify-content: space-between;
   padding: 11px 10px 10px 12px;
-
-  .postitem__createdAt {
-  }
 `;
 
 const FeedInfosName = styled.div`
