@@ -50,7 +50,7 @@ public class BulletinPostCustomRepositoryImpl implements BulletinPostCustomRepos
                     List<BulletinPost> tempList =
                             queryFactory
                                     .selectFrom(bulletinPost)
-                                    .where(bulletinPost.member.memberId.eq(followee.getFollowId()))
+                                    .where(bulletinPost.member.memberId.eq(followee.getFollowee().getMemberId()))
                                     .fetch();
                     return posts.addAll(tempList);
                 });
