@@ -11,7 +11,6 @@ import java.util.List;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface SearchMapper {
 
-    @Mapping(source = "nickname", target = "")
     default SearchResponseDto memberToSearchResponseDto(Member member) {
         if ( member == null ) {
             return null;
