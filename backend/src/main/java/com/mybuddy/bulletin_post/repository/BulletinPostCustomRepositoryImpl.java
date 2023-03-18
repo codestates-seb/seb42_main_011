@@ -50,7 +50,7 @@ public class BulletinPostCustomRepositoryImpl implements BulletinPostCustomRepos
                     List<BulletinPost> tempList =
                             queryFactory
                                     .selectFrom(bulletinPost)
-                                    .where(bulletinPost.member.memberId.eq(followee.getFollowId()))
+                                    .where(bulletinPost.member.memberId.eq(followee.getFollowee().getMemberId()))
                                     .fetch();
                     return posts.addAll(tempList);
                 });
@@ -108,7 +108,7 @@ public class BulletinPostCustomRepositoryImpl implements BulletinPostCustomRepos
 
 
     @Override
-    public long findCommentsByBulletinPostId(long postId) {
+    public long findNumberOfCommentsByPostId(long postId) {
 
         QBulletinPost bulletinPost = QBulletinPost.bulletinPost;
 

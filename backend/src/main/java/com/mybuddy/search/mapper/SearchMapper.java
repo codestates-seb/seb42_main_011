@@ -21,8 +21,8 @@ public interface SearchMapper {
                 member.getProfileUrl(),
                 member.getNickname(),
                 member.getDogName(),
-                member.getFollowers().size(),
-                member.getFollowees().size()
+                member.getFollowees().size(),
+                member.getFollowers().size()
         );
         return responseDto;
     };

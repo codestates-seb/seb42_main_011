@@ -3,7 +3,6 @@ package com.mybuddy.bulletin_post.service;
 import com.mybuddy.amenity.entity.Amenity;
 import com.mybuddy.bulletin_post.entity.BulletinPost;
 import com.mybuddy.bulletin_post.repository.BulletinPostRepository;
-import com.mybuddy.comment.entity.Comment;
 import com.mybuddy.comment.service.CommentService;
 import com.mybuddy.global.storage.StorageService;
 import com.mybuddy.global.utils.CustomBeanUtils;
@@ -12,7 +11,6 @@ import com.mybuddy.member.service.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -156,7 +154,7 @@ public class BulletinPostService {
 //        long commentCount = commentList.size();
 
         //아니면 쿼리dsl?
-        long commentCount = bulletinPostRepository.findCommentsByBulletinPostId(bulletinPostId);
+        long commentCount = bulletinPostRepository.findNumberOfCommentsByPostId(bulletinPostId);
 
         //길이는 그게 그거 같음
         // 다만 list 불러와서 세는건 있던 메서드 가져오는거고 쿼리dsl은 새로 만들어써야했단거 정도?
