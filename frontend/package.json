@@ -15,6 +15,7 @@
     "redux": "^4.2.1",
     "redux-devtools-extension": "^2.13.9",
     "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.4.2",
     "styled-components": "^5.3.8",
     "styled-normalize": "^8.0.7",
     "web-vitals": "^2.1.0"
