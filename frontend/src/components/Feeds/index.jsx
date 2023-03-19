@@ -11,12 +11,15 @@ const FeesdWrapper = styled.article`
 const FeedsContainer = styled.div`
   padding: 0 90px;
   height: 100%;
+
   @media (max-width: 1363px) {
     padding: 0 1%;
   }
+
   overflow-y: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
+
   ::-webkit-scrollbar {
     display: none;
   }
