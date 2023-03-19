@@ -1,9 +1,8 @@
 package com.mybuddy.search.mapper;
 
 import com.mybuddy.member.entity.Member;
-import com.mybuddy.search.dto.SearchResponseDto;
+import com.mybuddy.search.dto.SearchMemberResponseDto;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
 import java.util.List;
@@ -11,11 +10,11 @@ import java.util.List;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface SearchMapper {
 
-    default SearchResponseDto memberToSearchResponseDto(Member member) {
+    default SearchMemberResponseDto memberToSearchResponseDto(Member member) {
         if ( member == null ) {
             return null;
         }
-        SearchResponseDto responseDto = new SearchResponseDto(
+        SearchMemberResponseDto responseDto = new SearchMemberResponseDto(
                 member.getMemberId(),
                 member.getProfileUrl(),
                 member.getNickname(),
@@ -26,5 +25,5 @@ public interface SearchMapper {
         return responseDto;
     };
 
-    List<SearchResponseDto> membersToSearchResponseDtos(List<Member> members);
+    List<SearchMemberResponseDto> membersToSearchResponseDtos(List<Member> members);
 }

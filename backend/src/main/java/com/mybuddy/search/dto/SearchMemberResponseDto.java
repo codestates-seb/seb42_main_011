@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class SearchResponseDto {
+public class SearchMemberResponseDto {
 
     private final Long memberId;
     private final String profileUrl;
@@ -14,7 +14,7 @@ public class SearchResponseDto {
     private final long followeeNumber;
 
     @Builder
-    public SearchResponseDto(Long memberId, String profileUrl, String nickname, String dogName, long followerNumber, long followeeNumber) {
+    public SearchMemberResponseDto(Long memberId, String profileUrl, String nickname, String dogName, long followerNumber, long followeeNumber) {
         this.memberId = memberId;
         this.profileUrl = profileUrl;
         this.nickname = nickname;
