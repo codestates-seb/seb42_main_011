@@ -30,6 +30,8 @@ public class FollowRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
 
+    Member admin = MockTestData.MockMember.getAdmin();
+
     Member member1 = MockTestData.MockMember.getMember();
 
     Member member2 = MockTestData.MockMember.getSecondMember();
@@ -38,6 +40,7 @@ public class FollowRepositoryTest {
 
     @BeforeAll
     public void init() {
+        memberRepository.save(admin);
         memberRepository.save(member1);
         memberRepository.save(member2);
 

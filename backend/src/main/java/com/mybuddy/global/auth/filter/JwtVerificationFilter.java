@@ -1,6 +1,6 @@
-/*
 package com.mybuddy.global.auth.filter;
 
+import com.mybuddy.global.auth.dto.PrincipalDto;
 import com.mybuddy.global.auth.jwt.JwtTokenizer;
 import com.mybuddy.global.auth.utils.MemberAuthorityUtils;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -63,11 +63,14 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     }
 
     private void setAuthenticationToContext(Map<String, Object> claims) {
-        String username = (String) claims.get("username");
+        PrincipalDto principalDto = PrincipalDto.builder()
+                .loginUserId(Long.parseLong(String.valueOf(claims.get("memberId"))))
+                .email((String) claims.get("username"))
+                .build();
+
         List<GrantedAuthority> authorities = authorityUtils.createAuthorities((List) claims.get("roles"));
         Authentication authentication =
-                new UsernamePasswordAuthenticationToken(username, null, authorities);
+                new UsernamePasswordAuthenticationToken(principalDto, null, authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }
-*/

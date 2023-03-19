@@ -23,6 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.core.parameters.P;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -37,11 +38,13 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(CommentController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
+@WithMockUser(username = "kimcoding@mybuddy.com", roles = {"USER"})
 public class CommentControllerTest {
 
     private static final String COMMENT_DEFAULT_URL = "/api/v1/comments";
@@ -100,6 +103,7 @@ public class CommentControllerTest {
         ResultActions resultActions = mockMvc.perform(
                 RestDocumentationRequestBuilders.post(COMMENT_DEFAULT_URL)
                         .accept(MediaType.APPLICATION_JSON)
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content)
         );
@@ -169,6 +173,7 @@ public class CommentControllerTest {
         ResultActions resultActions = mockMvc.perform(
                 RestDocumentationRequestBuilders.patch(COMMENT_DEFAULT_URL+"/{comment-id}", commentId)
                         .accept(MediaType.APPLICATION_JSON)
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content)
         );
@@ -222,6 +227,7 @@ public class CommentControllerTest {
         ResultActions actions = mockMvc.perform(
                 RestDocumentationRequestBuilders
                         .delete(COMMENT_DEFAULT_URL+"/{comment-id}", commentId)
+                        .with(csrf())
         );
 
         //then

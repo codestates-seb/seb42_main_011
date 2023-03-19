@@ -24,6 +24,7 @@ import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -38,11 +39,13 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(AmenityController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
+@WithMockUser(username = "kimcoding@mybuddy.com", roles = {"USER"})
 public class AmenityControllerTest {
     private static final String AMENITY_DEFAULT_URL = "/api/v1/amenities";
 
@@ -76,6 +79,7 @@ public class AmenityControllerTest {
         ResultActions resultActions = mockMvc.perform(
                 RestDocumentationRequestBuilders.get(AMENITY_DEFAULT_URL+"/{amenity-id}",amenityId)
                         .accept(MediaType.APPLICATION_JSON)
+                        .with(csrf())
         );
 
         //then
@@ -134,6 +138,7 @@ public class AmenityControllerTest {
         ResultActions resultActions = mockMvc.perform(
                 RestDocumentationRequestBuilders.get(AMENITY_DEFAULT_URL+"/{amenity-id}/bulletin-posts",amenityId)
                         .accept(MediaType.APPLICATION_JSON)
+                        .with(csrf())
                         .param("page", String.valueOf(page))
                         .param("size", String.valueOf(size))
         );
@@ -198,12 +203,13 @@ public class AmenityControllerTest {
 
         List<AmenityResponseDto> recomendList = MockTestData.MockAmenity.getRecommentAmenityList();
 
-        given(amenityService.getRecommendAmenities(Mockito.anyString(),Mockito.anyString())).willReturn(recomendList);
+        given(amenityService.getRecommendAmenitiesByStateRegion(Mockito.anyString(),Mockito.anyString())).willReturn(recomendList);
 
         //when
         ResultActions resultActions = mockMvc.perform(
                 RestDocumentationRequestBuilders.get(AMENITY_DEFAULT_URL)
                         .accept(MediaType.APPLICATION_JSON)
+                        .with(csrf())
                         .param("state", String.valueOf(state))
                         .param("region", String.valueOf(region))
         );
@@ -229,7 +235,8 @@ public class AmenityControllerTest {
                             requestParameters(
                                 List.of(
                                         parameterWithName("state").description("주소의 첫번째 단어 (ex 서울)"),
-                                        parameterWithName("region").description("주소의 두번째 단어 (ex 광진구)")
+                                        parameterWithName("region").description("주소의 두번째 단어 (ex 광진구)"),
+                                        parameterWithName("_csrf").ignored()
                                 )
                             ),
 

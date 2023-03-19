@@ -1,4 +1,3 @@
-/*
 package com.mybuddy.global.auth.userdetails;
 
 import com.mybuddy.global.auth.utils.MemberAuthorityUtils;
@@ -74,4 +73,3 @@ public class MemberDetailsService implements UserDetailsService {
         }
     }
 }
-*/

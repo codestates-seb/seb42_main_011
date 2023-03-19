@@ -54,7 +54,7 @@ public class AmenityController {
     public ResponseEntity<ApiSingleResponse> getRecommendAmenities(@RequestParam(name = "state") String state,
                                                                    @RequestParam(name = "region") String region) {
 
-        List<AmenityResponseDto> amenityList = amenityService.getRecommendAmenities(state,region);
+        List<AmenityResponseDto> amenityList = amenityService.getRecommendAmenitiesByStateRegion(state,region);
         ApiSingleResponse response = new ApiSingleResponse(HttpStatus.OK,"해당 지역의 추천 장소 리스트", amenityList);
 
         return ResponseEntity.ok(response);

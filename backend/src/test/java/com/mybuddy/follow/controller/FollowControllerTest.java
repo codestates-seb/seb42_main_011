@@ -17,6 +17,7 @@ import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.LinkedMultiValueMap;
@@ -39,13 +40,14 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @WebMvcTest(FollowController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
-//@WithMockUser(username = "kimcoding@mybuddy.com", roles = {"USER"})
+@WithMockUser(username = "kimcoding@mybuddy.com", roles = {"USER"})
 public class FollowControllerTest {
 
     private final String FOLLOW_DEFAULT_URL = "/api/v1/followers";
@@ -79,7 +81,7 @@ public class FollowControllerTest {
                                 .param("followeeId", "1")
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                //.with(csrf())
+                                .with(csrf())
                                 .content(content)
                 );
 
@@ -92,8 +94,8 @@ public class FollowControllerTest {
                         preprocessResponse(prettyPrint()),
                         requestParameters(
                                 List.of(
-                                        parameterWithName("followeeId").description("팔로잉 대상 회원 식별자")
-                                        //parameterWithName("_csrf").ignored()
+                                        parameterWithName("followeeId").description("팔로잉 대상 회원 식별자"),
+                                        parameterWithName("_csrf").ignored()
                                 )
                         ),
                         responseHeaders(
@@ -122,7 +124,7 @@ public class FollowControllerTest {
                 mockMvc.perform(
                         get(FOLLOW_DEFAULT_URL + "/follower")
                                 .params(queryParams)
-                                //.with(csrf())
+                                .with(csrf())
                                 .accept(MediaType.APPLICATION_JSON)
                 );
 
@@ -153,8 +155,8 @@ public class FollowControllerTest {
                         requestParameters(
                                 List.of(
                                         parameterWithName("page").description("페이지 번호"),
-                                        parameterWithName("size").description("페이지 당 회원 수")
-                                        //parameterWithName("_csrf").ignored()
+                                        parameterWithName("size").description("페이지 당 회원 수"),
+                                        parameterWithName("_csrf").ignored()
                                 )
                         ),
                         responseFields(
@@ -217,7 +219,7 @@ public class FollowControllerTest {
                 mockMvc.perform(
                         get(FOLLOW_DEFAULT_URL + "/followee")
                                 .params(queryParams)
-                                //.with(csrf())
+                                .with(csrf())
                                 .accept(MediaType.APPLICATION_JSON)
                 );
 
@@ -248,8 +250,8 @@ public class FollowControllerTest {
                         requestParameters(
                                 List.of(
                                         parameterWithName("page").description("페이지 번호"),
-                                        parameterWithName("size").description("페이지 당 회원 수")
-                                        //parameterWithName("_csrf").ignored()
+                                        parameterWithName("size").description("페이지 당 회원 수"),
+                                        parameterWithName("_csrf").ignored()
                                 )
                         ),
                         responseFields(
@@ -305,7 +307,7 @@ public class FollowControllerTest {
                 mockMvc.perform(
                         delete(FOLLOW_DEFAULT_URL)
                                 .param("followeeId", "1")
-                                //.with(csrf())
+                                .with(csrf())
                                 .accept(MediaType.APPLICATION_JSON)
                 );
 
@@ -317,8 +319,8 @@ public class FollowControllerTest {
                         preprocessRequest(prettyPrint()),
                         requestParameters(
                                 List.of(
-                                        parameterWithName("followeeId").description("팔로잉 대상 회원 식별자")
-                                        //parameterWithName("_csrf").ignored()
+                                        parameterWithName("followeeId").description("팔로잉 대상 회원 식별자"),
+                                        parameterWithName("_csrf").ignored()
                                 )
                         ))
                 );

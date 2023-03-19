@@ -16,7 +16,6 @@ import java.util.List;
 @Setter
 @Entity
 @NoArgsConstructor //사용이 되는지?
-@AllArgsConstructor
 public class BulletinPost extends Auditable {
 
     @Id
@@ -77,5 +76,14 @@ public class BulletinPost extends Auditable {
         }
     }
 
-
+    @Builder
+    public BulletinPost(long bulletinPostId, Member member, Amenity amenity, String photoUrl, String postContent, List<Comment> comments, List<Like> likes) {
+        this.bulletinPostId = bulletinPostId;
+        this.member = member;
+        this.amenity = amenity;
+        this.photoUrl = photoUrl;
+        this.postContent = postContent;
+        this.comments = comments;
+        this.likes = likes;
+    }
 }

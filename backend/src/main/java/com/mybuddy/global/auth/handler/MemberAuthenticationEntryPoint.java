@@ -1,4 +1,3 @@
-/*
 package com.mybuddy.global.auth.handler;
 
 import com.mybuddy.global.auth.utils.ErrorResponder;
@@ -31,4 +30,3 @@ public class MemberAuthenticationEntryPoint implements AuthenticationEntryPoint 
         log.warn("Unauthorized error occurred: {}", message);
     }
 }
-*/
