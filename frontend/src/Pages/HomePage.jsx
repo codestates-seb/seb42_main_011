@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 
 import Feeds from '../components/Feeds';
-import FeedsTitle from '../components/Feeds/FeedsTitle';
+import FeedsHeader from '../components/Feeds/FeedsHeader';
 import FeedList from '../components/Feeds/FeedList';
 import PostItem from '../components/UI/PostItem';
 import FeedDetail from '../components/PostDetail';
@@ -37,8 +37,7 @@ function HomePage() {
 
   return (
     <Container>
-      <FeedsTitle title="home" description="친구들의 피드를 확인해보세요!" />
-
+      <FeedsHeader />
       <Feeds>
         <FeedList onClick={handleClick}>
           {data.map(
