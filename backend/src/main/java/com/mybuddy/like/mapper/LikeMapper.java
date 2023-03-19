@@ -14,8 +14,7 @@ public interface LikeMapper {
     //인터페이스일 필요도 없긴 하지만 나중에 다른 기능이 필요할 수 있으니 매퍼로 일단!
     default LikeResponseDto toLikeResponseDto(long postId, LikeService likeService) {
 
-        LikeResponseDto likeResponseDto = new LikeResponseDto();
-        likeResponseDto.setLikeCount(likeService.getLikeCount(postId));
+        LikeResponseDto likeResponseDto = new LikeResponseDto(likeService.getLikeCount(postId));
 
         return likeResponseDto;
     };
