@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import FeedsTitle from '../components/Feeds/FeedsTitle';
 import FriendSearch from '../components/FriendSearch';
+import FriendSearchHeader from '../components/FriendSearch/FriendSearchHeader';
 import FriendSearchList from '../components/FriendSearch/FriendSearchList';
 import PostProfileItem from '../components/UI/PostProfileItem';
 
@@ -42,12 +42,7 @@ function FriendSearchPage() {
 
   return (
     <Container>
-      <FeedsTitle
-        title="mypage"
-        description="다른 친구들을 찾아보세요!"
-        onSearch={onSearch}
-        serachOptions={SEARCH_OPTIONS}
-      />
+      <FriendSearchHeader onSearch={onSearch} serachOptions={SEARCH_OPTIONS} />
       <FriendSearch>
         <FriendSearchList colWidth="280px" onClick={handleClick}>
           {data.map(({ memberId, nickname, dogName, photoUrl }) => (
