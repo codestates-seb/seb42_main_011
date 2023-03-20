@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.List;
@@ -32,8 +33,11 @@ public class FollowController {
     private final FollowMapper mapper;
 
     @PostMapping // @Positive는 @Min(2)로 변경될 예정.
-    public ResponseEntity<ApiSingleResponse> createFollow(@Positive @RequestParam Long followeeId) {
-        Follow follow = followService.createFollow(followeeId);
+    public ResponseEntity<ApiSingleResponse> createFollow(@Positive @RequestParam Long followeeId,
+                                                          HttpServletRequest request) {
+        Long loginUserId = (Long) request.getAttribute("loginUserId");
+
+        Follow follow = followService.createFollow(followeeId, loginUserId);
 
         URI uriLocation = UriMaker.getUri(FOLLOW_DEFAULT_URL, follow.getFollowId());
 
@@ -45,8 +49,11 @@ public class FollowController {
 
     @GetMapping("/follower")
     public ResponseEntity<ApiSingleResponse> getFollowerList(@Positive @RequestParam int page,
-                                                             @Positive @RequestParam int size) {
-        Page<Member> pageFollowers = followService.getFollowerList(page - 1, size);
+                                                             @Positive @RequestParam int size,
+                                                             HttpServletRequest request) {
+        Long loginUserId = (Long) request.getAttribute("loginUserId");
+
+        Page<Member> pageFollowers = followService.getFollowerList(page - 1, size, loginUserId);
         List<Member> obtainedFollowers = pageFollowers.getContent();
         return new ResponseEntity(new ApiMultiResponse<>(HttpStatus.OK, "전체 팔로워 정보입니다.",
                 mapper.followersToFollowResponseDtos(obtainedFollowers), pageFollowers), HttpStatus.OK);
@@ -54,16 +61,22 @@ public class FollowController {
 
     @GetMapping("/followee")
     public ResponseEntity<ApiSingleResponse> getFolloweeList(@Positive @RequestParam int page,
-                                                             @Positive @RequestParam int size) {
-        Page<Member> pageFollowees = followService.getFolloweeList(page - 1, size);
+                                                             @Positive @RequestParam int size,
+                                                             HttpServletRequest request) {
+        Long loginUserId = (Long) request.getAttribute("loginUserId");
+
+        Page<Member> pageFollowees = followService.getFolloweeList(page - 1, size, loginUserId);
         List<Member> obtainedFollowees = pageFollowees.getContent();
         return new ResponseEntity(new ApiMultiResponse<>(HttpStatus.OK, "전체 팔로잉 정보입니다.",
                 mapper.followeesToFollowResponseDtos(obtainedFollowees), pageFollowees), HttpStatus.OK);
     }
 
     @DeleteMapping // @Positive는 @Min(2)로 변경될 예정.
-    public ResponseEntity<ApiSingleResponse> deleteFollow(@Positive @RequestParam Long followeeId) {
-        followService.deleteFollow(followeeId);
+    public ResponseEntity<ApiSingleResponse> deleteFollow(@Positive @RequestParam Long followeeId,
+                                                          HttpServletRequest request) {
+        Long loginUserId = (Long) request.getAttribute("loginUserId");
+
+        followService.deleteFollow(followeeId, loginUserId);
 
         return ResponseEntity.noContent().build();
     }

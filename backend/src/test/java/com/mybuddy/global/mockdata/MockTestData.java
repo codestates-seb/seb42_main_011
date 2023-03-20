@@ -303,8 +303,6 @@ public class MockTestData {
     public static class MockFollow {
 
         public static Follow getFollow() {
-            // 현재 LoginUser Id가 1L이므로 2L을 사용.
-            // getLoginUser()로 변경 후 수정 필요.
             return Follow.builder()
                     .followId(2L)
                     .follower(MockMember.getMember())

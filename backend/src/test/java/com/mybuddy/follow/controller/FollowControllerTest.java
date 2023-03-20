@@ -71,7 +71,7 @@ public class FollowControllerTest {
         String content = gson.toJson(MockTestData.MockFollow.getFollow());
         Follow follow = MockTestData.MockFollow.getFollow();
 
-        given(followService.createFollow(Mockito.anyLong()))
+        given(followService.createFollow(Mockito.anyLong(), Mockito.anyLong()))
                 .willReturn(follow);
 
         // When
@@ -116,7 +116,7 @@ public class FollowControllerTest {
         // Given
         List<FollowResponseDto> followResponseDtos = MockTestData.MockFollow.getFollowResponseDtos();
 
-        given(followService.getFollowerList(Mockito.anyInt(), Mockito.anyInt()))
+        given(followService.getFollowerList(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyLong()))
                 .willReturn(MockTestData.MockMember.getPageMembers());
         given(mapper.followersToFollowResponseDtos(Mockito.anyList()))
                 .willReturn(followResponseDtos);
@@ -217,7 +217,7 @@ public class FollowControllerTest {
         // Given
         List<FollowResponseDto> followResponseDtos = MockTestData.MockFollow.getFollowResponseDtos();
 
-        given(followService.getFolloweeList(Mockito.anyInt(), Mockito.anyInt()))
+        given(followService.getFolloweeList(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyLong()))
                 .willReturn(MockTestData.MockMember.getPageMembers());
         given(mapper.followeesToFollowResponseDtos(Mockito.anyList()))
                 .willReturn(followResponseDtos);
@@ -317,8 +317,9 @@ public class FollowControllerTest {
     public void deleteFollowTest() throws Exception {
         // Given
         Follow follow = MockTestData.MockFollow.getFollow();
+        Long mockLoginUserId = 2L;
 
-        doNothing().when(followService).deleteFollow(follow.getFollowId());
+        doNothing().when(followService).deleteFollow(follow.getFollowId(), mockLoginUserId);
 
         // When
         ResultActions actions =
