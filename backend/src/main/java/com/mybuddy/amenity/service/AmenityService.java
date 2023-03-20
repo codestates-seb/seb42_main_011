@@ -7,6 +7,8 @@ import com.mybuddy.amenity.mapper.AmenityMapper;
 import com.mybuddy.amenity.repository.AmenityRepository;
 import com.mybuddy.bulletin_post.entity.BulletinPost;
 import com.mybuddy.bulletin_post.repository.BulletinPostRepository;
+import com.mybuddy.global.exception.LogicException;
+import com.mybuddy.global.exception.LogicExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -50,12 +52,14 @@ public class AmenityService {
 
     public Page<BulletinPost> findTaggedBulletinPostList(Long amenityId, int page, int size) {
 
+        amenityRepository.findById(amenityId).orElseThrow(() -> new LogicException(LogicExceptionCode.AMENITY_NOT_FOUND));
+
         return bulletinPostRepository.findByAmenityId(amenityId,
                 PageRequest.of(page, size, Sort.by("bulletinPostId").descending()));
     }
 
     public Amenity getAmenityInfo(Long amenityId) {
-        return amenityRepository.findById(amenityId).orElseThrow(()-> new RuntimeException("amenity data가 없다."));
+        return amenityRepository.findById(amenityId).orElseThrow(() -> new LogicException(LogicExceptionCode.AMENITY_NOT_FOUND));
     }
 
     public List<AmenityResponseDto> getRecommendAmenitiesByStateRegion(String state, String region){

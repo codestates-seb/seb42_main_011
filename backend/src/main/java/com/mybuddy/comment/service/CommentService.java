@@ -5,6 +5,8 @@ import com.mybuddy.bulletin_post.entity.BulletinPost;
 import com.mybuddy.bulletin_post.repository.BulletinPostRepository;
 import com.mybuddy.comment.entity.Comment;
 import com.mybuddy.comment.repository.CommentRepository;
+import com.mybuddy.global.exception.LogicException;
+import com.mybuddy.global.exception.LogicExceptionCode;
 import com.mybuddy.member.entity.Member;
 import com.mybuddy.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,14 +26,12 @@ public class CommentService {
     private final BulletinPostRepository bulletinPostRepository;
 
     @Transactional
-    public Comment createComment(Long bulletinPostId, Comment comment) {
+    public Comment createComment(Long loginUserId, Long bulletinPostId, Comment comment) {
 
-        Long memberId = 1L; // 로그인한 유저를 찾아오는 로직 추가
-        Member writer = memberRepository.findById(memberId).orElseThrow(()->new RuntimeException("커스텀 익셉션으로 대체 예정입니다."));
+        Member writer = memberRepository.findById(loginUserId).orElseThrow(()->new LogicException(LogicExceptionCode.MEMBER_NOT_FOUND));
         comment.setMember(writer);
 
-        //BulletinPost의 verfied 검증 로직 추가
-        BulletinPost bulletinPost = bulletinPostRepository.findById(bulletinPostId).orElseThrow(()-> new RuntimeException("CUSTOM EXCEPTION으로 변경 예정"));
+        BulletinPost bulletinPost = bulletinPostRepository.findById(bulletinPostId).orElseThrow(()-> new LogicException(LogicExceptionCode.BULLETIN_POST_NOT_FOUND));
         comment.setBulletinPost(bulletinPost);
 
         Comment createdComment = commentRepository.save(comment);
@@ -41,8 +41,8 @@ public class CommentService {
     @Transactional
     public List<Comment> getCommentsByBulletinPostId(Long bulletinPostId) {
 
-        //BulletinPost의 verfied 검증 로직 추가
-        bulletinPostRepository.findById(bulletinPostId).orElseThrow(()-> new RuntimeException("CUSTOM EXCEPTION으로 변경 예정"));
+        bulletinPostRepository.findById(bulletinPostId).orElseThrow(
+                ()-> new LogicException(LogicExceptionCode.BULLETIN_POST_NOT_FOUND));
 
         List<Comment> comments = commentRepository.findByBulletinPostId(bulletinPostId);
 
@@ -50,12 +50,11 @@ public class CommentService {
     }
 
     @Transactional
-    public Comment updateComment(Comment updateComment) {
-
-        Long memberId = 1L; // 로그인한 유저를 찾아오는 로직 추가
-        //로그인한 사용자의 리소스인지 확인
+    public Comment updateComment(Long loginUserId, Comment updateComment) {
 
         Comment comment = verifiedComment(updateComment.getCommentId());
+
+        verifyResourceOwner(comment, loginUserId);
 
         Optional.ofNullable(updateComment.getCommentContent())
                 .ifPresent(content -> comment.updateContent(content));
@@ -64,16 +63,22 @@ public class CommentService {
     }
 
     @Transactional
-    public void deleteComment(Long commentId) {
+    public void deleteComment(Long loginUserId, Long commentId) {
 
-        //로그인한 사용자의 리소스인지 확인하는 로직 추가
+        Comment foundComment = verifiedComment(commentId);
 
-        verifiedComment(commentId);
+        verifyResourceOwner(foundComment, loginUserId);
+
         commentRepository.deleteById(commentId);
     }
 
     private Comment verifiedComment(Long commentId) {
         return commentRepository.findById(commentId)
-                .orElseThrow( () -> new RuntimeException("custom exception으로 변경 예정") );
+                .orElseThrow( () -> new LogicException(LogicExceptionCode.COMMENT_NOT_FOUND));
+    }
+
+    private void verifyResourceOwner(Comment comment, Long loginUserId) {
+        if (!comment.getMember().getMemberId().equals(loginUserId))
+            throw new LogicException(LogicExceptionCode.NOT_RESOURCE_OWNER);
     }
 }

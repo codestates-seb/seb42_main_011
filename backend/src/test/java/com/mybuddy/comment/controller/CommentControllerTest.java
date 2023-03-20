@@ -96,7 +96,7 @@ public class CommentControllerTest {
                 .dogName(member.getDogName()).build();
 
         given(commentMapper.commentCreateDtoToComment(Mockito.any(CommentCreateDto.class))).willReturn(new Comment());
-        given(commentService.createComment(Mockito.any(Long.class), Mockito.any(Comment.class))).willReturn(comment);
+        given(commentService.createComment(Mockito.any(Long.class), Mockito.any(Long.class), Mockito.any(Comment.class))).willReturn(comment);
         given(commentMapper.commentToCommentResponseDto(comment)).willReturn(responseDto);
 
         //when
@@ -166,7 +166,7 @@ public class CommentControllerTest {
                 .dogName(member.getDogName()).build();
 
         given(commentMapper.commentUpdateDtoToComment(Mockito.any(CommentUpdateDto.class))).willReturn(new Comment());
-        given(commentService.updateComment(Mockito.any(Comment.class))).willReturn(new Comment());
+        given(commentService.updateComment(Mockito.anyLong(), Mockito.any(Comment.class))).willReturn(new Comment());
         given(commentMapper.commentToCommentResponseDto(Mockito.any(Comment.class))).willReturn(responseDto);
 
         //when
@@ -182,7 +182,7 @@ public class CommentControllerTest {
         resultActions.andExpect(status().isOk())
                 .andExpect(jsonPath("$.code",is("200")))
                 .andExpect(jsonPath("$.message",is("댓글이 수정되었습니다")))
-                .andExpect(jsonPath("$.data.commentId").value(commentId))
+                .andExpect(jsonPath("$.data.commentId").value(responseDto.getCommentId()))
                 .andExpect(jsonPath("$.data.commentContent",is(updateContent)))
                 .andExpect(jsonPath("$.data.memberId").value(member.getMemberId()))
                 .andExpect(jsonPath("$.data.nickName",is(member.getNickname())))
@@ -220,8 +220,9 @@ public class CommentControllerTest {
     public void deleteComment() throws Exception {
 
         //given
+        Long loginUserId = 1L;
         Long commentId = 1L;
-        doNothing().when(commentService).deleteComment(commentId);
+        doNothing().when(commentService).deleteComment(loginUserId, commentId);
 
         //when
         ResultActions actions = mockMvc.perform(
