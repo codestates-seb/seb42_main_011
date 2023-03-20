@@ -1,15 +1,14 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 import Feeds from '../components/Feeds';
 import FeedsHeader from '../components/Feeds/FeedsHeader';
 import FeedList from '../components/Feeds/FeedList';
 import PostItem from '../components/UI/PostItem';
-import FeedDetail from '../components/PostDetail';
 import ModalContext from '../context/ModalContext';
 
 import FEED_DUMY from '../data/FEED_DUMY';
-import FEED_DETAIL_DUMY from '../data/FEED_DETAIL_DUMY';
 
 const Container = styled.article`
   width: 100%;
@@ -19,20 +18,19 @@ const Container = styled.article`
 
 function HomePage() {
   const [data] = useState(FEED_DUMY.data);
-  const [detailData] = useState(FEED_DETAIL_DUMY.data);
-  const { showModal, openModal } = useContext(ModalContext);
+  const navigate = useNavigate();
+  const { openModal } = useContext(ModalContext);
 
   const handleClick = event => {
     const $li = event.target.closest('li');
-    console.log($li);
+
     if (!$li) {
       return;
     }
 
     const { postId } = $li.dataset;
-
     openModal();
-    console.log(postId);
+    navigate(`/${postId}`);
   };
 
   return (
@@ -64,19 +62,7 @@ function HomePage() {
           )}
         </FeedList>
       </Feeds>
-
-      {showModal && (
-        <FeedDetail
-          profileUrl={detailData.profileUrl}
-          dogName={detailData.dogName}
-          nickname={detailData.nickname}
-          photoUrl={detailData.photoUrl}
-          likeCount={detailData.likeCount}
-          amenityName={detailData.amenityName}
-          postContent={detailData.postContent}
-          createdAt={detailData.createdAt}
-        />
-      )}
+      <Outlet />
     </Container>
   );
 }
