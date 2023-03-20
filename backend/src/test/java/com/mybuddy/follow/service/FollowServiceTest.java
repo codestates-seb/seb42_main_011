@@ -43,15 +43,16 @@ public class FollowServiceTest {
         // Given
         Member member = MockTestData.MockMember.getMember();
         Follow follow = MockTestData.MockFollow.getFollow();
+        Long mockLoginUserId = 3L;
 
-        doNothing().when(followService).verifyIfFollowed(follow.getFollowId());
+        doNothing().when(followService).verifyIfFollowed(follow.getFollowId(), mockLoginUserId);
         given(memberService.findExistMemberById(Mockito.anyLong()))
                 .willReturn(member);
         given(followRepository.save(Mockito.any(Follow.class)))
                 .willReturn(follow);
 
         // When
-        Executable executable = () -> followService.createFollow(2L);
+        Executable executable = () -> followService.createFollow(member.getMemberId(), mockLoginUserId);
 
         // Then
         assertDoesNotThrow(executable);
@@ -63,6 +64,7 @@ public class FollowServiceTest {
         // Given
         List<Follow> followList = MockTestData.MockFollow.getFollowList();
         Member obtainedMember = MockTestData.MockMember.getMember();
+        Long mockLoginUserId = 2L;
         int page = 1;
         int size = 10;
 
@@ -72,7 +74,7 @@ public class FollowServiceTest {
                 .willReturn(obtainedMember);
 
         // When
-        Executable executable = () -> followService.getFollowerList(page, size);
+        Executable executable = () -> followService.getFollowerList(page, size, mockLoginUserId);
 
         // Then
         assertDoesNotThrow(executable);
@@ -84,6 +86,7 @@ public class FollowServiceTest {
         // Given
         List<Follow> followList = MockTestData.MockFollow.getFollowList();
         Member obtainedMember = MockTestData.MockMember.getMember();
+        Long mockLoginUserId = 2L;
         int page = 1;
         int size = 10;
 
@@ -93,7 +96,7 @@ public class FollowServiceTest {
                 .willReturn(obtainedMember);
 
         // When
-        Executable executable = () -> followService.getFolloweeList(page, size);
+        Executable executable = () -> followService.getFolloweeList(page, size, mockLoginUserId);
 
         // Then
         assertDoesNotThrow(executable);
@@ -104,13 +107,14 @@ public class FollowServiceTest {
     public void deleteFollowTest() {
         // Given
         Follow obtainedFollow = MockTestData.MockFollow.getFollow();
+        Long mockLoginUserId = 2L;
 
-        given(followRepository.findByFollowerIdAndFolloweeId(Mockito.anyLong(), Mockito.anyLong()))
+        given(followRepository.findByFolloweeIdAndFollowerId(Mockito.anyLong(), Mockito.anyLong()))
                 .willReturn(Optional.of(obtainedFollow));
         doNothing().when(followRepository).delete(obtainedFollow);
 
         // When
-        Executable executable = () -> followService.deleteFollow(obtainedFollow.getFollowId());
+        Executable executable = () -> followService.deleteFollow(obtainedFollow.getFollowId(), mockLoginUserId);
 
         // Then
         assertDoesNotThrow(executable);
@@ -121,13 +125,14 @@ public class FollowServiceTest {
     public void verifyIfFollowedExceptionTest() {
         // Given
         Follow obtainedFollow = MockTestData.MockFollow.getFollow();
+        Long mockLoginUserId = 2L;
 
-        given(followRepository.findByFolloweeId(Mockito.anyLong()))
+        given(followRepository.findByFolloweeIdAndFollowerId(Mockito.anyLong(), Mockito.anyLong()))
                 .willReturn(Optional.of(obtainedFollow));
 
         // When
         Executable executable = () -> followService
-                .verifyIfFollowed(obtainedFollow.getFollowee().getMemberId());
+                .verifyIfFollowed(obtainedFollow.getFollowee().getMemberId(), mockLoginUserId);
 
         // Then
         assertThrows(LogicException.class, executable);

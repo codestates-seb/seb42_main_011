@@ -28,29 +28,14 @@ public class FollowServiceImpl implements FollowService {
 
     private final MemberService memberService;
 
-    // 임시 로직. 실제로는 getLoginUserId()로 멤버를 호출.
-    private Member loginUser = Member.builder()
-            .memberId(1L)
-            .email("kimcoding@mybuddy.com")
-            .password("asdf1234")
-            .nickname("김코딩")
-            .aboutMe("왕밤톨입니다.")
-            .dogName("왕밤톨")
-            .dogGender(Member.DogGender.MALE)
-            .profileUrl("www.mybuddy.com/bamtol-the-king.png")
-            .address("서울시 강북구")
-            .build();
-
     @Override
-    public Follow createFollow(Long followeeId) {
-        verifyIfFollowed(followeeId);
+    public Follow createFollow(Long followeeId, Long loginUserId) {
+        verifyIfFollowed(followeeId, loginUserId);
 
-        // Member loginUser = memberService.findExistMemberById(memberService.getLoginUserId());
-
+        Member loginUser = memberService.findExistMemberById(loginUserId);
         Member followee = memberService.findExistMemberById(followeeId);
 
-        // if (followeeId.equals(getLoginUserId()))
-        if (followeeId.equals(loginUser.getMemberId()))
+        if (followeeId.equals(loginUserId))
             throw new LogicException(LogicExceptionCode.FOLLOW_NOT_POSSIBLE);
 
         Follow newFollow = Follow.builder()
@@ -62,9 +47,9 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public Page<Member> getFollowerList(int page, int size) {
-        // LoginUser가 followeeId로 저장되어 있는 리스트 불러오기. (getLoginUserId())
-        List<Follow> followList = followRepository.findFollowListByFolloweeId(loginUser.getMemberId());
+    public Page<Member> getFollowerList(int page, int size, Long loginUserId) {
+        // LoginUser가 followeeId로 저장되어 있는 리스트 불러오기.
+        List<Follow> followList = followRepository.findFollowListByFolloweeId(loginUserId);
         List<Member> followerList = followList.stream()
                 .map(following -> memberService.getMember(following.getFollower().getMemberId()))
                 .sorted(Comparator.comparingLong(Member::getMemberId).reversed())
@@ -75,9 +60,9 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public Page<Member> getFolloweeList(int page, int size) {
-        // LoginUser가 followerId로 저장되어 있는 리스트 불러오기. (getLoginUserId())
-        List<Follow> followList = followRepository.findFollowListByFollowerId(loginUser.getMemberId());
+    public Page<Member> getFolloweeList(int page, int size, Long loginUserId) {
+        // LoginUser가 followerId로 저장되어 있는 리스트 불러오기.
+        List<Follow> followList = followRepository.findFollowListByFollowerId(loginUserId);
         List<Member> followeeList = followList.stream()
                 .map(following -> memberService.getMember(following.getFollowee().getMemberId()))
                 .sorted(Comparator.comparingLong(Member::getMemberId).reversed())
@@ -88,9 +73,9 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public void deleteFollow(Long followeeId) {
+    public void deleteFollow(Long followeeId, Long loginUserId) {
         Optional<Follow> obtainedFollow =
-                followRepository.findByFollowerIdAndFolloweeId(loginUser.getMemberId(), followeeId);
+                followRepository.findByFolloweeIdAndFollowerId(loginUserId, followeeId);
 
         if (obtainedFollow.isEmpty())
             throw new LogicException(LogicExceptionCode.FOLLOW_NOT_FOUND);
@@ -99,8 +84,9 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public void verifyIfFollowed(Long followeeId) {
-        Optional<Follow> optionalFollow = followRepository.findByFolloweeId(followeeId);
+    public void verifyIfFollowed(Long followeeId, Long loginUserId) {
+        Optional<Follow> optionalFollow =
+                followRepository.findByFolloweeIdAndFollowerId(followeeId, loginUserId);
 
         if (optionalFollow.isPresent())
             throw new LogicException(LogicExceptionCode.FOLLOW_ALREADY_EXISTS);

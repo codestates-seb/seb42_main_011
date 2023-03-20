@@ -8,19 +8,17 @@ public interface MemberService {
 
     Member createMember(Member member, MultipartFile profileImage);
 
-    Member updateMember(Member member, MultipartFile profileImage);
+    Member updateMember(Member member, MultipartFile profileImage, Long loginUserId);
 
     Member getMember(Long memberId);
 
     Page<Member> getMemberList(int page, int size);
 
-    void deleteMember(Long memberId);
+    void deleteMember(Long memberId, long loginUserId);
 
     void verifyIfEmailExists(String email);
 
     void verifyIfNicknameExists(String nickname);
 
     Member findExistMemberById(Long memberId);
-
-    void compareLoginUserIdToMemberId(Long id);
 }

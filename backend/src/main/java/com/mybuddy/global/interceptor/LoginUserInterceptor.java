@@ -42,6 +42,12 @@ public class LoginUserInterceptor implements HandlerInterceptor {
             //이런식으로 특정 메소드와 URI로 조건을 주셔도 됩니다.
             //else if (requestMethod.equals("PATCH") && requestUri.startsWith(DEFAULT_URL + "/bulletin-posts")) { }
 
+            else if (requestMethod.equals("POST") && requestUri.startsWith(DEFAULT_URL + "/members/"))
+                sendUserInfo = true;
+            else if (requestMethod.equals("DELETE") && requestUri.startsWith(DEFAULT_URL + "/members/"))
+                sendUserInfo = true;
+            else if (requestUri.startsWith(DEFAULT_URL + "/followers"))
+                sendUserInfo = true;
 
             //  ---------------------------
             // 02) 유저 정보 전달을 위한 코드입니다.

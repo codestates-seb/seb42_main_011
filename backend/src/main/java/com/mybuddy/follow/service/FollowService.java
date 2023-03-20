@@ -6,13 +6,13 @@ import org.springframework.data.domain.Page;
 
 public interface FollowService {
 
-    Follow createFollow(Long followeeId);
+    Follow createFollow(Long followeeId, Long loginUserId);
 
-    Page<Member> getFollowerList(int page, int size);
+    Page<Member> getFollowerList(int page, int size, Long loginUserId);
 
-    Page<Member> getFolloweeList(int page, int size);
+    Page<Member> getFolloweeList(int page, int size, Long loginUserId);
 
-    void deleteFollow(Long followeeId);
+    void deleteFollow(Long followeeId, Long loginUserId);
 
-    void verifyIfFollowed(Long followeeId);
+    void verifyIfFollowed(Long followeeId, Long loginUserId);
 }

@@ -145,6 +145,7 @@ public class MemberControllerTest {
     public void updateMemberTest() throws Exception {
         // Given
         String content = gson.toJson(MockTestData.MockMember.getMemberPatchDto());
+        Long mockLoginUserId = 2L;
 
         MockMultipartFile patchDto = new MockMultipartFile("updateDto", null,
                 MediaType.APPLICATION_JSON_VALUE, content.getBytes(StandardCharsets.UTF_8));
@@ -153,7 +154,8 @@ public class MemberControllerTest {
 
         given(mapper.memberUpdateDtoToMember(Mockito.any(MemberUpdateDto.class)))
                 .willReturn(new Member());
-        given(memberService.updateMember(Mockito.any(Member.class), Mockito.any(MultipartFile.class)))
+        given(memberService.updateMember(Mockito.any(Member.class),
+                Mockito.any(MultipartFile.class), Mockito.anyLong()))
                 .willReturn(MockTestData.MockMember.getMember());
 
         ConstraintDescriptions patchMemberConstraints =
@@ -449,8 +451,9 @@ public class MemberControllerTest {
     public void deleteMemberTest() throws Exception {
         // Given
         Member member = MockTestData.MockMember.getMember();
+        Long mockLoginUserId = 2L;
 
-        doNothing().when(memberService).deleteMember(member.getMemberId());
+        doNothing().when(memberService).deleteMember(member.getMemberId(), mockLoginUserId);
 
         // When
         ResultActions actions =

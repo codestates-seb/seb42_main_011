@@ -17,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
@@ -50,11 +51,14 @@ public class MemberController {
     @PostMapping(value = "/{member-id}",
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ApiSingleResponse> updateMember(@Valid @RequestPart MemberUpdateDto updateDto,
-                                                         @RequestPart(required = false) MultipartFile profileImage,
-                                                         @Min(2L) @PathVariable("member-id") Long memberId) {
+                                                          @RequestPart(required = false) MultipartFile profileImage,
+                                                          @Min(2L) @PathVariable("member-id") Long memberId,
+                                                          HttpServletRequest request) {
+        Long loginUserId = (Long) request.getAttribute("loginUserId");
+
         Member member = mapper.memberUpdateDtoToMember(updateDto);
         member.setMemberId(memberId);
-        memberService.updateMember(member, profileImage);
+        memberService.updateMember(member, profileImage, loginUserId);
         ApiSingleResponse response = new ApiSingleResponse(HttpStatus.OK, "회원 정보가 수정되었습니다.");
 
         return ResponseEntity.ok(response);
@@ -76,8 +80,10 @@ public class MemberController {
     }
 
     @DeleteMapping("/{member-id}")
-    public ResponseEntity deleteMember(@Min(2L) @PathVariable("member-id") Long memberId) {
-        memberService.deleteMember(memberId);
+    public ResponseEntity deleteMember(@Min(2L) @PathVariable("member-id") Long memberId,
+                                       HttpServletRequest request) {
+        Long loginUserId = (Long) request.getAttribute("loginUserId");
+        memberService.deleteMember(memberId, loginUserId);
 
         return ResponseEntity.noContent().build();
     }
