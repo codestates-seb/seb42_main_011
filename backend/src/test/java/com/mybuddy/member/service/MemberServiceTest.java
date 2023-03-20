@@ -86,8 +86,9 @@ public class MemberServiceTest {
         Member member = MockTestData.MockMember.getMember();
         MockMultipartFile profileImage = new MockMultipartFile("profileImage", "image.png",
                 MediaType.IMAGE_PNG_VALUE, "image".getBytes(StandardCharsets.UTF_8));
+        Long mockLoginUserId = 2L;
 
-//        doNothing().when(memberService).compareLoginUserIdToMemberId(Mockito.anyLong());
+        doNothing().when(memberService).verifyResourceOwner(Mockito.anyLong(), Mockito.anyLong());
         given(memberRepository.findByMemberIdAndMemberStatusIs(
                 Mockito.anyLong(), Mockito.any(MemberStatus.class)))
                 .willReturn(Optional.of(new Member()));
@@ -98,7 +99,7 @@ public class MemberServiceTest {
                 .willReturn(member);
 
         // When
-        Executable executable = () -> memberService.updateMember(member, profileImage);
+        Executable executable = () -> memberService.updateMember(member, profileImage, mockLoginUserId);
 
         // Then
         assertDoesNotThrow(executable);
@@ -145,8 +146,9 @@ public class MemberServiceTest {
     public void deleteMemberTest() {
         // Given
         Member obtainedMember = MockTestData.MockMember.getMember();
+        Long mockLoginUserId = 2L;
 
-//        doNothing().when(memberService).compareLoginUserIdToMemberId(Mockito.anyLong());
+        doNothing().when(memberService).verifyResourceOwner(Mockito.anyLong(), Mockito.anyLong());
         given(memberRepository.findByMemberIdAndMemberStatusIs(
                 Mockito.anyLong(), Mockito.any(MemberStatus.class)))
                 .willReturn(Optional.of(new Member()));
@@ -154,7 +156,7 @@ public class MemberServiceTest {
                 .willReturn(obtainedMember);
 
         // When
-        Executable executable = () -> memberService.deleteMember(obtainedMember.getMemberId());
+        Executable executable = () -> memberService.deleteMember(obtainedMember.getMemberId(), mockLoginUserId);
 
         // Then
         assertDoesNotThrow(executable);
@@ -209,13 +211,12 @@ public class MemberServiceTest {
 
     @DisplayName("로그인 회원 및 리소스 식별자 비교 예외 처리 로직 (Service)")
     @Test
-    public void compareLoginUserIdToMemberIdExceptionTest() {
+    public void verifyResourceOwnerExceptionTest() {
         // Given
-        given(memberService.getLoginUserId())
-                .willReturn(2L);
+        Long mockLoginUserId = 2L;
 
         // When
-        Executable executable = () -> memberService.compareLoginUserIdToMemberId(1L);
+        Executable executable = () -> memberService.verifyResourceOwner(1L, mockLoginUserId);
 
         // Then
         assertThrows(LogicException.class, executable);

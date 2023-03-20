@@ -35,7 +35,7 @@ public class BulletinPostCustomRepositoryImpl implements BulletinPostCustomRepos
         QMember member = QMember.member;
 
         List<Follow> followees = queryFactory
-                .select(member.followees)
+                .select(member.meAsFolloweeList)
                 .from(member)
                 .where(member.memberId.eq(memberId))
                 .fetchOne();

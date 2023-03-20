@@ -7,9 +7,7 @@ import java.util.Optional;
 
 public interface FollowCustomRepository {
 
-    Optional<Follow> findByFolloweeId(Long followeeId);
-
-    Optional<Follow> findByFollowerIdAndFolloweeId(Long followerId, Long followeeId);
+    Optional<Follow> findByFolloweeIdAndFollowerId(Long followeeId, Long followerId);
 
     List<Follow> findFollowListByFolloweeId(Long followeeId);
 

@@ -64,8 +64,8 @@ public interface MemberMapper {
          * 본인을 follow하는 사람들의 수가 아니라 본인이 follower로서 따르는 회원의 수가 된다.
          * 그러므로 MemberMapper에서는 follower와 followee의 수를 반대로 입력해야 한다.
          */
-        Long numberOfUserAsFollower = (long) member.getFollowers().size();
-        Long numberOfUserAsFollowee = (long) member.getFollowees().size();
+        Long numberOfUserAsFollower = (long) member.getMeAsFollowerList().size();
+        Long numberOfUserAsFollowee = (long) member.getMeAsFolloweeList().size();
 
         MemberResponseDto memberResponseDto = MemberResponseDto.builder()
                 .nickname(member.getNickname())
@@ -93,8 +93,8 @@ public interface MemberMapper {
          * 본인을 follow하는 사람들의 수가 아니라 본인이 follower로서 따르는 회원의 수가 된다.
          * 그러므로 MemberMapper에서는 follower와 followee의 수를 반대로 입력해야 한다.
          */
-        Long numberOfUserAsFollower = (long) member.getFollowers().size();
-        Long numberOfUserAsFollowee = (long) member.getFollowees().size();
+        Long numberOfUserAsFollower = (long) member.getMeAsFollowerList().size();
+        Long numberOfUserAsFollowee = (long) member.getMeAsFolloweeList().size();
 
         MemberListResponseDto memberListResponseDto = MemberListResponseDto.builder()
                 .nickname(member.getNickname())

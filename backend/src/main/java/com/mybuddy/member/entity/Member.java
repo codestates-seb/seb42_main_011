@@ -76,11 +76,11 @@ public class Member extends Auditable {
 
     // 본인이 follower로서 존재하는 리스트
     @OneToMany(mappedBy = "follower")
-    private List<Follow> followers = new ArrayList<>();
+    private List<Follow> meAsFollowerList = new ArrayList<>();
 
     // 본인이 followee로서 존재하는 리스트
     @OneToMany(mappedBy = "followee")
-    private List<Follow> followees = new ArrayList<>();
+    private List<Follow> meAsFolloweeList = new ArrayList<>();
 
     public void addBulletinPost(BulletinPost bulletinPost) {
         bulletinPosts.add(bulletinPost);
@@ -95,11 +95,11 @@ public class Member extends Auditable {
     }
 
     public void addFollower(Follow follower) {
-        followers.add(follower);
+        meAsFollowerList.add(follower);
     }
 
     public void addFollowee(Follow followee) {
-        followees.add(followee);
+        meAsFolloweeList.add(followee);
     }
 
     @Builder

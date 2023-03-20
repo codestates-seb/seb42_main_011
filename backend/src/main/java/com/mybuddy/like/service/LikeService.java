@@ -67,6 +67,10 @@ public class LikeService {
         //getCommentCount 쿼리 dsl로 해봤으니 굳이 해보지 않는다!
         BulletinPost bulletinPost = bulletinPostService.findVerifiedBulletinPost(bulletinPostId);
         List<Like> likeList = bulletinPost.getLikes();
+
+        if (likeList == null)
+            return 0;
+
         return likeList.size();
     }
 }

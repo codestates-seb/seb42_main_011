@@ -63,6 +63,25 @@ public interface BulletinPostMapper {
         long postId = bulletinPost.getBulletinPostId();
         long likeCount = likeService.getLikeCount(postId);
         int likeByUser = likeService.findExistLikeByMemberId(postId, member.getMemberId());
+        List<CommentResponseDto> commentLists = new ArrayList<>();
+        if (bulletinPost.getComments() != null) {
+            commentLists = bulletinPost.getComments().stream()
+                    .map(comment -> {
+                                CommentResponseDto commentResponse = new CommentResponseDto(
+                                        comment.getCommentId(),
+                                        comment.getCommentContent(),
+                                        comment.getMember().getMemberId(),
+                                        comment.getMember().getNickname(),
+                                        comment.getMember().getDogName()
+                                );
+                                return commentResponse;
+                            }
+                    ).sorted(Comparator.comparingLong(CommentResponseDto::getCommentId).reversed())
+                    .collect(Collectors.toList());
+        }
+
+        long likeCount = likeService.getLikeCount(bulletinPost.getBulletinPostId());
+        int likeByUser = likeService.findExistLikeByMemberId(bulletinPost.getBulletinPostId(), member.getMemberId());
         BulletinPostDto.Response bulletinPostResponseDto = new BulletinPostDto.Response(
                 postId,
                 bulletinPost.getPhotoUrl(),

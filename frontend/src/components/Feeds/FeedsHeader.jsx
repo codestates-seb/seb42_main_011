@@ -7,7 +7,9 @@ function FeedsHeader() {
     <PostHeader
       title="home"
       img={HomeLogo}
-      description="친구들의 피드를 확인해보세요!"
+      description={
+        <div style={{ marginLeft: '-10px' }}>친구의 피드를 확인해보세요!</div>
+      }
     />
   );
 }

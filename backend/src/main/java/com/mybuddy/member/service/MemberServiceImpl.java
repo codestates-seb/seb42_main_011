@@ -62,8 +62,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member updateMember(Member member, MultipartFile profileImage) {
-//        compareLoginUserIdToMemberId(member.getMemberId());
+    public Member updateMember(Member member, MultipartFile profileImage, Long loginUserId) {
+        verifyResourceOwner(member.getMemberId(), loginUserId);
         Member obtainedMember = findExistMemberById(member.getMemberId());
 
         Member updatedMember = customBeanUtils.copyNonNullProperties(member, obtainedMember);
@@ -90,8 +90,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void deleteMember(Long memberId) {
-//        compareLoginUserIdToMemberId(memberId);
+    public void deleteMember(Long memberId, long loginUserId) {
+        verifyResourceOwner(memberId, loginUserId);
         Member obtainedMember = findExistMemberById(memberId);
 
         obtainedMember.setMemberStatus(MemberStatus.DELETED);
@@ -126,39 +126,8 @@ public class MemberServiceImpl implements MemberService {
         return obtainedMember;
     }
 
-    @Override
-    public void compareLoginUserIdToMemberId(Long memberId) {
-        if (!memberId.equals(getLoginUserId()))
-            throw new LogicException(LogicExceptionCode.MEMBER_UNAUTHORIZED);
-    }
-
-    protected Long getLoginUserId() {
-        Long loginUserId = null;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof PrincipalDto) {
-            PrincipalDto principal = (PrincipalDto) authentication.getPrincipal();
-            loginUserId = principal.getLoginUserId();
-        }
-
-        return loginUserId;
-    }
-
-    @PostConstruct
-    private Member registerMemberAsAdmin() {
-        Member admin = Member.builder()
-                .memberId(1L)
-                .email("admin@mybuddy.com")
-                .password("admin")
-                .nickname("admin")
-                .dogName("admin")
-                .dogGender(Member.DogGender.MALE)
-                .build();
-
-        String encryptedPassword = passwordEncoder.encode(admin.getPassword());
-        admin.setPassword(encryptedPassword);
-
-        List<String> roles = authorityUtils.createRoles(admin.getEmail());
-        admin.setRoles(roles);
-        return memberRepository.save(admin);
+    protected void verifyResourceOwner(Long memberId, Long loginUserId) {
+        if (!memberId.equals(loginUserId))
+            throw new LogicException(LogicExceptionCode.NOT_RESOURCE_OWNER);
     }
 }

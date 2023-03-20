@@ -5,7 +5,8 @@ import { ReactComponent as FriendShape } from '../../assets/shape/friend_shape.s
 
 const FriendSearchWrapper = styled.article`
   width: 100%;
-  height: 77.3%;
+  height: 100%;
+  padding-bottom: 50px;
 `;
 
 const FriendSearchContainer = styled.div`
