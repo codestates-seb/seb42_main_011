@@ -36,19 +36,13 @@ const InnerFrame = styled.div`
 `;
 
 const InnerContents = styled.div`
-  height: 95%;
-  overflow-y: auto;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  ::-webkit-scrollbar {
-    display: none;
-  }
+  height: 100%;
+  padding-bottom: 170px;
   ${({ displayFlex }) =>
     displayFlex &&
     css`
       display: flex;
       justify-content: center;
-      overflow: unset;
     `}
 `;
 

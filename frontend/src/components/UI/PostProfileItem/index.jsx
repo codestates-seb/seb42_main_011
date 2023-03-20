@@ -16,8 +16,9 @@ const ProfileBox = styled.li`
 
   /* 호버 */
   &:hover {
-    transform: translate(-0.25rem, -0.25rem);
+    transform: translate(-0.3rem, -0.3rem);
     box-shadow: 3px 3px 0 0 var(--color-dark-0);
+    cursor: pointer;
   }
 `;
 

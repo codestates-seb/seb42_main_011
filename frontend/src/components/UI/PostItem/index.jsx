@@ -19,6 +19,9 @@ const ItemBox = styled(Card)`
     height: 88%;
   }
   z-index: 10;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const PostImage = styled.img`
@@ -40,7 +43,6 @@ const PostBox = styled.div`
   border-top: var(--border);
   border-bottom: var(--border);
   width: 100%;
-
   display: flex;
   flex-direction: column;
   gap: 10px;
