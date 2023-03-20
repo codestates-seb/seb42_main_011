@@ -5,7 +5,8 @@ import { ReactComponent as HomeShape } from '../../assets/shape/home_shape.svg';
 
 const FeesdWrapper = styled.article`
   width: 100%;
-  height: 77.3%;
+  height: 100%;
+  padding-bottom: 50px;
 `;
 
 const FeedsContainer = styled.div`

@@ -38,6 +38,7 @@ const LogoImage = styled.img`
   position: absolute;
   width: 170px;
   height: 130px;
+  left: 40px;
 `;
 
 const PageDescription = styled.p`
@@ -46,7 +47,7 @@ const PageDescription = styled.p`
   font-weight: 500;
   z-index: 99;
   padding-left: 87px;
-  padding-top: 32px;
+  padding-top: 25px;
 `;
 
 function PostHeader({ title, img, description, children }) {
