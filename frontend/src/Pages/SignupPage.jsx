@@ -9,15 +9,15 @@ const FormContainer = styled.section`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  @media screen and (min-height: 1050px){
+  @media screen and (min-height: 1050px) {
     height: 737px;
   }
 `;
 
-const Title = styled.div`
-  font-size: 24px;
+const Title = styled.h3`
+  font-size: var(--font-size-24);
   font-weight: 500;
-  margin-bottom: 20px;
+  margin: 20px 0;
 `;
 
 const SignupForm = styled.form`
@@ -26,7 +26,7 @@ const SignupForm = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
-  @media screen and (min-width: 1174px){
+  @media screen and (min-width: 1174px) {
     align-items: center;
   }
 
@@ -45,20 +45,29 @@ const dogGender = ['여자', '남자'];
 
 function SignupPage() {
   return (
-  <FormContainer>
-    <Title>회원가입</Title>
-    <SignupForm>
-      <Input variant='large' label='닉네임' id='name' type='text' />
-      <Input variant='large' label='이메일' id='email' type='email' />
-      <Input variant='large' label='비밀번호' id='password' type='password' />
-      <Input variant='large' label='비밀번호 확인' id='password-retype' type='password' />
-      <Input variant='large' label='강아지 이름' id='dogname' type='text' />
-      <DropdownGender id="dropdown" options={dogGender} labelText="강아지 성별" />
-      <ButtonContainer>
-        <Button variant='large'>회원가입</Button>
-      </ButtonContainer>
-    </SignupForm>
-  </FormContainer>
+    <FormContainer>
+      <Title>회원가입</Title>
+      <SignupForm>
+        <Input variant="large" label="닉네임" id="name" type="text" />
+        <Input variant="large" label="이메일" id="email" type="email" />
+        <Input variant="large" label="비밀번호" id="password" type="password" />
+        <Input
+          variant="large"
+          label="비밀번호 확인"
+          id="password-retype"
+          type="password"
+        />
+        <Input variant="large" label="강아지 이름" id="dogname" type="text" />
+        <DropdownGender
+          id="dropdown"
+          options={dogGender}
+          labelText="강아지 성별"
+        />
+        <ButtonContainer>
+          <Button variant="large">회원가입</Button>
+        </ButtonContainer>
+      </SignupForm>
+    </FormContainer>
   );
 }
 

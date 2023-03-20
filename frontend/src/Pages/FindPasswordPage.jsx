@@ -10,8 +10,8 @@ const FormContainer = styled.section`
   flex-direction: column;
 `;
 
-const Title = styled.div`
-  font-size: 24px;
+const Title = styled.h3`
+  font-size: var(--font-size-24);
   font-weight: 500;
   margin-bottom: 40px;
   margin-top: 70px;
@@ -23,10 +23,11 @@ const Caption = styled.p`
   color: var(--color-tertiary);
   font-weight: 700;
   line-height: 40px;
-
+  width: 100%;
 `;
 
-const CaptionText = '회원가입 시 작성한 이메일을 입력해주세요.\n이메일로 비밀번호를 변경할 수 있는 링크를 보내드립니다.'
+const CaptionText =
+  '회원가입 시 작성한 이메일을 입력해주세요.\n이메일로 비밀번호를 변경할 수 있는 링크를 보내드립니다.';
 
 const FindForm = styled.form`
   display: flex;
@@ -50,13 +51,13 @@ function FindPasswordPage() {
       <Title>비밀번호 찾기</Title>
       <FindForm>
         <Caption>{CaptionText}</Caption>
-        <Input variant='regular' label='이메일' id='email' type='email' />
+        <Input variant="regular" label="이메일" id="email" type="email" />
         <ButtonContainer>
-          <Button variant='large'>이메일 전송</Button>
+          <Button variant="large">이메일 전송</Button>
         </ButtonContainer>
       </FindForm>
     </FormContainer>
-  )
-};
+  );
+}
 
 export default FindPasswordPage;
