@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Card from '../components/UI/Card/Card';
 
-const FeedPlaceWrapper = styled.div`
+const FeedPlaceWrapper = styled.section`
   margin-top: 20px;
   width: 100%;
   height: 99%;
@@ -64,7 +64,7 @@ const PlaceInfo = styled.div`
   flex-direction: column;
 `;
 
-const Title = styled.h3`
+const Title = styled.h4`
   font-size: var(--font-size-24);
   font-weight: 500;
   margin-bottom: 10px;
@@ -80,17 +80,19 @@ function UserPlacePage({ userdata }) {
     <FeedPlaceWrapper>
       {userdata.map(({ id, data }) => (
         <PlaceWrapper key={id}>
-          {data.myAmenityDtos.map(({ amenityName, address, photoUrl }) => (
-            <PlaceCard>
-              <Place>
-                <PlaceImg src={photoUrl} alt={`${data.dogName}의 게시글`} />
-              </Place>
-              <PlaceInfo>
-                <Title>{amenityName}</Title>
-                <Address>{address}</Address>
-              </PlaceInfo>
-            </PlaceCard>
-          ))}
+          {data.myAmenityDtos.map(
+            ({ amenityId, amenityName, address, photoUrl }) => (
+              <PlaceCard key={amenityId}>
+                <Place>
+                  <PlaceImg src={photoUrl} alt={`${data.dogName}의 게시글`} />
+                </Place>
+                <PlaceInfo>
+                  <Title>{amenityName}</Title>
+                  <Address>{address}</Address>
+                </PlaceInfo>
+              </PlaceCard>
+            ),
+          )}
         </PlaceWrapper>
       ))}
     </FeedPlaceWrapper>

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const FeedImgWrapper = styled.div`
+const FeedImgWrapper = styled.section`
   width: 100%;
   height: 100%;
   border: var(--border);
@@ -44,8 +44,8 @@ function UserFeedPage({ userdata }) {
       <FeedImgInside>
         {userdata.map(({ id, data }) => (
           <FeedImgContent key={id}>
-            {data.myBulletinPostDtos.map(({ photoUrl }) => (
-              <FeedImgBox>
+            {data.myBulletinPostDtos.map(({ bulletinPostId, photoUrl }) => (
+              <FeedImgBox key={bulletinPostId}>
                 <FeedImg src={photoUrl} alt={`${data.dogName}의 게시글`} />
               </FeedImgBox>
             ))}

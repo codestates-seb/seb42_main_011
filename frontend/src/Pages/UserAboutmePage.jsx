@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Button from '../components/UI/Button';
 
-const AboutMe = styled.div`
+const AboutMe = styled.section`
   text-align: center;
   width: 100%;
   height: 100%;
@@ -42,7 +42,11 @@ function UserAboutmePage({ userdata }) {
 
   // Button change by location
   if (location.pathname.includes('/mypage')) {
-    AboumeButton = <Button variant="medium">수정</Button>;
+    AboumeButton = (
+      <Link to="/mypage/edit">
+        <Button variant="medium">수정</Button>
+      </Link>
+    );
   } else if (location.pathname.includes('/friendpage')) {
     AboumeButton = <FollowButton variant="medium">팔로우</FollowButton>;
   }
