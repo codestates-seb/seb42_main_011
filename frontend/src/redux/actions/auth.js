@@ -24,11 +24,11 @@ import {
   SET_MESSAGE,
 } from "./type";
 
-import * as AuthService from "../services/auth.service";
+import { register as registerService, login as loginService, logout as logoutService } from "../services/auth.service";
 
 function register(email, password, nickname, dogName, dogGender) {
   return function(dispatch) {
-    AuthService.register(email, password, nickname, dogName, dogGender).then(
+    registerService(email, password, nickname, dogName, dogGender).then(
       (response) => {
         dispatch({
           type: REGISTER_SUCCESS,
@@ -64,8 +64,8 @@ function register(email, password, nickname, dogName, dogGender) {
 };
 
 function login(email, password) {
-  return function(dispatch) {
-    AuthService.login(email, password).then(
+  return (dispatch) => {
+    loginService(email, password).then(
       (data) => {
         dispatch({
           type: LOGIN_SUCCESS,
@@ -98,7 +98,7 @@ function login(email, password) {
 
 function logout() {
   return function(dispatch) {
-    AuthService.logout(); // 여기서 에러가 남(첫줄 주석)
+    logoutService(); // 여기서 에러가 남(첫줄 주석)
 
     dispatch({
       type: LOGOUT,

@@ -39,11 +39,11 @@ const Label = styled.label`
   font-weight: bold;
 `;
 
-function Input({ variant = 'edit', id, label, type = 'text', ...props }) {
+function Input({ variant = 'edit', id, label, type = 'text', value, onChange }) {
   return (
     <div>
       <Label htmlFor={id}>{label}</Label>
-      <StyledInput id={id} type={type} variant={variant} {...props} />
+      <StyledInput id={id} type={type} variant={variant} value={value} onChange={onChange} />
     </div>
   );
 }

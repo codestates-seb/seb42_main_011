@@ -6,7 +6,13 @@ export default function authHeader() {
   const user = JSON.parse(localStorage.getItem('user'));
 
   if(user && user.accessToken){
-    return { Authorization: `Bearer ${user.accessToken}` }; // bearer: JWT 혹은 OAuth에 대한 토큰 사용시의 type
+    // springboot 사용시
+    // return { Authorization: `Bearer ${user.accessToken}` }; 
+    // bearer: JWT 혹은 OAuth에 대한 토큰 사용시의 type
+
+    // node express 사용시
+    return { 'x-access-token': user.accessToken };
+
   } 
   return {};
   

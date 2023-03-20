@@ -91,11 +91,11 @@ function LoginPage() {
   }
 
   const validatePassword = () => {
-    if(!email) {
+    if(!password) {
       setPasswordError("비밀번호를 입력하세요.");
       return false;
     }
-    setEmailError("");
+    setPasswordError("");
     return true;
   }
 
@@ -108,10 +108,11 @@ function LoginPage() {
     if (isEmailValid && isPasswordValid) {
       setLoading(true);
 
-      dispatch(login(email, password))
+      // dispatch(login(email, password))
+      login(email, password)(dispatch)
       .then(() => {
         navigate("/friendpage/feed");
-        window.location.reload();
+        // window.location.reload();
       })
       .catch(() => {
         setLoading(false);
@@ -122,7 +123,6 @@ function LoginPage() {
   if(isLoggedIn) {
     return <Navigate to="/friendpage/feed" />;
   }
-
 
   return (
     <FormContainer>
