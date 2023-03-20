@@ -3,7 +3,7 @@ package com.mybuddy.member.controller;
 import com.mybuddy.global.utils.ApiMultiResponse;
 import com.mybuddy.global.utils.ApiSingleResponse;
 import com.mybuddy.global.utils.UriMaker;
-import com.mybuddy.member.dto.MemberPatchDto;
+import com.mybuddy.member.dto.MemberUpdateDto;
 import com.mybuddy.member.dto.MemberCreateDto;
 import com.mybuddy.member.entity.Member;
 import com.mybuddy.member.mapper.MemberMapper;
@@ -47,12 +47,12 @@ public class MemberController {
         return ResponseEntity.created(uriLocation).body(response);
     }
 
-    @PatchMapping(value = "/{member-id}",
+    @PostMapping(value = "/{member-id}",
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<ApiSingleResponse> patchMember(@Valid @RequestPart MemberPatchDto patchDto,
+    public ResponseEntity<ApiSingleResponse> updateMember(@Valid @RequestPart MemberUpdateDto updateDto,
                                                          @RequestPart(required = false) MultipartFile profileImage,
                                                          @Min(2L) @PathVariable("member-id") Long memberId) {
-        Member member = mapper.memberPatchDtoToMember(patchDto);
+        Member member = mapper.memberUpdateDtoToMember(updateDto);
         member.setMemberId(memberId);
         memberService.updateMember(member, profileImage);
         ApiSingleResponse response = new ApiSingleResponse(HttpStatus.OK, "회원 정보가 수정되었습니다.");

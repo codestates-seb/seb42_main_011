@@ -1,32 +1,32 @@
 package com.mybuddy.member.dto;
 
+import com.mybuddy.member.entity.Member.MemberStatus;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
-@NoArgsConstructor
 public class MemberListResponseDto {
 
-    private String nickname;
+    private final String nickname;
 
-    private String dogName;
+    private final String dogName;
 
-    private Long followerNumber;
+    private final Long followerNumber;
 
-    private Long followeeNumber;
+    private final Long followeeNumber;
 
-    private String profileUrl;
+    private final String profileUrl;
+
+    private final MemberStatus memberStatus;
 
     @Builder
     public MemberListResponseDto(String nickname, String dogName, Long followerNumber,
-        Long followeeNumber, String profileUrl) {
+                                 Long followeeNumber, String profileUrl, MemberStatus memberStatus) {
         this.nickname = nickname;
         this.dogName = dogName;
         this.followerNumber = followerNumber;
         this.followeeNumber = followeeNumber;
         this.profileUrl = profileUrl;
+        this.memberStatus = memberStatus;
     }
 }

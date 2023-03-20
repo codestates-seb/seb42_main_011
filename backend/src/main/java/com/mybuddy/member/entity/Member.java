@@ -74,9 +74,11 @@ public class Member extends Auditable {
     @OneToMany(mappedBy = "member")
     private List<Like> likes = new ArrayList<>();
 
+    // 본인이 follower로서 존재하는 리스트
     @OneToMany(mappedBy = "follower")
     private List<Follow> followers = new ArrayList<>();
 
+    // 본인이 followee로서 존재하는 리스트
     @OneToMany(mappedBy = "followee")
     private List<Follow> followees = new ArrayList<>();
 

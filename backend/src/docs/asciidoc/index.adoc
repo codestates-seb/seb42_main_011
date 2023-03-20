@@ -8,104 +8,99 @@
 == 회원
 === 회원 등록
 .curl-request
-include::{snippets}/Post-Member/curl-request.adoc[]
+include::{snippets}/create-member/curl-request.adoc[]
 
 .http-request
-include::{snippets}/Post-Member/http-request.adoc[]
+include::{snippets}/create-member/http-request.adoc[]
 
 .request-fields
-include::{snippets}/Post-Member/request-part-createDto-fields.adoc[]
+include::{snippets}/create-member/request-part-createDto-fields.adoc[]
 
 .request-part
-include::{snippets}/Post-Member/request-parts.adoc[]
+include::{snippets}/create-member/request-parts.adoc[]
 
 .http-response
-include::{snippets}/Post-Member/http-response.adoc[]
+include::{snippets}/create-member/http-response.adoc[]
 
 .response-header
-include::{snippets}/Post-Member/response-headers.adoc[]
+include::{snippets}/create-member/response-headers.adoc[]
 
-////
 === 회원 수정
 .curl-request
-include::{snippets}/Patch-Member/curl-request.adoc[]
+include::{snippets}/update-member/curl-request.adoc[]
 
 .http-request
-include::{snippets}/Patch-Member/http-request.adoc[]
+include::{snippets}/update-member/http-request.adoc[]
 
-// Bearer token 관련 (추후 추가)
-// .request-headers
-// include::{snippets}/Patch-Member/request-headers.adoc[]
+.request-headers
+include::{snippets}/update-member/request-headers.adoc[]
 
+// RestDocs의 문제로 path-parameter의 정보를 get에서 가지고 옴.
 .request-path-parameters
-include::{snippets}/Patch-Member/path-parameters.adoc[]
+include::{snippets}/get-member/path-parameters.adoc[]
 
 .request-fields
-include::{snippets}/Patch-Member/request-part-patchDto-fields.adoc[]
+include::{snippets}/update-member/request-part-patchDto-fields.adoc[]
 
 .request-part
-include::{snippets}/Patch-Member/request-parts.adoc[]
+include::{snippets}/update-member/request-parts.adoc[]
 
 .http-response
-include::{snippets}/Patch-Member/http-response.adoc[]
-////
+include::{snippets}/update-member/http-response.adoc[]
 
 === 회원 상세 조회
 .curl-request
-include::{snippets}/Get-Member/curl-request.adoc[]
+include::{snippets}/get-member/curl-request.adoc[]
 
 .http-request
-include::{snippets}/Get-Member/http-request.adoc[]
+include::{snippets}/get-member/http-request.adoc[]
 
 .request-path-parameters
-include::{snippets}/Get-Member/path-parameters.adoc[]
+include::{snippets}/get-member/path-parameters.adoc[]
 
-// Bearer token 관련 (추후 추가)
-// .request-headers
-// include::{snippets}/Get-Member/request-headers.adoc[]
+.request-headers
+include::{snippets}/get-member/request-headers.adoc[]
 
 .http-response
-include::{snippets}/Get-Member/http-response.adoc[]
+include::{snippets}/get-member/http-response.adoc[]
 
 .response-fields
-include::{snippets}/Get-Member/response-fields.adoc[]
+include::{snippets}/get-member/response-fields.adoc[]
 
 === 회원 리스트 조회 (운영자용)
 .curl-request
-include::{snippets}/Get-Members-for-Admin/curl-request.adoc[]
+include::{snippets}/get-members-for-admin/curl-request.adoc[]
 
 .http-request
-include::{snippets}/Get-Members-for-Admin/http-request.adoc[]
+include::{snippets}/get-members-for-admin/http-request.adoc[]
 
 .request-query-parameters
-include::{snippets}/Get-Members-for-Admin/request-parameters.adoc[]
+include::{snippets}/get-members-for-admin/request-parameters.adoc[]
 
-// Bearer token 관련 (추후 추가)
-// .request-headers
-// include::{snippets}/Get-Member/request-headers.adoc[]
+.request-headers
+include::{snippets}/get-members-for-admin/request-headers.adoc[]
 
 .http-response
-include::{snippets}/Get-Members-for-Admin/http-response.adoc[]
+include::{snippets}/get-members-for-admin/http-response.adoc[]
 
 .response-fields
-include::{snippets}/Get-Members-for-Admin/response-fields.adoc[]
+include::{snippets}/get-members-for-admin/response-fields.adoc[]
 
 === 회원 탈퇴
 .curl-request
-include::{snippets}/Delete-Member/curl-request.adoc[]
+include::{snippets}/delete-member/curl-request.adoc[]
 
 .http-request
-include::{snippets}/Delete-Member/http-request.adoc[]
+include::{snippets}/delete-member/http-request.adoc[]
 
-// Bearer token 관련 (추후 추가)
-// .request-headers
-// include::{snippets}/Delete-Member/request-headers.adoc[]
+.request-headers
+include::{snippets}/delete-member/request-headers.adoc[]
 
 .request-path-parameters
-include::{snippets}/Delete-Member/path-parameters.adoc[]
+include::{snippets}/delete-member/path-parameters.adoc[]
 
 .http-response
-include::{snippets}/Delete-Member/http-response.adoc[]
+include::{snippets}/delete-member/http-response.adoc[]
 
 
 
@@ -194,3 +189,78 @@ include::{snippets}/get-recommend-amenity-state-region/http-response.adoc[]
 
 .response-fields
 include::{snippets}/get-recommend-amenity-state-region/response-fields.adoc[]
+
+
+== 팔로우
+=== 회원 팔로우
+.curl-request
+include::{snippets}/create-follow/curl-request.adoc[]
+
+.http-request
+include::{snippets}/create-follow/http-request.adoc[]
+
+.request-headers
+include::{snippets}/create-follow/request-headers.adoc[]
+
+.request-query-parameter
+include::{snippets}/create-follow/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/create-follow/http-response.adoc[]
+
+.response-header
+include::{snippets}/create-follow/response-headers.adoc[]
+
+=== 팔로워 목록 조회
+.curl-request
+include::{snippets}/get-follower-list/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-follower-list/http-request.adoc[]
+
+.request-headers
+include::{snippets}/get-follower-list/request-headers.adoc[]
+
+.request-query-parameters
+include::{snippets}/get-follower-list/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/get-follower-list/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-follower-list/response-fields.adoc[]
+
+=== 팔로우 회원 목록 조회
+.curl-request
+include::{snippets}/get-followee-list/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-followee-list/http-request.adoc[]
+
+.request-headers
+include::{snippets}/get-followee-list/request-headers.adoc[]
+
+.request-query-parameters
+include::{snippets}/get-followee-list/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/get-followee-list/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-followee-list/response-fields.adoc[]
+
+=== 회원 탈퇴
+.curl-request
+include::{snippets}/delete-follow/curl-request.adoc[]
+
+.http-request
+include::{snippets}/delete-follow/http-request.adoc[]
+
+.request-headers
+include::{snippets}/delete-follow/request-headers.adoc[]
+
+.request-query-parameters
+include::{snippets}/delete-follow/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/delete-follow/http-response.adoc[]
