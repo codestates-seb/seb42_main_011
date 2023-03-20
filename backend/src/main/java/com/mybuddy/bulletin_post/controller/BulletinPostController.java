@@ -63,7 +63,6 @@ public class BulletinPostController {
 
 
         //해당 amenity 저장되어있는지 여부 확인후 없으면 저장, 아니면 create 코드
-        //이 로직이 컨트롤러에 잇는게 맞나 싶은데 patch도 마찬가지고.. bulletinPostToAmentiyCreateDto로 변경해서 bulletinpost 서비스 단에서 해결해도 되지 않나? 그럼 서비스메서드 파라미터도 줄고 간단해질텐데, 매핑도 수정하는게 어렵지 않고.. 이걸 수정하면 dto를 묶을 필요가 없엇을지도..
         AmenityCreateDto amenityCreateDto = amenityMapper.bulletinPostDtoToAmenityCreateDto(createDto);
         Amenity amenity = amenityService.findDBAmenity(amenityCreateDto);
 
@@ -105,7 +104,7 @@ public class BulletinPostController {
         BulletinPost bulletinPost = bulletinPostService.findBulletinPost(bulletinPostId);
 
         return new ResponseEntity<>(
-                new ApiSingleResponse<>(HttpStatus.OK, "게시물 1개 조회", bulletinPostMapper.bulletinPostToBulletinPostResponseDto(bulletinPost,bulletinPostService, likeService))
+                new ApiSingleResponse<>(HttpStatus.OK, "게시물 1개를 조회합니다.", bulletinPostMapper.bulletinPostToBulletinPostResponseDto(bulletinPost,bulletinPostService, likeService))
                 , HttpStatus.OK);
     }
 
@@ -118,24 +117,24 @@ public class BulletinPostController {
         List<BulletinPost> bulletinPosts = pageBulletinPosts.getContent();
 
         return new ResponseEntity<>(
-                new ApiMultiResponse<>(HttpStatus.OK, "게시물 피드", bulletinPostMapper.bulletinPostsToBulletinPostResponseForFeedDtos(bulletinPosts),
+                new ApiMultiResponse<>(HttpStatus.OK, "게시물 피드를 조회합니다.", bulletinPostMapper.bulletinPostsToBulletinPostResponseForFeedDtos(bulletinPosts),
                         pageBulletinPosts),
                 HttpStatus.OK);
     }
 
     //마이페이지에서 bulletinPosts 리스트 가져오는 거
-    @GetMapping
-    public ResponseEntity getBulletinPostsByMemberId(@Positive @RequestParam long memberId, @Positive @RequestParam int page,
-                                       @Positive @RequestParam int size) {
-
-        Page<BulletinPost> pageBulletinPosts = bulletinPostService.findBulletinPostsByMemberId(memberId, page - 1, size);
-        List<BulletinPost> bulletinPosts = pageBulletinPosts.getContent();
-
-        return new ResponseEntity<>(
-                new ApiMultiResponse<>(HttpStatus.OK, "해당 멤버의 게시물 조회", bulletinPostMapper.bulletinPostsToBulletinPostResponseDtos(bulletinPosts),
-                        pageBulletinPosts),
-                HttpStatus.OK);
-    }
+//    @GetMapping
+//    public ResponseEntity getBulletinPostsByMemberId(@Positive @RequestParam long memberId, @Positive @RequestParam int page,
+//                                       @Positive @RequestParam int size) {
+//
+//        Page<BulletinPost> pageBulletinPosts = bulletinPostService.findBulletinPostsByMemberId(memberId, page - 1, size);
+//        List<BulletinPost> bulletinPosts = pageBulletinPosts.getContent();
+//
+//        return new ResponseEntity<>(
+//                new ApiMultiResponse<>(HttpStatus.OK, "해당 멤버의 게시물 조회", bulletinPostMapper.bulletinPostsToBulletinPostResponseDtos(bulletinPosts),
+//                        pageBulletinPosts),
+//                HttpStatus.OK);
+//    }
 
     @DeleteMapping("/{post-id}")
     public ResponseEntity deleteBulletinPost(
@@ -153,7 +152,7 @@ public class BulletinPostController {
         Like like = likeService.createLike(postId);
 
         return new ResponseEntity<>(
-                new ApiSingleResponse<>(HttpStatus.OK,"좋아요가 생성되었습니다.", likeMapper.toLikeResponseDto(postId, bulletinPostService)), HttpStatus.OK);
+                new ApiSingleResponse<>(HttpStatus.OK,"좋아요가 생성되었습니다.", likeMapper.toLikeResponseDto(postId, likeService)), HttpStatus.OK);
     }
 
     @DeleteMapping("/{post-id}/likes")
@@ -163,7 +162,7 @@ public class BulletinPostController {
         likeService.deleteLike(postId);
 
         return new ResponseEntity<>(
-                new ApiSingleResponse<>(HttpStatus.OK,"좋아요가 취소되었습니다.", likeMapper.toLikeResponseDto(postId, bulletinPostService)), HttpStatus.OK);
+                new ApiSingleResponse<>(HttpStatus.OK,"좋아요가 취소되었습니다.", likeMapper.toLikeResponseDto(postId, likeService)), HttpStatus.OK);
     }
 
 }

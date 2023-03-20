@@ -10,8 +10,10 @@ import com.mybuddy.like.service.LikeService;
 import com.mybuddy.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -59,7 +61,7 @@ public interface BulletinPostMapper {
                 .collect(Collectors.toList());
 
 
-        long likeCount = bulletinPostService.getLikeCount(bulletinPost.getBulletinPostId());
+        long likeCount = likeService.getLikeCount(bulletinPost.getBulletinPostId());
         int likeByUser = likeService.findExistLikeByMemberId(bulletinPost.getBulletinPostId(), member.getMemberId());
         BulletinPostDto.Response bulletinPostResponseDto = new BulletinPostDto.Response(
                 bulletinPost.getBulletinPostId(),

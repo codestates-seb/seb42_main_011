@@ -1,5 +1,6 @@
 package com.mybuddy.like.service;
 
+import com.mybuddy.bulletin_post.entity.BulletinPost;
 import com.mybuddy.bulletin_post.service.BulletinPostService;
 import com.mybuddy.like.entity.Like;
 import com.mybuddy.like.repository.LikeRepository;
@@ -73,4 +74,12 @@ public class LikeService {
         if (optionalLike.isEmpty()) return 0;
         else return 1;
     };
+
+    public long getLikeCount(long bulletinPostId) {
+
+        //일단은 리스트째로 가져왔는데 like 세오는 쿼리문 만들기.
+        BulletinPost bulletinPost = bulletinPostService.findVerifiedBulletinPost(bulletinPostId);
+        List<Like> likeList = bulletinPost.getLikes();
+        return likeList.size();
+    }
 }
