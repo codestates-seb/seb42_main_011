@@ -130,23 +130,4 @@ public class MemberServiceImpl implements MemberService {
         if (!memberId.equals(loginUserId))
             throw new LogicException(LogicExceptionCode.NOT_RESOURCE_OWNER);
     }
-
-    @PostConstruct
-    private Member registerMemberAsAdmin() {
-        Member admin = Member.builder()
-                .memberId(1L)
-                .email("admin@mybuddy.com")
-                .password("admin")
-                .nickname("admin")
-                .dogName("admin")
-                .dogGender(Member.DogGender.MALE)
-                .build();
-
-        String encryptedPassword = passwordEncoder.encode(admin.getPassword());
-        admin.setPassword(encryptedPassword);
-
-        List<String> roles = authorityUtils.createRoles(admin.getEmail());
-        admin.setRoles(roles);
-        return memberRepository.save(admin);
-    }
 }
