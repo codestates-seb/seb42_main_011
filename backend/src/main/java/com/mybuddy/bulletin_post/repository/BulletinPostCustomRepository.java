@@ -10,7 +10,7 @@ public interface BulletinPostCustomRepository {
 
     Page<BulletinPost> findByAmenityId(Long amenityId, PageRequest pageRequest);
 
+//    사용을 안해서
 //    PageImpl<BulletinPost> findByMemberId(Long memberId, PageRequest pageRequest);
-
     long findNumberOfCommentsByPostId(long postId);
 }

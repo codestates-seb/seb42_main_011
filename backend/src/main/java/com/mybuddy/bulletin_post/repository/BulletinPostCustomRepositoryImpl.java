@@ -55,15 +55,6 @@ public class BulletinPostCustomRepositoryImpl implements BulletinPostCustomRepos
                     return posts.addAll(tempList);
                 });
 
-//        QueryResults<BulletinPost> queryResults = queryFactory
-//                .selectFrom(bulletinPost)
-//        //이게 following 필드가 리스트일텐데..쿼리문 찾아보기
-//                .where(bulletinPost.member.followee(memberId)
-//                //일단 생각안나.. 나중에.
-//                .offset(pageRequest.getOffset())
-//                .limit(pageRequest.getPageSize())
-//                .fetchResults();
-
         //list to pagenation 수동
         int start = (int) pageRequest.getOffset();
         int end = Math.min((start + pageRequest.getPageSize()), posts.size());
@@ -89,6 +80,7 @@ public class BulletinPostCustomRepositoryImpl implements BulletinPostCustomRepos
         return new PageImpl<>(queryResults.getResults(), pageRequest, queryResults.getTotal());
     }
 
+// 사용을 안해서
 //    @Override
 //    public PageImpl<BulletinPost> findByMemberId(Long memberId, PageRequest pageRequest) {
 //
@@ -105,7 +97,6 @@ public class BulletinPostCustomRepositoryImpl implements BulletinPostCustomRepos
 //
 //        return new PageImpl<>(queryResults.getResults(), pageRequest, queryResults.getTotal());
 //    }
-
 
     @Override
     public long findNumberOfCommentsByPostId(long postId) {

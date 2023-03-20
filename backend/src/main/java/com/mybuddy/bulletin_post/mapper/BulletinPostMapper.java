@@ -60,11 +60,11 @@ public interface BulletinPostMapper {
                 ).sorted(Comparator.comparingLong(CommentResponseDto::getCommentId).reversed())
                 .collect(Collectors.toList());
 
-
-        long likeCount = likeService.getLikeCount(bulletinPost.getBulletinPostId());
-        int likeByUser = likeService.findExistLikeByMemberId(bulletinPost.getBulletinPostId(), member.getMemberId());
+        long postId = bulletinPost.getBulletinPostId();
+        long likeCount = likeService.getLikeCount(postId);
+        int likeByUser = likeService.findExistLikeByMemberId(postId, member.getMemberId());
         BulletinPostDto.Response bulletinPostResponseDto = new BulletinPostDto.Response(
-                bulletinPost.getBulletinPostId(),
+                postId,
                 bulletinPost.getPhotoUrl(),
                 bulletinPost.getPostContent(),
                 bulletinPost.getCreatedAt(),
@@ -92,23 +92,9 @@ public interface BulletinPostMapper {
         }
 
         Member member = bulletinPost.getMember();
-
-        //commentList null로 반환하기로해서.. 혹시 모르니 남겨둠.
-//        List<CommentResponseDto> commentLists = bulletinPost.getComments().stream()
-//                .map(comment -> {
-//                    CommentResponseDto commentResponse = new CommentResponseDto(
-//                            comment.getCommentId(),
-//                            comment.getCommentContent(),
-//                            comment.getMember().getMemberId(),
-//                            comment.getMember().getNickname(),
-//                            comment.getMember().getDogName()
-//                    );
-//                    return commentResponse;
-//                }
-//                ).collect(Collectors.toList());
-
+        long postId = bulletinPost.getBulletinPostId();
         BulletinPostDto.ResponseForFeed bulletinPostResponseForFeedDto = new BulletinPostDto.ResponseForFeed(
-                bulletinPost.getBulletinPostId(),
+                postId,
                 bulletinPost.getPhotoUrl(),
                 bulletinPost.getPostContent(),
                 member.getMemberId(),
