@@ -80,6 +80,10 @@ public class LikeService {
         //일단은 리스트째로 가져왔는데 like 세오는 쿼리문 만들기.
         BulletinPost bulletinPost = bulletinPostService.findVerifiedBulletinPost(bulletinPostId);
         List<Like> likeList = bulletinPost.getLikes();
+
+        if (likeList == null)
+            return 0;
+
         return likeList.size();
     }
 }

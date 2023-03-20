@@ -46,20 +46,22 @@ public interface BulletinPostMapper {
         Member member = bulletinPost.getMember();
         Amenity amenity = bulletinPost.getAmenity();
 
-        List<CommentResponseDto> commentLists = bulletinPost.getComments().stream()
-                .map(comment -> {
-                    CommentResponseDto commentResponse = new CommentResponseDto(
-                            comment.getCommentId(),
-                            comment.getCommentContent(),
-                            comment.getMember().getMemberId(),
-                            comment.getMember().getNickname(),
-                            comment.getMember().getDogName()
-                    );
-                    return commentResponse;
-                }
-                ).sorted(Comparator.comparingLong(CommentResponseDto::getCommentId).reversed())
-                .collect(Collectors.toList());
-
+        List<CommentResponseDto> commentLists = new ArrayList<>();
+        if (bulletinPost.getComments() != null) {
+            commentLists = bulletinPost.getComments().stream()
+                    .map(comment -> {
+                                CommentResponseDto commentResponse = new CommentResponseDto(
+                                        comment.getCommentId(),
+                                        comment.getCommentContent(),
+                                        comment.getMember().getMemberId(),
+                                        comment.getMember().getNickname(),
+                                        comment.getMember().getDogName()
+                                );
+                                return commentResponse;
+                            }
+                    ).sorted(Comparator.comparingLong(CommentResponseDto::getCommentId).reversed())
+                    .collect(Collectors.toList());
+        }
 
         long likeCount = likeService.getLikeCount(bulletinPost.getBulletinPostId());
         int likeByUser = likeService.findExistLikeByMemberId(bulletinPost.getBulletinPostId(), member.getMemberId());
