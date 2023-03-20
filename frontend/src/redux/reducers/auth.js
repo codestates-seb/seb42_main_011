@@ -1,3 +1,4 @@
+/* eslint-disable default-param-last */
 // isLoggedIn과 user 상태를 업데이트하는 리듀서
 
 import {
@@ -14,7 +15,7 @@ const initialState = user
   ? { isLoggedIn: true, user }
   : { isLoggedIn: false, user: null };
 
-export default function (action, state = initialState) {
+export default function authReducer(state = initialState, action) {
   const { type, payload } = action;
 
   switch(type) {

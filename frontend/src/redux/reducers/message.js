@@ -1,10 +1,11 @@
+/* eslint-disable default-param-last */
 // message action이 디스패치되면 message 상태를 업데이트하는 리듀서.
 
 import { SET_MESSAGE, CLEAR_MESSAGE } from "../actions/type";
 
 const initialState = {};
 
-export default function (action, state = initialState) {
+export default function messageReducer(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {

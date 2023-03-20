@@ -76,8 +76,8 @@ function LoginPage() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
-  const { isLoggedIn } = useSelector((state) => state.auth);
-  const { message } = useSelector((state) => state.message);
+  const { isLoggedIn } = useSelector((state) => state.authReducer);
+  const { message } = useSelector((state) => state.messageReducer);
 
   const dispatch = useDispatch();
 

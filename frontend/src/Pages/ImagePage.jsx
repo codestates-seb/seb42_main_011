@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import { ReactComponent as MybuddyLogo } from '../assets/logo/logo_navy.svg';
+import MybuddyBackground from "../assets/mybuddy_background_nologo.svg";
 
 const LoginWrapper = styled.section`
   display: flex;
@@ -61,7 +62,7 @@ function ImagePage() {
       </LoginComponent>
       <ImageWrapper>
         <BackgroundImage
-          src="/images/mybuddy_background_nologo.svg"
+          src={MybuddyBackground}
           alt="마이버디 배경"
         />
         <ImageLogo />

@@ -28,7 +28,7 @@ import * as AuthService from "../services/auth.service";
 
 function register(email, password, nickname, dogName, dogGender) {
   return function(dispatch) {
-    AuthService.useRegister(email, password, nickname, dogName, dogGender).then(
+    AuthService.register(email, password, nickname, dogName, dogGender).then(
       (response) => {
         dispatch({
           type: REGISTER_SUCCESS,
@@ -65,7 +65,7 @@ function register(email, password, nickname, dogName, dogGender) {
 
 function login(email, password) {
   return function(dispatch) {
-    AuthService.useLogin(email, password).then(
+    AuthService.login(email, password).then(
       (data) => {
         dispatch({
           type: LOGIN_SUCCESS,
