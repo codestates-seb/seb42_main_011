@@ -7,6 +7,7 @@ import { ReactComponent as MainLogo } from '../../assets/logo/logo.svg';
 
 import { logout } from "../../redux/actions/auth";
 import { clearMessage } from "../../redux/actions/message";
+import AuthVerify from '../../common/AuthVerify';
 
 const HeaderWrapper = styled.header`
   width: 100%;
@@ -138,17 +139,17 @@ function Header() {
           </MenuUl>
         </MenuWrapper>
         <MenuButtonWrapper>
-        {!currentUser ? (
-          <Link to="/login">
-            <Login variant="headersecondary">로그인</Login>
-          </Link>
-        ) : (
-          <Link to="/login">
-            <Logout variant="headerprimary" onClick={handleLogout}>로그아웃</Logout>
-          </Link>
-        )}
+          {!currentUser ? (
+            <Link to="/login">
+              <Login variant="headersecondary">로그인</Login>
+            </Link>
+          ) : (
+            <Link to="/login">
+              <Logout variant="headerprimary" onClick={handleLogout}>로그아웃</Logout>
+            </Link>
+          )}
           
-          
+          <AuthVerify handleLogout={handleLogout} />
         </MenuButtonWrapper>
       </Nav>
     </HeaderWrapper>
