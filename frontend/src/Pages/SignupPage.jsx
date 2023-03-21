@@ -105,17 +105,17 @@ function SignupPage() {
             <Input variant="large" label="이메일" id="email" type="email" value={email} onChange={onChangeEmail} />
             <Input variant="large" label="비밀번호" id="password" type="password" value={password} onChange={onChangePassword} />
             <Input
-          variant="large"
-          label="비밀번호 확인"
-          id="password-retype"
-          type="password"
-        value={passwordRetype} onChange={onChangePasswordRetype} />
+              variant="large"
+              label="비밀번호 확인"
+              id="password-retype"
+              type="password"
+              value={passwordRetype} onChange={onChangePasswordRetype} />
             <Input variant="large" label="강아지 이름" id="dogname" type="text" value={dogName} onChange={onChangeDogName} />
             <DropdownGender
-          id="dropdown"
-          options={gender}
-          labelText="강아지 성별" value={dogGender} onChange={onChangeDogGender}
-        />
+              id="dropdown"
+              options={gender}
+              labelText="강아지 성별" value={dogGender} onChange={onChangeDogGender}
+            />
             <ButtonContainer>
               <Button variant="large">회원가입</Button>
             </ButtonContainer>
