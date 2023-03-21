@@ -21,8 +21,8 @@ public class FollowCustomRepositoryImpl implements FollowCustomRepository {
                 queryFactory
                         .select(follow)
                         .from(follow)
-                        .where(follow.followee.memberId.eq(followeeId)
-                                .and(follow.follower.memberId.eq(followerId)))
+                        .where(follow.follower.memberId.eq(followerId)
+                                .and(follow.followee.memberId.eq(followeeId)) )
                         .fetchOne()
         );
     }

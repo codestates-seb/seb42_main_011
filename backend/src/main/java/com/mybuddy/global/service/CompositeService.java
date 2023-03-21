@@ -68,7 +68,7 @@ public class CompositeService {
         return new ApiSingleResponse<>(HttpStatus.OK,"게시물이 수정되었습니다.", bulletinPostMapper.bulletinPostToBulletinPostResponseDto(bulletinPost, bulletinPostService, likeService, loginUserId));
     }
 
-    public ApiSingleResponse getBulletinPost(long postId, Long loginUserId) {
+    public ApiSingleResponse getBulletinPost(Long loginUserId, long postId) {
 
         BulletinPost bulletinPost = bulletinPostService.findPost(postId);
 
