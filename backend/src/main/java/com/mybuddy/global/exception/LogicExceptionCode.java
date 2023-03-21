@@ -7,7 +7,6 @@ public enum LogicExceptionCode {
     // 401 unauthorized : 클라이언트 요청이 전달되지 않음 (인증 부족- token)
     MEMBER_UNAUTHORIZED(401, "Member Unauthorized"),
 
-
     // 403 forbidden : 서버에 요청 전달되었지만, 권한이 없음
     FOLLOW_NOT_POSSIBLE(403, "You cannot follow yourself"),
     LIKE_NOT_POSSIBLE(403, "You've already liked it"),

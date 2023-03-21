@@ -1,5 +1,6 @@
 package com.mybuddy.bulletin_post.mapper;
 
+import com.mybuddy.amenity.dto.AmenityForMyPageResponseDto;
 import com.mybuddy.amenity.entity.Amenity;
 import com.mybuddy.bulletin_post.dto.BulletinPostDto;
 import com.mybuddy.bulletin_post.entity.BulletinPost;
@@ -109,7 +110,23 @@ public interface BulletinPostMapper {
         return bulletinPostResponseForFeedDto;
     }
 
-    List<BulletinPostDto.ResponseForFeed> bulletinPostsToBulletinPostResponseForFeedDtos(List<BulletinPost> bulletinPosts);
+    default List<BulletinPostDto.ResponseForFeed> bulletinPostsToBulletinPostResponseForFeedDtos(List<BulletinPost> bulletinPosts) {
+        if (bulletinPosts == null) {
+            return null;
+        }
+
+        List<BulletinPostDto.ResponseForFeed> list = new ArrayList<BulletinPostDto.ResponseForFeed>(bulletinPosts.size());
+        for (BulletinPost bulletinPost : bulletinPosts) {
+            list.add(bulletinPostToBulletinPostResponseForFeedDto(bulletinPost));
+        }
+
+        List<BulletinPostDto.ResponseForFeed> result = list.stream()
+                .sorted(Comparator.comparingLong(
+                        BulletinPostDto.ResponseForFeed::getBulletinPostId).reversed())
+                .collect(Collectors.toList());
+
+        return result;
+    }
 
 }
 
