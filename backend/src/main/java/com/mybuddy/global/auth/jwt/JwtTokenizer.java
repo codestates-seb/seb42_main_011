@@ -1,5 +1,6 @@
 package com.mybuddy.global.auth.jwt;
 
+import com.mybuddy.member.entity.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -14,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -71,12 +73,51 @@ public class JwtTokenizer {
         return claims;
     }
 
+    public String getSubject(String jws) {
+        String base64EncodedSecretKey = encodeBase64SecretKey(getSecretKey());
+        Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
+
+        String subject = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(jws)
+                .getBody()
+                .getSubject();
+        return subject;
+    }
+
     public Date getTokenExpiration(int expirationMinutes) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, expirationMinutes);
         Date expiration = calendar.getTime();
 
         return expiration;
+    }
+
+    public String delegateAccessToken(Member member) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("memberId", member.getMemberId());
+        claims.put("username", member.getEmail());
+        claims.put("roles", member.getRoles());
+
+        String subject = member.getEmail();
+        Date expiration = getTokenExpiration(getAccessTokenExpirationMinutes());
+
+        String base64EncodedSecretKey = encodeBase64SecretKey(getSecretKey());
+
+        String accessToken = generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
+
+        return accessToken;
+    }
+
+    public String delegateRefreshToken(Member member) {
+        String subject = member.getEmail();
+        Date expiration = getTokenExpiration(getRefreshTokenExpirationMinutes());
+        String base64EncodedSecretKey = encodeBase64SecretKey(getSecretKey());
+
+        String refreshToken = generateRefreshToken(subject, expiration, base64EncodedSecretKey);
+
+        return refreshToken;
     }
 
     private Key getKeyFromBase64EncodedKey(String base64EncodedSecretKey) {

@@ -11,6 +11,7 @@ import com.mybuddy.global.auth.utils.MemberAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -35,6 +36,8 @@ public class SecurityConfiguration {
 
     private final MemberAuthorityUtils authorityUtils;
 
+    private final RedisTemplate<String, String> redisTemplate;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -55,6 +58,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
 //                        .anyRequest().permitAll()
 //                        .antMatchers("/h2/**").permitAll()
+                                .antMatchers(HttpMethod.POST, "/api/*/auth/refresh").permitAll()
                                 .antMatchers(HttpMethod.POST, "/api/*/members").permitAll()
                                 .antMatchers(HttpMethod.PATCH, "/api/*/members/**").hasRole("USER")
                                 .antMatchers(HttpMethod.GET, "/api/*/members").hasRole("ADMIN")
@@ -113,7 +117,7 @@ public class SecurityConfiguration {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
             JwtAuthenticationFilter jwtAuthenticationFilter =
-                    new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);
+                    new JwtAuthenticationFilter(authenticationManager, jwtTokenizer, redisTemplate);
             jwtAuthenticationFilter.setFilterProcessesUrl("/api/v1/auth/login");
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler());
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
