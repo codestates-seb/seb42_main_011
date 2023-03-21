@@ -42,21 +42,30 @@ public class BulletinPostCustomRepositoryImpl implements BulletinPostCustomRepos
 //
 //        List<Follow> followees = obtainedMember.getMeAsFollowerList();
 
-        List<BulletinPost> posts= new ArrayList<>();
+        List<BulletinPost> posts = new ArrayList<>();
         //follower가 없으면 비로그인 유저 피드와 같은 결과
         if (meAsFollowerList.size() == 0) {
             return new PageImpl<>(posts, pageRequest, posts.size());
         }
 
-        meAsFollowerList.stream()
-                .map(followee -> {
-                    List<BulletinPost> tempList =
-                            queryFactory
-                                    .selectFrom(bulletinPost)
-                                    .where(bulletinPost.member.memberId.eq(followee.getFollowee().getMemberId()))
-                                    .fetch();
-                    return posts.addAll(tempList);
-                });
+        for ( Follow follow : meAsFollowerList) {
+            List<BulletinPost> tempList =
+                    queryFactory
+                            .selectFrom(bulletinPost)
+                            .where(bulletinPost.member.memberId.eq(follow.getFollowee().getMemberId()))
+                            .fetch();
+            posts.addAll(tempList);
+        }
+//        meAsFollowerList.stream()
+//                .map(followee -> {
+//                    List<BulletinPost> tempList =
+//                            queryFactory
+//                                    .selectFrom(bulletinPost)
+//                                    .where(bulletinPost.member.memberId.eq(followee.getFollowee().getMemberId()))
+//                                    .fetch();
+//                    posts.addAll(tempList);
+//                    return posts;
+//                });
 
         //list to pagenation 수동
         int start = (int) pageRequest.getOffset();

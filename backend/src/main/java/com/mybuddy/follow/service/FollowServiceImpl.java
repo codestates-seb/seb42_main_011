@@ -75,7 +75,7 @@ public class FollowServiceImpl implements FollowService {
     @Override
     public void deleteFollow(Long followeeId, Long loginUserId) {
         Optional<Follow> obtainedFollow =
-                followRepository.findByFolloweeIdAndFollowerId(loginUserId, followeeId);
+                followRepository.findByFolloweeIdAndFollowerId(followeeId, loginUserId);
 
         if (obtainedFollow.isEmpty())
             throw new LogicException(LogicExceptionCode.FOLLOW_NOT_FOUND);
