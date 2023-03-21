@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
 import Input from '../components/UI/Input';
 import DropdownGender from '../components/UI/Dropdown/DropdownGender';
 import Button from '../components/UI/Button';
+import { register } from '../redux/actions/auth';
 
 const FormContainer = styled.section`
   display: flex;
@@ -41,24 +43,80 @@ const ButtonContainer = styled.div`
   margin-top: 30px;
 `;
 
-const dogGender = ['여자', '남자'];
+const gender = ['여자', '남자'];
+
 
 function SignupPage() {
+  // 기능 구현
+  const [nickname, setNickname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordRetype, setPasswordRetype] = useState("");
+  const [dogName, setDogName] = useState("");
+  const [dogGender, setDogGender] = useState("");
+  const [successful, setSuccessful] = useState(false);
+
+  const { message } = useSelector(state => state.message);
+
+  const dispatch = useDispatch();
+
+  const onChangeNickname = (e) => {
+    setNickname(e.target.value);
+  }
+  const onChangeEmail = (e) => {
+    setEmail(e.target.value);
+  }
+  const onChangePassword = (e) => {
+    setPassword(e.target.value);
+  }
+  const onChangePasswordRetype = (e) => {
+    setPasswordRetype(e.target.value);
+  }
+  const onChangeDogName = (e) => {
+    setDogName(e.target.value);
+  }
+  const onChangeDogGender = (e) => {
+    setDogGender(e.target.value);
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    setSuccessful(false);
+
+    // 유효성검사 통과했을 경우 if문
+    dispatch(register(email, password, nickname, dogName, dogGender))
+    .then(() => {
+      setSuccessful(true);
+    })
+    .catch(() => {
+      setSuccessful(false);
+    });
+  }
+  // console.log(useSelector(state => state));
+  // console.log(successful);
   return (
-  <FormContainer>
-    <Title>회원가입</Title>
-    <SignupForm>
-      <Input variant='large' label='닉네임' id='name' type='text' />
-      <Input variant='large' label='이메일' id='email' type='email' />
-      <Input variant='large' label='비밀번호' id='password' type='password' />
-      <Input variant='large' label='비밀번호 확인' id='password-retype' type='password' />
-      <Input variant='large' label='강아지 이름' id='dogname' type='text' />
-      <DropdownGender id="dropdown" options={dogGender} labelText="강아지 성별" />
-      <ButtonContainer>
-        <Button variant='large'>회원가입</Button>
-      </ButtonContainer>
-    </SignupForm>
-  </FormContainer>
+    
+      <FormContainer>
+        <Title>회원가입</Title>
+        {!successful && (
+        <SignupForm onSubmit={handleSubmit}>
+          <Input variant='large' label='닉네임' id='name' type='text' value={nickname} onChange={onChangeNickname} />
+          <Input variant='large' label='이메일' id='email' type='email' value={email} onChange={onChangeEmail} />
+          <Input variant='large' label='비밀번호' id='password' type='password' value={password} onChange={onChangePassword} />
+          <Input variant='large' label='비밀번호 확인' id='password-retype' type='password' value={passwordRetype} onChange={onChangePasswordRetype} />
+          <Input variant='large' label='강아지 이름' id='dogname' type='text' value={dogName} onChange={onChangeDogName} />
+          <DropdownGender id="dropdown" options={gender} labelText="강아지 성별" value={dogGender} onChange={onChangeDogGender} />
+          <ButtonContainer>
+            <Button variant='large'>회원가입</Button>
+          </ButtonContainer>
+        </SignupForm>
+        )}
+        {message && (
+          <div>{message}</div>
+        )}
+      </FormContainer>
+    
   );
 }
 

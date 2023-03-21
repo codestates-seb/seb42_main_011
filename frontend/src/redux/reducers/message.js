@@ -5,7 +5,7 @@ import { SET_MESSAGE, CLEAR_MESSAGE } from "../actions/type";
 
 const initialState = {};
 
-export default function messageReducer(state = initialState, action) {
+export default function message(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {

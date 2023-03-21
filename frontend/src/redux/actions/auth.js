@@ -24,11 +24,10 @@ import {
   SET_MESSAGE,
 } from "./type";
 
-import { register as registerService, login as loginService, logout as logoutService } from "../services/auth.service";
+import * as AuthService from "../services/auth.service";
 
-function register(email, password, nickname, dogName, dogGender) {
-  return function(dispatch) {
-    registerService(email, password, nickname, dogName, dogGender).then(
+export const register = (email, password, nickname, dogName, dogGender) => (dispatch) => AuthService.register(email, password, nickname, dogName, dogGender)
+    .then(
       (response) => {
         dispatch({
           type: REGISTER_SUCCESS,
@@ -59,47 +58,41 @@ function register(email, password, nickname, dogName, dogGender) {
 
         return Promise.reject();
       }
-    )
-  }
-};
-
-const login = (email, password) => (dispatch) => loginService(email, password).then(
-      (data) => {
-        dispatch({
-          type: LOGIN_SUCCESS,
-          payload: { user: data },
-        });
-
-        return Promise.resolve();
-      },
-
-      (error) => {
-        const message = (error.response &&
-                          error.response.data &&
-                          error.response.data.message) ||
-                        error.message ||
-                        error.toString();
-        dispatch({
-          type: LOGIN_FAIL,
-        });
-
-        dispatch({
-          type: SET_MESSAGE,
-          payload: message,
-        });
-
-        return Promise.reject();
-      }
     );
 
-function logout() {
-  return function(dispatch) {
-    logoutService(); // 여기서 에러가 남(첫줄 주석)
+export const login = (email, password) => (dispatch) => AuthService.login(email, password)
+    .then(
+        (data) => {
+          dispatch({
+            type: LOGIN_SUCCESS,
+            payload: { user: data },
+          });
 
-    dispatch({
-      type: LOGOUT,
-    });
-  };
-}
+          return Promise.resolve();
+        },
 
-export { register, login, logout };
+        (error) => {
+          const message = (error.response &&
+                            error.response.data &&
+                            error.response.data.message) ||
+                          error.message ||
+                          error.toString();
+          dispatch({
+            type: LOGIN_FAIL,
+          });
+
+          dispatch({
+            type: SET_MESSAGE,
+            payload: message,
+          });
+
+          return Promise.reject();
+        }
+      );
+
+export const logout = () => (dispatch) => {
+  AuthService.logout(); 
+  dispatch({
+    type: LOGOUT,
+  });
+};

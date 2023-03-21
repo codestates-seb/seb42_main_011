@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Input from '../components/UI/Input';
 import Button from '../components/UI/Button';
 import { login } from "../redux/actions/auth";
@@ -76,8 +76,8 @@ function LoginPage() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
-  const { isLoggedIn } = useSelector((state) => state.authReducer);
-  const { message } = useSelector((state) => state.messageReducer);
+  // const { isLoggedIn } = useSelector((state) => state.auth);
+  const { message } = useSelector((state) => state.message);
 
   const dispatch = useDispatch();
 
@@ -101,12 +101,12 @@ function LoginPage() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-
+    setLoading(true);
     const isEmailValid = validateEmail();
     const isPasswordValid = validatePassword();
 
     if (isEmailValid && isPasswordValid) {
-      setLoading(true);
+      // setLoading(true);
       // dispatch(login(email, password))
       dispatch(login(email, password))
       .then(() => {
@@ -116,12 +116,15 @@ function LoginPage() {
       .catch(() => {
         setLoading(false);
       })
+    } else {
+      setLoading(false);
     }
   }
 
-  if(isLoggedIn) {
-    return <Navigate to="/friendpage/feed" />;
-  }
+  // 헤더 코드 짜기 전까지 - 로그인버튼 누르면 로그인페이지 말고 피드로 이동하게.
+  // if(isLoggedIn) {
+  //   return <Navigate to="/friendpage/feed" />;
+  // }
 
   return (
     <FormContainer>
