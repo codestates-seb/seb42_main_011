@@ -63,9 +63,7 @@ function register(email, password, nickname, dogName, dogGender) {
   }
 };
 
-function login(email, password) {
-  return (dispatch) => {
-    loginService(email, password).then(
+const login = (email, password) => (dispatch) => loginService(email, password).then(
       (data) => {
         dispatch({
           type: LOGIN_SUCCESS,
@@ -92,9 +90,7 @@ function login(email, password) {
 
         return Promise.reject();
       }
-    )
-  }
-}
+    );
 
 function logout() {
   return function(dispatch) {

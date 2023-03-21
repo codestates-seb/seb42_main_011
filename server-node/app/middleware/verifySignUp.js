@@ -16,7 +16,6 @@ checkDuplicateEmail = (req, res, next) => {
       return;
     }
   });
-
   next();
 };
 
@@ -37,6 +36,7 @@ checkDuplicateEmail = (req, res, next) => {
 
 const verifySignUp = {
   checkDuplicateEmail: checkDuplicateEmail,
+  // checkRolesExisted: checkRolesExisted
 };
 
 module.exports = verifySignUp;

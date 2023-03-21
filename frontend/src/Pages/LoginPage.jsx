@@ -107,9 +107,8 @@ function LoginPage() {
 
     if (isEmailValid && isPasswordValid) {
       setLoading(true);
-
       // dispatch(login(email, password))
-      login(email, password)(dispatch)
+      dispatch(login(email, password))
       .then(() => {
         navigate("/friendpage/feed");
         // window.location.reload();

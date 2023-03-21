@@ -27,18 +27,24 @@ async function register({ email, password, nickname, dogName, dogGender }) {
 // async function register()
 
 // 2. login() : POST { 이메일, 비밀번호 } & JWT를 로컬스토리지에 저장
+
+
 async function login({ email, password }) {
   try {
+
     const response = await fetch(`${API_URL}auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
     });
+    console.log('email:', email);
+    console.log('password:', password);
     const data = await response.json();
-    localStorage.setItem("user", JSON.stringify(data));
-    // return data;
+    await localStorage.setItem("user", JSON.stringify(data));
+    console.log('response data:', data);
+    return JSON.stringify(data);
   } catch (error) {
-    console.log(error);
+    console.log('error:', error);
   }
 
   // const response = await fetch(`${API_URL}auth/login`, {

@@ -13,7 +13,8 @@ export default function authHeader() {
     // node express 사용시
     return { 'x-access-token': user.accessToken };
 
-  } 
-  return {};
-  
+  // eslint-disable-next-line no-else-return
+  } else{
+    return {};
+  }
 }
