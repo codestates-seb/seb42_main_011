@@ -51,4 +51,18 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository {
                         .fetchOne()
         );
     }
+
+    @Override
+    public Optional<Member> findByMemberEmailAndMemberStatusIs(String email, Member.MemberStatus memberStatus) {
+        QMember member = new QMember("member1");
+
+        return Optional.ofNullable(
+                queryFactory
+                        .select(member)
+                        .from(member)
+                        .where(member.email.eq(email)
+                                .and(member.memberStatus.eq(memberStatus)))
+                        .fetchOne()
+        );
+    }
 }

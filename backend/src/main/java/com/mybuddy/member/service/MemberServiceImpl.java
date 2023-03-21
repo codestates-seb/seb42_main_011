@@ -126,6 +126,17 @@ public class MemberServiceImpl implements MemberService {
         return obtainedMember;
     }
 
+    @Override
+    public Member findExistMemberByEmail(String email) {
+        Optional<Member> optionalMember = memberRepository
+                .findByMemberEmailAndMemberStatusIs(email, MemberStatus.ACTIVE);
+
+        Member obtainedMember = optionalMember
+                .orElseThrow(() -> new LogicException(LogicExceptionCode.MEMBER_NOT_FOUND));
+
+        return obtainedMember;
+    }
+
     protected void verifyResourceOwner(Long memberId, Long loginUserId) {
         if (!memberId.equals(loginUserId))
             throw new LogicException(LogicExceptionCode.NOT_RESOURCE_OWNER);
