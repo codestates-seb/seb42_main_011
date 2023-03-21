@@ -6,6 +6,7 @@ import com.mybuddy.global.auth.utils.MemberAuthorityUtils;
 import com.mybuddy.global.exception.LogicException;
 import com.mybuddy.global.exception.LogicExceptionCode;
 import com.mybuddy.global.storage.StorageService;
+import com.mybuddy.global.utils.CustomBeanUtils;
 import com.mybuddy.member.entity.Member;
 import com.mybuddy.member.entity.Member.MemberStatus;
 import com.mybuddy.member.repository.MemberRepository;
@@ -33,6 +34,8 @@ public class MemberServiceImpl implements MemberService {
 
     private final StorageService storageService;
 
+    private final CustomBeanUtils<Member> customBeanUtils;
+
     private final PasswordEncoder passwordEncoder;
 
     private final MemberAuthorityUtils authorityUtils;
@@ -59,26 +62,20 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member updateMember(Member member, MultipartFile profileImage) {
-        compareLoginUserIdToMemberId(member.getMemberId());
+    public Member updateMember(Member member, MultipartFile profileImage, Long loginUserId) {
+        verifyResourceOwner(member.getMemberId(), loginUserId);
         Member obtainedMember = findExistMemberById(member.getMemberId());
 
-        Optional.ofNullable(member.getNickname())
-                .ifPresent(obtainedMember::setNickname);
-        Optional.ofNullable(member.getDogName())
-                .ifPresent(obtainedMember::setDogName);
-        Optional.ofNullable(member.getAddress())
-                .ifPresent(obtainedMember::setAddress);
-        Optional.ofNullable(member.getAboutMe())
-                .ifPresent(obtainedMember::setAboutMe);
+        Member updatedMember = customBeanUtils.copyNonNullProperties(member, obtainedMember);
+
         Optional.ofNullable(profileImage)
                 .ifPresent(storageService::storeImage);
         Optional.ofNullable(profileImage)
-                .ifPresent(image -> obtainedMember.setProfileUrl(
+                .ifPresent(image -> updatedMember.setProfileUrl(
                         storageService.getPath() + "/" + image.getOriginalFilename())
                 );
 
-        return memberRepository.save(obtainedMember);
+        return memberRepository.save(updatedMember);
     }
 
     @Override
@@ -93,8 +90,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void deleteMember(Long memberId) {
-        compareLoginUserIdToMemberId(memberId);
+    public void deleteMember(Long memberId, long loginUserId) {
+        verifyResourceOwner(memberId, loginUserId);
         Member obtainedMember = findExistMemberById(memberId);
 
         obtainedMember.setMemberStatus(MemberStatus.DELETED);
@@ -129,39 +126,8 @@ public class MemberServiceImpl implements MemberService {
         return obtainedMember;
     }
 
-    @Override
-    public void compareLoginUserIdToMemberId(Long memberId) {
-        if (!memberId.equals(getLoginUserId()))
-            throw new LogicException(LogicExceptionCode.MEMBER_UNAUTHORIZED);
-    }
-
-    protected Long getLoginUserId() {
-        Long loginUserId = null;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof PrincipalDto) {
-            PrincipalDto principal = (PrincipalDto) authentication.getPrincipal();
-            loginUserId = principal.getLoginUserId();
-        }
-
-        return loginUserId;
-    }
-
-    @PostConstruct
-    private Member registerMemberAsAdmin() {
-        Member admin = Member.builder()
-                .memberId(1L)
-                .email("admin@mybuddy.com")
-                .password("admin")
-                .nickname("admin")
-                .dogName("admin")
-                .dogGender(Member.DogGender.MALE)
-                .build();
-
-        String encryptedPassword = passwordEncoder.encode(admin.getPassword());
-        admin.setPassword(encryptedPassword);
-
-        List<String> roles = authorityUtils.createRoles(admin.getEmail());
-        admin.setRoles(roles);
-        return memberRepository.save(admin);
+    protected void verifyResourceOwner(Long memberId, Long loginUserId) {
+        if (!memberId.equals(loginUserId))
+            throw new LogicException(LogicExceptionCode.NOT_RESOURCE_OWNER);
     }
 }

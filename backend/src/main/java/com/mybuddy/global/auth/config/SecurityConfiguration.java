@@ -53,14 +53,39 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().permitAll()
+//                        .anyRequest().permitAll()
 //                        .antMatchers("/h2/**").permitAll()
-//                        .antMatchers(HttpMethod.POST, "/api/*/members").permitAll()
-//                        .antMatchers(HttpMethod.PATCH, "/api/*/members/**").hasRole("USER")
-//                        .antMatchers(HttpMethod.GET, "/api/*/members").hasRole("ADMIN")
-//                        .antMatchers(HttpMethod.GET, "/api/*/members/**").hasAnyRole("USER", "ADMIN")
-//                        .antMatchers(HttpMethod.DELETE, "/api/*/members/**").hasRole("USER")
-//                        .anyRequest().authenticated()
+                                .antMatchers(HttpMethod.POST, "/api/*/members").permitAll()
+                                .antMatchers(HttpMethod.PATCH, "/api/*/members/**").hasRole("USER")
+                                .antMatchers(HttpMethod.GET, "/api/*/members").hasRole("ADMIN")
+                                .antMatchers(HttpMethod.GET, "/api/*/members/**").permitAll()
+                                .antMatchers(HttpMethod.DELETE, "/api/*/members/**").hasAnyRole("USER", "ADMIN")
+
+                                // Bulletin-Post & Like
+                                .antMatchers(HttpMethod.POST, "/api/*/bulletin-posts").hasRole("USER")
+                                .antMatchers(HttpMethod.POST, "/api/*/bulletin-posts/**").hasRole("USER")
+                                .antMatchers(HttpMethod.POST, "/api/*/bulletin-posts/**").hasRole("USER")
+                                .antMatchers(HttpMethod.PATCH, "/api/*/bulletin-posts/**").hasRole("USER")
+                                .antMatchers(HttpMethod.GET, "/api/*/bulletin-posts/**").permitAll()
+                                .antMatchers(HttpMethod.DELETE, "/api/*/bulletin-posts/**").hasAnyRole("USER", "ADMIN")
+
+                                // Search
+                                .antMatchers(HttpMethod.GET, "/api/*/search").permitAll() //hasRole("USER") ??
+//
+//                                // Comment
+//                                .antMatchers(HttpMethod.POST, "/api/*/comments").hasRole("USER")
+//                                .antMatchers(HttpMethod.PATCH, "/api/*/comments/**").hasRole("USER")
+//                                .antMatchers(HttpMethod.DELETE, "/api/*/comments/**").hasAnyRole("USER", "ADMIN")
+
+                                // Amenity :확실 X
+                                .antMatchers(HttpMethod.GET, "/api/*/amenities").permitAll()
+                                .antMatchers(HttpMethod.GET, "/api/*/amenities/**").permitAll()
+
+                                // Password - Email
+                                .antMatchers(HttpMethod.POST, "/api/*/password").permitAll()
+
+                                // Comment, Follower
+                                .anyRequest().authenticated()
                 );
 
         return http.build();

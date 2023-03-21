@@ -1,7 +1,15 @@
 package com.mybuddy.bulletin_post.repository;
 
+import com.mybuddy.amenity.dto.AmenityResponseDto;
+import com.mybuddy.amenity.entity.Amenity;
+import com.mybuddy.amenity.entity.QAmenity;
+import com.mybuddy.bulletin_post.dto.BulletinPostDto;
 import com.mybuddy.bulletin_post.entity.BulletinPost;
 import com.mybuddy.bulletin_post.entity.QBulletinPost;
+import com.mybuddy.comment.entity.QComment;
+import com.mybuddy.follow.entity.Follow;
+import com.mybuddy.member.entity.Member;
+import com.mybuddy.member.entity.QMember;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -9,29 +17,62 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.querydsl.core.types.Projections.bean;
+
 @RequiredArgsConstructor
 public class BulletinPostCustomRepositoryImpl implements BulletinPostCustomRepository {
 
     private final JPAQueryFactory queryFactory;
 
     //follow 구현 후 수정
-//    @Override
-//    public Page<BulletinPost> findAllFollowingPostsByMemberId(long memberId, PageRequest pageRequest) {
+    @Override
+    public Page<BulletinPost> findAllFollowingPostsByMemberId(List<Follow> meAsFollowerList, PageRequest pageRequest) {
+
+        QBulletinPost bulletinPost = QBulletinPost.bulletinPost;
+//        QMember member = QMember.member;
 //
-//        QBulletinPost bulletinPost = QBulletinPost.bulletinPost;
+//        Member obtainedMember = queryFactory
+//                .selectFrom(member)
+//                .where(member.memberId.eq(memberId))
+//                .fetchOne();
 //
-//
-//        QueryResults<BulletinPost> queryResults = queryFactory
-//                .selectFrom(bulletinPost)
-//        //이게 following 필드가 리스트일텐데..쿼리문 찾아보기
-////                .where(bulletinPost.member.follower(memberId)
-//                //일단 생각안나.. 나중에.
-//                .offset(pageRequest.getOffset())
-//                .limit(pageRequest.getPageSize())
-//                .fetchResults();
-//
-//        return new PageImpl<>(queryResults.getResults(), pageRequest, queryResults.getTotal());
-//    }
+//        List<Follow> followees = obtainedMember.getMeAsFollowerList();
+
+        List<BulletinPost> posts = new ArrayList<>();
+        //follower가 없으면 비로그인 유저 피드와 같은 결과
+        if (meAsFollowerList.size() == 0) {
+            return new PageImpl<>(posts, pageRequest, posts.size());
+        }
+
+        for ( Follow follow : meAsFollowerList) {
+            List<BulletinPost> tempList =
+                    queryFactory
+                            .selectFrom(bulletinPost)
+                            .where(bulletinPost.member.memberId.eq(follow.getFollowee().getMemberId()))
+                            .fetch();
+            posts.addAll(tempList);
+        }
+//        meAsFollowerList.stream()
+//                .map(followee -> {
+//                    List<BulletinPost> tempList =
+//                            queryFactory
+//                                    .selectFrom(bulletinPost)
+//                                    .where(bulletinPost.member.memberId.eq(followee.getFollowee().getMemberId()))
+//                                    .fetch();
+//                    posts.addAll(tempList);
+//                    return posts;
+//                });
+
+        //list to pagenation 수동
+        int start = (int) pageRequest.getOffset();
+        int end = Math.min((start + pageRequest.getPageSize()), posts.size());
+
+        return new PageImpl<>(posts.subList(start, end), pageRequest, posts.size());
+    }
 
     @Override
     public PageImpl<BulletinPost> findByAmenityId(Long amenityId, PageRequest pageRequest) {
@@ -49,5 +90,35 @@ public class BulletinPostCustomRepositoryImpl implements BulletinPostCustomRepos
                 .fetchResults();
 
         return new PageImpl<>(queryResults.getResults(), pageRequest, queryResults.getTotal());
+    }
+
+// 사용을 안해서
+//    @Override
+//    public PageImpl<BulletinPost> findByMemberId(Long memberId, PageRequest pageRequest) {
+//
+//        QBulletinPost bulletinPost = QBulletinPost.bulletinPost;
+//
+//        QueryResults<BulletinPost> queryResults = queryFactory
+//                .select(bulletinPost)
+//                .from(bulletinPost)
+//                .leftJoin(bulletinPost.member, )
+//                .where(bulletinPost.member.memberId.eq(memberId))
+//                .offset(pageRequest.getOffset())
+//                .limit(pageRequest.getPageSize())
+//                .fetchResults();
+//
+//        return new PageImpl<>(queryResults.getResults(), pageRequest, queryResults.getTotal());
+//    }
+
+    @Override
+    public long findNumberOfCommentsByPostId(long postId) {
+
+        QBulletinPost bulletinPost = QBulletinPost.bulletinPost;
+
+        return queryFactory
+                .select(bulletinPost.comments)
+                .from(bulletinPost)
+                .where(bulletinPost.bulletinPostId.eq(postId))
+                .fetchCount();
     }
 }

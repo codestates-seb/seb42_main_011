@@ -124,7 +124,9 @@ public class AmenityServiceTest {
 
         List<BulletinPost> list = MockTestData.MockAmenity.getListBulletinPost();
         Page<BulletinPost> bulletinPostPage = new PageImpl<>(list);
+        Amenity foundAmenity = MockTestData.MockAmenity.getAmenity();
 
+        given(amenityRepository.findById(anyLong())).willReturn(Optional.ofNullable(foundAmenity));
         given(bulletinPostRepository.findByAmenityId(anyLong(),any(PageRequest.class))).willReturn(bulletinPostPage);
 
         //when

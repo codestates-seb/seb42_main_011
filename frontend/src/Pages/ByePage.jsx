@@ -11,8 +11,8 @@ const FormContainer = styled.section`
   height: calc(100vh - 300px);
 `;
 
-const Title = styled.div`
-  font-size: 24px;
+const Title = styled.h3`
+  font-size: var(--font-size-24);
   font-weight: 500;
   margin-bottom: 100px;
   align-self: flex-end;
@@ -30,10 +30,12 @@ function ByePage() {
     <FormContainer>
       <Title>그동안 이용해주셔서 감사합니다.</Title>
       <ButtonContainer>
-        <Link to="/"><Button variant='large'>홈으로 돌아가기</Button></Link>
+        <Link to="/">
+          <Button variant="large">홈으로 돌아가기</Button>
+        </Link>
       </ButtonContainer>
     </FormContainer>
-  )
-};
+  );
+}
 
 export default ByePage;

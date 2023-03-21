@@ -5,16 +5,26 @@ import ModalPortal from './ModalPortal';
 import IconClose from '../../../assets/icons/icon-close.svg';
 import ModalContext from '../../../context/ModalContext';
 
-const ModalContainer = styled.section`
+const ModalContainer = styled.aside`
   position: fixed;
   width: 100%;
   height: 100%;
   inset: 0;
   z-index: 199;
-
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const ModalBg = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-dark-0);
+  opacity: 0.5;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 198;
 `;
 
 const ModalOutside = styled.div`
@@ -51,7 +61,13 @@ const Title = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* 일러스트 받으면 넣어보고 css 추가할 예정 */
+  width: 100%;
+`;
+
+const LogoImg = styled.img`
+  z-index: 1;
+  width: 55%;
+  height: 100%;
 `;
 
 const ButtonContainer = styled.button`
@@ -93,12 +109,13 @@ function Modal({ titleImage, onClose = () => {}, children }) {
 
   return (
     <ModalPortal wrapperId="modal-root">
+      <ModalBg />
       <ModalContainer>
         <ModalOutside>
           <ModalInside>
             <Title>
               {titleImage ? (
-                <img src={titleImage} alt="modal title" />
+                <LogoImg src={titleImage} alt="modal title" />
               ) : (
                 'title here'
               )}

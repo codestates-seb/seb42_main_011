@@ -14,20 +14,7 @@ public class FollowCustomRepositoryImpl implements FollowCustomRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Optional<Follow> findByFolloweeId(Long followeeId) {
-        QFollow follow = QFollow.follow;
-
-        return Optional.ofNullable(
-                queryFactory
-                        .select(follow)
-                        .from(follow)
-                        .where(follow.followee.memberId.eq(followeeId))
-                        .fetchOne()
-        );
-    }
-
-    @Override
-    public Optional<Follow> findByFollowerIdAndFolloweeId(Long followerId, Long followeeId) {
+    public Optional<Follow> findByFolloweeIdAndFollowerId(Long followeeId, Long followerId) {
         QFollow follow = QFollow.follow;
 
         return Optional.ofNullable(
@@ -35,7 +22,7 @@ public class FollowCustomRepositoryImpl implements FollowCustomRepository {
                         .select(follow)
                         .from(follow)
                         .where(follow.follower.memberId.eq(followerId)
-                                .and(follow.followee.memberId.eq(followeeId)))
+                                .and(follow.followee.memberId.eq(followeeId)) )
                         .fetchOne()
         );
     }

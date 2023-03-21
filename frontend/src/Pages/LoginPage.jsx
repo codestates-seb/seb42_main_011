@@ -19,14 +19,19 @@ const SignupLink = styled.button.attrs({
   type: "button",
 })`
   position: absolute;
-  font-size: var(--font-size-20);
   top: -50px;
   right: 10px;
-  border-bottom: 1px solid var(--color-dark-0);
+  font-size: var(--font-size-20);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  &:hover {
+    color: var(--color-tertiary);
+  }
 `;
 
-const Title = styled.div`
-  font-size: 24px;
+const Title = styled.h3`
+  font-size: var(--font-size-24);
   font-weight: 500;
   margin-bottom: 60px;
   margin-top: 70px;
@@ -47,8 +52,13 @@ const ForgotPassword = styled.button.attrs({
   font-size: var(--font-size-13);
   opacity: 50%;
   position: absolute;
+  top: 0;
   right: 0;
-  padding-top: 8px;
+
+  &:hover {
+    color: var(--color-tertiary);
+    opacity: 100%;
+  }
 `;
 
 const PasswordContainer = styled.div`
@@ -131,14 +141,19 @@ function LoginPage() {
       <Link to="/signup"><SignupLink>회원가입</SignupLink></Link>
       <Title>로그인</Title>
       <LoginForm onSubmit={handleLogin}>
-        <Input variant='regular' label='이메일' id='email' type='email' value={email} onChange={(e) => setEmail(e.target.value)} />
+        <Input variant="regular" label="이메일" id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         {emailError && (
           <div>
             {emailError}
           </div>
         )}
         <PasswordContainer>
-          <Input variant='regular' label='비밀번호' id='password' type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
+          <Input
+            variant="regular"
+            label="비밀번호"
+            id="password"
+            type="password"
+          value={password} onChange={(e) => setPassword(e.target.value)} />
           {passwordError && (
             <div>
               {passwordError}
@@ -147,7 +162,7 @@ function LoginPage() {
           <Link to="/password/find"><ForgotPassword>비밀번호를 잊어버렸나요?</ForgotPassword></Link>
         </PasswordContainer>
         <ButtonContainer>
-          <Button variant='large' disabled={loading}>
+          <Button variant="large" disabled={loading}>
             {/* 로딩 시 여기에 spinner 추가할지? */}
             로그인
           </Button>

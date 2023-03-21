@@ -11,15 +11,15 @@ const FormContainer = styled.section`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  @media screen and (min-height: 1050px){
+  @media screen and (min-height: 1050px) {
     height: 737px;
   }
 `;
 
-const Title = styled.div`
-  font-size: 24px;
+const Title = styled.h3`
+  font-size: var(--font-size-24);
   font-weight: 500;
-  margin-bottom: 20px;
+  margin: 20px 0;
 `;
 
 const SignupForm = styled.form`
@@ -28,7 +28,7 @@ const SignupForm = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
-  @media screen and (min-width: 1174px){
+  @media screen and (min-width: 1174px) {
     align-items: center;
   }
 
@@ -97,25 +97,34 @@ function SignupPage() {
   // console.log(successful);
   return (
     
-      <FormContainer>
-        <Title>회원가입</Title>
+        <FormContainer>
+          <Title>회원가입</Title>
         {!successful && (
-        <SignupForm onSubmit={handleSubmit}>
-          <Input variant='large' label='닉네임' id='name' type='text' value={nickname} onChange={onChangeNickname} />
-          <Input variant='large' label='이메일' id='email' type='email' value={email} onChange={onChangeEmail} />
-          <Input variant='large' label='비밀번호' id='password' type='password' value={password} onChange={onChangePassword} />
-          <Input variant='large' label='비밀번호 확인' id='password-retype' type='password' value={passwordRetype} onChange={onChangePasswordRetype} />
-          <Input variant='large' label='강아지 이름' id='dogname' type='text' value={dogName} onChange={onChangeDogName} />
-          <DropdownGender id="dropdown" options={gender} labelText="강아지 성별" value={dogGender} onChange={onChangeDogGender} />
-          <ButtonContainer>
-            <Button variant='large'>회원가입</Button>
-          </ButtonContainer>
-        </SignupForm>
+          <SignupForm onSubmit={handleSubmit}>
+            <Input variant="large" label="닉네임" id="name" type="text" value={nickname} onChange={onChangeNickname} />
+            <Input variant="large" label="이메일" id="email" type="email" value={email} onChange={onChangeEmail} />
+            <Input variant="large" label="비밀번호" id="password" type="password" value={password} onChange={onChangePassword} />
+            <Input
+          variant="large"
+          label="비밀번호 확인"
+          id="password-retype"
+          type="password"
+        value={passwordRetype} onChange={onChangePasswordRetype} />
+            <Input variant="large" label="강아지 이름" id="dogname" type="text" value={dogName} onChange={onChangeDogName} />
+            <DropdownGender
+          id="dropdown"
+          options={gender}
+          labelText="강아지 성별" value={dogGender} onChange={onChangeDogGender}
+        />
+            <ButtonContainer>
+              <Button variant="large">회원가입</Button>
+            </ButtonContainer>
+          </SignupForm>
         )}
         {message && (
           <div>{message}</div>
         )}
-      </FormContainer>
+        </FormContainer>
     
   );
 }

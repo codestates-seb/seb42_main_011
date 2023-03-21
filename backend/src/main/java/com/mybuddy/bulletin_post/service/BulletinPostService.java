@@ -3,17 +3,16 @@ package com.mybuddy.bulletin_post.service;
 import com.mybuddy.amenity.entity.Amenity;
 import com.mybuddy.bulletin_post.entity.BulletinPost;
 import com.mybuddy.bulletin_post.repository.BulletinPostRepository;
-import com.mybuddy.comment.entity.Comment;
-import com.mybuddy.comment.service.CommentService;
+import com.mybuddy.follow.entity.Follow;
+import com.mybuddy.global.exception.LogicException;
+import com.mybuddy.global.exception.LogicExceptionCode;
 import com.mybuddy.global.storage.StorageService;
 import com.mybuddy.global.utils.CustomBeanUtils;
-import com.mybuddy.like.entity.Like;
 import com.mybuddy.member.entity.Member;
 import com.mybuddy.member.service.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,27 +27,20 @@ import java.util.Optional;
 public class BulletinPostService {
 
     private final BulletinPostRepository bulletinPostRepository;
-    private final MemberServiceImpl memberService;
     private final CustomBeanUtils<BulletinPost> customBeanUtils;
-    private final StorageService storageService;
-    private final CommentService commentService;
 
-    public BulletinPost createBulletinPost(BulletinPost bulletinPost, Amenity amenity, MultipartFile photoImage) {
+
+    public BulletinPost createPost(BulletinPost bulletinPost, Long loginUserId, Amenity amenity, MemberServiceImpl memberService, StorageService storageService, MultipartFile photoImage) {
+
+        Member member = memberService.findExistMemberById(loginUserId);
 
 //        multipartFile을 저장소에 저장하고 해당 photoUrl 가져오는 service 메서드
         storageService.storeImage(photoImage);
         bulletinPost.setPhotoUrl(
-                        storageService.getPath() + "/" + photoImage.getOriginalFilename());
+                storageService.getPath() + "/" + photoImage.getOriginalFilename());
 
-//        controller에서 memberId 찾아서 먼저 저장해야하려나
-//        Member member = bulletinPost.getMember();
-//        Member foundMember = memberService.findExistMemberById(member.getMemberId());
+        bulletinPost.setMember(member);
 
-        Long memberId = 1L;
-        Member foundMember = memberService.findExistMemberById(memberId);
-        bulletinPost.setMember(foundMember);
-
-        //amenity 연결
         bulletinPost.setAmenity(amenity);
 
         BulletinPost createdBulletinPost = bulletinPostRepository.save(bulletinPost);
@@ -56,17 +48,16 @@ public class BulletinPostService {
         return createdBulletinPost;
     }
 
-    public BulletinPost updateBulletinPost(BulletinPost updateBulletinPost, Amenity amenity, MultipartFile photoImage) {
 
-        //findExistMemberById(Long memberId) 가져오기? 로그인 사용자 확인하기?
+    public BulletinPost updatePost(BulletinPost updateBulletinPost, long postId, Long loginUserId, Amenity amenity, MemberServiceImpl memberService, StorageService storageService, MultipartFile photoImage) {
 
-        Long memberId = 1L;
-        Member foundMember = memberService.findExistMemberById(memberId);
-        updateBulletinPost.setMember(foundMember);
+        updateBulletinPost.setBulletinPostId(postId);
 
-        BulletinPost foundBulletinPost = findVerifiedBulletinPost(updateBulletinPost.getBulletinPostId());
+        BulletinPost obtainedBulletinPost = findVerifiedBulletinPost(postId);
 
-        BulletinPost bulletinPost = customBeanUtils.copyNonNullProperties(updateBulletinPost, foundBulletinPost);
+        verifyResourceOwner(obtainedBulletinPost, loginUserId);
+
+        BulletinPost bulletinPost = customBeanUtils.copyNonNullProperties(updateBulletinPost, obtainedBulletinPost);
 
         Optional.ofNullable(photoImage)
                 .ifPresent(storageService::storeImage);
@@ -83,60 +74,43 @@ public class BulletinPostService {
         return updatedBulletinPost;
     }
 
-    public BulletinPost findBulletinPost(long bulletinPostId) {
 
+    public BulletinPost findPost(long bulletinPostId) {
+
+        //if login user likeByUser 확인
         BulletinPost bulletinPost = findVerifiedBulletinPost(bulletinPostId);
 
         return bulletinPost;
     }
 
 
+    public Page<BulletinPost> findPosts(Long loginUserId, int page, int size, MemberServiceImpl memberService) {
 
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "bulletinPostId"));
 
-    public Page<BulletinPost> findBulletinPosts(int page, int size) {
+        //로그인유저 피드
+        if (loginUserId != null) {
+            List<Follow> meAsFollowerList = memberService.getMember(loginUserId).getMeAsFollowerList();
 
-        //로그인 멤버 가져오기
-        //if 로그인 확인시 //팔로잉 하는 계정들에서.
+            Page<BulletinPost> result = bulletinPostRepository.findAllFollowingPostsByMemberId(meAsFollowerList, pageRequest);
 
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+            //게시물이 없으면 비로그인 유저 피드와 같은 결과 나오도록 if 필터
+            if (!result.isEmpty())
+                return result;
+        }
 
-//        if 로그인유저
+        return bulletinPostRepository.findAll(pageRequest);
 
-//        bulletinPostCustomRepositoryImpl에 findAllFollowingPostsByMemberId(memberId, pageable) 메서드
-//        Optional<Page<BulletinPost>> optionalPage = bulletinPostRepository.findAllFollowingPostsByMemberId(memberId, pageable);
-//
-//        Page<BulletinPost> findPage =
-//                optionalPage.orElseThrow(() ->
-//                        new RuntimeException());
-//        return findPage;
-
-//        else 비로그인시 find All 이거 그대로.
-
-        Page<BulletinPost> bulletinPosts = bulletinPostRepository.findAll(pageRequest);
-
-        return bulletinPosts;
-    }
-
-    public Page<BulletinPost> findBulletinPostsByMemberId(long memberId, int page, int size) {
-
-
-        Pageable pageable = PageRequest.of(page, size, Sort.by("bulletinPostId").descending());
-
-        Optional<Page<BulletinPost>> optionalPage = bulletinPostRepository.findByMemberMemberId(memberId, pageable);
-
-        Page<BulletinPost> bulletinPostPage =
-                optionalPage.orElseThrow(() ->
-                        new RuntimeException());
-
-        return bulletinPostPage;
     }
 
 
-    public void deleteBulletinPost(long bulletinPostId) {
+    public void deletePost(long postId, Long loginUserId, MemberServiceImpl memberService) {
 
-        BulletinPost obtainedBulletinPost = findVerifiedBulletinPost(bulletinPostId);
+        BulletinPost bulletinPost = findPost(postId);
 
-        bulletinPostRepository.delete(obtainedBulletinPost);
+        verifyResourceOwner(bulletinPost, loginUserId);
+
+        bulletinPostRepository.delete(bulletinPost);
     }
 
 
@@ -147,41 +121,33 @@ public class BulletinPostService {
 
         BulletinPost obtainedBulletinPost =
                 optionalBulletinPost.orElseThrow(() ->
-                        new RuntimeException());
+                        new LogicException(LogicExceptionCode.BULLETIN_POST_NOT_FOUND));
 
         return obtainedBulletinPost;
     }
 
+
+    //지금은 쓰이지 않지만 추후 리팩토링시 고려
     public long getCommentCount(long bulletinPostId) {
 
-        //이렇게 할지 아니면 디비에서 comment 갯수를 세오는 쿼리문을 만들어야 할지
-        //쿼리문으로 해야할거 같긴 한데..
-        List<Comment> commentList = commentService.getCommentsByBulletinPostId(bulletinPostId);
-        long commentCount = commentList.size();
+        //이렇게 할지
+//        List<Comment> commentList = commentService.getCommentsByBulletinPostId(bulletinPostId);
+//        long commentCount = commentList.size();
+
+        //쿼리dsl
+        long commentCount = bulletinPostRepository.findNumberOfCommentsByPostId(bulletinPostId);
+
+        //길이는 비슷함
+        // 다만 list 불러와서 세는건 있던 메서드 가져오는거고 쿼리dsl은 새로 만들어써야했단거 정도?
 
         return commentCount;
     }
 
-    public long getLikeCount(long bulletinPostId) {
 
-        //일단은 리스트째로 가져왔는데 like 세오는 쿼리문 만들기.
-        BulletinPost bulletinPost = findVerifiedBulletinPost(bulletinPostId);
-        List<Like> likeList = bulletinPost.getLikes();
-        if (likeList.isEmpty()) return 0;
-        else {
-            return likeList.size();
-        }
+    private void verifyResourceOwner(BulletinPost bulletinPost, Long loginUserId) {
+
+        if (!bulletinPost.getMember().getMemberId().equals(loginUserId))
+            throw new LogicException(LogicExceptionCode.NOT_RESOURCE_OWNER);
     }
-
-
-
-//    public long getLikeByUser(long bulletinPostId, long memberId) {
-//
-//        //이 메서드 결과 값을 if로 나눠서 0 또는 1로?
-//        long OneIfExist = likeService.findExistLikeByMemberId( bulletinPostId, memberId);
-//
-//        return OneIfExist;
-//    }
-
 
 }

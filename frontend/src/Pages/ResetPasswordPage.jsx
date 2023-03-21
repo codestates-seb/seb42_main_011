@@ -10,11 +10,10 @@ const FormContainer = styled.section`
   flex-direction: column;
 `;
 
-const Title = styled.div`
-  font-size: 24px;
+const Title = styled.h3`
+  font-size: var(--font-size-24);
   font-weight: 500;
-  margin-bottom: 40px;
-  margin-top: 70px;
+  margin: 119px 0 40px;
 `;
 
 const Caption = styled.p`
@@ -26,7 +25,7 @@ const Caption = styled.p`
   align-self: flex-start;
 `;
 
-const CaptionText = '새로운 비밀번호를 입력해주세요.'
+const CaptionText = '새로운 비밀번호를 입력해주세요.';
 
 const ResetForm = styled.form`
   display: flex;
@@ -50,14 +49,24 @@ function ResetPasswordPage() {
       <Title>비밀번호 변경하기</Title>
       <ResetForm>
         <Caption>{CaptionText}</Caption>
-        <Input variant='regular' label='비밀번호' id='password' type='password' />
-        <Input variant='regular' label='비밀번호 확인' id='password-retype' type='password-retype' />
+        <Input
+          variant="regular"
+          label="비밀번호"
+          id="password"
+          type="password"
+        />
+        <Input
+          variant="regular"
+          label="비밀번호 확인"
+          id="password-retype"
+          type="password"
+        />
         <ButtonContainer>
-          <Button variant='large'>비밀번호 변경</Button>
+          <Button variant="large">비밀번호 변경</Button>
         </ButtonContainer>
       </ResetForm>
     </FormContainer>
-  )
-};
+  );
+}
 
 export default ResetPasswordPage;

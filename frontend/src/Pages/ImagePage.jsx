@@ -4,11 +4,12 @@ import styled from 'styled-components';
 import { ReactComponent as MybuddyLogo } from '../assets/logo/logo_navy.svg';
 import MybuddyBackground from "../assets/mybuddy_background_nologo.svg";
 
-const LoginWrapper = styled.section`
+const ImagePageWrapper = styled.section`
   display: flex;
   justify-content: space-between;
 `;
-const LoginComponent = styled.div`
+
+const InputComponent = styled.div`
   flex-grow: 2;
   width: 55vw;
   padding: 20px 53px;
@@ -30,11 +31,8 @@ const BackgroundImage = styled.img`
   width: 100%;
   object-fit: cover;
   flex-grow: 1;
-  
   height: calc(100vh - 133px);
   object-fit: cover;
-  overflow-clip-margin: content-box;
-  overflow: clip;
 `;
 
 const ImageLogo = styled(MybuddyLogo)`
@@ -53,13 +51,15 @@ const MainLogo = styled(MybuddyLogo)`
 
 function ImagePage() {
   return (
-    <LoginWrapper>
-      <LoginComponent>
+    <ImagePageWrapper>
+      <InputComponent>
         <Link to="/">
-          <MainLogo />
+          <h2>
+            <MainLogo />
+          </h2>
         </Link>
         <Outlet />
-      </LoginComponent>
+      </InputComponent>
       <ImageWrapper>
         <BackgroundImage
           src={MybuddyBackground}
@@ -67,7 +67,7 @@ function ImagePage() {
         />
         <ImageLogo />
       </ImageWrapper>
-    </LoginWrapper>
+    </ImagePageWrapper>
   );
 }
 

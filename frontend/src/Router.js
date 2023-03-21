@@ -12,6 +12,9 @@ import FindPasswordPage from './Pages/FindPasswordPage';
 import ResetPasswordPage from './Pages/ResetPasswordPage';
 import ByePage from './Pages/ByePage';
 import FriendSearchPage from './Pages/FriendSearchPage';
+import PostDetailPage from './Pages/PostDetailPage';
+import UserEditPage from './Pages/UserEditPage';
+import PlacePage from './Pages/PlacePage';
 
 function Router() {
   return (
@@ -26,8 +29,12 @@ function Router() {
       </Route>
 
       <Route element={<Layout displayHeader />}>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<HomePage />}>
+          <Route path=":postId" element={<PostDetailPage />} />
+        </Route>
+
         <Route path="/friend" element={<FriendSearchPage />} />
+        <Route path="/place" element={<PlacePage />} />
       </Route>
 
       <Route element={<Layout displayHeader displayProfile displayFlex />}>
@@ -37,6 +44,10 @@ function Router() {
         <Route path="/friendpage" element={<UserAboutmePage />} />
         <Route path="/friendpage/feed" element={<UserFeedPage />} />
         <Route path="/friendpage/place" element={<UserPlacePage />} />
+      </Route>
+
+      <Route element={<Layout displayHeader displayFlex />}>
+        <Route path="/mypage/edit" element={<UserEditPage />} />
       </Route>
     </Routes>
   );

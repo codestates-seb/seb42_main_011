@@ -11,7 +11,6 @@ import java.util.Optional;
 //@Repository 필수인가?
 public interface BulletinPostRepository extends JpaRepository<BulletinPost, Long>, BulletinPostCustomRepository {
 
-    Optional<Page<BulletinPost>> findByMemberMemberId(long memberId, Pageable pageable);
 }
 
 

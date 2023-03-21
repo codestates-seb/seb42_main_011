@@ -53,32 +53,18 @@ public class FollowRepositoryTest {
     }
 
     @Test
-    public void findByFolloweeIdTest() {
+    public void findByFolloweeIdAndFollowerIdTest() {
         Optional<Follow> optionalFollow =
-                followRepository.findByFolloweeId(follow.getFollowee().getMemberId());
+                followRepository.findByFolloweeIdAndFollowerId(
+                        follow.getFollowee().getMemberId(), follow.getFollower().getMemberId());
         Follow obtainedFollow = optionalFollow.orElseThrow(() ->
                 new LogicException(LogicExceptionCode.FOLLOW_NOT_FOUND));
 
         assertEquals(obtainedFollow.getFollowId(), follow.getFollowId());
-        assertEquals(obtainedFollow.getFollower().getMemberId(), follow.getFollower().getMemberId());
-        assertEquals(obtainedFollow.getFollower().getNickname(), follow.getFollower().getNickname());
         assertEquals(obtainedFollow.getFollowee().getMemberId(), follow.getFollowee().getMemberId());
         assertEquals(obtainedFollow.getFollowee().getNickname(), follow.getFollowee().getNickname());
-    }
-
-    @Test
-    public void findByFollowerIdAndFolloweeIdTest() {
-        Optional<Follow> optionalFollow =
-                followRepository.findByFollowerIdAndFolloweeId(
-                        follow.getFollower().getMemberId(), follow.getFollowee().getMemberId());
-        Follow obtainedFollow = optionalFollow.orElseThrow(() ->
-                new LogicException(LogicExceptionCode.FOLLOW_NOT_FOUND));
-
-        assertEquals(obtainedFollow.getFollowId(), follow.getFollowId());
         assertEquals(obtainedFollow.getFollower().getMemberId(), follow.getFollower().getMemberId());
         assertEquals(obtainedFollow.getFollower().getNickname(), follow.getFollower().getNickname());
-        assertEquals(obtainedFollow.getFollowee().getMemberId(), follow.getFollowee().getMemberId());
-        assertEquals(obtainedFollow.getFollowee().getNickname(), follow.getFollowee().getNickname());
     }
 
     @Test

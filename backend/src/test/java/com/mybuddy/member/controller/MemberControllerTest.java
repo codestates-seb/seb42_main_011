@@ -32,8 +32,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
@@ -104,7 +103,7 @@ public class MemberControllerTest {
         actions
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", is(startsWith(MEMBER_DEFAULT_URL))))
-                .andDo(document("Post-Member",
+                .andDo(document("create-member",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestPartBody(
@@ -141,21 +140,22 @@ public class MemberControllerTest {
                         )));
     }
 
-    // 사진 업로드 관련하여 patch를 사용할지 여부 결정 후 주석 제거.
-    /*@DisplayName("회원 정보 수정")
+    @DisplayName("회원 정보 수정")
     @Test
-    public void patchMemberTest() throws Exception {
+    public void updateMemberTest() throws Exception {
         // Given
         String content = gson.toJson(MockTestData.MockMember.getMemberPatchDto());
+        Long mockLoginUserId = 2L;
 
-        MockMultipartFile patchDto = new MockMultipartFile("patchDto", null,
+        MockMultipartFile patchDto = new MockMultipartFile("updateDto", null,
                 MediaType.APPLICATION_JSON_VALUE, content.getBytes(StandardCharsets.UTF_8));
         MockMultipartFile profileImage = new MockMultipartFile("profileImage", "image.png",
                 MediaType.IMAGE_PNG_VALUE, "image" .getBytes(StandardCharsets.UTF_8));
 
-        given(mapper.memberPatchDtoToMember(Mockito.any(MemberPatchDto.class)))
+        given(mapper.memberUpdateDtoToMember(Mockito.any(MemberUpdateDto.class)))
                 .willReturn(new Member());
-        given(memberService.updateMember(Mockito.any(Member.class), Mockito.any(MultipartFile.class)))
+        given(memberService.updateMember(Mockito.any(Member.class),
+                Mockito.any(MultipartFile.class), Mockito.anyLong()))
                 .willReturn(MockTestData.MockMember.getMember());
 
         ConstraintDescriptions patchMemberConstraints =
@@ -172,23 +172,26 @@ public class MemberControllerTest {
                                 MockTestData.MockMember.getMember().getMemberId())
                                 .file(patchDto)
                                 .file(profileImage)
-                                //.with(csrf())
+                                .header("Authorization", "")
+                                .with(csrf())
                                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 );
 
         // Then
         actions
                 .andExpect(status().isOk())
-                .andDo(document("Patch-Member",
+                .andDo(document("update-member",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
-//                        pathParameters(
-//                                parameterWithName("member-id").description("회원 식별자")
-//                        ),
-                        requestPartBody(
-                                "patchDto"
+                        requestHeaders(
+                                headerWithName("Authorization")
+                                        .attributes(key("constraints").value(""))
+                                        .description("Access Token")
                         ),
-                        requestPartFields("patchDto",
+                        requestPartBody(
+                                "updateDto"
+                        ),
+                        requestPartFields("updateDto",
                                 List.of(
                                         fieldWithPath("nickname")
                                                 .type(JsonFieldType.STRING)
@@ -210,7 +213,7 @@ public class MemberControllerTest {
                         relaxedRequestParts(
                                 partWithName("profileImage").description("첨부 파일")
                         )));
-    }*/
+    }
 
     @DisplayName("회원 상세 조회")
     @Test
@@ -228,6 +231,7 @@ public class MemberControllerTest {
                 mockMvc.perform(
                         get(MEMBER_DEFAULT_URL + "/{member-id}",
                                 MockTestData.MockMember.getMember().getMemberId())
+                                .header("Authorization", "")
                                 .with(csrf())
                                 .accept(MediaType.APPLICATION_JSON)
                 );
@@ -250,16 +254,22 @@ public class MemberControllerTest {
                         .value(responseDto.getFolloweeNumber()))
                 .andExpect(jsonPath("$.data.profileUrl")
                         .value(responseDto.getProfileUrl()))
-                .andExpect(jsonPath("$.data.myBulletinPostDtos[0].bulletinPostId")
-                        .value(responseDto.getMyBulletinPostDtos().get(0).getBulletinPostId()))
-                .andExpect(jsonPath("$.data.myBulletinPostDtos[1].bulletinPostId")
-                        .value(responseDto.getMyBulletinPostDtos().get(1).getBulletinPostId()))
-                .andExpect(jsonPath("$.data.myAmenityDtos[0].amenityId")
-                        .value(responseDto.getMyAmenityDtos().get(0).getAmenityId()))
-                .andExpect(jsonPath("$.data.myAmenityDtos[1].amenityId")
-                        .value(responseDto.getMyAmenityDtos().get(1).getAmenityId()))
-                .andDo(document("Get-Member",
+                .andExpect(jsonPath("$.data.bulletinPostForMyPageResponseDtos[0].bulletinPostId")
+                        .value(responseDto.getBulletinPostForMyPageResponseDtos().get(0).getBulletinPostId()))
+                .andExpect(jsonPath("$.data.bulletinPostForMyPageResponseDtos[1].bulletinPostId")
+                        .value(responseDto.getBulletinPostForMyPageResponseDtos().get(1).getBulletinPostId()))
+                .andExpect(jsonPath("$.data.amenityForMyPageResponseDtos[0].amenityId")
+                        .value(responseDto.getAmenityForMyPageResponseDtos().get(0).getAmenityId()))
+                .andExpect(jsonPath("$.data.amenityForMyPageResponseDtos[1].amenityId")
+                        .value(responseDto.getAmenityForMyPageResponseDtos().get(1).getAmenityId()))
+                .andDo(document("get-member",
+                        preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
+                        requestHeaders(
+                                headerWithName("Authorization")
+                                        .attributes(key("constraints").value(""))
+                                        .description("Access Token")
+                        ),
                         pathParameters(
                                 List.of(parameterWithName("member-id").description("회원 식별자"))
                         ),
@@ -295,24 +305,27 @@ public class MemberControllerTest {
                                         fieldWithPath("data.profileUrl")
                                                 .type(JsonFieldType.STRING)
                                                 .description("Profile URL 주소"),
-                                        fieldWithPath("data.myBulletinPostDtos[].bulletinPostId")
+                                        fieldWithPath("data.bulletinPostForMyPageResponseDtos[].bulletinPostId")
                                                 .type(JsonFieldType.NUMBER)
                                                 .description("게시물 식별자"),
-                                        fieldWithPath("data.myBulletinPostDtos[].photoUrl")
+                                        fieldWithPath("data.bulletinPostForMyPageResponseDtos[].photoUrl")
                                                 .type(JsonFieldType.STRING)
                                                 .description("게시물 사진 URL"),
-                                        fieldWithPath("data.myAmenityDtos[].amenityId")
+                                        fieldWithPath("data.amenityForMyPageResponseDtos[].amenityId")
                                                 .type(JsonFieldType.NUMBER)
                                                 .description("편의시설 식별자"),
-                                        fieldWithPath("data.myAmenityDtos[].amenityName")
+                                        fieldWithPath("data.amenityForMyPageResponseDtos[].amenityName")
                                                 .type(JsonFieldType.STRING)
                                                 .description("편의시설 이름"),
-                                        fieldWithPath("data.myAmenityDtos[].address")
+                                        fieldWithPath("data.amenityForMyPageResponseDtos[].address")
                                                 .type(JsonFieldType.STRING)
                                                 .description("편의시설 주소"),
-                                        fieldWithPath("data.myAmenityDtos[].photoUrl")
+                                        fieldWithPath("data.amenityForMyPageResponseDtos[].photoUrl")
                                                 .type(JsonFieldType.STRING)
-                                                .description("편의시설 사진 URL")
+                                                .description("편의시설 사진 URL"),
+                                        fieldWithPath("data.amenityForMyPageResponseDtos[].postCreatedAt")
+                                                .type(JsonFieldType.STRING)
+                                                .description("편의시설 추천한 게시물 등록 시간 (내부용)")
                                 )
                         )
                 ));
@@ -338,6 +351,7 @@ public class MemberControllerTest {
                 mockMvc.perform(
                         get(MEMBER_DEFAULT_URL)
                                 .params(queryParams)
+                                .header("Authorization", "")
                                 .with(csrf())
                                 .accept(MediaType.APPLICATION_JSON)
                 );
@@ -367,8 +381,18 @@ public class MemberControllerTest {
                         .value(listResponseDtos.get(0).getProfileUrl()))
                 .andExpect(jsonPath("$.data[1].profileUrl")
                         .value(listResponseDtos.get(1).getProfileUrl()))
-                .andDo(document("Get-Members-for-Admin",
+                .andExpect(jsonPath("$.data[0].memberStatus")
+                        .value(listResponseDtos.get(0).getMemberStatus().toString()))
+                .andExpect(jsonPath("$.data[1].memberStatus")
+                        .value(listResponseDtos.get(1).getMemberStatus().toString()))
+                .andDo(document("get-members-for-admin",
+                        preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
+                        requestHeaders(
+                                headerWithName("Authorization")
+                                        .attributes(key("constraints").value(""))
+                                        .description("Access Token")
+                        ),
                         requestParameters(
                                 List.of(
                                         parameterWithName("page").description("페이지 번호"),
@@ -402,6 +426,9 @@ public class MemberControllerTest {
                                         fieldWithPath("data[].profileUrl")
                                                 .type(JsonFieldType.STRING)
                                                 .description("Profile URL 주소"),
+                                        fieldWithPath("data[].memberStatus")
+                                                .type(JsonFieldType.STRING)
+                                                .description("회원 계정 활성 상태"),
                                         fieldWithPath("pageInfo.page")
                                                 .type(JsonFieldType.NUMBER)
                                                 .description("현재 페이지"),
@@ -424,13 +451,15 @@ public class MemberControllerTest {
     public void deleteMemberTest() throws Exception {
         // Given
         Member member = MockTestData.MockMember.getMember();
+        Long mockLoginUserId = 2L;
 
-        doNothing().when(memberService).deleteMember(member.getMemberId());
+        doNothing().when(memberService).deleteMember(member.getMemberId(), mockLoginUserId);
 
         // When
         ResultActions actions =
                 mockMvc.perform(
                         delete(MEMBER_DEFAULT_URL + "/{member-id}", member.getMemberId())
+                                .header("Authorization", "")
                                 .with(csrf())
                                 .accept(MediaType.APPLICATION_JSON)
                 );
@@ -439,7 +468,13 @@ public class MemberControllerTest {
         actions
                 .andExpect(status().isNoContent())
                 .andExpect(jsonPath("$.data").doesNotExist())
-                .andDo(document("Delete-Member",
+                .andDo(document("delete-member",
+                        preprocessRequest(prettyPrint()),
+                        requestHeaders(
+                                headerWithName("Authorization")
+                                        .attributes(key("constraints").value(""))
+                                        .description("Access Token")
+                        ),
                         pathParameters(
                                 parameterWithName("member-id").description("회원 식별자")
                         )
