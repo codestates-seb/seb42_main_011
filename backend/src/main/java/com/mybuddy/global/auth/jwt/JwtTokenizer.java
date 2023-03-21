@@ -86,6 +86,24 @@ public class JwtTokenizer {
         return subject;
     }
 
+    public Long getTimeForExpiration(String jws) {
+        String base64EncodedSecretKey = encodeBase64SecretKey(getSecretKey());
+        Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
+
+        Long expiration = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(jws)
+                .getBody()
+                .getExpiration()
+                .getTime();
+
+        Date date = new Date();
+        Long now = date.getTime();
+
+        return expiration - now;
+    }
+
     public Date getTokenExpiration(int expirationMinutes) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, expirationMinutes);
