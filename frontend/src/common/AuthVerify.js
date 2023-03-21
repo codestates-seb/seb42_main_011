@@ -9,7 +9,7 @@ const parseJwt = (token) => {
   }
 };
 
-const Authverify = (props) => {
+const AuthVerify = (props) => {
   // eslint-disable-next-line prefer-const
   let location = useLocation();
 
@@ -27,4 +27,4 @@ const Authverify = (props) => {
 
 };
 
-export default Authverify;
+export default AuthVerify;
