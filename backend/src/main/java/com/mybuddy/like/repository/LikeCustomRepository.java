@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface LikeCustomRepository {
 
-    Optional<Like> findByPostAndMemberId(long postId, long memberId);
+    Optional<Like> findByPostAndMemberId(long postId, Long memberId);
 
 }

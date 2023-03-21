@@ -44,16 +44,18 @@ public class BulletinPostController {
 
     @GetMapping("/{post-id}")
     public ResponseEntity getBulletinPost(
-            @PathVariable("post-id") @Positive long postId) {
+            @PathVariable("post-id") @Positive long postId, HttpServletRequest request) {
 
-        return new ResponseEntity<>(compositeService.getBulletinPost(postId), HttpStatus.OK);
+        Long loginUserId = (Long) request.getAttribute("loginUserId");
+
+        return new ResponseEntity<>(compositeService.getBulletinPost(loginUserId, postId), HttpStatus.OK);
     }
 
     //피드에서 bulletinPosts 리스트 가져오는 거
     @GetMapping("/feed")
     public ResponseEntity getBulletinPosts(@Positive @RequestParam int page,
                                        @Positive @RequestParam int size, HttpServletRequest request) {
-//        Optional<Long> loginUserId = Optional.ofNullable((Long) request.getAttribute("loginUserId"));
+
         Long loginUserId = (Long) request.getAttribute("loginUserId");
 
         return new ResponseEntity<>(compositeService.getBulletinPostsFeed(loginUserId, page, size), HttpStatus.OK);

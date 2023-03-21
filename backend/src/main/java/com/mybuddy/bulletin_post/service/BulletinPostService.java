@@ -3,6 +3,7 @@ package com.mybuddy.bulletin_post.service;
 import com.mybuddy.amenity.entity.Amenity;
 import com.mybuddy.bulletin_post.entity.BulletinPost;
 import com.mybuddy.bulletin_post.repository.BulletinPostRepository;
+import com.mybuddy.follow.entity.Follow;
 import com.mybuddy.global.exception.LogicException;
 import com.mybuddy.global.exception.LogicExceptionCode;
 import com.mybuddy.global.storage.StorageService;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -48,6 +50,7 @@ public class BulletinPostService {
 
 
     public BulletinPost updatePost(BulletinPost updateBulletinPost, long postId, Long loginUserId, Amenity amenity, MemberServiceImpl memberService, StorageService storageService, MultipartFile photoImage) {
+
         updateBulletinPost.setBulletinPostId(postId);
 
         BulletinPost obtainedBulletinPost = findVerifiedBulletinPost(postId);
@@ -74,23 +77,30 @@ public class BulletinPostService {
 
     public BulletinPost findPost(long bulletinPostId) {
 
+        //if login user likeByUser 확인
         BulletinPost bulletinPost = findVerifiedBulletinPost(bulletinPostId);
 
         return bulletinPost;
     }
 
 
-    public Page<BulletinPost> findPosts(Long loginUserId, int page, int size) {
+    public Page<BulletinPost> findPosts(Long loginUserId, int page, int size, MemberServiceImpl memberService) {
 
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "bulletinPostId"));
 
         //로그인유저 피드
         if (loginUserId != null) {
-            return bulletinPostRepository.findAllFollowingPostsByMemberId(loginUserId, pageRequest);
-        } else {
-            //비로그인 유저 피드
-            return bulletinPostRepository.findAll(pageRequest);
+            List<Follow> meAsFollowerList = memberService.getMember(loginUserId).getMeAsFollowerList();
+
+            Page<BulletinPost> result = bulletinPostRepository.findAllFollowingPostsByMemberId(meAsFollowerList, pageRequest);
+
+            //게시물이 없으면 비로그인 유저 피드와 같은 결과 나오도록 if 필터
+            if (!result.isEmpty())
+                return result;
         }
+
+        return bulletinPostRepository.findAll(pageRequest);
+
     }
 
 
@@ -100,7 +110,7 @@ public class BulletinPostService {
 
         verifyResourceOwner(bulletinPost, loginUserId);
 
-            bulletinPostRepository.delete(bulletinPost);
+        bulletinPostRepository.delete(bulletinPost);
     }
 
 
@@ -135,6 +145,7 @@ public class BulletinPostService {
 
 
     private void verifyResourceOwner(BulletinPost bulletinPost, Long loginUserId) {
+
         if (!bulletinPost.getMember().getMemberId().equals(loginUserId))
             throw new LogicException(LogicExceptionCode.NOT_RESOURCE_OWNER);
     }

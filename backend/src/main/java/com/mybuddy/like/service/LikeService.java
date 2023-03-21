@@ -54,7 +54,9 @@ public class LikeService {
 
 
 //    likeByUser
-    public int findExistLikeByMemberId(long postId, long memberId){
+    public int findExistLikeByMemberId(long postId, Long memberId){
+
+        if (memberId == null) return 0;
         Optional<Like> optionalLike = likeRepository.findByPostAndMemberId(postId, memberId);
 
         // 해당 게시물에 해당 멤버가 좋아요 안했으면 0, 했으면 1 반환

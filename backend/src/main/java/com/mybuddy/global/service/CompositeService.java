@@ -53,7 +53,7 @@ public class CompositeService {
                 bulletinPostService.createPost(bulletinPostMapper.bulletinPostCreateDtoToBulletinPost(createDto), loginUserId, amenity, memberService, storageService, photoImage);
 
 
-        return new ApiSingleResponse<>(HttpStatus.OK,"게시물이 생성되었습니다.",bulletinPostMapper.bulletinPostToBulletinPostResponseDto(bulletinPost, bulletinPostService, likeService));
+        return new ApiSingleResponse<>(HttpStatus.OK,"게시물이 생성되었습니다.",bulletinPostMapper.bulletinPostToBulletinPostResponseDto(bulletinPost, bulletinPostService, likeService, loginUserId));
     }
 
     public ApiSingleResponse patchBulletinPost(long postId, Long loginUserId, BulletinPostDto.Patch patchDto, MultipartFile photoImage) {
@@ -65,19 +65,19 @@ public class CompositeService {
         BulletinPost bulletinPost =
                 bulletinPostService.updatePost(bulletinPostMapper.bulletinPostPatchDtoToBulletinPost(patchDto), postId,loginUserId, amenity, memberService, storageService, photoImage);
 
-        return new ApiSingleResponse<>(HttpStatus.OK,"게시물이 수정되었습니다.", bulletinPostMapper.bulletinPostToBulletinPostResponseDto(bulletinPost, bulletinPostService, likeService));
+        return new ApiSingleResponse<>(HttpStatus.OK,"게시물이 수정되었습니다.", bulletinPostMapper.bulletinPostToBulletinPostResponseDto(bulletinPost, bulletinPostService, likeService, loginUserId));
     }
 
-    public ApiSingleResponse getBulletinPost(long postId) {
+    public ApiSingleResponse getBulletinPost(long postId, Long loginUserId) {
 
         BulletinPost bulletinPost = bulletinPostService.findPost(postId);
 
-        return new ApiSingleResponse<>(HttpStatus.OK, "게시물 1개를 조회합니다.", bulletinPostMapper.bulletinPostToBulletinPostResponseDto(bulletinPost, bulletinPostService, likeService));
+        return new ApiSingleResponse<>(HttpStatus.OK, "게시물 1개를 조회합니다.", bulletinPostMapper.bulletinPostToBulletinPostResponseDto(bulletinPost, bulletinPostService, likeService, loginUserId));
     }
 
     public ApiMultiResponse getBulletinPostsFeed(Long loginUserId, int page, int size) {
 
-        Page<BulletinPost> pageBulletinPosts = bulletinPostService.findPosts(loginUserId, page - 1, size);
+        Page<BulletinPost> pageBulletinPosts = bulletinPostService.findPosts(loginUserId, page - 1, size, memberService);
         List<BulletinPost> bulletinPosts = pageBulletinPosts.getContent();
 
         return new ApiMultiResponse<>(HttpStatus.OK, "게시물 피드를 조회합니다.", bulletinPostMapper.bulletinPostsToBulletinPostResponseForFeedDtos(bulletinPosts),

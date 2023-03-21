@@ -1,12 +1,15 @@
 package com.mybuddy.bulletin_post.repository;
 
 import com.mybuddy.bulletin_post.entity.BulletinPost;
+import com.mybuddy.follow.entity.Follow;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
+
 public interface BulletinPostCustomRepository {
 
-    Page<BulletinPost> findAllFollowingPostsByMemberId(long memberId, PageRequest pageRequest);
+    Page<BulletinPost> findAllFollowingPostsByMemberId(List<Follow> meAsFollowerList, PageRequest pageRequest);
 
     Page<BulletinPost> findByAmenityId(Long amenityId, PageRequest pageRequest);
 
