@@ -8,6 +8,7 @@ import com.mybuddy.bulletin_post.entity.BulletinPost;
 import com.mybuddy.bulletin_post.entity.QBulletinPost;
 import com.mybuddy.comment.entity.QComment;
 import com.mybuddy.follow.entity.Follow;
+import com.mybuddy.member.entity.Member;
 import com.mybuddy.member.entity.QMember;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -29,23 +30,25 @@ public class BulletinPostCustomRepositoryImpl implements BulletinPostCustomRepos
 
     //follow 구현 후 수정
     @Override
-    public Page<BulletinPost> findAllFollowingPostsByMemberId(long memberId, PageRequest pageRequest) {
+    public Page<BulletinPost> findAllFollowingPostsByMemberId(List<Follow> meAsFollowerList, PageRequest pageRequest) {
 
         QBulletinPost bulletinPost = QBulletinPost.bulletinPost;
-        QMember member = QMember.member;
-
-        List<Follow> followees = queryFactory
-                .select(member.meAsFolloweeList)
-                .from(member)
-                .where(member.memberId.eq(memberId))
-                .fetchOne();
+//        QMember member = QMember.member;
+//
+//        Member obtainedMember = queryFactory
+//                .selectFrom(member)
+//                .where(member.memberId.eq(memberId))
+//                .fetchOne();
+//
+//        List<Follow> followees = obtainedMember.getMeAsFollowerList();
 
         List<BulletinPost> posts= new ArrayList<>();
-        if (followees == null) {
+        //follower가 없으면 비로그인 유저 피드와 같은 결과
+        if (meAsFollowerList.size() == 0) {
             return new PageImpl<>(posts, pageRequest, posts.size());
         }
 
-        followees.stream()
+        meAsFollowerList.stream()
                 .map(followee -> {
                     List<BulletinPost> tempList =
                             queryFactory
@@ -54,15 +57,6 @@ public class BulletinPostCustomRepositoryImpl implements BulletinPostCustomRepos
                                     .fetch();
                     return posts.addAll(tempList);
                 });
-
-//        QueryResults<BulletinPost> queryResults = queryFactory
-//                .selectFrom(bulletinPost)
-//        //이게 following 필드가 리스트일텐데..쿼리문 찾아보기
-//                .where(bulletinPost.member.followee(memberId)
-//                //일단 생각안나.. 나중에.
-//                .offset(pageRequest.getOffset())
-//                .limit(pageRequest.getPageSize())
-//                .fetchResults();
 
         //list to pagenation 수동
         int start = (int) pageRequest.getOffset();
@@ -89,6 +83,7 @@ public class BulletinPostCustomRepositoryImpl implements BulletinPostCustomRepos
         return new PageImpl<>(queryResults.getResults(), pageRequest, queryResults.getTotal());
     }
 
+// 사용을 안해서
 //    @Override
 //    public PageImpl<BulletinPost> findByMemberId(Long memberId, PageRequest pageRequest) {
 //
@@ -105,7 +100,6 @@ public class BulletinPostCustomRepositoryImpl implements BulletinPostCustomRepos
 //
 //        return new PageImpl<>(queryResults.getResults(), pageRequest, queryResults.getTotal());
 //    }
-
 
     @Override
     public long findNumberOfCommentsByPostId(long postId) {

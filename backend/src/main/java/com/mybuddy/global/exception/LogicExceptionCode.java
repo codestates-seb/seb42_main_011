@@ -10,6 +10,8 @@ public enum LogicExceptionCode {
 
     // 403 forbidden : 서버에 요청 전달되었지만, 권한이 없음
     FOLLOW_NOT_POSSIBLE(403, "You cannot follow yourself"),
+    LIKE_NOT_POSSIBLE(403, "You've already liked it"),
+    CANCEL_LIKE_NOT_POSSIBLE(403, "You've not pressed 'Like' before"),
     NOT_RESOURCE_OWNER(403, "You are not a resource owner"),
 
 

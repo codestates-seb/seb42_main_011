@@ -2,6 +2,8 @@ package com.mybuddy.like.service;
 
 import com.mybuddy.bulletin_post.entity.BulletinPost;
 import com.mybuddy.bulletin_post.service.BulletinPostService;
+import com.mybuddy.global.exception.LogicException;
+import com.mybuddy.global.exception.LogicExceptionCode;
 import com.mybuddy.like.entity.Like;
 import com.mybuddy.like.repository.LikeRepository;
 import com.mybuddy.member.entity.Member;
@@ -22,16 +24,14 @@ public class LikeService {
     private final BulletinPostService bulletinPostService;
     private final MemberServiceImpl memberService;
 
-    public Like createLike(long postId) {
+    public Like createLike(long postId, Long loginUserId) {
 
         Like like = new Like();
-        //로그인 유저 가져오기 전 임시
-        Long memberId = 1L;
 
-        if (findExistLikeByMemberId(postId, memberId) == 1)
-            throw new RuntimeException("좋아요를 이미 눌렀습니다.");
+        if (findExistLikeByMemberId(postId, loginUserId) == 1)
+            throw new LogicException(LogicExceptionCode.LIKE_NOT_POSSIBLE);
         else {
-            Member foundMember = memberService.findExistMemberById(memberId);
+            Member foundMember = memberService.findExistMemberById(loginUserId);
             like.setMember(foundMember);
             like.setBulletinPost(bulletinPostService.findVerifiedBulletinPost(postId));
 
@@ -39,35 +39,24 @@ public class LikeService {
         }
     }
 
-    public void deleteLike(long postId) {
+    public void deleteLike(long postId, Long loginUserId) {
 
-        //로그인 유저 모르니 임시로
-        Long memberId = 1L;
 
         //해당 게시물에 해당 멤버가 좋아요 누른게 없으면 null
-        Optional<Like> optionalLike = likeRepository.findByPostAndMemberId(postId, memberId);
-        //null 받으면 이거 좋아요 해둔게 없으니까 exception 발생시켜. exception 종류는 나중에..
+        Optional<Like> optionalLike = likeRepository.findByPostAndMemberId(postId, loginUserId);
+        //null 받으면 이거 좋아요 해둔게 없으니까 exception
         Like obtainedLike =
                 optionalLike.orElseThrow(() ->
-                        new RuntimeException("좋아요를 누른 게시물이 아닙니다."));
+                        new LogicException(LogicExceptionCode.CANCEL_LIKE_NOT_POSSIBLE));
 
         likeRepository.delete(obtainedLike);
     }
 
-    public Like findVerifiedLike(long likeId) {
-
-        Optional<Like> optionalLike =
-                likeRepository.findById(likeId);
-
-        Like obtainedLike =
-                optionalLike.orElseThrow(() ->
-                        new RuntimeException());
-
-        return obtainedLike;
-    }
 
 //    likeByUser
-    public int findExistLikeByMemberId(long postId, long memberId){
+    public int findExistLikeByMemberId(long postId, Long memberId){
+
+        if (memberId == null) return 0;
         Optional<Like> optionalLike = likeRepository.findByPostAndMemberId(postId, memberId);
 
         // 해당 게시물에 해당 멤버가 좋아요 안했으면 0, 했으면 1 반환
@@ -77,7 +66,7 @@ public class LikeService {
 
     public long getLikeCount(long bulletinPostId) {
 
-        //일단은 리스트째로 가져왔는데 like 세오는 쿼리문 만들기.
+        //getCommentCount 쿼리 dsl로 해봤으니 굳이 해보지 않는다!
         BulletinPost bulletinPost = bulletinPostService.findVerifiedBulletinPost(bulletinPostId);
         List<Like> likeList = bulletinPost.getLikes();
 

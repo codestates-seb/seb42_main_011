@@ -13,7 +13,7 @@ public class LikeCustomRepositoryImpl implements LikeCustomRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Optional<Like> findByPostAndMemberId(long postId, long memberId) {
+    public Optional<Like> findByPostAndMemberId(long postId, Long memberId) {
 
         QLike like = QLike.like;
 

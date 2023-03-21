@@ -38,11 +38,9 @@ public class BulletinPostDto {
         }
     }
 
+    //bulletinpostId를 setter로 해줄 필요가 없게 되면서 create 와 patch 가 같아짐
     @Getter
     public static class Patch extends InnerParent {
-
-        @Setter
-        private long bulletinPostId;
 
         @Builder
         public Patch(String postContent, long addressId, String amenityName, String address, double longitude, double latitude) {

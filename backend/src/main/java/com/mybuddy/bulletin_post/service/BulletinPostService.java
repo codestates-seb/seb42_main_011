@@ -3,7 +3,9 @@ package com.mybuddy.bulletin_post.service;
 import com.mybuddy.amenity.entity.Amenity;
 import com.mybuddy.bulletin_post.entity.BulletinPost;
 import com.mybuddy.bulletin_post.repository.BulletinPostRepository;
-import com.mybuddy.comment.service.CommentService;
+import com.mybuddy.follow.entity.Follow;
+import com.mybuddy.global.exception.LogicException;
+import com.mybuddy.global.exception.LogicExceptionCode;
 import com.mybuddy.global.storage.StorageService;
 import com.mybuddy.global.utils.CustomBeanUtils;
 import com.mybuddy.member.entity.Member;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,27 +27,20 @@ import java.util.Optional;
 public class BulletinPostService {
 
     private final BulletinPostRepository bulletinPostRepository;
-    private final MemberServiceImpl memberService;
     private final CustomBeanUtils<BulletinPost> customBeanUtils;
-    private final StorageService storageService;
-    private final CommentService commentService;
 
-    public BulletinPost createBulletinPost(BulletinPost bulletinPost, Amenity amenity, MultipartFile photoImage) {
+
+    public BulletinPost createPost(BulletinPost bulletinPost, Long loginUserId, Amenity amenity, MemberServiceImpl memberService, StorageService storageService, MultipartFile photoImage) {
+
+        Member member = memberService.findExistMemberById(loginUserId);
 
 //        multipartFile을 저장소에 저장하고 해당 photoUrl 가져오는 service 메서드
         storageService.storeImage(photoImage);
         bulletinPost.setPhotoUrl(
                 storageService.getPath() + "/" + photoImage.getOriginalFilename());
 
-//        controller에서 memberId 찾아서 먼저 저장해야하려나
-//        Member member = bulletinPost.getMember();
-//        Member foundMember = memberService.findExistMemberById(member.getMemberId());
+        bulletinPost.setMember(member);
 
-        Long memberId = 1L;
-        Member foundMember = memberService.findExistMemberById(memberId);
-        bulletinPost.setMember(foundMember);
-
-        //amenity 연결
         bulletinPost.setAmenity(amenity);
 
         BulletinPost createdBulletinPost = bulletinPostRepository.save(bulletinPost);
@@ -52,22 +48,16 @@ public class BulletinPostService {
         return createdBulletinPost;
     }
 
-    public BulletinPost updateBulletinPost(BulletinPost updateBulletinPost, Amenity amenity, MultipartFile photoImage) {
 
-        //로그인 사용자 임시
-        Long memberId = 1L;
+    public BulletinPost updatePost(BulletinPost updateBulletinPost, long postId, Long loginUserId, Amenity amenity, MemberServiceImpl memberService, StorageService storageService, MultipartFile photoImage) {
 
-        BulletinPost foundBulletinPost = findVerifiedBulletinPost(updateBulletinPost.getBulletinPostId());
+        updateBulletinPost.setBulletinPostId(postId);
 
-        //작성자 아니면 예외 발생
-        if (foundBulletinPost.getMember().getMemberId() != memberId)
-            throw new RuntimeException("해당 게시물 작성자가 아닙니다.");
+        BulletinPost obtainedBulletinPost = findVerifiedBulletinPost(postId);
 
-        Member foundMember = memberService.findExistMemberById(memberId);
-        updateBulletinPost.setMember(foundMember);
+        verifyResourceOwner(obtainedBulletinPost, loginUserId);
 
-
-        BulletinPost bulletinPost = customBeanUtils.copyNonNullProperties(updateBulletinPost, foundBulletinPost);
+        BulletinPost bulletinPost = customBeanUtils.copyNonNullProperties(updateBulletinPost, obtainedBulletinPost);
 
         Optional.ofNullable(photoImage)
                 .ifPresent(storageService::storeImage);
@@ -84,54 +74,43 @@ public class BulletinPostService {
         return updatedBulletinPost;
     }
 
-    public BulletinPost findBulletinPost(long bulletinPostId) {
 
+    public BulletinPost findPost(long bulletinPostId) {
+
+        //if login user likeByUser 확인
         BulletinPost bulletinPost = findVerifiedBulletinPost(bulletinPostId);
 
         return bulletinPost;
     }
 
 
-
-
-    public Page<BulletinPost> findBulletinPosts(int page, int size) {
+    public Page<BulletinPost> findPosts(Long loginUserId, int page, int size, MemberServiceImpl memberService) {
 
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "bulletinPostId"));
 
-//        로그인 유저 대신 임시
-        Long memberId = 1L;
+        //로그인유저 피드
+        if (loginUserId != null) {
+            List<Follow> meAsFollowerList = memberService.getMember(loginUserId).getMeAsFollowerList();
 
+            Page<BulletinPost> result = bulletinPostRepository.findAllFollowingPostsByMemberId(meAsFollowerList, pageRequest);
 
-        //if 로그인유저 피드
-        //일단 로그인유저 로직 확인해야해서 조건 true 넣음
-        if (true) {
-            return bulletinPostRepository.findAllFollowingPostsByMemberId(memberId, pageRequest);
-        } else {
-            //비로그인 유저 피드
-            return bulletinPostRepository.findAll(pageRequest);
+            //게시물이 없으면 비로그인 유저 피드와 같은 결과 나오도록 if 필터
+            if (!result.isEmpty())
+                return result;
         }
 
+        return bulletinPostRepository.findAll(pageRequest);
 
     }
 
-//    public Page<BulletinPost> findBulletinPostsByMemberId(long memberId, int page, int size) {
-//
-//        return bulletinPostRepository.findByMemberId(memberId, PageRequest.of(page, size, Sort.by("bulletinPostId").descending()));
-//    }
 
+    public void deletePost(long postId, Long loginUserId, MemberServiceImpl memberService) {
 
-    public void deleteBulletinPost(long bulletinPostId) {
+        BulletinPost bulletinPost = findPost(postId);
 
-//        로그인 유저 대신 임시
-        Long memberId = 1L;
+        verifyResourceOwner(bulletinPost, loginUserId);
 
-        //작성자 아니면 예외 발생
-        if (findVerifiedBulletinPost(bulletinPostId).getMember().getMemberId() != memberId)
-            throw new RuntimeException("해당 게시물 작성자가 아닙니다.");
-        else {
-            BulletinPost obtainedBulletinPost = findVerifiedBulletinPost(bulletinPostId);
-            bulletinPostRepository.delete(obtainedBulletinPost);
-        }
+        bulletinPostRepository.delete(bulletinPost);
     }
 
 
@@ -142,25 +121,33 @@ public class BulletinPostService {
 
         BulletinPost obtainedBulletinPost =
                 optionalBulletinPost.orElseThrow(() ->
-                        new RuntimeException());
+                        new LogicException(LogicExceptionCode.BULLETIN_POST_NOT_FOUND));
 
         return obtainedBulletinPost;
     }
 
+
+    //지금은 쓰이지 않지만 추후 리팩토링시 고려
     public long getCommentCount(long bulletinPostId) {
 
         //이렇게 할지
 //        List<Comment> commentList = commentService.getCommentsByBulletinPostId(bulletinPostId);
 //        long commentCount = commentList.size();
 
-        //아니면 쿼리dsl?
+        //쿼리dsl
         long commentCount = bulletinPostRepository.findNumberOfCommentsByPostId(bulletinPostId);
 
-        //길이는 그게 그거 같음
+        //길이는 비슷함
         // 다만 list 불러와서 세는건 있던 메서드 가져오는거고 쿼리dsl은 새로 만들어써야했단거 정도?
 
         return commentCount;
     }
 
+
+    private void verifyResourceOwner(BulletinPost bulletinPost, Long loginUserId) {
+
+        if (!bulletinPost.getMember().getMemberId().equals(loginUserId))
+            throw new LogicException(LogicExceptionCode.NOT_RESOURCE_OWNER);
+    }
 
 }

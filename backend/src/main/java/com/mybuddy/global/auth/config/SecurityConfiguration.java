@@ -60,6 +60,12 @@ public class SecurityConfiguration {
 //                        .antMatchers(HttpMethod.GET, "/api/*/members").hasRole("ADMIN")
 //                        .antMatchers(HttpMethod.GET, "/api/*/members/**").hasAnyRole("USER", "ADMIN")
 //                        .antMatchers(HttpMethod.DELETE, "/api/*/members/**").hasRole("USER")
+//                        .antMatchers(HttpMethod.POST, "/api/*/bulletin-posts").hasRole("USER")
+//                        .antMatchers(HttpMethod.PATCH, "/api/*/bulletin-posts/**").hasRole("USER")
+//                        .antMatchers(HttpMethod.GET, "/api/*/bulletin-posts/**").permitAll()
+//                        .antMatchers(HttpMethod.DELETE, "/api/*/bulletin-posts/**").hasRole("USER")
+//                        .antMatchers(HttpMethod.POST, "/api/*/bulletin-posts/**").hasRole("USER")
+//                        .antMatchers(HttpMethod.GET, "/api/*/search").permitAll() //hasRole("USER") ??
 //                        .anyRequest().authenticated()
                 );
 
