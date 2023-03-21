@@ -32,7 +32,7 @@ const FriendSearchInput = styled(SearchInput)`
   width: 100%;
 `;
 
-function FriendSearchTitle({ serachOptions, onSearch }) {
+function FriendSearchTitle({ searchOptions, onSearch }) {
   const [form, onChange, reset] = useInputs({
     search: '',
   });
@@ -59,7 +59,7 @@ function FriendSearchTitle({ serachOptions, onSearch }) {
             placeholder="검색"
             onChange={onChange}
           />
-          <DropdownFriend defaultDlsplayText="필터" options={serachOptions} />
+          <DropdownFriend defaultDlsplayText="필터" options={searchOptions} />
         </FriendSearchForm>
       </FriendSearchWrapper>
     </PostHeader>

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
@@ -5,6 +6,7 @@ import Input from '../components/UI/Input';
 import DropdownGender from '../components/UI/Dropdown/DropdownGender';
 import Button from '../components/UI/Button';
 import { register } from '../redux/actions/auth';
+import signupValidation from './SignupValidation';
 
 const FormContainer = styled.section`
   display: flex;
@@ -43,9 +45,6 @@ const ButtonContainer = styled.div`
   margin-top: 30px;
 `;
 
-const gender = ['여자', '남자'];
-
-
 function SignupPage() {
   // 기능 구현
   const [nickname, setNickname] = useState("");
@@ -57,6 +56,8 @@ function SignupPage() {
   const [successful, setSuccessful] = useState(false);
 
   const { message } = useSelector(state => state.message);
+
+  const [nullErrors, setNullErrors] = useState({});
 
   const dispatch = useDispatch();
 
@@ -75,23 +76,25 @@ function SignupPage() {
   const onChangeDogName = (e) => {
     setDogName(e.target.value);
   }
-  const onChangeDogGender = (e) => {
-    setDogGender(e.target.value);
+  const onChangeDogGender = (selectedValue) => {
+    setDogGender(selectedValue);
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     setSuccessful(false);
+    setNullErrors(signupValidation({nickname, email, password, passwordRetype, dogName, dogGender}));
+    if(Object.keys(nullErrors).length === 0){
+        // 유효성검사 통과했을 경우 if문
+      dispatch(register(email, password, nickname, dogName, dogGender))
+      .then(() => {
+        setSuccessful(true);
+      })
+      .catch(() => {
+        setSuccessful(false);
+      });
+    }
 
-    // 유효성검사 통과했을 경우 if문
-    dispatch(register(email, password, nickname, dogName, dogGender))
-    .then(() => {
-      setSuccessful(true);
-    })
-    .catch(() => {
-      setSuccessful(false);
-    });
   }
   // console.log(useSelector(state => state));
   // console.log(successful);
@@ -102,20 +105,22 @@ function SignupPage() {
         {!successful && (
           <SignupForm onSubmit={handleSubmit}>
             <Input variant="large" label="닉네임" id="name" type="text" value={nickname} onChange={onChangeNickname} />
+            {nullErrors.nickname && <p>{nullErrors.nickname}</p>}
             <Input variant="large" label="이메일" id="email" type="email" value={email} onChange={onChangeEmail} />
+            {nullErrors.email && <p>{nullErrors.email}</p>}
             <Input variant="large" label="비밀번호" id="password" type="password" value={password} onChange={onChangePassword} />
+            {nullErrors.password && <p>{nullErrors.password}</p>}
             <Input
               variant="large"
               label="비밀번호 확인"
               id="password-retype"
               type="password"
               value={passwordRetype} onChange={onChangePasswordRetype} />
+            {nullErrors.passwordRetype && <p>{nullErrors.passwordRetype}</p>}
             <Input variant="large" label="강아지 이름" id="dogname" type="text" value={dogName} onChange={onChangeDogName} />
-            <DropdownGender
-              id="dropdown"
-              options={gender}
-              labelText="강아지 성별" value={dogGender} onChange={onChangeDogGender}
-            />
+            {nullErrors.dogName && <p>{nullErrors.dogName}</p>}
+            <DropdownGender onSelect={onChangeDogGender} />
+            {nullErrors.dogGender && <p>{nullErrors.dogGender}</p>}
             <ButtonContainer>
               <Button variant="large">회원가입</Button>
             </ButtonContainer>
