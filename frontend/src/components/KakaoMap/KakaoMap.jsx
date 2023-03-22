@@ -1,6 +1,8 @@
 /* global kakao */
 import { useEffect } from 'react';
 import styled from 'styled-components';
+import newMarker from '../../assets/marker.svg';
+import memo from '../../assets/memo_image.svg';
 
 const Map = styled.div`
   border: var(--border);
@@ -17,15 +19,30 @@ function MapContainer({ searchPlace }) {
 
     const ps = new kakao.maps.services.Places();
     function displayMarker(place) {
+      const imageSize = new kakao.maps.Size(40, 40);
+      const markerImage = new kakao.maps.MarkerImage(newMarker, imageSize);
       const marker = new kakao.maps.Marker({
         map,
         position: new kakao.maps.LatLng(place.y, place.x),
+        image: markerImage,
       });
 
-      const overlayContent = `<div style="background-color: var(--color-light-0); color:var(--color-dark-0); margin: 10px; padding:10px; font-size: 15px; border-radius:5px; box-shadow: 2px 2px #666666; border:var(--border)">
-      ${place.place_name}
-    </div>
-      `;
+      const overlayContent = `<div style=" background-image: url(${memo});
+  background-size: cover;
+  color: var(--color-dark-0);
+  font-size: 15px;
+  width: 280px;
+  height: 70px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:0px 0px 10px 5px;
+  text-indent:-5px;
+  padding-top: 5px;
+  font-wieght:500;
+  ">
+  ${place.place_name}
+</div>`;
 
       const overlay = new kakao.maps.CustomOverlay({
         content: overlayContent,

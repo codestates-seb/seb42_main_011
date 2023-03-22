@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as PlaceShape } from '../assets/shape/place_shape.svg';
 import PlaceHeader from '../components/Place/PlaceHeader';
@@ -7,6 +7,7 @@ import Button from '../components/UI/Button';
 import ModalContext from '../context/ModalContext';
 import LocationModal from '../components/KakaoMap/LocationModal';
 import SearchModal from '../components/KakaoMap/SearchModal';
+import LocationMap from '../components/KakaoMap/LocationMap';
 
 const Container = styled.article`
   width: 100%;
@@ -33,6 +34,8 @@ const MapContainer = styled.div`
 `;
 const ContentWrapper = styled.div`
   width: 100%;
+  height: 100%;
+  max-height: 67vh;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -52,20 +55,31 @@ const LocationBtn = styled(Button)`
 
 const MapWrapper = styled.div`
   width: 100%;
-  height: 56vh;
-  min-height: 100px;
-  max-height: 590px;
+  height: 100%;
   overflow-y: auto;
 `;
 
-function PlaceSearchPage() {
+function PlacePage() {
   const { showModal, openModal } = useContext(ModalContext);
   const [modalType, setModalType] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState(null);
+
+  const handleLocationSelect = location => {
+    setSelectedLocation(location);
+  };
 
   const toggleModal = type => {
     setModalType(type);
+    if (type === 'search') {
+      setSelectedLocation(null);
+    }
     openModal();
   };
+
+  useEffect(() => {
+    toggleModal('location');
+  }, []);
+
   return (
     <Container>
       <PlaceHeader />
@@ -80,15 +94,21 @@ function PlaceSearchPage() {
               <Button onClick={() => toggleModal('search')}>키워드 검색</Button>
             </ButtonWrapper>
             <MapWrapper>
-              <KakaoMap />
+              {selectedLocation ? (
+                <LocationMap selectedLocation={selectedLocation} />
+              ) : (
+                <KakaoMap />
+              )}
             </MapWrapper>
           </ContentWrapper>
         </MapContainer>
-        {showModal && modalType === 'location' && <LocationModal />}
+        {showModal && modalType === 'location' && (
+          <LocationModal onSelect={handleLocationSelect} />
+        )}
         {showModal && modalType === 'search' && <SearchModal />}
       </PlaceWrapper>
     </Container>
   );
 }
 
-export default PlaceSearchPage;
+export default PlacePage;
