@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { Suspense } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import FriendSearch from '../components/FriendSearch';
 import FriendSearchHeader from '../components/FriendSearch/FriendSearchHeader';
 import FriendSearchList from '../components/FriendSearch/FriendSearchList';
-import PostProfileItem from '../components/UI/PostProfileItem';
+import RetryErrorBoundary from '../components/RetryErrorBoundary';
 
-import FRIEND_DUMY from '../data/FRIEND_DUMY';
+function UserProfileLoading() {
+  return <div> 사용자 정보를 불러오는 중입니다. </div>;
+}
 
 const Container = styled.section`
   width: 100%;
@@ -14,19 +17,14 @@ const Container = styled.section`
   gap: 16px;
 `;
 
-const SEARCH_OPTIONS = [
-  { name: '닉네임', value: 'nickname' },
-  { name: '강아지 이름', value: 'dogName' },
-];
-
 function FriendSearchPage() {
-  const [data] = useState(FRIEND_DUMY.data);
-  const [searchType, setsSearchType] = useState('dogName');
-  // const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const searchType = searchParams.get('searchType');
+  const searchName = searchParams.get('searchName');
 
   const handleClick = event => {
     const $li = event.target.closest('li');
-    console.log($li);
+
     if (!$li) {
       return;
     }
@@ -35,25 +33,26 @@ function FriendSearchPage() {
     console.log(memberId);
   };
 
-  const onSearch = (search, type) => {
-    console.log(search, type);
-    setsSearchType(type);
-  };
-
   return (
     <Container>
-      <FriendSearchHeader onSearch={onSearch} serachOptions={SEARCH_OPTIONS} />
+      <FriendSearchHeader
+        initialType={searchType || 'dogName'}
+        initialName={searchName || ''}
+      />
+
       <FriendSearch>
-        <FriendSearchList colWidth="280px" onClick={handleClick}>
-          {data.map(({ memberId, nickname, dogName, photoUrl }) => (
-            <PostProfileItem
-              key={memberId}
-              memberId={memberId}
-              name={searchType === 'dogName' ? dogName : nickname}
-              photoUrl={photoUrl}
-            />
-          ))}
-        </FriendSearchList>
+        {searchName && searchType && (
+          <RetryErrorBoundary>
+            <Suspense fallback={<UserProfileLoading />}>
+              <FriendSearchList
+                searchType={searchType}
+                searchName={searchName}
+                colWidth="280px"
+                onClick={handleClick}
+              />
+            </Suspense>
+          </RetryErrorBoundary>
+        )}
       </FriendSearch>
     </Container>
   );
