@@ -1,69 +1,30 @@
-import React, { useContext, useState } from 'react';
-import styled from 'styled-components';
-import { Outlet, useNavigate } from 'react-router-dom';
-
-import Feeds from '../components/Feeds';
-import FeedsHeader from '../components/Feeds/FeedsHeader';
+import React, { lazy, Suspense } from 'react';
+import RetryErrorBoundary from '../components/RetryErrorBoundary';
+import PostDetailPage from './PostDetailPage';
 import FeedList from '../components/Feeds/FeedList';
-import PostItem from '../components/UI/PostItem';
-import ModalContext from '../context/ModalContext';
+import useModal from '../hooks/useModal';
 
-import FEED_DUMY from '../data/FEED_DUMY';
+const Feeds = lazy(() => import('../components/Feeds'));
 
-const Container = styled.article`
-  width: 100%;
-  height: 100%;
-  gap: 16px;
-`;
+function UserProfileLoading() {
+  return <div> 사용자 정보를 불러오는 중입니다. </div>;
+}
 
 function HomePage() {
-  const [data] = useState(FEED_DUMY.data);
-  const navigate = useNavigate();
-  const { openModal } = useContext(ModalContext);
+  const { closeModal, openModal } = useModal();
 
-  const handleClick = event => {
-    const $li = event.target.closest('li');
-
-    if (!$li) {
-      return;
-    }
-
-    const { postId } = $li.dataset;
-    openModal();
-    navigate(`/${postId}`);
+  const handleItemClick = id => {
+    openModal(<PostDetailPage postId={id} onClose={closeModal} />);
   };
 
   return (
-    <Container>
-      <FeedsHeader />
-      <Feeds>
-        <FeedList onClick={handleClick}>
-          {data.map(
-            ({
-              bulletinPostId,
-              photoUrl,
-              postContent,
-              commentCount,
-              nickname,
-              dogName,
-              createdAt,
-            }) => (
-              <PostItem
-                key={bulletinPostId}
-                bulletinPostId={bulletinPostId}
-                photoUrl={photoUrl}
-                postContent={postContent}
-                commentCount={commentCount}
-                nickname={nickname}
-                dogName={dogName}
-                createdAt={createdAt}
-              />
-            ),
-          )}
-        </FeedList>
-      </Feeds>
-      <Outlet />
-    </Container>
+    <Feeds>
+      <RetryErrorBoundary>
+        <Suspense fallback={<UserProfileLoading />}>
+          <FeedList onClick={handleItemClick} />
+        </Suspense>
+      </RetryErrorBoundary>
+    </Feeds>
   );
 }
 

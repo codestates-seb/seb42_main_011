@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 import { elapsedTime } from '../../../utils/time';
 import { ReactComponent as Commentlogo } from '../../../assets/icons/icon-comment.svg';
-import Card from '../Card/Card';
 
-const ItemBox = styled(Card)`
+const ItemBox = styled.li`
+  border: var(--border);
+  border-radius: 5px;
   display: flex;
   flex-direction: column;
   width: 300px;
@@ -107,19 +108,22 @@ const FeedInfosCreateAt = styled.span`
   opacity: 0.5;
 `;
 
-function PostItem({
-  bulletinPostId,
-  photoUrl,
-  postContent,
-  commentCount,
-  nickname,
-  dogName,
-  createdAt,
-}) {
+function PostItem(
+  {
+    bulletinPostId,
+    photoUrl,
+    postContent,
+    commentCount,
+    nickname,
+    dogName,
+    createdAt,
+  },
+  ref,
+) {
   const displayTimeText = elapsedTime(createdAt);
 
   return (
-    <ItemBox data-post-id={bulletinPostId} tag="li" borderRadius="5px">
+    <ItemBox ref={ref} data-post-id={bulletinPostId}>
       <PostImage src={photoUrl} />
       <PostBox>
         <ContentBox>{postContent}</ContentBox>
@@ -138,4 +142,4 @@ function PostItem({
   );
 }
 
-export default PostItem;
+export default forwardRef(PostItem);
