@@ -51,31 +51,7 @@ const login = (email, password) =>
 
       return response.data;
     })
-  // try {
-  //   const response = await fetch(`${API_URL}auth/login`, {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify({ email, password }),
-  //   });
-  //   console.log('email:', email);
-  //   console.log('password:', password);
-  //   const data = await response.json();
-  //   await localStorage.setItem("user", JSON.stringify(data));
-  //   console.log('response data:', data);
-  //   return JSON.stringify(data);
-  // } catch (error) {
-  //   console.log('error:', error);
-  // }
 
-;
-
-// function useRegister() {
-//   return useMutation(register)
-// };
-
-// function useLogin() {
-//   return useMutation(login);
-// };
 
 // 3. logout() : 로컬스토리지에서 JWT를 삭제
 const logout = () => {
