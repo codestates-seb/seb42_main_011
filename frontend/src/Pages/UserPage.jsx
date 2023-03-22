@@ -1,13 +1,17 @@
-import React, { useContext, useState } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+
+import UserInfoComponent from '../components/User/UserInfoComponent';
+import UserProfileImg from '../components/User/UserProfileImg';
+import UserDeleteModal from '../components/User/UserDeleteModal';
+import useModal from '../hooks/useModal';
+
 import { ReactComponent as ProfileTitle } from '../assets/logo/mypage_logo.svg';
 import { ReactComponent as FriendProfileTitle } from '../assets/logo/friend_mypage_logo.svg';
+
 import USERDUMMY from '../components/User/UserDummy';
 import FRINEDDUMMY from '../components/User/UserDummyFriend';
-import UserInfoComponent from '../components/User/UserInfoComponent';
-import ModalContext from '../context/ModalContext';
-import UserProfileImg from '../components/User/UserProfileImg';
 
 const MyPageComponent = styled.section`
   width: 100%;
@@ -53,8 +57,7 @@ const FriendTitleLogo = styled(FriendProfileTitle)`
 `;
 
 function UserPage() {
-  const { showModal, openModal } = useContext(ModalContext);
-  const [modalType, setModalType] = useState('');
+  const { openModal } = useModal();
   const location = useLocation();
   let TitleImageUrl;
   let Userdata;
@@ -75,24 +78,17 @@ function UserPage() {
     Userdata = FRINEDDUMMY.data;
   }
 
-  const toggleModal = type => {
-    setModalType(type);
-    openModal();
+  const handleDeleteButtnClick = () => {
+    openModal(<UserDeleteModal />);
   };
 
   return (
     <MyPageComponent>
-      <UserDelete onClick={() => toggleModal('delete')}>
+      <UserDelete onClick={handleDeleteButtnClick}>
         {UserdeleteLocation ? '화원탈퇴' : null}
       </UserDelete>
       <UserProfileImg Userdata={Userdata} TitleImageUrl={TitleImageUrl} />
-      <UserInfoComponent
-        PageLocation={PageLocation}
-        Userdata={Userdata}
-        showModal={showModal}
-        modalType={modalType}
-        toggleModal={toggleModal}
-      />
+      <UserInfoComponent PageLocation={PageLocation} Userdata={Userdata} />
     </MyPageComponent>
   );
 }

@@ -8,7 +8,6 @@ import UserPlacePage from '../../Pages/UserPlacePage';
 import Card from '../UI/Card/Card';
 import UserHeader from './UserHeader';
 import UserTabMenu from './UserTabMenu';
-import UserDeleteModal from './UserDeleteModal';
 
 const MyPageContent = styled.section`
   width: 53vw;
@@ -72,13 +71,7 @@ const Contents = styled.div`
   height: 87.5%;
 `;
 
-function UserInfoComponent({
-  PageLocation,
-  Userdata,
-  showModal,
-  modalType,
-  toggleModal,
-}) {
+function UserInfoComponent({ PageLocation, Userdata }) {
   let CardContents;
 
   if (PageLocation === '/mypage' || PageLocation === '/friendpage') {
@@ -97,12 +90,7 @@ function UserInfoComponent({
 
   return (
     <MyPageContent>
-      <UserHeader
-        userdata={Userdata}
-        toggleModal={toggleModal}
-        showModal={showModal}
-        modalType={modalType}
-      />
+      <UserHeader userdata={Userdata} />
       <UserInfoWrapper>
         <MypagePurpleShape />
         <ContentBox>
@@ -111,7 +99,6 @@ function UserInfoComponent({
           <StripeImg />
         </ContentBox>
       </UserInfoWrapper>
-      {showModal && modalType === 'delete' && <UserDeleteModal />}
     </MyPageContent>
   );
 }
