@@ -20,13 +20,14 @@ public class MemberAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException, ServletException {
         Exception exception = (Exception) request.getAttribute("exception");
-        ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED);
+        String message = exception != null ? exception.getMessage() : authException.getMessage();
+        ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED, message);
 
-        logExceptionMessage(authException, exception);
+        logExceptionMessage(authException, exception, message);
     }
 
-    private void logExceptionMessage(AuthenticationException authException, Exception exception) {
-        String message = exception != null ? exception.getMessage() : authException.getMessage();
+    private void logExceptionMessage(AuthenticationException authException, Exception exception,
+                                     String message) {
         log.warn("Unauthorized error occurred: {}", message);
     }
 }

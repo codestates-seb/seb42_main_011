@@ -15,17 +15,15 @@ const ModalContainer = styled.section`
   align-items: center;
 `;
 
-function ModalNonContent({ wrapperId, children, isEscClose = true, onClose }) {
+function ModalNonContent({ wrapperId, children, isEscClose = false }) {
   const { closeModal } = useContext(ModalContext);
-
-  const handleClose = async () => {
-    await onClose();
+  const handleClose = () => {
     closeModal();
   };
 
   const closeOnEscapeKey = event => {
     if (event.key === 'Escape') {
-      onClose();
+      closeModal();
     }
   };
 

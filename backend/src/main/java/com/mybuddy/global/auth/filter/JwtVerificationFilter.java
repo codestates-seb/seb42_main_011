@@ -3,10 +3,13 @@ package com.mybuddy.global.auth.filter;
 import com.mybuddy.global.auth.dto.PrincipalDto;
 import com.mybuddy.global.auth.jwt.JwtTokenizer;
 import com.mybuddy.global.auth.utils.MemberAuthorityUtils;
+import com.mybuddy.global.exception.LogicException;
+import com.mybuddy.global.exception.LogicExceptionCode;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,11 +32,18 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     private final MemberAuthorityUtils authorityUtils;
 
+    private final RedisTemplate<String, String> redisTemplate;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
         try {
+            String accessToken = request.getHeader("Authorization")
+                    .replace("Bearer ", "");
+            if (redisTemplate.opsForValue().get(accessToken) != null) {
+                throw new LogicException(LogicExceptionCode.MEMBER_UNAUTHORIZED);
+            }
             Map<String, Object> claims = verifyJws(request);
             setAuthenticationToContext(claims);
         } catch (SignatureException se) {

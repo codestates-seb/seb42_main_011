@@ -27,5 +27,6 @@ module.exports = {
     ],
     'react/jsx-fragments': ['off'],
     'react/jsx-props-no-spreading': 'off',
+    'react/no-array-index-key': 'off',
   },
 };

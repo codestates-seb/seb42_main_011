@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import styled from 'styled-components';
+
+import IconArrow from '../../../assets/icons/icon-arrow-right.svg';
 
 const ProfileBox = styled.li`
   width: 226px;
@@ -42,32 +44,30 @@ const ProfileName = styled.div`
   font-weight: 500;
 
   /* 버튼 */
-  .profileitem__svg--button {
-    position: absolute;
-    height: 37px;
-    right: 14px;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-
-    &:hover {
-      cursor: pointer;
-    }
-  }
 `;
 
-function ProfileItem({ memberId, photoUrl, name }) {
+const Button = styled.button`
+  position: absolute;
+  height: 32px;
+  right: 14px;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`;
+
+function ProfileItem({ memberId, photoUrl, name, onClick }, ref) {
   return (
-    <ProfileBox data-member-id={memberId}>
+    <ProfileBox ref={ref} data-member-id={memberId}>
       <ProifleImage src={photoUrl} alt={`${name} 프로필 사진`} />
       <ProfileName>
         {name}
-        <div className="profileitem__svg--button">
-          <img src="icon/arrow-right.svg" alt="" />
-        </div>
+        <Button onClick={onClick}>
+          <img src={IconArrow} alt="" />
+        </Button>
       </ProfileName>
     </ProfileBox>
   );
 }
 
-export default ProfileItem;
+export default forwardRef(ProfileItem);

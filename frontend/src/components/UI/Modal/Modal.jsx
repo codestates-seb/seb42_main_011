@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
-import React, { useContext, useEffect } from 'react';
+import React, { Fragment, useContext, useEffect } from 'react';
 import styled from 'styled-components';
-import ModalPortal from './ModalPortal';
 import IconClose from '../../../assets/icons/icon-close.svg';
 import ModalContext from '../../../context/ModalContext';
 
@@ -108,7 +107,7 @@ function Modal({ titleImage, onClose = () => {}, children }) {
   }, [handleClose]);
 
   return (
-    <ModalPortal wrapperId="modal-root">
+    <Fragment>
       <ModalBg />
       <ModalContainer>
         <ModalOutside>
@@ -127,7 +126,7 @@ function Modal({ titleImage, onClose = () => {}, children }) {
           </ModalInside>
         </ModalOutside>
       </ModalContainer>
-    </ModalPortal>
+    </Fragment>
   );
 }
 

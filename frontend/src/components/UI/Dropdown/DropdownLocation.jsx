@@ -6,10 +6,11 @@ import useDropdown from '../../../hooks/useDropdown';
 const DropdownListItem = styled.li`
   cursor: pointer;
   display: flex;
+  justify-content: center;
   align-items: center;
-  width: 130px;
+  width: 145px;
   height: 30px;
-
+  overflow: hidden;
   &:hover {
     color: var(--color-light-0);
     background-color: var(--color-dark-3);
@@ -27,7 +28,16 @@ const DropdownList = styled.ul`
   left: 0;
   z-index: 1;
   width: 130px;
+  max-height: 300px;
   box-shadow: inherit;
+  border-radius: 0 0 5px 5px;
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const SelectedOption = styled.p`
@@ -63,11 +73,19 @@ const DropdownContainer = styled.div`
   display: inline-block;
   font-size: var(--font-size-13);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  width: 130px;
 
   ${DropdownListItem}, ${DropdownButton} {
     justify-content: center;
     text-align: center;
     padding-right: 15px;
+  }
+  ${DropdownListItem} {
+    &:hover {
+      padding-left: 15px;
+      width: 130px;
+      background-color: var(--color-dark-0);
+    }
   }
 `;
 
@@ -91,7 +109,9 @@ function DropdownLocation({
       {isOpen && (
         <DropdownList onClick={handleOptionSelect}>
           {options.map(option => (
-            <DropdownListItem>{option}</DropdownListItem>
+            <DropdownListItem data-dropdown-option={option}>
+              {option}
+            </DropdownListItem>
           ))}
         </DropdownList>
       )}

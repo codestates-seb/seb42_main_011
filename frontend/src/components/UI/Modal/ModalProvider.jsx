@@ -1,26 +1,29 @@
 import { useMemo, useState } from 'react';
 import ModalContext from '../../../context/ModalContext';
+import ModalNonContent from './ModalNonContent';
 
 function ModalProvider({ children }) {
-  const [showModal, setShowModal] = useState(false);
+  const [modals, setModals] = useState([]);
 
-  const openModal = () => {
-    setShowModal(true);
-    console.log(1111);
+  const openModal = content => {
+    setModals(prevStack => [...prevStack, content]);
   };
 
   const closeModal = () => {
-    setShowModal(false);
+    setModals(prevStack => prevStack.slice(0, -1));
   };
 
   const providerValue = useMemo(
-    () => ({ showModal, openModal, closeModal }),
-    [showModal],
+    () => ({ openModal, closeModal }),
+    [openModal, closeModal],
   );
 
   return (
     <ModalContext.Provider value={providerValue}>
       {children}
+      {modals.map((madal, index) => (
+        <ModalNonContent key={`modal_${index}`}>{madal}</ModalNonContent>
+      ))}
     </ModalContext.Provider>
   );
 }

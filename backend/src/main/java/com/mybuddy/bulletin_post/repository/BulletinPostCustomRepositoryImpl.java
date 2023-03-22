@@ -33,14 +33,6 @@ public class BulletinPostCustomRepositoryImpl implements BulletinPostCustomRepos
     public Page<BulletinPost> findAllFollowingPostsByMemberId(List<Follow> meAsFollowerList, PageRequest pageRequest) {
 
         QBulletinPost bulletinPost = QBulletinPost.bulletinPost;
-//        QMember member = QMember.member;
-//
-//        Member obtainedMember = queryFactory
-//                .selectFrom(member)
-//                .where(member.memberId.eq(memberId))
-//                .fetchOne();
-//
-//        List<Follow> followees = obtainedMember.getMeAsFollowerList();
 
         List<BulletinPost> posts = new ArrayList<>();
         //follower가 없으면 비로그인 유저 피드와 같은 결과

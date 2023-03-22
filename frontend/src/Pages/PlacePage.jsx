@@ -1,12 +1,13 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as PlaceShape } from '../assets/shape/place_shape.svg';
 import PlaceHeader from '../components/Place/PlaceHeader';
 import KakaoMap from '../components/KakaoMap/KakaoMap';
 import Button from '../components/UI/Button';
-import ModalContext from '../context/ModalContext';
 import LocationModal from '../components/KakaoMap/LocationModal';
 import SearchModal from '../components/KakaoMap/SearchModal';
+import LocationMap from '../components/KakaoMap/LocationMap';
+import useModal from '../hooks/useModal';
 
 const Container = styled.article`
   width: 100%;
@@ -33,6 +34,8 @@ const MapContainer = styled.div`
 `;
 const ContentWrapper = styled.div`
   width: 100%;
+  height: 100%;
+  max-height: 67vh;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -52,20 +55,26 @@ const LocationBtn = styled(Button)`
 
 const MapWrapper = styled.div`
   width: 100%;
-  height: 56vh;
-  min-height: 100px;
-  max-height: 590px;
+  height: 100%;
   overflow-y: auto;
 `;
 
-function PlaceSearchPage() {
-  const { showModal, openModal } = useContext(ModalContext);
-  const [modalType, setModalType] = useState('');
+function PlacePage() {
+  const { openModal } = useModal();
+  const [selectedLocation, setSelectedLocation] = useState(null);
 
-  const toggleModal = type => {
-    setModalType(type);
-    openModal();
+  const handleLocationSelect = location => {
+    setSelectedLocation(location);
   };
+
+  const handleLoactionBtnClick = () => {
+    openModal(<LocationModal onSelect={handleLocationSelect} />);
+  };
+
+  const handleKeywordBtnClick = () => {
+    openModal(<SearchModal />);
+  };
+
   return (
     <Container>
       <PlaceHeader />
@@ -74,21 +83,23 @@ function PlaceSearchPage() {
           <PlaceOrangeShape />
           <ContentWrapper>
             <ButtonWrapper>
-              <LocationBtn onClick={() => toggleModal('location')}>
+              <LocationBtn onClick={handleLoactionBtnClick}>
                 장소변경
               </LocationBtn>
-              <Button onClick={() => toggleModal('search')}>키워드 검색</Button>
+              <Button onClick={handleKeywordBtnClick}>키워드 검색</Button>
             </ButtonWrapper>
             <MapWrapper>
-              <KakaoMap />
+              {selectedLocation ? (
+                <LocationMap selectedLocation={selectedLocation} />
+              ) : (
+                <KakaoMap />
+              )}
             </MapWrapper>
           </ContentWrapper>
         </MapContainer>
-        {showModal && modalType === 'location' && <LocationModal />}
-        {showModal && modalType === 'search' && <SearchModal />}
       </PlaceWrapper>
     </Container>
   );
 }
 
-export default PlaceSearchPage;
+export default PlacePage;

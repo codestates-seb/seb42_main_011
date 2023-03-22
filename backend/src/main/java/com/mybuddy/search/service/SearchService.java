@@ -1,5 +1,7 @@
 package com.mybuddy.search.service;
 
+import com.mybuddy.global.exception.LogicException;
+import com.mybuddy.global.exception.LogicExceptionCode;
 import com.mybuddy.member.entity.Member;
 import com.mybuddy.search.repository.SearchRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +22,10 @@ public class SearchService {
         if (type.equals("nickname")) {
             return searchRepository.findByNicknameContaining(keyword, pageRequest);
         }
-        else {
+        else if (type.equals("dogName")) {
             return searchRepository.findByDogNameContaining(keyword, pageRequest);
         }
+        else throw new LogicException(LogicExceptionCode.TYPE_NOT_FOUND);
 
     }
 }
