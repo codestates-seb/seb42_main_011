@@ -1,7 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Outlet } from 'react-router-dom';
 
 import { ReactComponent as HomeShape } from '../../assets/shape/home_shape.svg';
+
+import FeedsHeader from './FeedsHeader';
+
+const Container = styled.article`
+  width: 100%;
+  height: 100%;
+  gap: 16px;
+`;
 
 const FeesdWrapper = styled.article`
   width: 100%;
@@ -34,12 +43,16 @@ const HomeYellowShape = styled(HomeShape)`
 
 function Feeds({ children }) {
   return (
-    <FeesdWrapper>
-      <FeedsContainer>
-        <HomeYellowShape />
-        {children}
-      </FeedsContainer>
-    </FeesdWrapper>
+    <Container>
+      <FeedsHeader />
+      <FeesdWrapper>
+        <FeedsContainer>
+          <HomeYellowShape />
+          {children}
+        </FeedsContainer>
+      </FeesdWrapper>
+      <Outlet />
+    </Container>
   );
 }
 

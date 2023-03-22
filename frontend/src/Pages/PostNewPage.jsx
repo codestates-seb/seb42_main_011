@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import ModalNonContent from '../components/UI/Modal/ModalNonContent';
-
 import Card from '../components/UI/Card/Card';
 import PostNewlnfo from '../components/PostNew/PostNewlnfo';
 import PostDetailHeader from '../components/PostDetail/PostDetailHeader';
@@ -34,23 +32,21 @@ function PostNewPage({ onClose }) {
   const today = new Date();
 
   return (
-    <ModalNonContent onClose={onClose}>
-      <PostDetailContainer tag="article" borderRadius="20px">
-        <PostDetailHeader
-          createdAt={today}
-          dogName={DUMY.dogName}
-          nickname={DUMY.nickname}
-          onClose={onClose}
-        />
-        <PostNewlnfo
-          profileUrl={DUMY.profileUrl}
-          dogName={DUMY.dogName}
-          nickname={DUMY.nickname}
-        />
+    <PostDetailContainer tag="article" borderRadius="20px">
+      <PostDetailHeader
+        createdAt={today}
+        dogName={DUMY.dogName}
+        nickname={DUMY.nickname}
+        onClose={onClose}
+      />
+      <PostNewlnfo
+        profileUrl={DUMY.profileUrl}
+        dogName={DUMY.dogName}
+        nickname={DUMY.nickname}
+      />
 
-        <PostNew />
-      </PostDetailContainer>
-    </ModalNonContent>
+      <PostNew />
+    </PostDetailContainer>
   );
 }
 

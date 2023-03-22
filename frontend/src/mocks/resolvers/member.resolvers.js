@@ -1,6 +1,8 @@
 // src/mocks/handlers.js
 
 import memberDumy from '../data/member';
+import FEED_DUMY from '../../data/FEED_DUMY';
+import FRIEND_DUMY from '../../data/FRIEND_DUMY';
 
 export const postLogin = async (req, res, ctx) => {
   const { email, password } = await req.json();
@@ -166,4 +168,36 @@ export const deleteMember = (req, res, ctx) => {
 
   // If authenticated, return a mocked user details
   return res(ctx.status(204));
+};
+
+export const getPosts = (req, res, ctx) => {
+  // Check if the user is authenticated in this session
+  const { page } = req.url.searchParams.get('page');
+  const { size } = req.url.searchParams.get('size');
+
+  console.log(page, size, req, FEED_DUMY);
+
+  // If authenticated, return a mocked user details
+  return res(
+    ctx.status(200),
+    ctx.delay(2000),
+    ctx.json(FEED_DUMY),
+    ctx.set('Content-Type', 'application/json'),
+  );
+};
+
+export const getSearchs = (req, res, ctx) => {
+  // Check if the user is authenticated in this session
+  const { page } = req.url.searchParams.get('page');
+  const { size } = req.url.searchParams.get('size');
+
+  console.log(page, size, req, FEED_DUMY);
+
+  // If authenticated, return a mocked user details
+  return res(
+    ctx.status(200),
+    ctx.delay(2000),
+    ctx.json(FRIEND_DUMY),
+    ctx.set('Content-Type', 'application/json'),
+  );
 };

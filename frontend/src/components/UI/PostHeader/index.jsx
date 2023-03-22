@@ -41,7 +41,7 @@ const LogoImage = styled.img`
   left: 40px;
 `;
 
-const PageDescription = styled.p`
+const PageDescription = styled.div`
   font-size: var(--font-size-20);
   line-height: var(--line-height-20);
   font-weight: 500;

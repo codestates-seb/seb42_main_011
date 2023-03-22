@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import useModal from '../../hooks/useModal';
-import ModalNonContent from '../UI/Modal/ModalNonContent';
 import Card from '../UI/Card/Card';
 import PostNewMap from './PostNewMap';
 
@@ -63,10 +62,14 @@ const LocationSelectButton = styled.button`
 `;
 
 function PostNew() {
-  const { isOpen, openModal, closeModal } = useModal();
+  const { openModal, closeModal } = useModal();
 
   const handleClick = place => {
     console.log(place);
+  };
+
+  const handleLoactionSelectClick = () => {
+    openModal(<PostNewMap onClick={handleClick} onClose={closeModal} />);
   };
 
   return (
@@ -76,15 +79,10 @@ function PostNew() {
         <LocationText>
           사진에 있는 장소를 추천하고 싶으시다면 위치를 추가해주세요!
         </LocationText>
-        <LocationSelectButton onClick={() => openModal()}>
+        <LocationSelectButton onClick={handleLoactionSelectClick}>
           위치(선택)
         </LocationSelectButton>
       </LocationContainer>
-      {isOpen && (
-        <ModalNonContent wrapperId="kakao-modal" onClose={closeModal}>
-          <PostNewMap onClick={handleClick} onClose={closeModal} />
-        </ModalNonContent>
-      )}
     </Container>
   );
 }

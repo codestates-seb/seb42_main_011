@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { ReactComponent as MaleLogo } from '../../assets/icons/icon-man.svg';
 import { ReactComponent as FemaleLogo } from '../../assets/icons/icon-woman.svg';
+import useModal from '../../hooks/useModal';
 import FollowerModal from '../Follow/FollowerModal';
 import FollowModal from '../Follow/FollowModal';
 
@@ -86,8 +87,9 @@ const Number = styled.span`
   color: var(--color-primary);
 `;
 
-function UserHeader({ userdata, toggleModal, showModal, modalType }) {
+function UserHeader({ userdata }) {
   const location = useLocation();
+  const { openModal } = useModal();
 
   const AllowClickFollows =
     location.pathname === '/mypage' ||
@@ -103,6 +105,14 @@ function UserHeader({ userdata, toggleModal, showModal, modalType }) {
       return `${(num / 1000).toFixed(1)}K`;
     }
     return num;
+  };
+
+  const handleFollowerClick = () => {
+    openModal(<FollowerModal />);
+  };
+
+  const handleFollow = () => {
+    openModal(<FollowModal />);
   };
 
   return (
@@ -121,16 +131,10 @@ function UserHeader({ userdata, toggleModal, showModal, modalType }) {
             </Gender>
             {AllowClickFollows ? (
               <FollowSection>
-                <Follower
-                  onClick={() => toggleModal('follower')}
-                  className="mypageClick"
-                >
+                <Follower onClick={handleFollowerClick} className="mypageClick">
                   <Number>{formatNumber(data.followerNumber)}</Number> 팔로워
                 </Follower>
-                <Follow
-                  onClick={() => toggleModal('follow')}
-                  className="mypageClick"
-                >
+                <Follow onClick={handleFollow} className="mypageClick">
                   <Number>{formatNumber(data.followeeNumber)}</Number> 팔로우
                 </Follow>
               </FollowSection>
@@ -146,8 +150,6 @@ function UserHeader({ userdata, toggleModal, showModal, modalType }) {
             )}
           </UserDataWrapper>
         ))}
-        {showModal && modalType === 'follower' && <FollowerModal />}
-        {showModal && modalType === 'follow' && <FollowModal />}
       </UserHeaderContent>
     </UserHeaderWrapper>
   );

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 import PostHeader from '../UI/PostHeader';
 import DropdownFriend from '../UI/Dropdown/DropdownFriend';
@@ -32,16 +33,37 @@ const FriendSearchInput = styled(SearchInput)`
   width: 100%;
 `;
 
-function FriendSearchTitle({ serachOptions, onSearch }) {
-  const [form, onChange, reset] = useInputs({
-    search: '',
+const SEARCH_OPTIONS = [
+  { name: '닉네임', value: 'nickname' },
+  { name: '강아지 이름', value: 'dogName' },
+];
+
+function FriendSearchHeader({ initialName = '', initialType = '' }) {
+  const [{ searchName }, onChange] = useInputs({
+    searchName: initialName,
   });
+  const [searchType, setSearchType] = useState(initialType);
+  const naviate = useNavigate();
 
   const handleSubmit = event => {
-    if (event.key === 'Enter') {
-      onSearch({ searchValue: form.search });
-      reset();
+    event.preventDefault();
+    return false;
+  };
+
+  const handleKeyDown = event => {
+    if (searchType.length === 0 || searchName.length === 0) {
+      return;
     }
+
+    if (event.key === 'Enter') {
+      naviate(
+        `/friend/search?searchType=${searchType}&searchName=${searchName}`,
+      );
+    }
+  };
+
+  const handleSelect = selectOption => {
+    setSearchType(selectOption);
   };
 
   return (
@@ -51,19 +73,25 @@ function FriendSearchTitle({ serachOptions, onSearch }) {
       description="친구들의 피드를 확인해보세요!"
     >
       <FriendSearchWrapper>
-        <FriendSearchForm>
+        <FriendSearchForm onSubmit={handleSubmit}>
           <FriendSearchInput
-            onKeyDown={handleSubmit}
-            name="search"
-            id="search"
+            value={searchName}
+            onKeyDown={handleKeyDown}
+            name="searchName"
+            id="searchName"
             placeholder="검색"
             onChange={onChange}
+            required
           />
-          <DropdownFriend defaultDlsplayText="필터" options={serachOptions} />
+          <DropdownFriend
+            onSelect={handleSelect}
+            defaultDlsplayText="필터"
+            options={SEARCH_OPTIONS}
+          />
         </FriendSearchForm>
       </FriendSearchWrapper>
     </PostHeader>
   );
 }
 
-export default FriendSearchTitle;
+export default FriendSearchHeader;

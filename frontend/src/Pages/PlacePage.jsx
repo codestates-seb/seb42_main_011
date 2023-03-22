@@ -1,13 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as PlaceShape } from '../assets/shape/place_shape.svg';
 import PlaceHeader from '../components/Place/PlaceHeader';
 import KakaoMap from '../components/KakaoMap/KakaoMap';
 import Button from '../components/UI/Button';
-import ModalContext from '../context/ModalContext';
 import LocationModal from '../components/KakaoMap/LocationModal';
 import SearchModal from '../components/KakaoMap/SearchModal';
 import LocationMap from '../components/KakaoMap/LocationMap';
+import useModal from '../hooks/useModal';
 
 const Container = styled.article`
   width: 100%;
@@ -60,25 +60,20 @@ const MapWrapper = styled.div`
 `;
 
 function PlacePage() {
-  const { showModal, openModal } = useContext(ModalContext);
-  const [modalType, setModalType] = useState('');
+  const { openModal } = useModal();
   const [selectedLocation, setSelectedLocation] = useState(null);
 
   const handleLocationSelect = location => {
     setSelectedLocation(location);
   };
 
-  const toggleModal = type => {
-    setModalType(type);
-    if (type === 'search') {
-      setSelectedLocation(null);
-    }
-    openModal();
+  const handleLoactionBtnClick = () => {
+    openModal(<LocationModal onSelect={handleLocationSelect} />);
   };
 
-  useEffect(() => {
-    toggleModal('location');
-  }, []);
+  const handleKeywordBtnClick = () => {
+    openModal(<SearchModal />);
+  };
 
   return (
     <Container>
@@ -88,10 +83,10 @@ function PlacePage() {
           <PlaceOrangeShape />
           <ContentWrapper>
             <ButtonWrapper>
-              <LocationBtn onClick={() => toggleModal('location')}>
+              <LocationBtn onClick={handleLoactionBtnClick}>
                 장소변경
               </LocationBtn>
-              <Button onClick={() => toggleModal('search')}>키워드 검색</Button>
+              <Button onClick={handleKeywordBtnClick}>키워드 검색</Button>
             </ButtonWrapper>
             <MapWrapper>
               {selectedLocation ? (
@@ -102,10 +97,6 @@ function PlacePage() {
             </MapWrapper>
           </ContentWrapper>
         </MapContainer>
-        {showModal && modalType === 'location' && (
-          <LocationModal onSelect={handleLocationSelect} />
-        )}
-        {showModal && modalType === 'search' && <SearchModal />}
       </PlaceWrapper>
     </Container>
   );

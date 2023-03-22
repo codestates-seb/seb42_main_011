@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
+import ModalContext from '../../../context/ModalContext';
 import ModalPortal from './ModalPortal';
 
 const ModalContainer = styled.section`
@@ -14,14 +15,15 @@ const ModalContainer = styled.section`
   align-items: center;
 `;
 
-function ModalNonContent({ wrapperId, children, isEscClose = false, onClose }) {
-  const handleClose = async () => {
-    await onClose();
+function ModalNonContent({ wrapperId, children, isEscClose = false }) {
+  const { closeModal } = useContext(ModalContext);
+  const handleClose = () => {
+    closeModal();
   };
 
   const closeOnEscapeKey = event => {
     if (event.key === 'Escape') {
-      onClose();
+      closeModal();
     }
   };
 

@@ -111,8 +111,8 @@ export default {
   ],
   pageInfo: {
     page: 1,
-    size: 15,
+    size: 12,
     totalElements: 2,
-    totalPages: 1,
+    totalPages: 10,
   },
 };
