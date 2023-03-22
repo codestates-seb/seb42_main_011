@@ -7,6 +7,7 @@ import DropdownGender from '../components/UI/Dropdown/DropdownGender';
 import Button from '../components/UI/Button';
 import { register } from '../redux/actions/auth';
 import signupNullCheck from './SignupNullCheck';
+import { emailVerify, nicknameVerify } from '../api/authApi';
 
 const FormContainer = styled.section`
   display: flex;
@@ -100,13 +101,47 @@ function SignupPage() {
     }
   };
 
-  // const checkUnique = () => {
-    
-  // }
+  const passwordVerify = input => /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{8,20}$/.test(input);
+  const passwordRetypeVerify = (pw, pwRetype) => {
+    if(pw !== pwRetype){
+      setErrors(prev => ({ ...prev, passwordRetype: "비밀번호가 일치하지 않습니다."}))
+    }else{
+      setErrors(prev => ({ ...prev, passwordRetype: ""}))
+    }
+  }
+
+  useEffect(() => {
+    passwordRetypeVerify(password, passwordRetype);
+  }, [password, passwordRetype])
+
+  useEffect(() => {
+    if(!passwordVerify(password)){
+      setErrors(prev => ({ ...prev, password: "비밀번호는 영문 대소문자와 숫자의 조합으로 8자 이상 20자 이하여야 합니다."}))
+    }else{
+      setErrors(prev => ({ ...prev, password:"" }))
+    }
+  }, [password])
 
   useEffect(() => {
     checkLength();
   }, [nickname, dogName]);
+
+  useEffect(() => {
+    emailVerify(email)
+      .then((result) => {
+        setErrors(prev => ({ ...prev, email: result }))
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    nicknameVerify(nickname)
+      .then((result) => {
+        setErrors(prev => ({ ...prev, nickname: result }))
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [email, nickname])
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -140,6 +175,7 @@ function SignupPage() {
             {nullErrors.email && <p>{nullErrors.email}</p>}
             <Input variant="large" label="비밀번호" id="password" type="password" value={password} onChange={onChangePassword} />
             {nullErrors.password && <p>{nullErrors.password}</p>}
+            {errors.password && <p>{errors.password}</p>}
             <Input
               variant="large"
               label="비밀번호 확인"
@@ -147,6 +183,7 @@ function SignupPage() {
               type="password"
               value={passwordRetype} onChange={onChangePasswordRetype} />
             {nullErrors.passwordRetype && <p>{nullErrors.passwordRetype}</p>}
+            {errors.passwordRetype && <p>{errors.passwordRetype}</p>}
             <Input variant="large" label="강아지 이름" id="dogname" type="text" value={dogName} onChange={onChangeDogName} />
             {nullErrors.dogName && <p>{nullErrors.dogName}</p>}
             {errors.dogName && <p>{errors.dogName}</p>}

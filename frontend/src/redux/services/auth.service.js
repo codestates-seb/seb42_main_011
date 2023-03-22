@@ -9,20 +9,20 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import axios from "axios";
 import authHeader from "./auth-header";
-import API_URL from "../../api/url";
-// const API_URL = "/";
+import config from "../../config";
+// const config.BASE_URL = "/";
 
 // 1. register() : POST { 이메일, 비밀번호, 닉네임, 강아지이름, 강아지성별 }
 const register = (email, password, nickname, dogName, dogGender) => 
    axios
-  .post(`${API_URL}/members`, {
+  .post(`${config.BASE_URL}/members`, {
       email,
       password,
       nickname,
       dogName,
       dogGender,
     })
-  // const response = await fetch(`${API_URL}members`, {
+  // const response = await fetch(`${config.BASE_URL}members`, {
   //   method: 'POST',
   //   headers: { 'Content-Type': 'application/json' },
   //   body: JSON.stringify({ email, password, nickname, dogName, dogGender}),
@@ -40,7 +40,7 @@ const register = (email, password, nickname, dogName, dogGender) =>
 // 2. login() : POST { 이메일, 비밀번호 } & JWT를 로컬스토리지에 저장
 const login = (email, password) => 
    axios
-    .post(`${API_URL}/auth/login`, {
+    .post(`${config.BASE_URL}/auth/login`, {
       email,
       password,
     })
@@ -60,7 +60,7 @@ const login = (email, password) =>
 // 3. logout() : 로컬스토리지에서 JWT를 삭제
 const logout = () => {
   // const accessToken = localStorage.getItem('user');
-  axios.post(`${API_URL}/auth/logout`, { headers: authHeader() })
+  axios.post(`${config.BASE_URL}/auth/logout`, { headers: authHeader() })
   localStorage.removeItem('accessToken');
   document.cookie = 'refreshToken=; path=/; Secure; HttpOnly; SameSite=Strict;';
 }
