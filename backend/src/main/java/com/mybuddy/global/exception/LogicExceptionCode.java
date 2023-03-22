@@ -20,6 +20,7 @@ public enum LogicExceptionCode {
     COMMENT_NOT_FOUND(404, "Comment not found"),
     AMENITY_NOT_FOUND(404,"Amenity not found"),
     FOLLOW_NOT_FOUND(404, "Follow data not found"),
+    TYPE_NOT_FOUND(404, "Type not found"),
 
 
     // 409 conflict : 서버의 현재 상태와 요청이 충돌
