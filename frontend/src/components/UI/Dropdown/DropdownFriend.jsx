@@ -94,7 +94,11 @@ function DropdownFriend({
 
   return (
     <DropdownContainer>
-      <DropdownButton isOpen={isOpen} onClick={handleDropdownToggle}>
+      <DropdownButton
+        type="button"
+        isOpen={isOpen}
+        onClick={handleDropdownToggle}
+      >
         <SelectedOption>{displaySelectedText}</SelectedOption>
         <IconDown />
       </DropdownButton>
