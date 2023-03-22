@@ -6,7 +6,6 @@ import PostList from '../UI/PostList';
 import PostProfileItem from '../UI/PostProfileItem';
 
 import { getSearchs } from '../../utils/api';
-import useObserverFetch from '../../hooks/useObserverFetch';
 
 const StyledFriendSearchList = styled(PostList)`
   margin-top: 10px;
@@ -34,6 +33,7 @@ function FriendSearchList({
       }),
     {
       suspense: true,
+      staleTime: Infinity,
       getNextPageParam: (lastPage, pages) => {
         if (pages.length === lastPage.pageInfo.totalPages) {
           return undefined;
@@ -46,8 +46,6 @@ function FriendSearchList({
       suspense: true,
     },
   );
-
-  const { ref } = useObserverFetch({ onFetch: hasNextPage && fetchNextPage });
 
   const handleClick = event => {
     const $li = event.target.closest('li');
@@ -62,14 +60,17 @@ function FriendSearchList({
   return (
     <StyledFriendSearchList colWidth={colWidth} onClick={handleClick}>
       {!!data &&
-        data.pages.map(({ data: fetchData }) =>
+        data.pages.map(({ data: fetchData }, pageIndex) =>
           fetchData.map(({ memberId, nickname, dogName, photoUrl }, idx) => {
             const props = {
               memberId,
               photoUrl,
               name: searchType === 'dogName' ? dogName : nickname,
               key: memberId,
-              ...(idx === fetchData.length - 1 && { ref }),
+              isLastItem:
+                pageIndex === Number(data.pages.length) - 1 &&
+                idx === fetchData.length - 1,
+              onFetch: hasNextPage && fetchNextPage,
             };
 
             return <PostProfileItem {...props} />;
