@@ -8,6 +8,7 @@
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import axios from "axios";
+import authHeader from "./auth-header";
 
 const API_URL = "http://localhost:8080/api/v1/";
 // const API_URL = "/";
@@ -46,7 +47,11 @@ const login = (email, password) =>
     })
     .then((response) => {
       if(response.data.accessToken){
-        localStorage.setItem("user", JSON.stringify(response.data));
+        // user를 accesstoken으로 바꾸기
+        localStorage.setItem("user", JSON.stringify(response.data)); 
+
+        // Secure: HTTPS연결만 허용, HttpOnly: client-side 스크립트가 쿠키에 접근하는 것을 방지
+        document.cookie = `refreshToken=${response.data.refreshToken}; path=/; Secure; HttpOnly; SameSite=Strict; max-age=${30 * 24 * 60 * 60}`;
       }
 
       return response.data;
@@ -54,9 +59,12 @@ const login = (email, password) =>
 
 
 // 3. logout() : 로컬스토리지에서 JWT를 삭제
-const logout = () => {
-  localStorage.removeItem("user");
-}
+// const logout = () => {
+//   const accessToken = localStorage.getItem('user');
+//   axios.post(`${API_URL}auth/logout`, { headers: authHeader() })
+//   localStorage.removeItem('accessToken');
+//   document.cookie = 'refreshToken=; path=/; Secure; HttpOnly; SameSite=Strict;';
+// }
 
 // export { useRegister, useLogin, logout };
 export { register, login, logout };
