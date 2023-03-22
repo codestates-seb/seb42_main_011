@@ -8,6 +8,8 @@ import com.mybuddy.bulletin_post.dto.BulletinPostDto;
 import com.mybuddy.bulletin_post.entity.BulletinPost;
 import com.mybuddy.bulletin_post.mapper.BulletinPostMapper;
 import com.mybuddy.bulletin_post.service.BulletinPostService;
+import com.mybuddy.global.exception.LogicException;
+import com.mybuddy.global.exception.LogicExceptionCode;
 import com.mybuddy.global.storage.StorageService;
 import com.mybuddy.global.utils.ApiMultiResponse;
 import com.mybuddy.global.utils.ApiSingleResponse;
@@ -40,7 +42,6 @@ public class CompositeService {
     private final SearchService searchService;
     private final SearchMapper searchMapper;
     private final MemberServiceImpl memberService;
-
     private final StorageService storageService;
 
     public ApiSingleResponse createBulletinPost(Long loginUserId, BulletinPostDto.Create createDto, MultipartFile photoImage) {
@@ -68,7 +69,7 @@ public class CompositeService {
         return new ApiSingleResponse<>(HttpStatus.OK,"게시물이 수정되었습니다.", bulletinPostMapper.bulletinPostToBulletinPostResponseDto(bulletinPost, bulletinPostService, likeService, loginUserId));
     }
 
-    public ApiSingleResponse getBulletinPost(Long loginUserId, long postId) {
+    public ApiSingleResponse getBulletinPost(long postId, Long loginUserId) {
 
         BulletinPost bulletinPost = bulletinPostService.findPost(postId);
 

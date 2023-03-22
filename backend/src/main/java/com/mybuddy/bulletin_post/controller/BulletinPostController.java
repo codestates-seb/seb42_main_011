@@ -48,7 +48,7 @@ public class BulletinPostController {
 
         Long loginUserId = (Long) request.getAttribute("loginUserId");
 
-        return new ResponseEntity<>(compositeService.getBulletinPost(loginUserId, postId), HttpStatus.OK);
+        return new ResponseEntity<>(compositeService.getBulletinPost(postId, loginUserId), HttpStatus.OK);
     }
 
     //피드에서 bulletinPosts 리스트 가져오는 거
