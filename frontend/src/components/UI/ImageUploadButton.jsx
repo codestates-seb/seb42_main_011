@@ -33,7 +33,7 @@ function ImageUploadButton({ onUplad, children }) {
 
   return (
     <>
-      <UploadButton htmlFor="upload-button" tag="Label" variant="medium">
+      <UploadButton htmlFor="upload-button" tag="label" variant="medium">
         {children}
       </UploadButton>
       <input
