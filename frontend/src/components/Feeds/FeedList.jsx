@@ -74,7 +74,7 @@ function FeedList({ onClick, colWidth = '300px' }) {
                 isLastItem:
                   pageIndex === Number(data.pages.length) - 1 &&
                   idx === fetchData.length - 1,
-                onFetch: hasNextPage && fetchNextPage,
+                onFetch: hasNextPage ? fetchNextPage : () => {},
                 key: bulletinPostId + pageIndex * 12,
               };
 

@@ -70,7 +70,7 @@ function FriendSearchList({
               isLastItem:
                 pageIndex === Number(data.pages.length) - 1 &&
                 idx === fetchData.length - 1,
-              onFetch: hasNextPage && fetchNextPage,
+              onFetch: hasNextPage ? fetchNextPage : () => {},
             };
 
             return <PostProfileItem {...props} />;
