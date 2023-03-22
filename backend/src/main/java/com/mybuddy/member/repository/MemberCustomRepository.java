@@ -11,4 +11,6 @@ public interface MemberCustomRepository {
     Optional<Member> findByNickname(String nickname);
 
     Optional<Member> findByMemberIdAndMemberStatusIs(Long memberId, Member.MemberStatus memberStatus);
+
+    Optional<Member> findByMemberEmailAndMemberStatusIs(String email, Member.MemberStatus memberStatus);
 }

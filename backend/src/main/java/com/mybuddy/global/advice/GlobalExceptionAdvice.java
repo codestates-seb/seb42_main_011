@@ -2,6 +2,8 @@ package com.mybuddy.global.advice;
 
 import com.mybuddy.global.exception.LogicException;
 import com.mybuddy.global.utils.ErrorResponse;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -79,11 +81,55 @@ public class GlobalExceptionAdvice {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)    
     public ErrorResponse handleMissingServletRequestPartException(
             MissingServletRequestPartException e) {
+            
+            final ErrorResponse response = ErrorResponse.of(HttpStatus.BAD_REQUEST,
+                e.getMessage());
+
+        return response;
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleSignatureException(
+            SignatureException e) {
 
         final ErrorResponse response = ErrorResponse.of(HttpStatus.BAD_REQUEST,
+                e.getMessage());
+
+        return response;
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleExpiredJwtException(
+            ExpiredJwtException e) {
+
+        final ErrorResponse response = ErrorResponse.of(HttpStatus.BAD_REQUEST,
+                e.getMessage());
+
+        return response;
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleIllegalArgumentException(
+            IllegalArgumentException e) {
+
+        final ErrorResponse response = ErrorResponse.of(HttpStatus.BAD_REQUEST,
+                e.getMessage());
+
+        return response;
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleNullPointerException(
+            NullPointerException e) {
+
+        final ErrorResponse response = ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR,
                 e.getMessage());
 
         return response;

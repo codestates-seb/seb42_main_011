@@ -21,4 +21,6 @@ public interface MemberService {
     void verifyIfNicknameExists(String nickname);
 
     Member findExistMemberById(Long memberId);
+
+    Member findExistMemberByEmail(String email);
 }
