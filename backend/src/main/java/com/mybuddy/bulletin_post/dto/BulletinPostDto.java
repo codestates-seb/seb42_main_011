@@ -13,13 +13,13 @@ public class BulletinPostDto {
     @Getter
     public static abstract class InnerParent {
         private String postContent;
-        private long addressId;
+        private Long addressId;
         private String amenityName;
         private String address;
-        private double longitude;
-        private double latitude;
+        private Double longitude;
+        private Double latitude;
 
-        public InnerParent(String postContent, long addressId, String amenityName, String address, double longitude, double latitude) {
+        public InnerParent(String postContent, Long addressId, String amenityName, String address, Double longitude, Double latitude) {
             this.postContent = postContent;
             this.addressId = addressId;
             this.amenityName = amenityName;
@@ -33,7 +33,7 @@ public class BulletinPostDto {
     public static class Create extends InnerParent {
 
         @Builder
-        public Create(String postContent, long addressId, String amenityName, String address, double longitude, double latitude) {
+        public Create(String postContent, Long addressId, String amenityName, String address, Double longitude, Double latitude) {
             super(postContent, addressId, amenityName, address, longitude, latitude);
         }
     }
@@ -43,7 +43,7 @@ public class BulletinPostDto {
     public static class Patch extends InnerParent {
 
         @Builder
-        public Patch(String postContent, long addressId, String amenityName, String address, double longitude, double latitude) {
+        public Patch(String postContent, Long addressId, String amenityName, String address, Double longitude, Double latitude) {
             super(postContent, addressId, amenityName, address, longitude, latitude);
         }
     }
