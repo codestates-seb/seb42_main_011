@@ -14,7 +14,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -30,6 +32,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableWebSecurity(debug = true)
 public class SecurityConfiguration {
 
     private final JwtTokenizer jwtTokenizer;
@@ -43,16 +46,19 @@ public class SecurityConfiguration {
         http
                 .headers().frameOptions().sameOrigin()
                 .and()
+
                 .csrf().disable()
-                .cors(withDefaults())
+                .cors(Customizer.withDefaults())
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .formLogin().disable()
                 .httpBasic().disable()
+
                 .exceptionHandling()
                 .authenticationEntryPoint(new MemberAuthenticationEntryPoint())
                 .accessDeniedHandler(new MemberAccessDeniedHandler())
                 .and()
+
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
@@ -74,18 +80,13 @@ public class SecurityConfiguration {
                                 .antMatchers(HttpMethod.DELETE, "/api/*/bulletin-posts/**").hasAnyRole("USER", "ADMIN")
 
                                 // Search
-                                .antMatchers(HttpMethod.GET, "/api/*/search").permitAll() //hasRole("USER") ??
-//
-//                                // Comment
-//                                .antMatchers(HttpMethod.POST, "/api/*/comments").hasRole("USER")
-//                                .antMatchers(HttpMethod.PATCH, "/api/*/comments/**").hasRole("USER")
-//                                .antMatchers(HttpMethod.DELETE, "/api/*/comments/**").hasAnyRole("USER", "ADMIN")
+                                .antMatchers(HttpMethod.GET, "/api/*/search").permitAll()
 
-                                // Amenity :확실 X
+                                // Amenity
                                 .antMatchers(HttpMethod.GET, "/api/*/amenities").permitAll()
                                 .antMatchers(HttpMethod.GET, "/api/*/amenities/**").permitAll()
 
-                                // Password - Email
+                                // Password (Email전송)
                                 .antMatchers(HttpMethod.POST, "/api/*/password").permitAll()
 
                                 // Comment, Follower
@@ -101,10 +102,27 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource() {
+
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE", "OPTIONS"));
+
+        // 1차 CORS 문제 해결을 위해서 거의 모든 것을 허용시킨 상태입니다.
+        // 배포 후 리팩토링이 필요합니다. (2023.03.24 강지은)
+
+        configuration.addAllowedOriginPattern("*");
+//        configuration.addAllowedOriginPattern("http://localhost:3000");
+        configuration.addAllowedMethod("*");
+        configuration.addAllowedHeader("*");
+        configuration.addExposedHeader("*");
+        configuration.addExposedHeader("Authorization");
+        configuration.addExposedHeader("Access-Control-Allow-Credentials");
+        configuration.addExposedHeader("Access-Control-Allow-Origin");
+
+        // configuration.setAllowedOrigins(Arrays.asList("*"));
+        //configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE", "OPTIONS"));
+
+        configuration.setAllowCredentials(true);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
