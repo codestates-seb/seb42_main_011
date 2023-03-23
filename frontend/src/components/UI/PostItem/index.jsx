@@ -1,7 +1,8 @@
-import React, { forwardRef } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { elapsedTime } from '../../../utils/time';
 import { ReactComponent as Commentlogo } from '../../../assets/icons/icon-comment.svg';
+import useObserverFetch from '../../../hooks/useObserverFetch';
 
 const ItemBox = styled.li`
   border: var(--border);
@@ -108,19 +109,19 @@ const FeedInfosCreateAt = styled.span`
   opacity: 0.5;
 `;
 
-function PostItem(
-  {
-    bulletinPostId,
-    photoUrl,
-    postContent,
-    commentCount,
-    nickname,
-    dogName,
-    createdAt,
-  },
-  ref,
-) {
+function PostItem({
+  bulletinPostId,
+  photoUrl,
+  postContent,
+  commentCount,
+  nickname,
+  dogName,
+  createdAt,
+  isLastItem,
+  onFetch,
+}) {
   const displayTimeText = elapsedTime(createdAt);
+  const { ref } = useObserverFetch({ isLastItem, onFetch });
 
   return (
     <ItemBox ref={ref} data-post-id={bulletinPostId}>
@@ -142,4 +143,4 @@ function PostItem(
   );
 }
 
-export default forwardRef(PostItem);
+export default PostItem;

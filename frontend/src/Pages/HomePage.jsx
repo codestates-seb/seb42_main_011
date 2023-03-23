@@ -1,10 +1,10 @@
-import React, { lazy, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import RetryErrorBoundary from '../components/RetryErrorBoundary';
 import PostDetailPage from './PostDetailPage';
 import FeedList from '../components/Feeds/FeedList';
 import useModal from '../hooks/useModal';
 
-const Feeds = lazy(() => import('../components/Feeds'));
+import Feeds from '../components/Feeds';
 
 function UserProfileLoading() {
   return <div> 사용자 정보를 불러오는 중입니다. </div>;
