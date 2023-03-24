@@ -43,7 +43,7 @@ public interface AmenityMapper {
                 .amenityName(bulletinPostDto.getAmenityName())
                 .address(bulletinPostDto.getAddress())
                 .longitude(bulletinPostDto.getLongitude())
-                .latitude(bulletinPostDto.getLongitude())
+                .latitude(bulletinPostDto.getLatitude())
                 .build();
 
         return amenityCreateDto;

@@ -1,7 +1,8 @@
-import React, { forwardRef } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import IconArrow from '../../../assets/icons/icon-arrow-right.svg';
+import useObserverFetch from '../../../hooks/useObserverFetch';
 
 const ProfileBox = styled.li`
   width: 226px;
@@ -56,7 +57,16 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-function ProfileItem({ memberId, photoUrl, name, onClick }, ref) {
+function ProfileItem({
+  memberId,
+  photoUrl,
+  name,
+  onClick,
+  isLastItem,
+  onFetch,
+}) {
+  const { ref } = useObserverFetch({ isLastItem, onFetch });
+
   return (
     <ProfileBox ref={ref} data-member-id={memberId}>
       <ProifleImage src={photoUrl} alt={`${name} 프로필 사진`} />
@@ -70,4 +80,4 @@ function ProfileItem({ memberId, photoUrl, name, onClick }, ref) {
   );
 }
 
-export default forwardRef(ProfileItem);
+export default ProfileItem;

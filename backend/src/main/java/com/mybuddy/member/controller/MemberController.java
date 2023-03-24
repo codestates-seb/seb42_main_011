@@ -88,4 +88,27 @@ public class MemberController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{member-id}/info")
+    public ResponseEntity getMemberInfoForRecognition(@Min(2L) @PathVariable("member-id") Long memberId) {
+        // 단순히 회원 정보의 일부만 보내주면 되므로 ApiSingleResponseDto는 사용하지 않음.
+        return new ResponseEntity(
+                mapper.memberToMemberInfoResponseDto(memberService.getMember(memberId)), HttpStatus.OK);
+    }
+
+    @GetMapping("/check")
+    public ResponseEntity<ApiSingleResponse> getDuplicateCheckResult(@RequestParam(required = false) String email,
+                                                  @RequestParam(required = false) String nickname) {
+        // 이메일 및 닉네임 중복 체크 메서드
+        if (email != null) {
+            memberService.verifyIfEmailExists(email);
+        } else if (nickname != null) {
+            memberService.verifyIfNicknameExists(nickname);
+        }
+
+        ApiSingleResponse response =
+                new ApiSingleResponse(HttpStatus.OK, "사용 가능합니다.");
+
+        return ResponseEntity.ok(response);
+    }
 }

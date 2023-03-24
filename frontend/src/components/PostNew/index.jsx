@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import useInput from '../../hooks/useInput';
 import useModal from '../../hooks/useModal';
 import Card from '../UI/Card/Card';
 import PostNewMap from './PostNewMap';
@@ -44,6 +45,14 @@ const LocationContainer = styled.div`
 
   width: 100%;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+`;
+
+const LactionButtonContainer = styled.div`
+  flex: 1 1 0;
+  display: flex;
   flex-direction: column;
   align-items: start;
   gap: 5px;
@@ -59,29 +68,56 @@ const LocationSelectButton = styled.button`
   font-weight: 500;
   font-size: 16px;
   line-height: 23px;
+  color: #097bed;
 `;
 
-function PostNew() {
-  const { openModal, closeModal } = useModal();
+const SelectedLocation = styled.p`
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  word-break: keep-all;
+  max-width: 120px;
+`;
 
-  const handleClick = place => {
-    console.log(place);
+function PostNew({ onContentChange, onSelectPlace }) {
+  const { openModal, closeModal } = useModal();
+  const [content, dValue, setContent] = useInput('', 300);
+  const [place, setPlace] = useState();
+
+  useEffect(() => {
+    onContentChange(content);
+  }, [dValue]);
+
+  const handleSelect = newPlace => {
+    onSelectPlace(newPlace);
+    setPlace(newPlace);
   };
 
   const handleLoactionSelectClick = () => {
-    openModal(<PostNewMap onClick={handleClick} onClose={closeModal} />);
+    openModal(<PostNewMap onSelect={handleSelect} onClose={closeModal} />);
   };
 
   return (
     <Container>
-      <PostNewContent tag="textarea" placeholder="입력해주세요" />
+      <PostNewContent
+        onChange={setContent}
+        tag="textarea"
+        placeholder="입력해주세요"
+        value={content}
+      />
       <LocationContainer>
-        <LocationText>
-          사진에 있는 장소를 추천하고 싶으시다면 위치를 추가해주세요!
-        </LocationText>
-        <LocationSelectButton onClick={handleLoactionSelectClick}>
-          위치(선택)
-        </LocationSelectButton>
+        <LactionButtonContainer>
+          <LocationText>
+            사진에 있는 장소를 추천하고 싶으시다면 위치를 추가해주세요!
+          </LocationText>
+          <LocationSelectButton
+            type="button"
+            onClick={handleLoactionSelectClick}
+          >
+            {place ? '위치(수정)' : '위치(선택)'}
+          </LocationSelectButton>
+        </LactionButtonContainer>
+        {place && <SelectedLocation>{place.place_name} </SelectedLocation>}
       </LocationContainer>
     </Container>
   );

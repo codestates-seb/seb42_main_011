@@ -5,8 +5,7 @@ import { useInfiniteQuery } from 'react-query';
 import PostList from '../UI/PostList';
 import PostProfileItem from '../UI/PostProfileItem';
 
-import { getSearchs } from '../../utils/api';
-import useObserverFetch from '../../hooks/useObserverFetch';
+import searchFriends from '../../api/searchApi';
 
 const StyledFriendSearchList = styled(PostList)`
   margin-top: 10px;
@@ -26,7 +25,7 @@ function FriendSearchList({
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery(
     'friendSearch',
     ({ pageParam = 1 }) =>
-      getSearchs({
+      searchFriends({
         page: pageParam,
         size: 10,
         type: searchType,
@@ -47,8 +46,6 @@ function FriendSearchList({
     },
   );
 
-  const { ref } = useObserverFetch({ onFetch: hasNextPage && fetchNextPage });
-
   const handleClick = event => {
     const $li = event.target.closest('li');
     if (!$li) {
@@ -62,14 +59,17 @@ function FriendSearchList({
   return (
     <StyledFriendSearchList colWidth={colWidth} onClick={handleClick}>
       {!!data &&
-        data.pages.map(({ data: fetchData }) =>
+        data.pages.map(({ data: fetchData }, pageIndex) =>
           fetchData.map(({ memberId, nickname, dogName, photoUrl }, idx) => {
             const props = {
               memberId,
               photoUrl,
               name: searchType === 'dogName' ? dogName : nickname,
               key: memberId,
-              ...(idx === fetchData.length - 1 && { ref }),
+              isLastItem:
+                pageIndex === Number(data.pages.length) - 1 &&
+                idx === fetchData.length - 1,
+              onFetch: hasNextPage ? fetchNextPage : () => {},
             };
 
             return <PostProfileItem {...props} />;

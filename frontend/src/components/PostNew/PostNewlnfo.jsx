@@ -44,11 +44,12 @@ const InfoContainer = styled.div`
   line-height: 23px;
 `;
 
-function PostNewlnfo({ profileUrl, dogName, nickname }) {
+function PostNewlnfo({ profileUrl, dogName, nickname, onSelectImage }) {
   const [imgSrc, setImgSrc] = useState('');
 
-  const handleUpload = src => {
+  const handleUpload = (src, file) => {
     setImgSrc(src);
+    onSelectImage(file);
   };
 
   return (

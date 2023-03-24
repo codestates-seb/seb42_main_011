@@ -4,8 +4,7 @@ import styled from 'styled-components';
 
 import PostList from '../UI/PostList';
 import PostItem from '../UI/PostItem';
-import { getBulletins } from '../../utils/api';
-import useObserverFetch from '../../hooks/useObserverFetch';
+import { getBulletinPostList } from '../../api/bulletinPostsApi';
 
 const StyledFeedList = styled(PostList)`
   @media (max-width: 1363px) {
@@ -19,7 +18,7 @@ const StyledFeedList = styled(PostList)`
 function FeedList({ onClick, colWidth = '300px' }) {
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery(
     'feeds',
-    ({ pageParam = 1 }) => getBulletins({ page: pageParam, size: 10 }),
+    ({ pageParam = 1 }) => getBulletinPostList({ page: pageParam, size: 12 }),
     {
       suspense: true,
       getNextPageParam: (lastPage, pages) => {
@@ -31,8 +30,6 @@ function FeedList({ onClick, colWidth = '300px' }) {
       },
     },
   );
-
-  const { ref } = useObserverFetch({ onFetch: hasNextPage && fetchNextPage });
 
   const handleClick = event => {
     const $li = event.target.closest('li');
@@ -51,7 +48,7 @@ function FeedList({ onClick, colWidth = '300px' }) {
   return (
     <StyledFeedList colWidth={colWidth} onClick={handleClick}>
       {!!data &&
-        data.pages.map(({ data: fetchData }) =>
+        data.pages.map(({ data: fetchData }, pageIndex) =>
           fetchData.map(
             (
               {
@@ -73,8 +70,11 @@ function FeedList({ onClick, colWidth = '300px' }) {
                 nickname,
                 dogName,
                 createdAt,
-                key: bulletinPostId,
-                ...(idx === fetchData.length - 1 && { ref }),
+                isLastItem:
+                  pageIndex === Number(data.pages.length) - 1 &&
+                  idx === fetchData.length - 1,
+                onFetch: hasNextPage ? fetchNextPage : () => {},
+                key: bulletinPostId + pageIndex * 12,
               };
 
               return <PostItem {...props} />;

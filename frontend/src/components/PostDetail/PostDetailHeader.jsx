@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import { ReactComponent as IconCheck } from '../../assets/icons/icon-check.svg';
 import { ReactComponent as IconSeeMore } from '../../assets/icons/icon-see-more-small.svg';
 import { ReactComponent as IconCancle } from '../../assets/icons/icon-cancle.svg';
 
-const Header = styled.div`
+const Header = styled.form`
   position: absolute;
   width: calc(50% - 18px);
   right: 0;
@@ -34,11 +35,28 @@ const ButtonContainer = styled.div`
   gap: 16px;
 `;
 
-const MenuButton = styled.button``;
-
-const EditIcon = styled(IconSeeMore)`
+const CompleteIcon = styled(IconCheck)`
   height: 20px;
   width: 32px;
+`;
+
+const SeeMoreIcon = styled(IconSeeMore)`
+  height: 20px;
+  width: 32px;
+`;
+
+const MenuButton = styled.button`
+  ${CompleteIcon} {
+    color: var(--color-dark-0);
+  }
+
+  &:disabled {
+    cursor: default;
+
+    ${CompleteIcon} {
+      color: inherit;
+    }
+  }
 `;
 
 const CloseIcon = styled(IconCancle)`
@@ -46,7 +64,14 @@ const CloseIcon = styled(IconCancle)`
   width: 20px;
 `;
 
-function PostDetailContentsHeader({ createdAt, dogName, onClose }) {
+function PostDetailContentsHeader({
+  createdAt,
+  dogName,
+  disabledSubmit = false,
+  onClose,
+  onSubmit,
+  isEdit = false,
+}) {
   const displayDate = new Date(createdAt).toISOString().split('T')[0];
   const displayTitleText = `${displayDate} ${dogName}의 일기`;
 
@@ -54,10 +79,10 @@ function PostDetailContentsHeader({ createdAt, dogName, onClose }) {
     <Header>
       <Title>{displayTitleText}</Title>
       <ButtonContainer>
-        <MenuButton>
-          <EditIcon />
+        <MenuButton type="button" onClick={onSubmit} disabled={disabledSubmit}>
+          {isEdit ? <CompleteIcon /> : <SeeMoreIcon />}
         </MenuButton>
-        <MenuButton onClick={onClose}>
+        <MenuButton type="button" onClick={onClose}>
           <CloseIcon />
         </MenuButton>
       </ButtonContainer>

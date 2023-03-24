@@ -32,13 +32,13 @@ public class AuthController {
 
     @PostMapping("/refresh")
     public ResponseEntity refreshAccessToken(HttpServletRequest request, HttpServletResponse response) {
-        String refreshToken = request.getHeader("Refresh");
+        // 헤더 적용 시에 사용
+        // String refreshToken = request.getHeader("Refresh");
 
-        // 쿠키 적용 시에 사용
-        /*String refreshToken = Arrays.stream(request.getCookies())
+        String refreshToken = Arrays.stream(request.getCookies())
                 .filter(cookie -> cookie.getName().equals("Refresh"))
                 .map(Cookie::getValue)
-                .collect(Collectors.joining(""));*/
+                .collect(Collectors.joining(""));
 
         String email = jwtTokenizer.getSubject(refreshToken);
 
@@ -50,13 +50,6 @@ public class AuthController {
         }
 
         String newAccessToken = jwtTokenizer.delegateAccessToken(obtainedMember);
-
-        // 쿠키 적용 시에 사용
-        /*Cookie cookie = new Cookie("Authorization", "Bearer " + newAccessToken);
-        cookie.setPath("/");
-        cookie.setHttpOnly(false);
-        cookie.setMaxAge(1200);
-        response.addCookie(cookie);*/
 
         response.addHeader("Authorization", "Bearer " + newAccessToken);
 
