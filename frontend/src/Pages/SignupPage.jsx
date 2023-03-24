@@ -115,7 +115,7 @@ function SignupPage() {
   }, [password, passwordRetype])
 
   useEffect(() => {
-    if(!passwordVerify(password)){
+    if(!passwordVerify(password) && password.length > 0){
       setErrors(prev => ({ ...prev, password: "비밀번호는 영문 대소문자와 숫자의 조합으로 8자 이상 20자 이하여야 합니다."}))
     }else{
       setErrors(prev => ({ ...prev, password:"" }))
@@ -125,23 +125,6 @@ function SignupPage() {
   useEffect(() => {
     checkLength();
   }, [nickname, dogName]);
-
-  useEffect(() => {
-    emailVerify(email)
-      .then((result) => {
-        setErrors(prev => ({ ...prev, email: result }))
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-    nicknameVerify(nickname)
-      .then((result) => {
-        setErrors(prev => ({ ...prev, nickname: result }))
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [email, nickname])
 
   const handleSubmit = (e) => {
     e.preventDefault();

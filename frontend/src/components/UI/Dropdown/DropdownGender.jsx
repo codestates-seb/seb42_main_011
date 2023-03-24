@@ -151,10 +151,10 @@ function DropdownGender({ onSelect, defaultDlsplayText = '선택하세요' }) {
       </DropdownButton>
       {isOpen && (
         <DropdownList onClick={handleOptionSelect}>
-          <DropdownListItem data-dropdown-option="man">
+          <DropdownListItem data-dropdown-option="MALE">
             <Man />
           </DropdownListItem>
-          <DropdownListItem data-dropdown-option="woman">
+          <DropdownListItem data-dropdown-option="FEMALE">
             <Woman />
           </DropdownListItem>
         </DropdownList>
