@@ -1,6 +1,8 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable default-param-last */
 // isLoggedIn과 user 상태를 업데이트하는 리듀서
 
+import jwtDecode from "jwt-decode";
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -9,9 +11,12 @@ import {
   LOGOUT,
 } from "../actions/type";
 
-const user = JSON.parse(localStorage.getItem("user"));
 
-const initialState = user
+
+const accessToken = JSON.parse(localStorage.getItem("accessToken"));
+const user = jwtDecode(localStorage.getItem("accessToken")).memberId;
+
+const initialState = accessToken
   ? { isLoggedIn: true, user }
   : { isLoggedIn: false, user: null };
 

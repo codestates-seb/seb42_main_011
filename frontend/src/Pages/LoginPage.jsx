@@ -130,7 +130,9 @@ function LoginPage() {
     } else {
       setLoading(false);
     }
+    
   }
+ 
 
   // 헤더 코드 짜기 전까지 - 로그인버튼 누르면 로그인페이지 말고 피드로 이동하게.
   // if(isLoggedIn) {
