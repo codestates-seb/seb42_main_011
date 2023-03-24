@@ -5,7 +5,7 @@ import { useInfiniteQuery } from 'react-query';
 import PostList from '../UI/PostList';
 import PostProfileItem from '../UI/PostProfileItem';
 
-import { getSearchs } from '../../utils/api';
+import searchFriends from '../../api/searchApi';
 
 const StyledFriendSearchList = styled(PostList)`
   margin-top: 10px;
@@ -25,7 +25,7 @@ function FriendSearchList({
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery(
     'friendSearch',
     ({ pageParam = 1 }) =>
-      getSearchs({
+      searchFriends({
         page: pageParam,
         size: 10,
         type: searchType,
@@ -33,7 +33,6 @@ function FriendSearchList({
       }),
     {
       suspense: true,
-      staleTime: Infinity,
       getNextPageParam: (lastPage, pages) => {
         if (pages.length === lastPage.pageInfo.totalPages) {
           return undefined;
