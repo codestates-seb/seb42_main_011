@@ -43,7 +43,7 @@ const ContentContainer = styled.section`
   overflow: hidden;
 `;
 
-function PostNewMap({ onClick, onClose }) {
+function PostNewMap({ onSelect, onClose }) {
   const mapRef = useRef();
 
   const { moveLocation, markers, searchPlaces, displayInfowindow, infowindow } =
@@ -81,7 +81,7 @@ function PostNewMap({ onClick, onClose }) {
   const handleSelectClick = idx => {
     const { place } = markers[idx];
 
-    onClick(place);
+    onSelect(place);
     onClose();
   };
 
