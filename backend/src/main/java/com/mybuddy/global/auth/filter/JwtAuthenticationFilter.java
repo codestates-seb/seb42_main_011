@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -56,7 +57,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 TimeUnit.MINUTES);
 
         response.setHeader("Authorization", "Bearer " + accessToken);
-        response.setHeader("Refresh", refreshToken);
+        // 헤더 적용 시에 사용
+        // response.setHeader("Refresh", refreshToken);
+
+        int maxAge = 60 * jwtTokenizer.getRefreshTokenExpirationMinutes();
+        Cookie cookie = new Cookie("Refresh", refreshToken);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(maxAge);
+        response.addCookie(cookie);
 
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
     }
