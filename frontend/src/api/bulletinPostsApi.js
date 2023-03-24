@@ -49,36 +49,9 @@ async function getBulletinPostList({ page = 1, size = 10 }) {
     .then(({ data }) => data);
 }
 
-const login = (username, password) =>
-  api
-    .post(
-      `/api/v1/auth/login`,
-      {
-        username,
-        password,
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
-    )
-    .then(response => {
-      // localStorage.setItem("accessToken", JSON.stringify(response.data.));
-      // Cookies.set("refreshToken", response.data.refreshToken);
-      localStorage.setItem('tokens', JSON.stringify(response.data));
-      // TODO: user info를 user state에 저장하는 코드 작성
-
-      return response.data;
-    })
-    .catch(error => {
-      console.log(error);
-    });
-
 export {
   updateBulletinPost,
   createBulletinPost,
   getBulletinPost,
   getBulletinPostList,
-  login,
 };
