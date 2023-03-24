@@ -7,12 +7,20 @@ const api = axios.create({
   headers: {
     'Content-type': 'application/json; charset=UTF-8',
     accept: 'application/json,',
+    'ngrok-skip-browser-warning': '12',
   },
 });
 
 async function searchFriends({ page, size, type, name }) {
   return api
-    .get(`/search?type=${type}&name=${name}&page=${page}&size=${size}`)
+    .get(`/search`, {
+      params: {
+        page,
+        size,
+        type,
+        name,
+      },
+    })
     .then(({ data }) => data);
 }
 
