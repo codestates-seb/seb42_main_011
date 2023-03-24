@@ -73,14 +73,25 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     }
 
     private void setAuthenticationToContext(Map<String, Object> claims) {
-        PrincipalDto principalDto = PrincipalDto.builder()
-                .loginUserId(Long.parseLong(String.valueOf(claims.get("memberId"))))
-                .email((String) claims.get("username"))
-                .build();
+
+        PrincipalDto principalDto;
+
+        if (claims.get("memberId") != null) {
+            principalDto = PrincipalDto.builder()
+                    .loginUserId(Long.parseLong(String.valueOf(claims.get("memberId"))))
+                    .email((String) claims.get("username"))
+                    .build();
+        }
+        else {
+            principalDto = PrincipalDto.builder()
+                    .email((String) claims.get("username"))
+                    .build();
+        }
 
         List<GrantedAuthority> authorities = authorityUtils.createAuthorities((List) claims.get("roles"));
         Authentication authentication =
-                new UsernamePasswordAuthenticationToken(principalDto, null, authorities);
+                    new UsernamePasswordAuthenticationToken(principalDto, null, authorities);
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }

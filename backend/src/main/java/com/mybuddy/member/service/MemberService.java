@@ -23,4 +23,6 @@ public interface MemberService {
     Member findExistMemberById(Long memberId);
 
     Member findExistMemberByEmail(String email);
+
+    void createNewPassword(String email, String password);
 }

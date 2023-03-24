@@ -144,4 +144,23 @@ public class JwtTokenizer {
 
         return key;
     }
+
+
+    public String delegateTokenForNewPassword(Member member) {
+        Map<String, Object> claims = new HashMap<>();
+
+        claims.put("username", member.getEmail());
+        claims.put("roles", member.getRoles());
+
+        String subject = member.getEmail();
+
+        Date now = new Date();
+        Date expiration = new Date(now.getTime() + 86400000); // 24시간후 만료 //millisecond 단위 (86400초)
+
+        String base64EncodedSecretKey = encodeBase64SecretKey(getSecretKey());
+
+        String token = generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
+
+        return token;
+    }
 }

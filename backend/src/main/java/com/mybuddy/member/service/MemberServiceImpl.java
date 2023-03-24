@@ -1,6 +1,5 @@
 package com.mybuddy.member.service;
 
-import com.mybuddy.global.auth.dto.PrincipalDto;
 import com.mybuddy.global.auth.utils.MemberAuthorityUtils;
 
 import com.mybuddy.global.exception.LogicException;
@@ -11,8 +10,6 @@ import com.mybuddy.member.entity.Member;
 import com.mybuddy.member.entity.Member.MemberStatus;
 import com.mybuddy.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
 
@@ -140,5 +136,15 @@ public class MemberServiceImpl implements MemberService {
     protected void verifyResourceOwner(Long memberId, Long loginUserId) {
         if (!memberId.equals(loginUserId))
             throw new LogicException(LogicExceptionCode.NOT_RESOURCE_OWNER);
+    }
+
+    @Override
+    public void createNewPassword(String email, String password) {
+
+        Member member = findExistMemberByEmail(email);
+
+        String encryptedPassword = passwordEncoder.encode(password);
+        member.setPassword(encryptedPassword);
+
     }
 }

@@ -88,6 +88,8 @@ public class SecurityConfiguration {
 
                                 // Password (Email전송)
                                 .antMatchers(HttpMethod.POST, "/api/*/password").permitAll()
+                                .antMatchers(HttpMethod.POST, "/api/*/new-password").hasRole("USER")
+
 
                                 // Comment, Follower
                                 .anyRequest().authenticated()

@@ -1,5 +1,11 @@
 package com.mybuddy.email.service;
 
+import com.mybuddy.global.auth.jwt.JwtTokenizer;
+import com.mybuddy.global.exception.LogicException;
+import com.mybuddy.global.exception.LogicExceptionCode;
+import com.mybuddy.member.entity.Member;
+import com.mybuddy.member.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -10,15 +16,25 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 @Service
+@RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService{
 
     @Autowired
     private JavaMailSender mailSender;
+    private static final String DOMAIN = "https://localhost:3000";
+    private final JwtTokenizer jwtTokenizer;
+    private final MemberRepository memberRepository;
 
     @Value("${spring.mail.username}")
     private String fromEmail;
     @Override
-    public void sendEmailForPasswordReset(String toEmail, String resetLink) throws MessagingException {
+    public void sendEmailForPasswordReset(String toEmail) throws MessagingException {
+
+        Member member = memberRepository.findByEmail(toEmail).orElseThrow(()-> new LogicException(LogicExceptionCode.MEMBER_NOT_FOUND));
+
+        String token = jwtTokenizer.delegateTokenForNewPassword(member);
+        String resetLink = DOMAIN + "/password/reset?token=" + token;
+
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
