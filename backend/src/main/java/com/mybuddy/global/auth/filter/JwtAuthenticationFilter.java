@@ -61,11 +61,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // response.setHeader("Refresh", refreshToken);
 
         int maxAge = 60 * jwtTokenizer.getRefreshTokenExpirationMinutes();
-        Cookie cookie = new Cookie("Refresh", refreshToken);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge(maxAge);
-        response.addCookie(cookie);
+        response.addHeader("Set-Cookie", "Refresh=" + refreshToken + "; SameSite=None; " +
+                "Max-Age=" + maxAge + "; HttpOnly; Path=/");
 
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
     }
