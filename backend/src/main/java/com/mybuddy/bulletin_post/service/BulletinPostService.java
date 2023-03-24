@@ -35,9 +35,8 @@ public class BulletinPostService {
         Member member = memberService.findExistMemberById(loginUserId);
 
 //        multipartFile을 저장소에 저장하고 해당 photoUrl 가져오는 service 메서드
-        storageService.storeImage(photoImage);
-        bulletinPost.setPhotoUrl(
-                storageService.getPath() + "/" + photoImage.getOriginalFilename());
+        String photoUrl = storageService.storeImage(photoImage);
+        bulletinPost.setPhotoUrl(photoUrl);
 
         bulletinPost.setMember(member);
 
@@ -60,11 +59,9 @@ public class BulletinPostService {
         BulletinPost bulletinPost = customBeanUtils.copyNonNullProperties(updateBulletinPost, obtainedBulletinPost);
 
         Optional.ofNullable(photoImage)
-                .ifPresent(storageService::storeImage);
-        Optional.ofNullable(photoImage)
-                .ifPresent(image -> bulletinPost.setPhotoUrl(
-                        storageService.getPath() + "/" + image.getOriginalFilename())
-                );
+                .ifPresent(image ->
+                        bulletinPost.setPhotoUrl(
+                        storageService.storeImage(image)));
 
         //amenity 연결
         bulletinPost.setAmenity(amenity);
@@ -104,11 +101,13 @@ public class BulletinPostService {
     }
 
 
-    public void deletePost(long postId, Long loginUserId, MemberServiceImpl memberService) {
+    public void deletePost(long postId, Long loginUserId, MemberServiceImpl memberService, StorageService storageService) {
 
         BulletinPost bulletinPost = findPost(postId);
 
         verifyResourceOwner(bulletinPost, loginUserId);
+
+//        storageService.deleteImage(bulletinPost.getPhotoUrl());
 
         bulletinPostRepository.delete(bulletinPost);
     }
