@@ -90,7 +90,6 @@ function PostNewPage({ onClose }) {
   useEffect(() => {
     if (content && place && photoImage) {
       setDisabledSubmit(false);
-      console.log('asd');
     } else {
       setDisabledSubmit(true);
     }
@@ -138,6 +137,7 @@ function PostNewPage({ onClose }) {
             onClose={onClose}
             onSubmit={handleSubmit}
             disabledSubmit={disabledSubmit}
+            isEdit
           />
           <PostNewlnfo
             profileUrl={DUMY.profileUrl}
