@@ -6,4 +6,6 @@ public interface StorageService {
 
     String storeImage(MultipartFile image);
 
+    void deleteImage(String imageUrl);
+
 }

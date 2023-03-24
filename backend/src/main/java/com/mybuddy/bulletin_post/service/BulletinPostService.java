@@ -107,7 +107,7 @@ public class BulletinPostService {
 
         verifyResourceOwner(bulletinPost, loginUserId);
 
-//        storageService.deleteImage(bulletinPost.getPhotoUrl());
+        storageService.deleteImage(bulletinPost.getPhotoUrl());
 
         bulletinPostRepository.delete(bulletinPost);
     }

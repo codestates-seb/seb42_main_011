@@ -7,10 +7,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.UUID;
 
 @Slf4j
@@ -26,7 +29,7 @@ public class S3StorageService implements StorageService {
     @Override
     public String storeImage(MultipartFile multipartFile) {
 
-        String s3FileName = UUID.randomUUID().toString().concat(multipartFile.getOriginalFilename());
+        String s3FileName = UUID.randomUUID().toString().concat(getFileExtension(multipartFile.getOriginalFilename()));
 
         try {
             if (multipartFile.isEmpty()) {
@@ -42,13 +45,21 @@ public class S3StorageService implements StorageService {
             throw new StorageException("Failed to store a file", e);
         }
 
-        //service 로직들의 getPath() 함수들이 불필요..
         return amazonS3.getUrl(bucket, s3FileName).toString();
     }
 
-//    public void deleteImage(String photoUrl) {
-//        String fileName = photoUrl.substring(photoUrl.lastIndexOf("/"));
-//        amazonS3.deleteObject(bucket, fileName);
-//    }
+
+    public void deleteImage(String photoUrl) {
+        String fileName = photoUrl.substring(photoUrl.lastIndexOf("/")+1);
+        amazonS3.deleteObject(bucket, fileName);
+    }
+
+    private String getFileExtension(String fileName) {
+        try {
+            return fileName.substring(fileName.lastIndexOf("."));
+        } catch (StringIndexOutOfBoundsException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "잘못된 형식의 파일(" + fileName + ") 입니다.");
+        }
+    }
 
 }
