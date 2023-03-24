@@ -13,8 +13,12 @@ function ModalProvider({ children }) {
     setModals(prevStack => prevStack.slice(0, -1));
   };
 
+  const closeAllModal = () => {
+    setModals([]);
+  };
+
   const providerValue = useMemo(
-    () => ({ openModal, closeModal }),
+    () => ({ openModal, closeModal, closeAllModal }),
     [openModal, closeModal],
   );
 

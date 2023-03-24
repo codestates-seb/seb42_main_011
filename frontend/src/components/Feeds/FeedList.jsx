@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import PostList from '../UI/PostList';
 import PostItem from '../UI/PostItem';
-import { getBulletins } from '../../utils/api';
+import { getBulletinPostList } from '../../api/bulletinPostsApi';
 
 const StyledFeedList = styled(PostList)`
   @media (max-width: 1363px) {
@@ -18,10 +18,9 @@ const StyledFeedList = styled(PostList)`
 function FeedList({ onClick, colWidth = '300px' }) {
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery(
     'feeds',
-    ({ pageParam = 1 }) => getBulletins({ page: pageParam, size: 10 }),
+    ({ pageParam = 1 }) => getBulletinPostList({ page: pageParam, size: 12 }),
     {
       suspense: true,
-      staleTime: Infinity,
       getNextPageParam: (lastPage, pages) => {
         if (pages.length === lastPage.pageInfo.totalPages) {
           return undefined;

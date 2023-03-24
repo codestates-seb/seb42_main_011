@@ -25,7 +25,7 @@ function ImageUploadButton({ onUplad, children }) {
 
     return new Promise(resolve => {
       reader.onload = () => {
-        onUplad(reader.result || null); // 파일의 컨텐츠
+        onUplad(reader.result || null, file); // 파일의 컨텐츠
         resolve();
       };
     });
@@ -33,7 +33,7 @@ function ImageUploadButton({ onUplad, children }) {
 
   return (
     <>
-      <UploadButton htmlFor="upload-button" tag="Label" variant="medium">
+      <UploadButton htmlFor="upload-button" tag="label" variant="medium">
         {children}
       </UploadButton>
       <input
