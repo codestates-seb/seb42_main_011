@@ -40,7 +40,7 @@ include::{snippets}/update-member/request-headers.adoc[]
 include::{snippets}/get-member/path-parameters.adoc[]
 
 .request-fields
-include::{snippets}/update-member/request-part-patchDto-fields.adoc[]
+include::{snippets}/update-member/request-part-updateDto-fields.adoc[]
 
 .request-part
 include::{snippets}/update-member/request-parts.adoc[]
