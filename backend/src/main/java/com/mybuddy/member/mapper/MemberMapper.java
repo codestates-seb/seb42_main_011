@@ -110,4 +110,6 @@ public interface MemberMapper {
 
     @IterableMapping(qualifiedByName = "MTMLR")
     List<MemberListResponseDto> membersToMemberListResponseDtos(List<Member> members);
+
+    MemberInfoResponseDto memberToMemberInfoResponseDto(Member member);
 }
