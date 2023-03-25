@@ -12,7 +12,6 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import jwtDecode from 'jwt-decode';
 import authHeader from './auth-header';
-import config from '../../config';
 
 const register = (email, password, nickname, dogName, dogGender) => {
   const form = new FormData();
@@ -33,8 +32,8 @@ const register = (email, password, nickname, dogName, dogGender) => {
       },
     ),
   );
-  return axios.postForm(`${config.BASE_URL}/members`, form, {
-    header: {
+  return axios.postForm(`/api/v1/members`, form, {
+    headers: {
       'Content-Type': 'multipart/form-data',
     },
     withCredentials: true,
@@ -45,7 +44,7 @@ const register = (email, password, nickname, dogName, dogGender) => {
 const login = (username, password) =>
   axios
     .post(
-      `${config.BASE_URL}/auth/login`,
+      `/api/v1/auth/login`,
       {
         username,
         password,
@@ -66,7 +65,7 @@ const JWT_EXPIRY_TIME = 2 * 60 * 1000;
 
 const onSilentRefresh = () => {
   axios
-    .post(`${config.BASE_URL}/auth/refresh`, null, {
+    .post(`/api/v1/auth/refresh`, null, {
       headers: authHeader(),
       withCredentials: true,
     })
@@ -95,7 +94,7 @@ const onLoginSuccess = response => {
 // 3. logout() : 로컬스토리지에서 JWT를 삭제
 const logout = () => {
   // const accessToken = localStorage.getItem('user');
-  axios.post(`${config.BASE_URL}/auth/logout`, null, { headers: authHeader() });
+  axios.post(`/api/v1/auth/logout`, null, { headers: authHeader() });
   localStorage.removeItem('accessToken');
   Cookies.remove('refreshToken');
 };

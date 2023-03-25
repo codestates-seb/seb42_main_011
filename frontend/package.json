@@ -11,6 +11,8 @@
     "cropperjs": "^1.5.13",
     "hoist-non-react-statics": "^3.3.2",
     "http-proxy-middleware": "^2.0.6",
+    "js-cookie": "^3.0.1",
+    "jwt-decode": "^3.1.2",
     "msw": "^1.1.0",
     "react": "^18.2.0",
     "react-cropper": "^2.3.2",
@@ -68,4 +70,3 @@
     "workerDirectory": "public"
   }
 }
-
