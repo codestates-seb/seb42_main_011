@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.UUID;
 
@@ -35,11 +36,13 @@ public class S3StorageService implements StorageService {
             if (multipartFile.isEmpty()) {
                 throw new StorageException("Failed to store a file");
             }
+            InputStream fileInputStream = multipartFile.getInputStream();
             ObjectMetadata objMeta = new ObjectMetadata();
-            objMeta.setContentLength(multipartFile.getInputStream().available());
+            objMeta.setContentLength(fileInputStream.available());
 
             log.info("Store an image into the storage");
-            amazonS3.putObject(bucket, s3FileName, multipartFile.getInputStream(), objMeta);
+            amazonS3.putObject(bucket, s3FileName, fileInputStream, objMeta);
+            fileInputStream.close();
 
         } catch (IOException e) {
             throw new StorageException("Failed to store a file", e);
