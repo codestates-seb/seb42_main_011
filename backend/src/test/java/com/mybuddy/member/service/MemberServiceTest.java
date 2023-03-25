@@ -64,7 +64,8 @@ public class MemberServiceTest {
 
         doNothing().when(memberService).verifyIfEmailExists(Mockito.anyString());
         doNothing().when(memberService).verifyIfNicknameExists(Mockito.anyString());
-        doNothing().when(storageService).storeImage(profileImage);
+        given(storageService.storeImage(profileImage))
+                .willReturn("");
         given(passwordEncoder.encode(Mockito.anyString()))
                 .willReturn("asdf1234");
         given(authorityUtils.createRoles(Mockito.anyString()))
@@ -94,7 +95,8 @@ public class MemberServiceTest {
                 .willReturn(Optional.of(new Member()));
         given(customBeanUtils.copyNonNullProperties(Mockito.any(Member.class), Mockito.any(Member.class)))
                 .willReturn(new Member());
-        doNothing().when(storageService).storeImage(profileImage);
+        given(storageService.storeImage(profileImage))
+                .willReturn("");
         given(memberRepository.save(Mockito.any(Member.class)))
                 .willReturn(member);
 
