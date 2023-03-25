@@ -11,7 +11,8 @@ export default function authHeader() {
 
   if(accessToken){
     // springboot 사용시
-    return { Authorization: `Bearer ${accessToken}` }; 
+    // eslint-disable-next-line prefer-template
+    return { Authorization: "Bearer " + accessToken }; 
     // bearer: JWT 혹은 OAuth에 대한 토큰 사용시의 type
 
     // node express 사용시

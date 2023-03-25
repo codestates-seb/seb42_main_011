@@ -9,10 +9,12 @@ import { onSilentRefresh } from './redux/services/auth.service';
 const queryClient = new QueryClient();
 
 function App() {
-  useEffect(() => {
-    onSilentRefresh();
-  }, []);
-  
+  if (localStorage.getItem('accessToken')) {
+    useEffect(() => {
+      onSilentRefresh();
+    }, []);
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
       <ModalProvider>

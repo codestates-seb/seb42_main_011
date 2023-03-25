@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import Input from '../components/UI/Input';
 import Button from '../components/UI/Button';
-import { login } from "../redux/actions/auth";
+import { login } from '../redux/actions/auth';
 
 // 스타일
 const FormContainer = styled.section`
@@ -16,7 +16,7 @@ const FormContainer = styled.section`
 `;
 
 const SignupLink = styled.button.attrs({
-  type: "button",
+  type: 'button',
 })`
   position: absolute;
   top: -50px;
@@ -46,7 +46,7 @@ const LoginForm = styled.form`
 `;
 
 const ForgotPassword = styled.button.attrs({
-  type: "button",
+  type: 'button',
 })`
   text-decoration: none;
   font-size: var(--font-size-13);
@@ -74,107 +74,82 @@ const ButtonContainer = styled.div`
 `;
 
 function LoginPage() {
-
   // 기능구현
   const navigate = useNavigate();
-  
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  
-  const [loading, setLoading] = useState(false);
-  
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
 
-  // const { isLoggedIn } = useSelector((state) => state.auth);
-  const { message } = useSelector((state) => state.message);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [loading, setLoading] = useState(false);
+
+  // const [emailError, setEmailError] = useState("");
+  // const [passwordError, setPasswordError] = useState("");
+
+  const { isLoggedIn } = useSelector(state => state.auth);
+  const { message } = useSelector(state => state.message);
+  const user = useSelector(state => state.auth.user);
+  console.log(message);
+  console.log(isLoggedIn);
+  console.log(user);
 
   const dispatch = useDispatch();
 
-  const validateEmail = () => {
-    if(!email) {
-      setEmailError("이메일을 입력하세요.");
-      return false;
-    }
-    setEmailError("");
-    return true;
-  }
-
-  const validatePassword = () => {
-    if(!password) {
-      setPasswordError("비밀번호를 입력하세요.");
-      return false;
-    }
-    setPasswordError("");
-    return true;
-  }
-
-  
-  const handleLogin = (e) => {
+  const handleLogin = e => {
     e.preventDefault();
     setLoading(true);
-    const isEmailValid = validateEmail();
-    const isPasswordValid = validatePassword();
-
-    if (isEmailValid && isPasswordValid) {
-      // setLoading(true);
-      // dispatch(login(email, password))
-      dispatch(login(email, password))
+    dispatch(login(email, password))
       .then(() => {
-        navigate("/friendpage/feed");
-        // window.location.reload();
+        navigate('/friendpage/feed');
+        window.location.reload();
       })
       .catch(() => {
         setLoading(false);
-      })
-    } else {
-      setLoading(false);
-    }
-    
-  }
- 
+      });
+  };
 
-  // 헤더 코드 짜기 전까지 - 로그인버튼 누르면 로그인페이지 말고 피드로 이동하게.
-  // if(isLoggedIn) {
-  //   return <Navigate to="/friendpage/feed" />;
-  // }
+  if (isLoggedIn) {
+    return <Navigate to="/friendpage/feed" />;
+  }
 
   return (
     <FormContainer>
-      <Link to="/signup"><SignupLink>회원가입</SignupLink></Link>
+      <Link to="/signup">
+        <SignupLink>회원가입</SignupLink>
+      </Link>
       <Title>로그인</Title>
       <LoginForm onSubmit={handleLogin}>
-        <Input variant="regular" label="이메일" id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        {emailError && (
-          <div>
-            {emailError}
-          </div>
-        )}
+        <Input
+          required
+          variant="regular"
+          label="이메일"
+          id="email"
+          type="email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+        />
+
         <PasswordContainer>
           <Input
+            required
             variant="regular"
             label="비밀번호"
             id="password"
             type="password"
-          value={password} onChange={(e) => setPassword(e.target.value)} />
-          {passwordError && (
-            <div>
-              {passwordError}
-            </div>
-          )}
-          <Link to="/password/find"><ForgotPassword>비밀번호를 잊어버렸나요?</ForgotPassword></Link>
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+          />
+
+          <Link to="/password/find">
+            <ForgotPassword>비밀번호를 잊어버렸나요?</ForgotPassword>
+          </Link>
         </PasswordContainer>
+        {message && <div>{message}</div>}
         <ButtonContainer>
           <Button variant="large" disabled={loading}>
             {/* 로딩 시 여기에 spinner 추가할지? */}
             로그인
           </Button>
         </ButtonContainer>
-        {message && (
-          <div>
-            {message}
-          </div>
-        )}
       </LoginForm>
     </FormContainer>
   );

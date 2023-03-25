@@ -14,10 +14,10 @@ const AuthVerify = (props) => {
   let location = useLocation();
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
 
-    if(user) {
-      const decodedJwt = parseJwt(user.accessToken);
+    if(accessToken) {
+      const decodedJwt = parseJwt(accessToken);
 
       if(decodedJwt.exp * 1000 < Date.now()) {
         props.handleLogout();

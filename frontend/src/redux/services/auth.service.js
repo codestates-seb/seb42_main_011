@@ -5,14 +5,14 @@
 
 // signup, login, logout
 
-// import { useMutation } from 'react-query'; 
+// import { useMutation } from 'react-query';
 // useMutation은 POST, PUT, PATCH, DELETE 요청에 사용된다. 즉 서버사이드 데이터를 '수정'하는 경우에.
 
-import axios from "axios";
+import axios from 'axios';
 import Cookies from 'js-cookie';
 import jwtDecode from 'jwt-decode';
-import authHeader from "./auth-header";
-import config from "../../config";
+import authHeader from './auth-header';
+import config from '../../config';
 
 const register = (email, password, nickname, dogName, dogGender) => {
   const form = new FormData();
@@ -42,69 +42,63 @@ const register = (email, password, nickname, dogName, dogGender) => {
 };
 
 // 2. login() : POST { 이메일, 비밀번호 } & JWT를 로컬스토리지에 저장
-const login = (username, password) => 
-   axios
-    .post(`${config.BASE_URL}/auth/login`, {
-      username,
-      password,
-    },{
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    withCredentials: true,
-  })
-    .then(
-      onLoginSuccess
-
-      // localStorage.setItem("accessToken", JSON.stringify(response.headers.authorization.split(' ')[1])); 
-      
-      // // Cookies.set("refreshToken", response.headers.Refresh);
-      // // localStorage.setItem("tokens", JSON.stringify(response.headers))
-      // // TODO: user info를 user state에 저장하는 코드 작성
-      // const user = jwtDecode(localStorage.getItem("accessToken"));
-      // return user.memberId;
+const login = (username, password) =>
+  axios
+    .post(
+      `${config.BASE_URL}/auth/login`,
+      {
+        username,
+        password,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      },
     )
-    .catch((error) => {
-      console.log(error);
-    })
-// 로그인 만료(액세스 토큰 기한 만료) & 페이지 새로고침시 
+    .then(onLoginSuccess);
+// 로그인 만료(액세스 토큰 기한 만료) & 페이지 새로고침시
 // refresh토큰으로 액세스토큰 다시 발급
 
 const JWT_EXPIRY_TIME = 2 * 60 * 1000;
 // 2-1. onSilentRefresh() : /refresh로 POST 요청 -> onLoginSuccess 실행
 
-
 const onSilentRefresh = () => {
-  axios.post(`${config.BASE_URL}/auth/refresh`, null, {
-    headers: authHeader(),
-    withCredentials: true,
-  })
-  .then(onLoginSuccess)
-  .catch((error) => {
-    console.log(error);
-  })
-}
+  axios
+    .post(`${config.BASE_URL}/auth/refresh`, null, {
+      headers: authHeader(),
+      withCredentials: true,
+    })
+    .then(onLoginSuccess)
+    .catch(error => {
+      console.log(error);
+    });
+};
 // 2-2. onLoginSuccess(response)
-  // 로그인 성공시 액세스토큰을 로컬스토리지에 저장
-  // 액세스토큰 만료시간 1분 전에 로그인을 연장
+// 로그인 성공시 액세스토큰을 로컬스토리지에 저장
+// 액세스토큰 만료시간 1분 전에 로그인을 연장
 const onLoginSuccess = response => {
-
-  
-  setTimeout(onSilentRefresh, JWT_EXPIRY_TIME - 60000) // 만료 1분 전 refresh함수 실행
-    const accessToken = response.headers.authorization.split(' ')[1];
-  localStorage.setItem("accessToken", JSON.stringify(accessToken));
-  
-  const user = jwtDecode(localStorage.getItem("accessToken"));
-  return user.memberId;
-}
+  setTimeout(onSilentRefresh, JWT_EXPIRY_TIME - 60000); // 만료 1분 전 refresh함수 실행
+  const accessToken = JSON.stringify(
+    response.headers.authorization.split(' ')[1],
+  );
+  localStorage.setItem('accessToken', accessToken);
+  try {
+    const user = jwtDecode(accessToken);
+    return user.memberId;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 // 3. logout() : 로컬스토리지에서 JWT를 삭제
 const logout = () => {
   // const accessToken = localStorage.getItem('user');
-  axios.post(`${config.BASE_URL}/auth/logout`, null, { headers: authHeader() })
+  axios.post(`${config.BASE_URL}/auth/logout`, null, { headers: authHeader() });
   localStorage.removeItem('accessToken');
   Cookies.remove('refreshToken');
-}
+};
 
 // export { useRegister, useLogin, logout };
 export { register, login, logout, onLoginSuccess, onSilentRefresh };

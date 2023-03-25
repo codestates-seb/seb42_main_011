@@ -2,20 +2,20 @@
 /* eslint-disable default-param-last */
 // isLoggedIn과 user 상태를 업데이트하는 리듀서
 
-import jwtDecode from "jwt-decode";
+import jwtDecode from 'jwt-decode';
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
-} from "../actions/type";
+} from '../actions/type';
 
-
-
-const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-const user = jwtDecode(localStorage.getItem("accessToken")).memberId;
-
+const accessToken = JSON.parse(localStorage.getItem('accessToken'));
+let user = null;
+if (accessToken) {
+  user = jwtDecode(localStorage.getItem('accessToken')).memberId;
+}
 const initialState = accessToken
   ? { isLoggedIn: true, user }
   : { isLoggedIn: false, user: null };
@@ -23,7 +23,7 @@ const initialState = accessToken
 export default function auth(state = initialState, action) {
   const { type, payload } = action;
 
-  switch(type) {
+  switch (type) {
     case REGISTER_SUCCESS:
       return {
         ...state,
