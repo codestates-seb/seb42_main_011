@@ -42,18 +42,20 @@ const UserpageProfileComponent = styled(UserpageProfile)`
 `;
 
 function UserProfileImg({ Userdata, TitleImageUrl }) {
+  if (!Userdata) {
+    return null;
+  }
+
   return (
     <Profile>
-      {Userdata.map(({ id, data }) => (
-        <ImageBox key={id}>
-          <h2>{TitleImageUrl}</h2>
-          <UserpageProfileComponent
-            src={data.profileUrl}
-            alt={`${data.dogName}의 프로필`}
-          />
-          <MountImg />
-        </ImageBox>
-      ))}
+      <ImageBox>
+        <h2>{TitleImageUrl}</h2>
+        <UserpageProfileComponent
+          src={Userdata.profileUrl}
+          alt={`${Userdata.dogName}의 프로필`}
+        />
+        <MountImg />
+      </ImageBox>
     </Profile>
   );
 }

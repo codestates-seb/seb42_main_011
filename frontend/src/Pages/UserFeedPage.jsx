@@ -15,7 +15,6 @@ const FeedImgWrapper = styled.section`
 
 const FeedImgInside = styled.div`
   aspect-ratio: 1/1;
-  height: auto;
   cursor: pointer;
 `;
 
@@ -36,20 +35,58 @@ const FeedImgBox = styled.div`
 const FeedImg = styled.img`
   width: 100%;
   height: 100%;
+  object-fit: cover;
 `;
-function UserFeedPage({ userdata }) {
+
+const TextWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  padding-top: 30%;
+`;
+
+const NoDataText = styled.p`
+  text-align: center;
+  line-height: 3rem;
+  font-size: var(--font-size-20);
+  font-weight: 500;
+  margin-top: 20px;
+`;
+function UserFeedPage({ userdata, isMyPage }) {
+  if (!userdata) {
+    return null;
+  }
   return (
     <FeedImgWrapper>
       <FeedImgInside>
-        {userdata.map(({ id, data }) => (
-          <FeedImgContent key={id}>
-            {data.myBulletinPostDtos.map(({ bulletinPostId, photoUrl }) => (
-              <FeedImgBox key={bulletinPostId}>
-                <FeedImg src={photoUrl} alt={`${data.dogName}의 게시글`} />
-              </FeedImgBox>
-            ))}
-          </FeedImgContent>
-        ))}
+        <FeedImgContent>
+          {userdata?.bulletinPostForMyPageResponseDtos?.length ? (
+            userdata.bulletinPostForMyPageResponseDtos.map(
+              ({ bulletinPostId, photoUrl }) => (
+                <FeedImgBox key={bulletinPostId}>
+                  <FeedImg
+                    src={photoUrl}
+                    alt={`${userdata.dogName}의 게시글`}
+                  />
+                </FeedImgBox>
+              ),
+            )
+          ) : (
+            <TextWrapper>
+              {' '}
+              {isMyPage ? (
+                <NoDataText>
+                  아직 게시글이 없어요!
+                  <br />
+                  게시글을 등록해보세요 :)
+                </NoDataText>
+              ) : (
+                <NoDataText>
+                  아직 친구가 게시글을 <br /> 등록하지 않았어요 :)
+                </NoDataText>
+              )}
+            </TextWrapper>
+          )}
+        </FeedImgContent>
       </FeedImgInside>
     </FeedImgWrapper>
   );

@@ -32,11 +32,9 @@ function UserEditHeader({ userdata }) {
   return (
     <UserHeaderWrapper UserHeaderWrapper>
       <UserHeaderContent>
-        {userdata.map(({ id, data }) => (
-          <UserDataWrapper key={id}>
-            <Name>{data.dogName}</Name>
-          </UserDataWrapper>
-        ))}
+        <UserDataWrapper>
+          <Name>{userdata.dogName}</Name>
+        </UserDataWrapper>
       </UserHeaderContent>
     </UserHeaderWrapper>
   );
