@@ -130,7 +130,7 @@ function Header() {
               <NavLink
                 end
                 className={({ isActive }) => (isActive ? 'selected' : '')}
-                to="/friend"
+                to="/friend/search"
               >
                 <Menu>친구찾기</Menu>
               </NavLink>
