@@ -2,6 +2,7 @@ package com.mybuddy.global.storage;
 
 import com.mybuddy.global.exception.StorageException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,12 +15,12 @@ import java.nio.file.StandardCopyOption;
 
 @Slf4j
 @Service
-public class FileSystemStorageService implements StorageService {
+public class FileSystemStorageService /*implements StorageService*/ {
 
     private final Path rootPath = Paths.get("");
 
-    @Override
-    public void storeImage(MultipartFile image) {
+//    @Override
+    public String storeImage(MultipartFile image) {
         try {
             if (image.isEmpty()) {
                 throw new StorageException("Failed to store a file");
@@ -36,10 +37,7 @@ public class FileSystemStorageService implements StorageService {
         } catch (IOException e) {
             throw new StorageException("Failed to store a file", e);
         }
-    }
-
-    @Override
-    public String getPath() {
         return rootPath.toAbsolutePath().toString();
     }
+
 }
