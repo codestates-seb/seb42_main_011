@@ -1,15 +1,22 @@
 /* eslint-disable import/no-extraneous-dependencies */
-// 위 오류는 왜 생기는 걸까요...?
 import axios from 'axios';
-import config from '../config';
 
 // 이메일, 닉네임 중복확인
 const emailVerify = async input => {
   try {
     const params = { email: input };
-    const response = await axios.get(`${config.BASE_URL}/members/check`, {
-      params,
-    });
+    const response = await axios.get(
+      '/api/v1/members/check',
+      {
+        params,
+      },
+      {
+        headers: {
+          'ngrok-skip-browser-warning': '12',
+          withCredentials: true,
+        },
+      },
+    );
     if (response.status === 200) {
       return '';
     }
@@ -27,9 +34,18 @@ const emailVerify = async input => {
 const nicknameVerify = async input => {
   try {
     const params = { nickname: input };
-    const response = await axios.get(`${config.BASE_URL}/members/check`, {
-      params,
-    });
+    const response = await axios.get(
+      `/api/v1/members/check`,
+      {
+        params,
+      },
+      {
+        headers: {
+          'ngrok-skip-browser-warning': '12',
+          withCredentials: true,
+        },
+      },
+    );
     if (response.status === 200) {
       return '';
     }

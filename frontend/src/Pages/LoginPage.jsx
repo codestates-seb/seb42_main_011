@@ -82,15 +82,8 @@ function LoginPage() {
 
   const [loading, setLoading] = useState(false);
 
-  // const [emailError, setEmailError] = useState("");
-  // const [passwordError, setPasswordError] = useState("");
-
   const { isLoggedIn } = useSelector(state => state.auth);
   const { message } = useSelector(state => state.message);
-  const user = useSelector(state => state.auth.user);
-  console.log(message);
-  console.log(isLoggedIn);
-  console.log(user);
 
   const dispatch = useDispatch();
 

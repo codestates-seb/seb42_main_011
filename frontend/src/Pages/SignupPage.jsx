@@ -179,8 +179,6 @@ function SignupPage() {
         });
     }
   };
-  // console.log(useSelector(state => state));
-  // console.log(successful);
 
   return (
     <FormContainer>
