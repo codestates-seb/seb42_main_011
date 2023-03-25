@@ -60,4 +60,30 @@ const nicknameVerify = async input => {
   return '';
 };
 
-export { emailVerify, nicknameVerify };
+const sendEmail = async email => {
+  await axios.post(
+    '/api/v1/password',
+    { email },
+    {
+      headers: {
+        'ngrok-skip-browser-warning': '12',
+        withCredentials: true,
+      },
+    },
+  );
+};
+
+const resetPassword = async (email, password) => {
+  await axios.post(
+    'api/v1/new-password',
+    { email, password },
+    {
+      headers: {
+        'ngrok-skip-browser-warning': '12',
+        withCredentials: true,
+      },
+    },
+  );
+};
+
+export { emailVerify, nicknameVerify, sendEmail, resetPassword };

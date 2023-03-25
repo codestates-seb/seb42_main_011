@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import Input from '../components/UI/Input';
 import Button from '../components/UI/Button';
+import { sendEmail } from '../api/authApi';
 
 const FormContainer = styled.section`
   display: flex;
@@ -46,12 +48,37 @@ const ButtonContainer = styled.div`
 `;
 
 function FindPasswordPage() {
+  const [email, setEmail] = useState('');
+  const navigate = useNavigate();
+
+  const handleChange = e => {
+    setEmail(e.target.value);
+  };
+  const handleSubmit = e => {
+    e.preventDefault();
+    sendEmail(email)
+      .then(() => {
+        alert('이메일이 전송되었습니다.');
+        navigate('/login');
+      })
+      .catch(error => {
+        console.log(error);
+        alert('다시 시도해주세요.');
+      });
+  };
+
   return (
     <FormContainer>
       <Title>비밀번호 찾기</Title>
-      <FindForm>
+      <FindForm onSubmit={handleSubmit}>
         <Caption>{CaptionText}</Caption>
-        <Input variant="regular" label="이메일" id="email" type="email" />
+        <Input
+          variant="regular"
+          label="이메일"
+          id="email"
+          type="email"
+          onChange={handleChange}
+        />
         <ButtonContainer>
           <Button variant="large">이메일 전송</Button>
         </ButtonContainer>
