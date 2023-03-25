@@ -4,32 +4,10 @@ spring:
       enabled: true
       max-file-size: 10MB
       max-request-size: 10MB
-  h2:
-    console:
-      enabled: true
-      path: /h2
 
-  datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:test
-
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-        format_sql: true
-
-#  docker에 redis 실행시키고 로컬서 사용하는 버젼
   redis:
-    host: localhost
-    port: 6379
-
-#   지후님 docker-compose 버젼
-#  redis:
-#    host: host.docker.internal
-#    port: 6379
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
 
   mail:
     host: smtp.gmail.com
@@ -55,13 +33,11 @@ logging:
         util:
           EC2MetadataUtils: error
 
-
 jwt:
   key: ${JWT_SECRET_KEY}
   access-token-expiration-minutes: 20
   refresh-token-expiration-minutes: 200
 
-#
 cloud:
   aws:
     credentials:
