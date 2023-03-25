@@ -13,6 +13,8 @@ const ModalContainer = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 `;
 
 function ModalNonContent({ wrapperId, children, isEscClose = false }) {

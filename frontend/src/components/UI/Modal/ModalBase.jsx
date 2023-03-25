@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import ModalNonContent from './ModalNonContent';
 import { ReactComponent as IconCancleSVG } from '../../../assets/icons/icon-cancle.svg';
@@ -11,6 +11,14 @@ const Warapper = styled.section`
   border: var(--border);
   border-radius: 5px;
   width: 360px;
+  animation: ${({ isExiting }) =>
+    isExiting
+      ? css`
+        roadRunnerOut 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards
+        `
+      : css`
+          roadRunnerIn 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards
+        `};
 `;
 
 const Padding = css`
@@ -53,18 +61,26 @@ const Footer = styled.div`
 
 function ModalBase({ title, content, buttons }) {
   const { closeModal } = useModal();
+  const [isExiting, setIsExiting] = useState(false);
+
+  const handleExitAnimation = () => {
+    setIsExiting(true);
+    setTimeout(() => {
+      closeModal();
+    }, 300); // Wait for the animation to complete
+  };
 
   return (
     <ModalNonContent>
-      <Warapper>
+      <Warapper isExiting={isExiting}>
         <Header>
           <Title>{title}</Title>
-          <CancleButton onClick={closeModal}>
+          <CancleButton onClick={handleExitAnimation}>
             <CancleIcon />
           </CancleButton>
         </Header>
         <Content>{content}</Content>
-        {buttons && <Footer>{buttons}</Footer>}
+        {buttons && <Footer onClick={handleExitAnimation}>{buttons}</Footer>}
       </Warapper>
     </ModalNonContent>
   );
