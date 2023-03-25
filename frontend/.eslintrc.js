@@ -20,7 +20,7 @@ module.exports = {
     'import/no-extraneous-dependencies': [
       'error',
       {
-        devDependencies: false,
+        devDependencies: ["*.{js,jsx}", "*.service.{js,jsx}"],
         optionalDependencies: false,
         peerDependencies: false,
       },

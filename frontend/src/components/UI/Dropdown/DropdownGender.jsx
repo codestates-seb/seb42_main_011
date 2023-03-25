@@ -27,7 +27,15 @@ const DropdownListItem = styled.li`
   cursor: pointer;
   display: flex;
   align-items: center;
-  width: 605px;
+  /* width: 605px; */
+  /* width: 100%; */
+  flex-grow: 1;
+  @media screen and (min-height: 1050px){
+    height: 50px;
+  }
+  @media screen and (min-width: 1174px){
+    width: 480px;
+  }
   min-height: 40px;
 
   &:hover {
@@ -48,13 +56,19 @@ const DropdownListItem = styled.li`
 `;
 
 const DropdownList = styled.ul`
+  width: 100%;
   background-color: var(--color-light-0);
   text-align: inherit;
   position: absolute;
   top: 100%;
   left: 0;
   z-index: 1;
-  width: 605px;
+  @media screen and (min-height: 1050px){
+    height: 50px;
+  }
+  @media screen and (min-width: 1174px){
+    width: 480px;
+  }
   box-shadow: inherit;
 `;
 
@@ -92,7 +106,8 @@ const DropdownButton = styled.button`
 const DropdownContainer = styled.div`
   flex-grow: 1;
   position: relative;
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
   font-size: var(--font-size-16);
 
   ${DropdownListItem}, ${DropdownButton} {
@@ -136,10 +151,10 @@ function DropdownGender({ onSelect, defaultDlsplayText = '선택하세요' }) {
       </DropdownButton>
       {isOpen && (
         <DropdownList onClick={handleOptionSelect}>
-          <DropdownListItem data-dropdown-option="man">
+          <DropdownListItem data-dropdown-option="MALE">
             <Man />
           </DropdownListItem>
-          <DropdownListItem data-dropdown-option="woman">
+          <DropdownListItem data-dropdown-option="FEMALE">
             <Woman />
           </DropdownListItem>
         </DropdownList>

@@ -1,8 +1,13 @@
-import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import React, { useEffect, useCallback } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+import { useSelector , useDispatch } from 'react-redux';
 import Button from '../UI/Button';
 import { ReactComponent as MainLogo } from '../../assets/logo/logo.svg';
+
+import { logout } from "../../redux/actions/auth";
+import { clearMessage } from "../../redux/actions/message";
+import AuthVerify from '../../common/AuthVerify';
 
 const HeaderWrapper = styled.header`
   width: 100%;
@@ -70,7 +75,38 @@ const Login = styled(Button)`
   }
 `;
 
+const Logout = styled(Button)`
+  border-left: var(--border);
+  border-bottom: var(--border);
+  background-color: var(--color-dark-0);
+  color: var(--color-light-0);
+  &:hover {
+    border-left: var(--border);
+    border-bottom: var(--border);
+    cursor: pointer;
+  }
+`;
+
 function Header() {
+  const { user: currentUser } = useSelector((state) => state.auth);
+  // console.log(currentUser);
+  const dispatch = useDispatch();
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (["/login", "/signup"].includes(location.pathname)) {
+      dispatch(clearMessage()); // clear message when changing location
+    }
+  }, [dispatch, location]);
+
+  const handleLogout = useCallback(
+    () => {
+      dispatch(logout());
+    },
+    [dispatch],
+  )
+  
   return (
     <HeaderWrapper>
       <Nav>
@@ -111,9 +147,17 @@ function Header() {
           </MenuUl>
         </MenuWrapper>
         <MenuButtonWrapper>
-          <Link to="/login">
-            <Login variant="headersecondary">로그인</Login>
-          </Link>
+          {!currentUser ? (
+            <Link to="/login">
+              <Login variant="headersecondary">로그인</Login>
+            </Link>
+          ) : (
+            <Link to="/login">
+              <Logout variant="headerprimary" onClick={handleLogout}>로그아웃</Logout>
+            </Link>
+          )}
+          
+          <AuthVerify handleLogout={handleLogout} />
         </MenuButtonWrapper>
       </Nav>
     </HeaderWrapper>

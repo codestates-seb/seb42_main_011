@@ -38,6 +38,7 @@ public class MemberController {
     private final MemberMapper mapper;
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    // requestpart에 required=false 추가
     public ResponseEntity<ApiSingleResponse> createMember(@Valid @RequestPart MemberCreateDto createDto,
                                                           @RequestPart(required = false) MultipartFile profileImage) {
         Member member = memberService.createMember(mapper.memberCreateDtoToMember(createDto), profileImage);

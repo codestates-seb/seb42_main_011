@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 // src/mocks/handlers.js
 import { rest } from 'msw';
 import {
