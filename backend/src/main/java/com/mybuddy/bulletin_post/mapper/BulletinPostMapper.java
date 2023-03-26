@@ -52,7 +52,8 @@ public interface BulletinPostMapper {
                                         comment.getCommentContent(),
                                         comment.getMember().getMemberId(),
                                         comment.getMember().getNickname(),
-                                        comment.getMember().getDogName()
+                                        comment.getMember().getDogName(),
+                                        comment.getMember().getProfileUrl()
                                 );
                                 return commentResponse;
                             }
