@@ -44,6 +44,9 @@ function FriendSearchHeader({ initialName = '', initialType = '' }) {
   });
   const [searchType, setSearchType] = useState(initialType);
   const naviate = useNavigate();
+  const defaultOption = SEARCH_OPTIONS.filter(
+    option => option.value === initialType,
+  )[0].name;
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -74,6 +77,11 @@ function FriendSearchHeader({ initialName = '', initialType = '' }) {
     >
       <FriendSearchWrapper>
         <FriendSearchForm onSubmit={handleSubmit}>
+          <DropdownFriend
+            onSelect={handleSelect}
+            defaultDlsplayText={defaultOption}
+            options={SEARCH_OPTIONS}
+          />
           <FriendSearchInput
             value={searchName}
             onKeyDown={handleKeyDown}
@@ -82,11 +90,6 @@ function FriendSearchHeader({ initialName = '', initialType = '' }) {
             placeholder="검색"
             onChange={onChange}
             required
-          />
-          <DropdownFriend
-            onSelect={handleSelect}
-            defaultDlsplayText="필터"
-            options={SEARCH_OPTIONS}
           />
         </FriendSearchForm>
       </FriendSearchWrapper>
