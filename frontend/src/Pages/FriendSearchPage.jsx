@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import FriendSearch from '../components/FriendSearch';
@@ -16,16 +16,10 @@ function FriendSearchPage() {
   const [searchParams] = useSearchParams();
   const searchType = searchParams.get('searchType');
   const searchName = searchParams.get('searchName');
+  const naviate = useNavigate();
 
-  const handleClick = event => {
-    const $li = event.target.closest('li');
-
-    if (!$li) {
-      return;
-    }
-
-    const { memberId } = $li.dataset;
-    console.log(memberId);
+  const handleClick = memberId => {
+    naviate(`/user/${memberId}`);
   };
 
   return (
