@@ -1,12 +1,14 @@
 import React, { useEffect, useCallback } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { useSelector , useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Button from '../UI/Button';
 import { ReactComponent as MainLogo } from '../../assets/logo/logo.svg';
+import PostNewPage from '../../Pages/PostNewPage';
+import useModal from '../../hooks/useModal';
 
-import { logout } from "../../redux/actions/auth";
-import { clearMessage } from "../../redux/actions/message";
+import { logout } from '../../redux/actions/auth';
+import { clearMessage } from '../../redux/actions/message';
 import AuthVerify from '../../common/AuthVerify';
 
 const HeaderWrapper = styled.header`
@@ -88,25 +90,28 @@ const Logout = styled(Button)`
 `;
 
 function Header() {
-  const { user: currentUser } = useSelector((state) => state.auth);
+  const { openModal, closeModal } = useModal();
+
+  const handleWriteButtonClick = () => {
+    openModal(<PostNewPage onClose={closeModal} />);
+  };
+
+  const { user: currentUser } = useSelector(state => state.auth);
   // console.log(currentUser);
   const dispatch = useDispatch();
 
   const location = useLocation();
 
   useEffect(() => {
-    if (["/login", "/signup"].includes(location.pathname)) {
+    if (['/login', '/signup'].includes(location.pathname)) {
       dispatch(clearMessage()); // clear message when changing location
     }
   }, [dispatch, location]);
 
-  const handleLogout = useCallback(
-    () => {
-      dispatch(logout());
-    },
-    [dispatch],
-  )
-  
+  const handleLogout = useCallback(() => {
+    dispatch(logout());
+  }, [dispatch]);
+
   return (
     <HeaderWrapper>
       <Nav>
@@ -146,19 +151,29 @@ function Header() {
             </LinkStyle>
           </MenuUl>
         </MenuWrapper>
-        <MenuButtonWrapper>
-          {!currentUser ? (
+        {!currentUser ? (
+          <MenuButtonWrapper>
             <Link to="/login">
               <Login variant="headersecondary">로그인</Login>
             </Link>
-          ) : (
+
+            <AuthVerify handleLogout={handleLogout} />
+          </MenuButtonWrapper>
+        ) : (
+          <MenuButtonWrapper>
+            <Login onClick={handleWriteButtonClick} variant="headersecondary">
+              작성
+            </Login>
             <Link to="/login">
-              <Logout variant="headerprimary" onClick={handleLogout}>로그아웃</Logout>
+              <Login variant="headersecondary">마이페이지</Login>
             </Link>
-          )}
-          
-          <AuthVerify handleLogout={handleLogout} />
-        </MenuButtonWrapper>
+            <Link to="/login">
+              <Logout variant="headerprimary" onClick={handleLogout}>
+                로그아웃
+              </Logout>
+            </Link>
+          </MenuButtonWrapper>
+        )}
       </Nav>
     </HeaderWrapper>
   );
