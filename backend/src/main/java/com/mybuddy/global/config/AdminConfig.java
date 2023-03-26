@@ -4,6 +4,7 @@ import com.mybuddy.global.auth.utils.MemberAuthorityUtils;
 import com.mybuddy.member.entity.Member;
 import com.mybuddy.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.annotation.PostConstruct;
 import java.util.List;
 
+@Profile({"h2", "mysql"})
 @Configuration
 @RequiredArgsConstructor
 public class AdminConfig {
@@ -21,15 +23,17 @@ public class AdminConfig {
 
     private final MemberAuthorityUtils authorityUtils;
 
-    @Profile({"!prod", "!server"})
+    @Value("${mail.address.admin}")
+    private String adminMailAddress;
+
     @PostConstruct
     private Member registerMemberAsAdmin() {
         Member admin = Member.builder()
                 .memberId(1L)
-                .email("admin@mybuddy.com")
+                .email(adminMailAddress)
                 .password("admin")
-                .nickname("admin")
-                .dogName("admin")
+                .nickname("MyBuddyAdmin")
+                .dogName("MyBuddyAdmin")
                 .dogGender(Member.DogGender.MALE)
                 .build();
 
