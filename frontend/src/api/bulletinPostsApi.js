@@ -1,13 +1,5 @@
-import axios from 'axios';
-
-const BASE_URL = '/api/v1';
-
-const api = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    'ngrok-skip-browser-warning': '12',
-  },
-});
+import authHeader from '../redux/services/auth-header';
+import api from './api';
 
 async function updateBulletinPost({ bulletinId, postData }) {
   return api
@@ -17,7 +9,7 @@ async function updateBulletinPost({ bulletinId, postData }) {
     .then(({ data }) => data);
 }
 
-async function createBulletinPost({ postData, photoImage, accessToken }) {
+async function createBulletinPost({ postData, photoImage }) {
   const form = new FormData();
 
   form.append(
@@ -33,14 +25,20 @@ async function createBulletinPost({ postData, photoImage, accessToken }) {
     .post(`/bulletin-posts`, form, {
       headers: {
         'Content-Type': 'multipart/form-data',
-        authorization: accessToken,
+        ...authHeader(),
       },
     })
     .then(({ data }) => data);
 }
 
 async function getBulletinPost({ bulletinId }) {
-  return api.get(`/bulletin-posts/${bulletinId}`).then(({ data }) => data);
+  return api
+    .get(`/bulletin-posts/${bulletinId}`, {
+      headers: {
+        ...authHeader(),
+      },
+    })
+    .then(({ data }) => data);
 }
 
 async function getBulletinPostList({ page = 1, size = 10 }) {
@@ -49,9 +47,31 @@ async function getBulletinPostList({ page = 1, size = 10 }) {
     .then(({ data }) => data);
 }
 
+async function createBulletinPostLike({ bulletinId }) {
+  return api
+    .post(`/bulletin-posts/${bulletinId}/likes`, null, {
+      headers: {
+        ...authHeader(),
+      },
+    })
+    .then(({ data }) => data);
+}
+
+async function deleteBulletinPostLike({ bulletinId }) {
+  return api
+    .delete(`/bulletin-posts/${bulletinId}/likes`, {
+      headers: {
+        ...authHeader(),
+      },
+    })
+    .then(({ data }) => data);
+}
+
 export {
   updateBulletinPost,
   createBulletinPost,
   getBulletinPost,
   getBulletinPostList,
+  createBulletinPostLike,
+  deleteBulletinPostLike,
 };
