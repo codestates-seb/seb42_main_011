@@ -93,7 +93,7 @@ function LoginPage() {
     dispatch(login(email, password))
       .then(() => {
         navigate('/friendpage/feed');
-        window.location.reload();
+        // window.location.reload();
       })
       .catch(() => {
         setLoading(false);

@@ -96,7 +96,7 @@ const logout = () => {
   // const accessToken = localStorage.getItem('user');
   axios.post(`/api/v1/auth/logout`, null, { headers: authHeader() });
   localStorage.removeItem('accessToken');
-  Cookies.remove('refreshToken');
+  Cookies.remove('Refresh');
 };
 
 // export { useRegister, useLogin, logout };

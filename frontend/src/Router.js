@@ -26,7 +26,6 @@ function Router() {
         <Route path="/password/reset" element={<ResetPasswordPage />} />
         <Route path="/bye" element={<ByePage />} />
       </Route>
-
       <Route element={<Layout displayHeader />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/friend/search" element={<FriendSearchPage />} />
