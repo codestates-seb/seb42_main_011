@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 import { ReactComponent as MypageShape } from '../assets/shape/purple_shape.svg';
 import { ReactComponent as Stripeshape } from '../assets/shape/mypage_shape_stripe.svg';
 import Card from '../components/UI/Card/Card';
-import UserDummy from '../components/User/UserDummy';
 import ImageUpload from '../components/User/ImageUpload';
 import UserEditHeader from '../components/User/UserEditHeader';
 import UserEditContent from '../components/User/UserEditContent';
+import { getUserProfile } from '../api/userApi';
 
 const MyPageComponent = styled.section`
   width: 100%;
@@ -86,26 +87,49 @@ const StripeImg = styled(Stripeshape)`
 `;
 
 function UserEditPage() {
-  const [userdata] = useState(UserDummy.data);
+  const { memberId } = useParams();
   const navigate = useNavigate();
+  const {
+    isLoading,
+    error,
+    data: Userdata,
+  } = useQuery(['userData', memberId], () => getUserProfile({ memberId }));
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
 
   const handleCancel = () => {
-    navigate('/mypage');
+    navigate(`/user/${memberId}`);
   };
 
   return (
     <MyPageComponent>
       <Profile>
-        {userdata.map(({ id, data }) => (
-          <ImageUpload key={id} photoUrl={data.profileUrl} />
-        ))}
+        <ImageUpload
+          profileUrl={Userdata.data.profileUrl}
+          memberId={memberId}
+          nickname={Userdata.data.nickname}
+          aboutMe={Userdata.data.aboutMe}
+        />
       </Profile>
       <MyPageContent>
-        <UserEditHeader userdata={userdata} />
+        <UserEditHeader userdata={Userdata.data} />
         <UserInfoWrapper>
           <MypagePurpleShape />
           <ContentBox>
-            <UserEditContent userdata={userdata} onCancel={handleCancel} />
+            <UserEditContent
+              userdata={Userdata.data}
+              onCancel={handleCancel}
+              memberId={memberId}
+              nickname={Userdata.data.nickname}
+              aboutMe={Userdata.data.aboutMe}
+              profileUrl={Userdata.data.profileUrl}
+            />
             <StripeImg />
           </ContentBox>
         </UserInfoWrapper>

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+import { useQuery } from 'react-query';
 import { ReactComponent as PlaceShape } from '../assets/shape/place_shape.svg';
 import PlaceHeader from '../components/Place/PlaceHeader';
 import KakaoMap from '../components/KakaoMap/KakaoMap';
@@ -56,12 +58,22 @@ const LocationBtn = styled(Button)`
 const MapWrapper = styled.div`
   width: 100%;
   height: 100%;
-  overflow-y: auto;
 `;
 
 function PlacePage() {
   const { openModal } = useModal();
   const [selectedLocation, setSelectedLocation] = useState(null);
+
+  const locationQuery = useQuery(
+    ['location', selectedLocation],
+    () =>
+      axios.get(
+        `/api/v1/amenities?state=${selectedLocation?.state}&region=${selectedLocation?.region}`,
+      ),
+    {
+      enabled: selectedLocation !== null,
+    },
+  );
 
   const handleLocationSelect = location => {
     setSelectedLocation(location);
@@ -89,8 +101,8 @@ function PlacePage() {
               <Button onClick={handleKeywordBtnClick}>키워드 검색</Button>
             </ButtonWrapper>
             <MapWrapper>
-              {selectedLocation ? (
-                <LocationMap selectedLocation={selectedLocation} />
+              {selectedLocation && !locationQuery.isLoading ? (
+                <LocationMap data={locationQuery.data} />
               ) : (
                 <KakaoMap />
               )}

@@ -57,6 +57,30 @@ const GlobalStyles = createGlobalStyle`
     padding-left: 0;
     list-style: none;
   }
+
+  @keyframes roadRunnerIn {
+    0% {
+      transform: translateX(-1500px) skewX(30deg) scaleX(1.3);
+    }
+    70% {
+      transform: translateX(50px) skewX(0deg) scaleX(0.9);
+    }
+    100% {
+      transform: translateX(0px) skewX(0deg) scaleX(1);
+    }
+  }
+  /* 모달 콘텐츠 반동 효과로 숨기기 */
+  @keyframes roadRunnerOut {
+    0% {
+      transform: translateX(0px) skewX(0deg) scaleX(1);
+    }
+    30% {
+      transform: translateX(-100px) skewX(-5deg) scaleX(0.9);
+    }
+    100% {
+      transform: translateX(1500px) skewX(30deg) scaleX(1.3);
+    }
+  }
 `;
 
 export default GlobalStyles;

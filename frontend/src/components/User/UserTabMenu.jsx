@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const UserTab = styled.div`
   width: 100%;
@@ -62,8 +62,7 @@ const Menu = styled.div`
   }
 `;
 
-function UserTabMenu() {
-  const location = useLocation();
+function UserTabMenu({ memberId }) {
   return (
     <UserTab>
       <Tabmenu>
@@ -71,9 +70,7 @@ function UserTabMenu() {
           <NavLink
             end
             className={({ isActive }) => (isActive ? 'selected' : '')}
-            to={
-              location.pathname.includes('/mypage') ? '/mypage' : '/friendpage'
-            }
+            to={`/user/${memberId}`}
           >
             <Menu>소개</Menu>
           </NavLink>
@@ -82,11 +79,7 @@ function UserTabMenu() {
           <NavLink
             end
             className={({ isActive }) => (isActive ? 'selected' : '')}
-            to={
-              location.pathname.includes('/mypage')
-                ? '/mypage/feed'
-                : '/friendpage/feed'
-            }
+            to={`/user/${memberId}/feed`}
           >
             <Menu>일기</Menu>
           </NavLink>
@@ -95,11 +88,7 @@ function UserTabMenu() {
           <NavLink
             end
             className={({ isActive }) => (isActive ? 'selected' : '')}
-            to={
-              location.pathname.includes('/mypage')
-                ? '/mypage/place'
-                : '/friendpage/place'
-            }
+            to={`/user/${memberId}/place`}
           >
             <Menu>추천</Menu>
           </NavLink>

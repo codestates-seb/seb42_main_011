@@ -87,14 +87,21 @@ const Number = styled.span`
   color: var(--color-primary);
 `;
 
-function UserHeader({ userdata }) {
+function UserHeader({ userdata, memberId, isMyPage }) {
+  const userData = userdata;
+
+  if (!userData) {
+    return null;
+  }
+
   const location = useLocation();
   const { openModal } = useModal();
 
   const AllowClickFollows =
-    location.pathname === '/mypage' ||
-    location.pathname === '/mypage/feed' ||
-    location.pathname === '/mypage/place';
+    isMyPage &&
+    (location.pathname === `/user/${memberId}` ||
+      location.pathname === `/user/${memberId}/feed` ||
+      location.pathname === `/user/${memberId}/place`);
 
   const color = 'var(--color-tertiary)';
   const formatNumber = num => {
@@ -118,38 +125,36 @@ function UserHeader({ userdata }) {
   return (
     <UserHeaderWrapper UserHeaderWrapper>
       <UserHeaderContent>
-        {userdata.map(({ id, data }) => (
-          <UserDataWrapper key={id}>
-            <Name>{data.dogName}</Name>
-            <Nickname>{data.nickname}</Nickname>
-            <Gender>
-              {data.dogGender === 'MALE' ? (
-                <MaleLogoIcon color={color} />
-              ) : (
-                <FemaleLogoIcon color={color} />
-              )}
-            </Gender>
-            {AllowClickFollows ? (
-              <FollowSection>
-                <Follower onClick={handleFollowerClick} className="mypageClick">
-                  <Number>{formatNumber(data.followerNumber)}</Number> 팔로워
-                </Follower>
-                <Follow onClick={handleFollow} className="mypageClick">
-                  <Number>{formatNumber(data.followeeNumber)}</Number> 팔로우
-                </Follow>
-              </FollowSection>
+        <UserDataWrapper>
+          <Name>{userdata.dogName}</Name>
+          <Nickname>{userdata.nickname}</Nickname>
+          <Gender>
+            {userdata.dogGender === 'MALE' ? (
+              <MaleLogoIcon color={color} />
             ) : (
-              <FollowSection>
-                <Follower>
-                  <Number>{formatNumber(data.followerNumber)}</Number> 팔로워
-                </Follower>
-                <Follow>
-                  <Number>{formatNumber(data.followeeNumber)}</Number> 팔로우
-                </Follow>
-              </FollowSection>
+              <FemaleLogoIcon color={color} />
             )}
-          </UserDataWrapper>
-        ))}
+          </Gender>
+          {AllowClickFollows ? (
+            <FollowSection>
+              <Follower onClick={handleFollowerClick} className="mypageClick">
+                <Number>{formatNumber(userdata.followerNumber)}</Number> 팔로워
+              </Follower>
+              <Follow onClick={handleFollow} className="mypageClick">
+                <Number>{formatNumber(userdata.followeeNumber)}</Number> 팔로우
+              </Follow>
+            </FollowSection>
+          ) : (
+            <FollowSection>
+              <Follower>
+                <Number>{formatNumber(userdata.followerNumber)}</Number> 팔로워
+              </Follower>
+              <Follow>
+                <Number>{formatNumber(userdata.followeeNumber)}</Number> 팔로우
+              </Follow>
+            </FollowSection>
+          )}
+        </UserDataWrapper>
       </UserHeaderContent>
     </UserHeaderWrapper>
   );

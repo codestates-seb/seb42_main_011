@@ -1,24 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import { useQuery } from 'react-query';
+/* import { useParams } from 'react-router-dom'; */
 import Modal from '../UI/Modal/Modal';
 import Card from '../UI/Card/Card';
 import FollowLogo from '../../assets/logo/following_logo.svg';
-import FOLLOWDUMMY from './FOLLOWDUMMY';
+import { getUserFollowing } from '../../api/userApi';
 
-/* const NoFollowers = styled.div`
+const NoFollowing = styled.div`
   width: 100%;
   height: 100%;
   font-size: var(--font-size-20);
   font-weight: 500;
   margin-top: 150px;
-`; */
+  text-align: center;
+`;
 
-const FollowerListCard = styled.div`
+const FollowingListCard = styled.div`
   width: 371px;
   height: 410px;
   margin-top: 10px;
   display: flex;
-  justify-content: space-between;
   flex-direction: column;
   overflow: hidden;
   overflow-y: auto;
@@ -29,17 +31,16 @@ const FollowerListCard = styled.div`
   }
 `;
 
-const FollowerWrapper = styled.div`
+const FollowingWrapper = styled.div`
   width: 100%;
   height: 100%;
   padding: 0 5px;
   display: flex;
   flex-wrap: wrap;
-
   cursor: pointer;
 `;
 
-const FollowerCard = styled(Card)`
+const FollowingCard = styled(Card)`
   width: 368px;
   height: 80px;
   box-shadow: 5px 5px var(--color-dark-0);
@@ -88,28 +89,51 @@ const NickName = styled.p`
 `;
 
 function FollowModal() {
-  const [followdata] = useState(FOLLOWDUMMY.data);
+  /*  const { page } = useParams();
+  const { size } = useParams(); */
+  const {
+    isLoading,
+    error,
+    data: following,
+  } = useQuery('following', () =>
+    getUserFollowing({
+      page: 1,
+      size: 10,
+      accessToken: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjo4LCJ1c2VybmFtZSI6ImF3ZWFzZEBtdW5nZmx1ZW5jZXIuY29tIiwic3ViIjoiYXdlYXNkQG11bmdmbHVlbmNlci5jb20iLCJpYXQiOjE2Nzk2MjAzMjgsImV4cCI6MTY3OTk2NTkyOH0.PrPMxPM5jFZF8fpiuCbuzcgtUZ-vfwyvg8u49TslrD0WwK_eMNaaoLG3o-QJJbZAuggZyJ-4YildiF4dPs1Aeg`,
+    }),
+  );
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
   return (
     <Modal titleImage={FollowLogo}>
-      {/* <NoFollowers>아직 팔로워가 없어요!</NoFollowers> */}
-      <FollowerListCard>
-        {followdata.map(({ id, nickname, dogName, profileUrl }) => (
-          <FollowerWrapper key={id}>
-            <FollowerCard>
-              <Profile>
-                <ProfileImg
-                  src={profileUrl}
-                  alt={`${dogName}의 프로필 이미지`}
-                />
-              </Profile>
-              <ProfileInfo>
-                <DogName>{dogName}</DogName>
-                <NickName>{nickname}</NickName>
-              </ProfileInfo>
-            </FollowerCard>
-          </FollowerWrapper>
-        ))}
-      </FollowerListCard>
+      <FollowingListCard>
+        {following.data.length === 0 ? (
+          <NoFollowing>아직 팔로잉한 친구가 없어요!</NoFollowing>
+        ) : (
+          following.data.map(({ memberId, nickname, dogName, profileUrl }) => (
+            <FollowingWrapper key={memberId}>
+              <FollowingCard>
+                <Profile>
+                  <ProfileImg
+                    src={profileUrl}
+                    alt={`${dogName}의 프로필 이미지`}
+                  />
+                </Profile>
+                <ProfileInfo>
+                  <DogName>{dogName}</DogName>
+                  <NickName>{nickname}</NickName>
+                </ProfileInfo>
+              </FollowingCard>
+            </FollowingWrapper>
+          ))
+        )}
+      </FollowingListCard>
     </Modal>
   );
 }

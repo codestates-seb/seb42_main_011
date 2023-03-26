@@ -1,6 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useMutation } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { updateUser } from '../../api/userApi';
 import Button from '../UI/Button';
+import useDebounce from '../../hooks/useDebounce';
+import ModalBase from '../UI/Modal/ModalBase';
+import useModal from '../../hooks/useModal';
 
 const EditBox = styled.form`
   width: 100%;
@@ -83,25 +89,89 @@ const CancelBtn = styled(Button)`
   }
 `;
 
-function UserEditContent({ onCancel, userdata }) {
-  const [UserNickname, setUserNickname] = useState(userdata[0].data.nickname);
-  const [UserAboutMe, setUserAboutMe] = useState(userdata[0].data.aboutMe);
+function UserEditContent({ onCancel, memberId, nickname, aboutMe }) {
+  const { openModal } = useModal();
+  const [UserNickname, setUserNickname] = useState(nickname);
+  const [UserAboutMe, setUserAboutMe] = useState(aboutMe);
+  const [aboutMeError, setAboutMeError] = useState('');
   const [nicknameError, setNicknameError] = useState('');
-  const handleNicknameChange = event => {
-    const { value } = event.target;
-    if (value.length < 4 || value.length > 10) {
+  const updateUserMutation = useMutation(updateUser);
+  const navigate = useNavigate();
+  const MAX_LINES = 7;
+
+  // Debounce input changes
+  const debouncedNickname = useDebounce(UserNickname, 100);
+  const debouncedAboutMe = useDebounce(UserAboutMe, 100);
+
+  // Debounce Nickname
+  useEffect(() => {
+    if (debouncedNickname.length < 4 || debouncedNickname.length > 10) {
       setNicknameError('닉네임은 4-10자 사이로 작성 해주세요.');
     } else {
       setNicknameError('');
     }
+  }, [debouncedNickname]);
+
+  // Debounce Aboutme
+  useEffect(() => {
+    const lineCount = (debouncedAboutMe.match(/\n/g) || []).length + 1;
+    if (lineCount > MAX_LINES) {
+      setAboutMeError(`소개는 ${MAX_LINES}줄까지 입력 가능합니다.`);
+    } else {
+      setAboutMeError('');
+    }
+  }, [debouncedAboutMe]);
+
+  const handleAboutMeChange = event => {
+    const { value } = event.target;
+    setUserAboutMe(value);
+  };
+
+  const handleNicknameChange = event => {
+    const { value } = event.target;
     setUserNickname(value);
   };
 
-  const handleAboutMeChange = event => {
-    setUserAboutMe(event.target.value);
+  const handleUpdate = async e => {
+    e.preventDefault();
+    try {
+      await updateUserMutation.mutateAsync(
+        {
+          memberId,
+          nickname: UserNickname,
+          aboutMe: UserAboutMe,
+          accessToken: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjo4LCJ1c2VybmFtZSI6ImF3ZWFzZEBtdW5nZmx1ZW5jZXIuY29tIiwic3ViIjoiYXdlYXNkQG11bmdmbHVlbmNlci5jb20iLCJpYXQiOjE2Nzk2MjAzMjgsImV4cCI6MTY3OTk2NTkyOH0.PrPMxPM5jFZF8fpiuCbuzcgtUZ-vfwyvg8u49TslrD0WwK_eMNaaoLG3o-QJJbZAuggZyJ-4YildiF4dPs1Aeg`,
+        },
+        {
+          onSuccess: () => {
+            openModal(
+              <ModalBase
+                title="INFO"
+                content="회원정보 변경 완료! :)"
+                buttons={<Button>확인</Button>}
+              />,
+            );
+          },
+          onError: () => {
+            openModal(
+              <ModalBase
+                title="INFO"
+                content="회원정보 변경에 실패했어요 :/"
+                buttons={<Button>확인</Button>}
+              />,
+            );
+          },
+        },
+      );
+
+      navigate(`/user/${memberId}`);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   return (
-    <EditBox>
+    <EditBox onSubmit={handleUpdate}>
       <Nickname>
         <Title>닉네임</Title>
         <NicknameInput
@@ -126,6 +196,7 @@ function UserEditContent({ onCancel, userdata }) {
           onChange={handleAboutMeChange}
           required
         />
+        {aboutMeError && <ErrorMessage>{aboutMeError}</ErrorMessage>}
       </AboutMe>
       <BtnWrapper>
         <ConfirmBtn variant="medium">확인</ConfirmBtn>

@@ -99,7 +99,6 @@ function DropdownLocation({
       onSelect,
       defaultDlsplayText,
     });
-
   return (
     <DropdownContainer>
       <DropdownButton isOpen={isOpen} onClick={handleDropdownToggle}>
@@ -109,7 +108,7 @@ function DropdownLocation({
       {isOpen && (
         <DropdownList onClick={handleOptionSelect}>
           {options.map(option => (
-            <DropdownListItem data-dropdown-option={option}>
+            <DropdownListItem key={option} data-dropdown-option={option}>
               {option}
             </DropdownListItem>
           ))}

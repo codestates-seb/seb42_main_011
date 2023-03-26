@@ -1,6 +1,10 @@
 import { useRef, useState, forwardRef } from 'react';
+import { useMutation } from 'react-query';
 import styled from 'styled-components';
+import { updateUser } from '../../api/userApi';
+import useModal from '../../hooks/useModal';
 import Button from '../UI/Button';
+import ModalBase from '../UI/Modal/ModalBase';
 import UserpageProfile from '../UI/UserpageProfile';
 
 const ImageWrapper = styled.section`
@@ -50,21 +54,73 @@ const ImageChangeBtn = styled(Button)`
   }
 `;
 
-function ImageUpload({ photoUrl }) {
+function ImageUpload({ profileUrl, memberId, nickname, aboutMe }) {
+  const { openModal } = useModal();
   const uploadedImage = useRef(null);
   const imageUploader = useRef(null);
-  const [Image, setImage] = useState(photoUrl);
+  const [Image, setImage] = useState(profileUrl);
+  const [file, setFile] = useState(null);
+  const updateUserMutation = useMutation(updateUser);
 
-  const handleImageUpload = event => {
-    const [file] = event.target.files;
-    if (file) {
+  console.log(file);
+
+  // File select window
+  const handleImageUpload = () => {
+    imageUploader.current.click();
+  };
+
+  const handleFileSelection = event => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
       const reader = new FileReader();
       reader.onload = () => {
         if (reader.readyState === 2) {
           setImage(reader.result);
         }
       };
-      reader.readAsDataURL(event.target.files[0]);
+      reader.readAsDataURL(selectedFile);
+    }
+  };
+
+  // Click api call (profileImage)
+  const handleUpdateProfileImg = async () => {
+    try {
+      if (file) {
+        await updateUserMutation.mutateAsync(
+          {
+            memberId,
+            profileImage: file,
+            nickname,
+            aboutMe,
+            accessToken: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjo4LCJ1c2VybmFtZSI6ImF3ZWFzZEBtdW5nZmx1ZW5jZXIuY29tIiwic3ViIjoiYXdlYXNkQG11bmdmbHVlbmNlci5jb20iLCJpYXQiOjE2Nzk2MjAzMjgsImV4cCI6MTY3OTk2NTkyOH0.PrPMxPM5jFZF8fpiuCbuzcgtUZ-vfwyvg8u49TslrD0WwK_eMNaaoLG3o-QJJbZAuggZyJ-4YildiF4dPs1Aeg`,
+          },
+          {
+            onSuccess: () => {
+              openModal(
+                <ModalBase
+                  title="IMAGE"
+                  content="프로필 이미지 변경 완료! :)"
+                  buttons={<Button>확인</Button>}
+                />,
+              );
+            },
+            onError: () => {
+              openModal(
+                <ModalBase
+                  title="IMAGE"
+                  content="프로필 이미지 변경에 실패했어요 :/"
+                  buttons={<Button>확인</Button>}
+                />,
+              );
+            },
+          },
+        );
+
+        setImage(URL.createObjectURL(file)); // Image preview update
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -72,22 +128,34 @@ function ImageUpload({ photoUrl }) {
     <ImageWrapper>
       <input
         type="file"
-        accept="image/jpg, image/png"
-        onChange={handleImageUpload}
+        accept="image/jpg, image/png, image/gif"
+        onChange={handleFileSelection}
         ref={imageUploader}
         style={{
           display: 'none',
         }}
       />
       <ProfilePicture role="presentation">
-        <ProfileImg src={Image} forwardedRef={uploadedImage} alt="" />
+        <ProfileImg
+          src={Image}
+          forwardedRef={uploadedImage}
+          alt="프로필 이미지"
+        />
       </ProfilePicture>
       <BtnWrapper>
         <ImageChangeBtn
           variant="medium"
-          onClick={() => imageUploader.current.click()}
+          onClick={event => {
+            handleImageUpload(event);
+          }}
         >
           이미지 변경
+        </ImageChangeBtn>
+        <ImageChangeBtn
+          variant="medium"
+          onClick={event => handleUpdateProfileImg(event)}
+        >
+          이미지 저장
         </ImageChangeBtn>
       </BtnWrapper>
     </ImageWrapper>

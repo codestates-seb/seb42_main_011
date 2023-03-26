@@ -1,24 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import { useQuery } from 'react-query';
 import Modal from '../UI/Modal/Modal';
 import Card from '../UI/Card/Card';
 import followersLogo from '../../assets/logo/followers_logo.svg';
-import FOLLOWDUMMY from './FOLLOWDUMMY';
+import { getUserFollower } from '../../api/userApi';
 
-/* const NoFollowers = styled.div`
+const NoFollowers = styled.div`
   width: 100%;
   height: 100%;
   font-size: var(--font-size-20);
   font-weight: 500;
   margin-top: 150px;
-`; */
+  text-align: center;
+`;
 
 const FollowerListCard = styled.div`
   width: 371px;
   height: 410px;
   margin-top: 10px;
   display: flex;
-  justify-content: space-between;
   flex-direction: column;
   overflow: hidden;
   overflow-y: auto;
@@ -88,27 +89,48 @@ const NickName = styled.p`
 `;
 
 function FollowerModal() {
-  const [followdata] = useState(FOLLOWDUMMY.data);
+  const {
+    isLoading,
+    error,
+    data: follower,
+  } = useQuery('follower', () =>
+    getUserFollower({
+      page: 1,
+      size: 10,
+      accessToken: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjo4LCJ1c2VybmFtZSI6ImF3ZWFzZEBtdW5nZmx1ZW5jZXIuY29tIiwic3ViIjoiYXdlYXNkQG11bmdmbHVlbmNlci5jb20iLCJpYXQiOjE2Nzk2MjAzMjgsImV4cCI6MTY3OTk2NTkyOH0.PrPMxPM5jFZF8fpiuCbuzcgtUZ-vfwyvg8u49TslrD0WwK_eMNaaoLG3o-QJJbZAuggZyJ-4YildiF4dPs1Aeg`,
+    }),
+  );
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
   return (
     <Modal titleImage={followersLogo}>
-      {/* <NoFollowers>아직 팔로워가 없어요!</NoFollowers> */}
       <FollowerListCard>
-        {followdata.map(({ id, nickname, dogName, profileUrl }) => (
-          <FollowerWrapper key={id}>
-            <FollowerCard>
-              <Profile>
-                <ProfileImg
-                  src={profileUrl}
-                  alt={`${dogName}의 프로필 이미지`}
-                />
-              </Profile>
-              <ProfileInfo>
-                <DogName>{dogName}</DogName>
-                <NickName>{nickname}</NickName>
-              </ProfileInfo>
-            </FollowerCard>
-          </FollowerWrapper>
-        ))}
+        {follower.data.length === 0 ? (
+          <NoFollowers>아직 팔로워가 없어요!</NoFollowers>
+        ) : (
+          follower.data.map(({ memberId, nickname, dogName, profileUrl }) => (
+            <FollowerWrapper key={memberId}>
+              <FollowerCard>
+                <Profile>
+                  <ProfileImg
+                    src={profileUrl}
+                    alt={`${dogName}의 프로필 이미지`}
+                  />
+                </Profile>
+                <ProfileInfo>
+                  <DogName>{dogName}</DogName>
+                  <NickName>{nickname}</NickName>
+                </ProfileInfo>
+              </FollowerCard>
+            </FollowerWrapper>
+          ))
+        )}
       </FollowerListCard>
     </Modal>
   );

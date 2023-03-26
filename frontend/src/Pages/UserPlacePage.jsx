@@ -5,7 +5,7 @@ import Card from '../components/UI/Card/Card';
 const FeedPlaceWrapper = styled.section`
   margin-top: 20px;
   width: 100%;
-  height: 99%;
+  height: 100%;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -15,9 +15,10 @@ const FeedPlaceWrapper = styled.section`
 const PlaceWrapper = styled.div`
   width: 100%;
   height: 100%;
-  padding: 0 20px 0 10px;
+  padding: 0 20px;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: start;
   overflow-y: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -28,20 +29,20 @@ const PlaceWrapper = styled.div`
 `;
 
 const PlaceCard = styled(Card)`
-  margin-bottom: 15px;
-  &:hover {
-    box-shadow: 8px 8px var(--color-dark-0);
-    border-radius: 10px;
-  }
   background-color: var(--color-light-0);
   display: flex;
   justify-content: space-between;
   padding: 10px;
   width: 100%;
+  margin-bottom: 15px;
+  &:hover {
+    box-shadow: 8px 8px var(--color-dark-0);
+    border-radius: 10px;
+  }
 `;
 
 const Place = styled.div`
-  width: 16%;
+  width: 20%;
   aspect-ratio: 1/1;
   border: var(--border);
   border-radius: 10px;
@@ -75,16 +76,36 @@ const Address = styled.p`
   opacity: 0.6;
 `;
 
-function UserPlacePage({ userdata }) {
+const TextWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  padding-top: 30%;
+`;
+
+const NoDataText = styled.p`
+  text-align: center;
+  line-height: 3rem;
+  font-size: var(--font-size-20);
+  font-weight: 500;
+  margin-top: 20px;
+`;
+
+function UserPlacePage({ userdata, isMypage }) {
+  if (!userdata) {
+    return null;
+  }
   return (
     <FeedPlaceWrapper>
-      {userdata.map(({ id, data }) => (
-        <PlaceWrapper key={id}>
-          {data.myAmenityDtos.map(
+      <PlaceWrapper>
+        {userdata?.amenityForMyPageResponseDtos?.length ? (
+          userdata.amenityForMyPageResponseDtos.map(
             ({ amenityId, amenityName, address, photoUrl }) => (
               <PlaceCard key={amenityId}>
                 <Place>
-                  <PlaceImg src={photoUrl} alt={`${data.dogName}의 게시글`} />
+                  <PlaceImg
+                    src={photoUrl}
+                    alt={`${userdata.dogName}의 추천장소 이미지`}
+                  />
                 </Place>
                 <PlaceInfo>
                   <Title>{amenityName}</Title>
@@ -92,9 +113,21 @@ function UserPlacePage({ userdata }) {
                 </PlaceInfo>
               </PlaceCard>
             ),
-          )}
-        </PlaceWrapper>
-      ))}
+          )
+        ) : (
+          <TextWrapper>
+            {isMypage ? (
+              <NoDataText>
+                아직 추천한 장소가 없어요!
+                <br />
+                위치를 추가해 장소를 추천해보세요 :)
+              </NoDataText>
+            ) : (
+              <NoDataText>아직 친구가 추천한 장소가 없어요! :)</NoDataText>
+            )}
+          </TextWrapper>
+        )}
+      </PlaceWrapper>
     </FeedPlaceWrapper>
   );
 }

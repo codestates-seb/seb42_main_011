@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useMutation } from 'react-query';
 import Button from '../components/UI/Button';
+import {
+  deleteUserFollow,
+  getUserFollowing,
+  postUserFollow,
+} from '../api/userApi';
+import ModalBase from '../components/UI/Modal/ModalBase';
+import useModal from '../hooks/useModal';
 
 const AboutMe = styled.section`
   text-align: center;
@@ -17,7 +25,7 @@ const AboutMe = styled.section`
 `;
 
 const AboutMeContent = styled.div`
-  width: 100%;
+  width: 90%;
   min-width: 376px;
   white-space: pre-wrap;
   display: flex;
@@ -26,7 +34,7 @@ const AboutMeContent = styled.div`
   font-size: 20px;
   font-weight: 500;
   line-height: 40px;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 `;
 
 const FollowButton = styled(Button)`
@@ -36,28 +44,134 @@ const FollowButton = styled(Button)`
   }
 `;
 
-function UserAboutmePage({ userdata }) {
-  const location = useLocation();
+function UserAboutmePage({ userdata, memberId, isMyPage }) {
   let AboumeButton;
+  const userData = userdata;
+  const { openModal } = useModal();
+  const [isFollowing, setIsFollowing] = useState(false);
+
+  // Button change
+  const userFollowMutation = useMutation(postUserFollow, {
+    onSettled: () => {
+      setIsFollowing(true);
+    },
+  });
+
+  const userFollowDeleteMutation = useMutation(deleteUserFollow, {
+    onSettled: () => {
+      setIsFollowing(false);
+    },
+  });
+
+  useEffect(() => {
+    async function checkFollowingStatus() {
+      try {
+        const followingStatus = await getUserFollowing({
+          memberId,
+          accessToken: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjo4LCJ1c2VybmFtZSI6ImF3ZWFzZEBtdW5nZmx1ZW5jZXIuY29tIiwic3ViIjoiYXdlYXNkQG11bmdmbHVlbmNlci5jb20iLCJpYXQiOjE2Nzk2MjAzMjgsImV4cCI6MTY3OTk2NTkyOH0.PrPMxPM5jFZF8fpiuCbuzcgtUZ-vfwyvg8u49TslrD0WwK_eMNaaoLG3o-QJJbZAuggZyJ-4YildiF4dPs1Aeg`,
+        });
+        setIsFollowing(followingStatus);
+      } catch (error) {
+        console.error('Failed to check following status:', error);
+      }
+    }
+
+    checkFollowingStatus();
+  }, [memberId]);
+
+  // Click api call (delete, follow)
+  const handleFollowClick = async () => {
+    try {
+      if (isFollowing) {
+        await userFollowDeleteMutation.mutateAsync(
+          {
+            memberId,
+            accessToken: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjo4LCJ1c2VybmFtZSI6ImF3ZWFzZEBtdW5nZmx1ZW5jZXIuY29tIiwic3ViIjoiYXdlYXNkQG11bmdmbHVlbmNlci5jb20iLCJpYXQiOjE2Nzk2MjAzMjgsImV4cCI6MTY3OTk2NTkyOH0.PrPMxPM5jFZF8fpiuCbuzcgtUZ-vfwyvg8u49TslrD0WwK_eMNaaoLG3o-QJJbZAuggZyJ-4YildiF4dPs1Aeg`,
+          },
+          {
+            onSuccess: () => {
+              openModal(
+                <ModalBase
+                  title="UNFOLLOW"
+                  content="팔로우를 끊었어요 :)"
+                  buttons={<Button>확인</Button>}
+                />,
+              );
+            },
+            onError: () => {
+              openModal(
+                <ModalBase
+                  title="UNFOLLOW"
+                  content="팔로우 끊기에 실패했어요 :/"
+                  buttons={<Button>확인</Button>}
+                />,
+              );
+            },
+          },
+        );
+      } else {
+        await userFollowMutation.mutateAsync(
+          {
+            memberId,
+            accessToken: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjo4LCJ1c2VybmFtZSI6ImF3ZWFzZEBtdW5nZmx1ZW5jZXIuY29tIiwic3ViIjoiYXdlYXNkQG11bmdmbHVlbmNlci5jb20iLCJpYXQiOjE2Nzk2MjAzMjgsImV4cCI6MTY3OTk2NTkyOH0.PrPMxPM5jFZF8fpiuCbuzcgtUZ-vfwyvg8u49TslrD0WwK_eMNaaoLG3o-QJJbZAuggZyJ-4YildiF4dPs1Aeg`,
+          },
+          {
+            onSuccess: () => {
+              openModal(
+                <ModalBase
+                  title="FOLLOW"
+                  content="팔로우 했어요! :)"
+                  buttons={<Button>확인</Button>}
+                />,
+              );
+            },
+            onError: () => {
+              openModal(
+                <ModalBase
+                  title="FOLLOW"
+                  content="팔로우에 실패했어요 :/"
+                  buttons={<Button>확인</Button>}
+                />,
+              );
+            },
+          },
+        );
+      }
+    } catch (error) {
+      console.error('Failed to update following status:', error);
+    }
+  };
+
+  if (!userData) {
+    return null;
+  }
 
   // Button change by location
-  if (location.pathname.includes('/mypage')) {
+  if (isMyPage) {
     AboumeButton = (
-      <Link to="/mypage/edit">
+      <Link to={`/user/${memberId}/edit`}>
         <Button variant="medium">수정</Button>
       </Link>
     );
-  } else if (location.pathname.includes('/friendpage')) {
-    AboumeButton = <FollowButton variant="medium">팔로우</FollowButton>;
+  } else {
+    AboumeButton = (
+      <FollowButton variant="medium" onClick={handleFollowClick}>
+        {isFollowing ? '팔로우끊기' : '팔로우'}
+      </FollowButton>
+    );
   }
   return (
     <div>
-      {userdata.map(({ id, data }) => (
-        <AboutMe key={id}>
-          <AboutMeContent>{data.aboutMe}</AboutMeContent>
-          {AboumeButton}
-        </AboutMe>
-      ))}
+      <AboutMe>
+        <AboutMeContent>
+          {!userData.aboutMe ? (
+            <p>아직 소개글이 없네요!</p>
+          ) : (
+            <p>{userData.aboutMe}</p>
+          )}
+        </AboutMeContent>
+        {AboumeButton}
+      </AboutMe>
     </div>
   );
 }

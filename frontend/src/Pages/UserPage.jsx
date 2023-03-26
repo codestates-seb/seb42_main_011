@@ -1,17 +1,15 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useQuery } from 'react-query';
 import styled from 'styled-components';
-
+import { useLocation, useParams } from 'react-router-dom';
+/* import { useSelector } from 'react-redux'; */
 import UserInfoComponent from '../components/User/UserInfoComponent';
 import UserProfileImg from '../components/User/UserProfileImg';
 import UserDeleteModal from '../components/User/UserDeleteModal';
 import useModal from '../hooks/useModal';
-
 import { ReactComponent as ProfileTitle } from '../assets/logo/mypage_logo.svg';
 import { ReactComponent as FriendProfileTitle } from '../assets/logo/friend_mypage_logo.svg';
-
-import USERDUMMY from '../components/User/UserDummy';
-import FRINEDDUMMY from '../components/User/UserDummyFriend';
+import { getUserProfile } from '../api/userApi';
 
 const MyPageComponent = styled.section`
   width: 100%;
@@ -58,37 +56,57 @@ const FriendTitleLogo = styled(FriendProfileTitle)`
 
 function UserPage() {
   const { openModal } = useModal();
+  const { memberId: pageMemberId } = useParams();
   const location = useLocation();
+
+  /*  const currentUserMemberId = useSelector(state => state.auth.user); */ // 현재 사용자의 아이디
+  const currentUserMemberId = '8'; // 현재 사용자의 아이디
+
   let TitleImageUrl;
-  let Userdata;
+
+  const isMyPage = pageMemberId === currentUserMemberId;
 
   const PageLocation = location.pathname;
 
-  const UserdeleteLocation =
-    PageLocation === '/mypage' ||
-    PageLocation === '/mypage/feed' ||
-    PageLocation === '/mypage/place';
-
-  // Title logo, Dummydata change
-  if (PageLocation.includes('/mypage')) {
+  // Title logo change
+  if (isMyPage) {
     TitleImageUrl = <TitleLogo alt="My page" />;
-    Userdata = USERDUMMY.data;
-  } else if (PageLocation.includes('/friendpage')) {
+  } else {
     TitleImageUrl = <FriendTitleLogo alt="Friend page" />;
-    Userdata = FRINEDDUMMY.data;
   }
 
   const handleDeleteButtnClick = () => {
     openModal(<UserDeleteModal />);
   };
 
+  const {
+    isLoading,
+    error,
+    data: Userdata,
+  } = useQuery(['userData', pageMemberId], () =>
+    getUserProfile({ memberId: pageMemberId }),
+  );
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
+
   return (
     <MyPageComponent>
       <UserDelete onClick={handleDeleteButtnClick}>
-        {UserdeleteLocation ? '화원탈퇴' : null}
+        {isMyPage ? '회원탈퇴' : null}
       </UserDelete>
-      <UserProfileImg Userdata={Userdata} TitleImageUrl={TitleImageUrl} />
-      <UserInfoComponent PageLocation={PageLocation} Userdata={Userdata} />
+      <UserProfileImg Userdata={Userdata.data} TitleImageUrl={TitleImageUrl} />
+      <UserInfoComponent
+        PageLocation={PageLocation}
+        Userdata={Userdata.data}
+        memberId={pageMemberId}
+        isMyPage={isMyPage}
+      />
     </MyPageComponent>
   );
 }

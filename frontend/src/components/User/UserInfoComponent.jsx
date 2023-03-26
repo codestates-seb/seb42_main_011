@@ -23,7 +23,6 @@ const UserInfoWrapper = styled.div`
   max-width: 850px;
   position: relative;
   z-index: 1;
-  background-color: pink;
 `;
 
 const MypagePurpleShape = styled(MypageShape)`
@@ -71,30 +70,30 @@ const Contents = styled.div`
   height: 87.5%;
 `;
 
-function UserInfoComponent({ PageLocation, Userdata }) {
+function UserInfoComponent({ PageLocation, Userdata, memberId, isMyPage }) {
   let CardContents;
 
-  if (PageLocation === '/mypage' || PageLocation === '/friendpage') {
-    CardContents = <UserAboutmePage userdata={Userdata} />;
-  } else if (
-    PageLocation === '/mypage/feed' ||
-    PageLocation === '/friendpage/feed'
-  ) {
-    CardContents = <UserFeedPage userdata={Userdata} />;
-  } else if (
-    PageLocation === '/mypage/place' ||
-    PageLocation === '/friendpage/place'
-  ) {
-    CardContents = <UserPlacePage userdata={Userdata} />;
+  if (PageLocation === `/user/${memberId}`) {
+    CardContents = (
+      <UserAboutmePage
+        memberId={memberId}
+        userdata={Userdata}
+        isMyPage={isMyPage}
+      />
+    );
+  } else if (PageLocation === `/user/${memberId}/feed`) {
+    CardContents = <UserFeedPage userdata={Userdata} isMyPage={isMyPage} />;
+  } else if (PageLocation === `/user/${memberId}/place`) {
+    CardContents = <UserPlacePage userdata={Userdata} isMyPage={isMyPage} />;
   }
 
   return (
     <MyPageContent>
-      <UserHeader userdata={Userdata} />
+      <UserHeader userdata={Userdata} memberId={memberId} isMyPage={isMyPage} />
       <UserInfoWrapper>
         <MypagePurpleShape />
         <ContentBox>
-          <UserTabMenu />
+          <UserTabMenu memberId={memberId} />
           <Contents>{CardContents}</Contents>
           <StripeImg />
         </ContentBox>

@@ -33,16 +33,13 @@ function Router() {
       </Route>
 
       <Route element={<Layout displayHeader displayProfile displayFlex />}>
-        <Route path="/mypage" element={<UserAboutmePage />} />
-        <Route path="/mypage/feed" element={<UserFeedPage />} />
-        <Route path="/mypage/place" element={<UserPlacePage />} />
-        <Route path="/friendpage" element={<UserAboutmePage />} />
-        <Route path="/friendpage/feed" element={<UserFeedPage />} />
-        <Route path="/friendpage/place" element={<UserPlacePage />} />
+        <Route path="/user/:memberId" element={<UserAboutmePage />} />
+        <Route path="/user/:memberId/feed" element={<UserFeedPage />} />
+        <Route path="/user/:memberId/place" element={<UserPlacePage />} />
       </Route>
 
       <Route element={<Layout displayHeader displayFlex />}>
-        <Route path="/mypage/edit" element={<UserEditPage />} />
+        <Route path="/user/:memberId/edit" element={<UserEditPage />} />
       </Route>
     </Routes>
   );

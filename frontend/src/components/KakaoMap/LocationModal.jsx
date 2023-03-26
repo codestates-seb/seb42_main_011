@@ -1,11 +1,10 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import Modal from '../UI/Modal/Modal';
 import LocationLogo from '../../assets/logo/location_logo.svg';
 import Button from '../UI/Button';
 import DropdownLocation from '../UI/Dropdown/DropdownLocation';
 import options from '../Place/location.json';
-import LocationMap from './LocationMap';
 import ModalContext from '../../context/ModalContext';
 
 const LocationDropdown = styled.div`
@@ -32,16 +31,14 @@ const BtnWrapper = styled.div`
 
 const SubmitBtn = styled(Button)`
   background-color: var(--color-primary);
-
   &:hover {
     background-color: var(--color-primary);
   }
 `;
 
 function LocationModal({ onSelect }) {
-  const [selectedState, setSelectedState] = useState('');
-  const [selectedRegion, setSelectedRegion] = useState('');
-  const [showMap, setShowMap] = useState(false);
+  const [selectedState, setSelectedState] = useState(null);
+  const [selectedRegion, setSelectedRegion] = useState(null);
   const { closeModal } = useContext(ModalContext);
 
   const filteredOptions = options.filter(
@@ -62,50 +59,34 @@ function LocationModal({ onSelect }) {
   const handleComplete = () => {
     const location = { state: selectedState, region: selectedRegion };
     onSelect(location);
-    setShowMap(true);
+    closeModal();
   };
-
-  useEffect(() => {
-    if (showMap) {
-      closeModal();
-    }
-  }, [showMap, closeModal]);
 
   return (
     <Modal titleImage={LocationLogo}>
-      {!showMap && (
-        <form>
-          <LocationDropdown>
-            <DropdownWrapper>
-              <DropdownLocation
-                options={states}
-                onSelect={handleStateSelect}
-                defaultDisplayText="시/도 선택"
-              />
-            </DropdownWrapper>
-            {selectedState && (
-              <DropdownWrapper>
-                <DropdownLocation
-                  options={regions}
-                  onSelect={handleRegionSelect}
-                  defaultDisplayText="시/군/구 선택"
-                />
-              </DropdownWrapper>
-            )}
-          </LocationDropdown>
-          <BtnWrapper>
-            <SubmitBtn variant="medium" onClick={handleComplete}>
-              완료
-            </SubmitBtn>
-          </BtnWrapper>
-        </form>
-      )}
-      {showMap && (
-        <LocationMap
-          selectedState={selectedState}
-          selectedRegion={selectedRegion}
-        />
-      )}
+      <LocationDropdown>
+        <DropdownWrapper>
+          <DropdownLocation
+            options={states}
+            onSelect={handleStateSelect}
+            defaultDisplayText="시/도 선택"
+          />
+        </DropdownWrapper>
+        {selectedState && (
+          <DropdownWrapper>
+            <DropdownLocation
+              options={regions}
+              onSelect={handleRegionSelect}
+              defaultDisplayText="시/군/구 선택"
+            />
+          </DropdownWrapper>
+        )}
+      </LocationDropdown>
+      <BtnWrapper>
+        <SubmitBtn type="submit" variant="medium" onClick={handleComplete}>
+          완료
+        </SubmitBtn>
+      </BtnWrapper>
     </Modal>
   );
 }
