@@ -73,17 +73,30 @@ const sendEmail = async email => {
   );
 };
 
-const resetPassword = async (email, password) => {
-  await axios.post(
-    'api/v1/new-password',
-    { email, password },
-    {
-      headers: {
-        'ngrok-skip-browser-warning': '12',
-        withCredentials: true,
+const resetPassword = async (token, email, password) => {
+  await axios
+    .post(
+      '/api/v1/new-password',
+      { email, password },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'ngrok-skip-browser-warning': '12',
+          withCredentials: true,
+        },
       },
-    },
-  );
+    )
+    .then(response => {
+      alert(response.data.message);
+    })
+    .catch(error => {
+      console.log(error);
+      if (error.response.status === 400) {
+        alert('입력하신 비밀번호를 다시 확인해주세요.');
+      } else {
+        alert('일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      }
+    });
 };
 
 export { emailVerify, nicknameVerify, sendEmail, resetPassword };
