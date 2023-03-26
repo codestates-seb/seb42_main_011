@@ -14,8 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,7 +29,14 @@ public class S3StorageService implements StorageService {
     @Override
     public String storeImage(MultipartFile multipartFile) {
 
-        String s3FileName = UUID.randomUUID().toString().concat(getFileExtension(multipartFile.getOriginalFilename()));
+        String fileExtension = getFileExtension(multipartFile.getOriginalFilename());
+        ArrayList<String> extensionList = new ArrayList<String>(List.of(".png",".jpg",".gif"));
+
+        if (!extensionList.contains(fileExtension)){
+            throw new StorageException("Wrong file extension(" + fileExtension + ")");
+        }
+
+        String s3FileName = UUID.randomUUID().toString().concat(fileExtension);
 
         try {
             if (multipartFile.isEmpty()) {
@@ -61,7 +67,7 @@ public class S3StorageService implements StorageService {
         try {
             return fileName.substring(fileName.lastIndexOf("."));
         } catch (StringIndexOutOfBoundsException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "잘못된 형식의 파일(" + fileName + ") 입니다.");
+            throw new StorageException("Wrong file extension(" + fileName + ")");
         }
     }
 

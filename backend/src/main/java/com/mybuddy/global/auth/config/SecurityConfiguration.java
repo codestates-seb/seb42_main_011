@@ -102,14 +102,6 @@ public class SecurityConfiguration {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    @Bean
-    public CommonsMultipartResolver multipartResolver() {
-        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        multipartResolver.setMaxUploadSizePerFile(10 * 1024 * 1024); // 10MB
-        multipartResolver.setMaxUploadSize(10 * 1024 * 1024); // 10MB
-        multipartResolver.setDefaultEncoding("UTF-8");
-        return multipartResolver;
-    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
