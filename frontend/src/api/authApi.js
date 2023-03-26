@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 // 이메일, 닉네임 중복확인
-const emailVerify = async input => {
+async function emailVerify(input) {
   const params = { email: input };
   await axios.get(
     '/api/v1/members/check',
@@ -16,9 +16,9 @@ const emailVerify = async input => {
       },
     },
   );
-};
+}
 
-const nicknameVerify = async input => {
+async function nicknameVerify(input) {
   const params = { nickname: input };
   await axios.get(
     '/api/v1/members/check',
@@ -32,9 +32,9 @@ const nicknameVerify = async input => {
       },
     },
   );
-};
+}
 
-const sendEmail = async email => {
+async function sendEmail(email) {
   await axios.post(
     '/api/v1/password',
     { email },
@@ -45,9 +45,9 @@ const sendEmail = async email => {
       },
     },
   );
-};
+}
 
-const resetPassword = async (token, email, password) => {
+async function resetPassword(token, email, password) {
   await axios
     .post(
       '/api/v1/new-password',
@@ -71,6 +71,6 @@ const resetPassword = async (token, email, password) => {
         alert('일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
       }
     });
-};
+}
 
 export { emailVerify, nicknameVerify, sendEmail, resetPassword };
