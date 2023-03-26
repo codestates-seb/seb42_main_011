@@ -93,7 +93,8 @@ public class CommentControllerTest {
                 .commentContent(comment.getCommentContent())
                 .memberId(member.getMemberId())
                 .nickName(member.getNickname())
-                .dogName(member.getDogName()).build();
+                .dogName(member.getDogName())
+                .profileUrl(member.getProfileUrl()).build();
 
         given(commentMapper.commentCreateDtoToComment(Mockito.any(CommentCreateDto.class))).willReturn(new Comment());
         given(commentService.createComment(Mockito.any(Long.class), Mockito.any(Long.class), Mockito.any(Comment.class))).willReturn(comment);
@@ -118,6 +119,7 @@ public class CommentControllerTest {
                 .andExpect(jsonPath("$.data.memberId").value(member.getMemberId()))
                 .andExpect(jsonPath("$.data.nickName",is(member.getNickname())))
                 .andExpect(jsonPath("$.data.dogName",is(member.getDogName())))
+                .andExpect(jsonPath("$.data.profileUrl",is(member.getProfileUrl())))
                 .andDo(document(
                         "create-comment",
                         requestFields(
@@ -135,7 +137,8 @@ public class CommentControllerTest {
                                         fieldWithPath("data.commentContent").type(JsonFieldType.STRING).description("댓글 내용"),
                                         fieldWithPath("data.memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
                                         fieldWithPath("data.nickName").type(JsonFieldType.STRING).description("견주 닉네임"),
-                                        fieldWithPath("data.dogName").type(JsonFieldType.STRING).description("강아지 이름")
+                                        fieldWithPath("data.dogName").type(JsonFieldType.STRING).description("강아지 이름"),
+                                        fieldWithPath("data.profileUrl").type(JsonFieldType.STRING).description("프로필 이미지")
 
                                 )
                         )
@@ -163,7 +166,8 @@ public class CommentControllerTest {
                 .commentContent(updateContent)
                 .memberId(member.getMemberId())
                 .nickName(member.getNickname())
-                .dogName(member.getDogName()).build();
+                .dogName(member.getDogName())
+                .profileUrl(member.getProfileUrl()).build();
 
         given(commentMapper.commentUpdateDtoToComment(Mockito.any(CommentUpdateDto.class))).willReturn(new Comment());
         given(commentService.updateComment(Mockito.anyLong(), Mockito.any(Comment.class))).willReturn(new Comment());
@@ -187,6 +191,7 @@ public class CommentControllerTest {
                 .andExpect(jsonPath("$.data.memberId").value(member.getMemberId()))
                 .andExpect(jsonPath("$.data.nickName",is(member.getNickname())))
                 .andExpect(jsonPath("$.data.dogName",is(member.getDogName())))
+                .andExpect(jsonPath("$.data.profileUrl",is(member.getProfileUrl())))
                 .andDo(
                         document(
                                 "update-comment",
@@ -207,7 +212,8 @@ public class CommentControllerTest {
                                                 fieldWithPath("data.commentContent").type(JsonFieldType.STRING).description("댓글 내용"),
                                                 fieldWithPath("data.memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
                                                 fieldWithPath("data.nickName").type(JsonFieldType.STRING).description("견주 닉네임"),
-                                                fieldWithPath("data.dogName").type(JsonFieldType.STRING).description("강아지 이름")
+                                                fieldWithPath("data.dogName").type(JsonFieldType.STRING).description("강아지 이름"),
+                                                fieldWithPath("data.profileUrl").type(JsonFieldType.STRING).description("프로필 이미지")
 
                                         )
                                 )

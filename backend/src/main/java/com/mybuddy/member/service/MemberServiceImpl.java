@@ -42,11 +42,9 @@ public class MemberServiceImpl implements MemberService {
         verifyIfNicknameExists(member.getNickname());
 
         Optional.ofNullable(profileImage)
-                .ifPresent(storageService::storeImage);
-        Optional.ofNullable(profileImage)
-                .ifPresent(image -> member.setProfileUrl(
-                        storageService.getPath() + "/" + image.getOriginalFilename())
-                );
+                .ifPresent(image ->
+                        member.setProfileUrl(
+                                storageService.storeImage(image)));
 
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encryptedPassword);
@@ -65,11 +63,9 @@ public class MemberServiceImpl implements MemberService {
         Member updatedMember = customBeanUtils.copyNonNullProperties(member, obtainedMember);
 
         Optional.ofNullable(profileImage)
-                .ifPresent(storageService::storeImage);
-        Optional.ofNullable(profileImage)
-                .ifPresent(image -> updatedMember.setProfileUrl(
-                        storageService.getPath() + "/" + image.getOriginalFilename())
-                );
+                .ifPresent(image ->
+                        updatedMember.setProfileUrl(
+                                storageService.storeImage(image)));
 
         return memberRepository.save(updatedMember);
     }

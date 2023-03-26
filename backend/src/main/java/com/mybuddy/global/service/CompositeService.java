@@ -87,7 +87,7 @@ public class CompositeService {
 
     public void deleteBulletinPost(long postId, Long loginUserId) {
 
-        bulletinPostService.deletePost(postId, loginUserId, memberService);
+        bulletinPostService.deletePost(postId, loginUserId, memberService, storageService);
     }
 
     //메서드명이 겹치지 않게 하려다보니 애매...

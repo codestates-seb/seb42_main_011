@@ -25,10 +25,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import java.util.Arrays;
-
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @RequiredArgsConstructor
@@ -101,6 +100,15 @@ public class SecurityConfiguration {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    @Bean
+    public CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+        multipartResolver.setMaxUploadSizePerFile(10 * 1024 * 1024); // 10MB
+        multipartResolver.setMaxUploadSize(10 * 1024 * 1024); // 10MB
+        multipartResolver.setDefaultEncoding("UTF-8");
+        return multipartResolver;
     }
 
     @Bean
