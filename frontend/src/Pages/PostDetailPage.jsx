@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import styled from 'styled-components';
 
 import Card from '../components/UI/Card/Card';
 import PostDetail from '../components/PostDetail';
+import RetryErrorBoundary from '../components/RetryErrorBoundary';
 
 const PostDetailContainer = styled(Card)`
   display: flex;
@@ -19,20 +20,24 @@ const PostDetailContainer = styled(Card)`
   background-color: var(--color-light-0);
 `;
 
-function FirendDetailPage({ postId, onClose }) {
-  const handleClose = async () => {
-    onClose();
-  };
+function Loading() {
+  return <div> 로딩 중입니다. </div>;
+}
 
+function PostDetailPage({ bulletinId, onClose }) {
   return (
     <PostDetailContainer
       tag="article"
       borderRadius="20px"
-      data-post-id={postId}
+      data-post-id={bulletinId}
     >
-      <PostDetail handleClose={handleClose} />
+      <RetryErrorBoundary>
+        <Suspense fallback={<Loading />}>
+          <PostDetail bulletinId={bulletinId} onClose={onClose} />
+        </Suspense>
+      </RetryErrorBoundary>
     </PostDetailContainer>
   );
 }
 
-export default FirendDetailPage;
+export default PostDetailPage;
