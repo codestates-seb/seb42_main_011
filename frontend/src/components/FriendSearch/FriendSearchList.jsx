@@ -22,29 +22,26 @@ function FriendSearchList({
   onClick,
   colWidth = '280px',
 }) {
-  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery(
-    'friendSearch',
-    ({ pageParam = 1 }) =>
-      searchFriends({
-        page: pageParam,
-        size: 10,
-        type: searchType,
-        name: searchName,
-      }),
-    {
-      suspense: true,
-      getNextPageParam: (lastPage, pages) => {
-        if (pages.length === lastPage.pageInfo.totalPages) {
-          return undefined;
-        }
+  const { data, fetchNextPage, hasNextPage, isError, isLoading } =
+    useInfiniteQuery(
+      'friendSearch',
+      ({ pageParam = 1 }) =>
+        searchFriends({
+          page: pageParam,
+          size: 10,
+          type: searchType,
+          name: searchName,
+        }),
+      {
+        getNextPageParam: (lastPage, pages) => {
+          if (pages.length === lastPage.pageInfo.totalPages) {
+            return undefined;
+          }
 
-        return lastPage.pageInfo.page + 1;
+          return lastPage.pageInfo.page + 1;
+        },
       },
-    },
-    {
-      suspense: true,
-    },
-  );
+    );
 
   const handleClick = event => {
     const $li = event.target.closest('li');
@@ -58,7 +55,9 @@ function FriendSearchList({
 
   return (
     <StyledFriendSearchList colWidth={colWidth} onClick={handleClick}>
-      {!!data &&
+      {!isError &&
+        !isLoading &&
+        !!data &&
         data.pages.map(({ data: fetchData }, pageIndex) =>
           fetchData.map(({ memberId, nickname, dogName, photoUrl }, idx) => {
             const props = {
