@@ -91,17 +91,16 @@ function LoginPage() {
     e.preventDefault();
     setLoading(true);
     dispatch(login(email, password))
-      .then(() => {
-        navigate('/friendpage/feed');
-        // window.location.reload();
-      })
-      .catch(() => {
+      .then(() => navigate('/'))
+      // window.location.reload();)
+      .catch(error => {
+        console.log(error);
         setLoading(false);
       });
   };
 
   if (isLoggedIn) {
-    return <Navigate to="/friendpage/feed" />;
+    return <Navigate to="/" />;
   }
 
   return (
