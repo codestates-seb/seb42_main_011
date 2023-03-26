@@ -11,14 +11,16 @@ public class CommentResponseDto {
     private Long memberId;
     private String nickName;
     private String dogName;
+    private String profileUrl;
 
     @Builder
-    public CommentResponseDto(Long commentId, String commentContent, Long memberId, String nickName, String dogName) {
+    public CommentResponseDto(Long commentId, String commentContent, Long memberId, String nickName, String dogName, String profileUrl) {
         this.commentId = commentId;
         this.commentContent = commentContent;
         this.memberId = memberId;
         this.nickName = nickName;
         this.dogName = dogName;
+        this.profileUrl = profileUrl;
     }
 
 }
