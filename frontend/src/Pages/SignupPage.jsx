@@ -146,13 +146,50 @@ function SignupPage() {
 
   useEffect(() => {
     emailVerify(email)
-      .then(response => setExists(prev => ({ ...prev, email: response })))
-      .catch(error => console.log(error));
+      .then(response => {
+        setExists(prev => ({
+          ...prev,
+          email: '',
+        }));
+      })
+      .catch(error => {
+        if (error.response.status === 409) {
+          setExists(prev => ({
+            ...prev,
+            email: '이미 사용중인 이메일입니다.',
+          }));
+        } else {
+          setExists(prev => ({
+            ...prev,
+            email: '일시적인 오류가 발생했습니다.',
+          }));
+          console.log(error);
+        }
+      });
 
     nicknameVerify(nickname)
-      .then(response => setExists(prev => ({ ...prev, nickname: response })))
-      .catch(error => console.log(error));
+      .then(response => {
+        setExists(prev => ({
+          ...prev,
+          nickname: '',
+        }));
+      })
+      .catch(error => {
+        if (error.response.status === 409) {
+          setExists(prev => ({
+            ...prev,
+            nickname: '이미 사용중인 닉네임입니다.',
+          }));
+        } else {
+          setExists(prev => ({
+            ...prev,
+            nickname: '일시적인 오류가 발생했습니다.',
+          }));
+          console.log(error);
+        }
+      });
   }, [email, nickname]);
+  console.log(exists);
 
   const handleSubmit = e => {
     e.preventDefault();
