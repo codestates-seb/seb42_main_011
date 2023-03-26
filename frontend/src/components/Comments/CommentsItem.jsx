@@ -64,13 +64,10 @@ const EditIcon = styled(IconSeeMore)`
 function CommentsItem({
   commentId,
   commentContent,
-  memberId,
   nickName,
   dogName,
   profileUrl,
 }) {
-  console.log(memberId, commentId);
-
   return (
     <StyledCommenstItem borderRadius="5px" tag="li" data-comment-id={commentId}>
       <Avatar src={profileUrl} alt="" />
