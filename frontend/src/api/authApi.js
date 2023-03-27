@@ -8,7 +8,7 @@ import api from './api';
 async function emailVerify(input) {
   const params = { email: input };
   await api.get(
-    '/api/v1/members/check',
+    '/members/check',
     {
       params,
     },
@@ -24,7 +24,7 @@ async function emailVerify(input) {
 async function nicknameVerify(input) {
   const params = { nickname: input };
   await api.get(
-    '/api/v1/members/check',
+    '/members/check',
     {
       params,
     },
@@ -39,7 +39,7 @@ async function nicknameVerify(input) {
 
 async function sendEmail(email) {
   await api.post(
-    '/api/v1/password',
+    '/password',
     { email },
     {
       headers: {
@@ -53,7 +53,7 @@ async function sendEmail(email) {
 async function resetPassword(token, email, password) {
   // const { openModal, closeModal } = useModal();
   await api.post(
-    '/api/v1/new-password',
+    '/new-password',
     { email, password },
     {
       headers: {
