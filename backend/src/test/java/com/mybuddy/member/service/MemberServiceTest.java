@@ -196,7 +196,7 @@ public class MemberServiceTest {
         assertThrows(LogicException.class, executable);
     }
 
-    @DisplayName("회원 찾기 예외 처리 로직 (Service)")
+    @DisplayName("식별자로 회원 찾기 예외 처리 로직 (Service)")
     @Test
     public void findExistMemberByIdExceptionTest() {
         // Given
@@ -206,6 +206,21 @@ public class MemberServiceTest {
 
         // When
         Executable executable = () -> memberService.findExistMemberById(1L);
+
+        // Then
+        assertThrows(LogicException.class, executable);
+    }
+
+    @DisplayName("이메일로 회원 찾기 예외 처리 로직 (Service)")
+    @Test
+    public void findExistMemberByEmailExceptionTest() {
+        // Given
+        given(memberRepository.findByMemberEmailAndMemberStatusIs(
+                Mockito.anyString(), Mockito.any(MemberStatus.class)))
+                .willReturn(Optional.empty());
+
+        // When
+        Executable executable = () -> memberService.findExistMemberByEmail("aaa@aaa.com");
 
         // Then
         assertThrows(LogicException.class, executable);
