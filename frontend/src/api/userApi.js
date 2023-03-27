@@ -1,5 +1,5 @@
-import authHeader from '../redux/services/auth-header';
 import api from './api';
+import authHeader from '../redux/services/auth-header';
 
 async function getUserProfile({ memberId, userData }) {
   return api.get(`/members/${memberId}`, userData).then(({ data }) => data);
