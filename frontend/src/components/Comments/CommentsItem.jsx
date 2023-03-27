@@ -131,6 +131,7 @@ function CommentsItem({
   memberId,
   onDelete,
   onUpdate,
+  displayEditMenu = false,
 }) {
   const [editMode, setEditMode] = useState(false);
   const [showSeeMoreMenu, setShowSeeMoreMenu] = useState(false);
@@ -195,12 +196,14 @@ function CommentsItem({
       ) : (
         <Fragment>
           <Content>{commentContent}</Content>
-          <MenuButton
-            showSeeMoreMenu={showSeeMoreMenu}
-            onClick={handleSeeMoreButton}
-          >
-            <SeeMoreSvg />
-          </MenuButton>
+          {displayEditMenu ? (
+            <MenuButton
+              showSeeMoreMenu={showSeeMoreMenu}
+              onClick={handleSeeMoreButton}
+            >
+              <SeeMoreSvg />
+            </MenuButton>
+          ) : null}
         </Fragment>
       )}
 
