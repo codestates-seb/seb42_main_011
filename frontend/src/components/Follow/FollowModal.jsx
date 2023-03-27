@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useQuery } from 'react-query';
-/* import { useParams } from 'react-router-dom'; */
+import { useNavigate } from 'react-router-dom';
 import Modal from '../UI/Modal/Modal';
 import Card from '../UI/Card/Card';
 import FollowLogo from '../../assets/logo/following_logo.svg';
 import { getUserFollowing } from '../../api/userApi';
+import useModal from '../../hooks/useModal';
 
 const NoFollowing = styled.div`
   width: 100%;
@@ -89,8 +90,8 @@ const NickName = styled.p`
 `;
 
 function FollowModal() {
-  /*  const { page } = useParams();
-  const { size } = useParams(); */
+  const { closeModal } = useModal();
+  const navigate = useNavigate();
   const {
     isLoading,
     error,
@@ -110,6 +111,12 @@ function FollowModal() {
   if (error) {
     return <p>Error: {error.message}</p>;
   }
+
+  const handleCardClick = memberId => {
+    navigate(`/user/${memberId}`);
+    closeModal();
+  };
+
   return (
     <Modal titleImage={FollowLogo}>
       <FollowingListCard>
@@ -118,7 +125,7 @@ function FollowModal() {
         ) : (
           following.data.map(({ memberId, nickname, dogName, profileUrl }) => (
             <FollowingWrapper key={memberId}>
-              <FollowingCard>
+              <FollowingCard onClick={() => handleCardClick(memberId)}>
                 <Profile>
                   <ProfileImg
                     src={profileUrl}

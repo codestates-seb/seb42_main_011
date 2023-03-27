@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import Input from '../components/UI/Input';
 import DropdownGender from '../components/UI/Dropdown/DropdownGender';
 import Button from '../components/UI/Button';
@@ -48,6 +49,7 @@ const ButtonContainer = styled.div`
 
 function SignupPage() {
   // 기능 구현
+  const navigate = useNavigate();
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -210,6 +212,7 @@ function SignupPage() {
       dispatch(register(email, password, nickname, dogName, dogGender))
         .then(() => {
           setSuccessful(true);
+          navigate('/login');
         })
         .catch(() => {
           setSuccessful(false);
