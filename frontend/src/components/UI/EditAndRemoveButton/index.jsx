@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -18,10 +18,12 @@ const Button = styled.button`
   height: 32px;
   border-radius: 5px;
   background-color: var(--color-light-0);
+
   :hover {
     color: var(--color-light-0);
     background-color: var(--color-secondary);
     border-radius: 5px;
+
     &:first-of-type {
       border-bottom-right-radius: 0px;
       border-bottom-left-radius: 0px;
@@ -35,11 +37,34 @@ const Button = styled.button`
   }
 `;
 
-function EditAndRemoveButton({ onEdit, onRemove, className }) {
+function EditAndRemoveButton({
+  onEdit,
+  onDelete,
+  className,
+  onOutsideClick = () => {},
+}) {
+  const handleOutsideClick = event => {
+    console.log(event.target);
+
+    if (event.target.matches('Button')) {
+      return;
+    }
+
+    onOutsideClick();
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleOutsideClick);
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, []);
+
   return (
     <Container className={className}>
       <Button onClick={onEdit}>수정</Button>
-      <Button onClick={onRemove}>삭제</Button>
+      <Button onClick={onDelete}>삭제</Button>
     </Container>
   );
 }
