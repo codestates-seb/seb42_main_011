@@ -36,3 +36,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Docker ###
+**/.env
+**/redis/

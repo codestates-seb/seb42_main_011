@@ -92,7 +92,7 @@ function LoginPage() {
     setLoading(true);
     dispatch(login(email, password))
       .then(() => {
-        navigate('/friendpage/feed');
+        navigate('/');
         // window.location.reload();
       })
       .catch(() => {
