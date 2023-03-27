@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
 import { useQuery } from 'react-query';
 import { ReactComponent as PlaceShape } from '../assets/shape/place_shape.svg';
 import PlaceHeader from '../components/Place/PlaceHeader';
@@ -10,6 +9,7 @@ import LocationModal from '../components/KakaoMap/LocationModal';
 import SearchModal from '../components/KakaoMap/SearchModal';
 import LocationMap from '../components/KakaoMap/LocationMap';
 import useModal from '../hooks/useModal';
+import api from '../api/api';
 
 const Container = styled.article`
   width: 100%;
@@ -67,8 +67,8 @@ function PlacePage() {
   const locationQuery = useQuery(
     ['location', selectedLocation],
     () =>
-      axios.get(
-        `/api/v1/amenities?state=${selectedLocation?.state}&region=${selectedLocation?.region}`,
+      api.get(
+        `/amenities?state=${selectedLocation?.state}&region=${selectedLocation?.region}`,
       ),
     {
       enabled: selectedLocation !== null,
