@@ -115,11 +115,11 @@ function UserHeader({ userdata, memberId, isMyPage }) {
   };
 
   const handleFollowerClick = () => {
-    openModal(<FollowerModal />);
+    openModal(<FollowerModal memberId={memberId} />);
   };
 
   const handleFollow = () => {
-    openModal(<FollowModal />);
+    openModal(<FollowModal memberId={memberId} />);
   };
 
   return (
