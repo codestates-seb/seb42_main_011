@@ -14,6 +14,7 @@ import ByePage from './Pages/ByePage';
 import FriendSearchPage from './Pages/FriendSearchPage';
 import UserEditPage from './Pages/UserEditPage';
 import PlacePage from './Pages/PlacePage';
+import InfoPage from './Pages/InfoPage';
 
 function Router() {
   return (
@@ -30,6 +31,7 @@ function Router() {
         <Route path="/" element={<HomePage />} />
         <Route path="/friend/search" element={<FriendSearchPage />} />
         <Route path="/place" element={<PlacePage />} />
+        <Route path="/info" element={<InfoPage />} />
       </Route>
 
       <Route element={<Layout displayHeader displayProfile displayFlex />}>
