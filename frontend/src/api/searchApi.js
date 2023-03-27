@@ -1,15 +1,4 @@
-import axios from 'axios';
-
-const BASE_URL = '/api/v1';
-
-const api = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    'Content-type': 'application/json; charset=UTF-8',
-    accept: 'application/json,',
-    'ngrok-skip-browser-warning': '12',
-  },
-});
+import api from './api';
 
 async function searchFriends({ page, size, type, name }) {
   return api

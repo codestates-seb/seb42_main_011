@@ -1,9 +1,12 @@
 import React, { useEffect, useCallback } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
+
 import styled, { css } from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import Button from '../UI/Button';
 import { ReactComponent as MainLogo } from '../../assets/logo/logo.svg';
+import PostNewPage from '../../Pages/PostNewPage';
+import useModal from '../../hooks/useModal';
 
 import { logout } from '../../redux/actions/auth';
 import { clearMessage } from '../../redux/actions/message';
@@ -115,6 +118,12 @@ const Write = styled(Button)`
 `;
 
 function Header() {
+  const { openModal, closeModal } = useModal();
+
+  const handleWriteButtonClick = () => {
+    openModal(<PostNewPage onClose={closeModal} />);
+  };
+
   const { user: currentUser } = useSelector(state => state.auth);
   // console.log(currentUser);
   const dispatch = useDispatch();
@@ -174,6 +183,7 @@ function Header() {
             </LinkStyle>
           </MenuUl>
         </MenuWrapper>
+
         <div>
           {!currentUser ? (
             <Link to="/login">
@@ -182,7 +192,7 @@ function Header() {
           ) : (
             <div>
               <Link to="/">
-                <Write variant="headerprimary">작성</Write>
+                <Write onClick={handleWriteButtonClick} variant="headerprimary">작성</Write>
               </Link>
               <Link to={`/user/${currentUser}`}>
                 <Mypage variant="headerprimary">마이페이지</Mypage>

@@ -1,15 +1,10 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import FriendSearch from '../components/FriendSearch';
 import FriendSearchHeader from '../components/FriendSearch/FriendSearchHeader';
 import FriendSearchList from '../components/FriendSearch/FriendSearchList';
-import RetryErrorBoundary from '../components/RetryErrorBoundary';
-
-function UserProfileLoading() {
-  return <div> 사용자 정보를 불러오는 중입니다. </div>;
-}
 
 const Container = styled.section`
   width: 100%;
@@ -42,16 +37,12 @@ function FriendSearchPage() {
 
       <FriendSearch>
         {searchName && searchType && (
-          <RetryErrorBoundary>
-            <Suspense fallback={<UserProfileLoading />}>
-              <FriendSearchList
-                searchType={searchType}
-                searchName={searchName}
-                colWidth="280px"
-                onClick={handleClick}
-              />
-            </Suspense>
-          </RetryErrorBoundary>
+          <FriendSearchList
+            searchType={searchType}
+            searchName={searchName}
+            colWidth="280px"
+            onClick={handleClick}
+          />
         )}
       </FriendSearch>
     </Container>

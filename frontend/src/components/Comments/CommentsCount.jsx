@@ -2,8 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Warapper = styled.div`
-  flex: 1 1 0;
-
+  width: 100%;
   font-weight: 500;
   font-size: 20px;
   line-height: 29px;

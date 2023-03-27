@@ -14,6 +14,8 @@ const Wrapper = styled.section`
 
 function Comments({ commentList, commentCount, onClick }) {
   const handleClick = event => {
+    event.preventDefault();
+
     const { commentId } = event.target.closest('li').dataset;
 
     if (!commentId) {
