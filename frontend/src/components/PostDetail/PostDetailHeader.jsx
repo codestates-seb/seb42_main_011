@@ -40,6 +40,11 @@ const CompleteIcon = styled(IconCheck)`
   width: 32px;
 `;
 
+const CloseIcon = styled(IconCancle)`
+  height: 20px;
+  width: 20px;
+`;
+
 const SeeMoreIcon = styled(IconSeeMore)`
   height: 20px;
   width: 32px;
@@ -48,6 +53,18 @@ const SeeMoreIcon = styled(IconSeeMore)`
 const MenuButton = styled.button`
   ${CompleteIcon} {
     color: var(--color-dark-0);
+
+    :hover {
+      color: var(--color-primary);
+    }
+  }
+
+  ${CloseIcon} {
+    color: var(--color-dark-0);
+
+    :hover {
+      color: var(--color-tertiary);
+    }
   }
 
   &:disabled {
@@ -57,11 +74,6 @@ const MenuButton = styled.button`
       color: inherit;
     }
   }
-`;
-
-const CloseIcon = styled(IconCancle)`
-  height: 20px;
-  width: 20px;
 `;
 
 function PostDetailContentsHeader({
