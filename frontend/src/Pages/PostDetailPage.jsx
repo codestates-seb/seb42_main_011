@@ -18,6 +18,10 @@ const PostDetailContainer = styled(Card)`
 
   gap: 18px;
   background-color: var(--color-light-0);
+
+  @media screen and (max-width: 1199px) {
+    scale: calc(0.9);
+  }
 `;
 
 function Loading() {

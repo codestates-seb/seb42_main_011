@@ -7,6 +7,7 @@ const Form = styled.form`
   display: flex;
   align-items: center;
   position: relative;
+  width: 98.5%;
 
   ::before {
     content: '';
@@ -34,6 +35,7 @@ const StyledIconComments = styled(IconComments)`
   justify-items: flex-end;
   align-self: end;
   height: inherit;
+  margin-left: -3px;
 `;
 
 function CommentsForm({ onSubmit }) {
