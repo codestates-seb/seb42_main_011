@@ -16,10 +16,10 @@ const VARIANTS = {
 const StyledInput = styled.input`
   ${({ variant }) => VARIANTS[variant]}
   width: var(--input-box-width);
-  @media screen and (min-height: 1050px){
+  @media screen and (min-height: 1050px) {
     height: 50px;
   }
-  @media screen and (min-width: 1174px){
+  @media screen and (min-width: 1174px) {
     width: var(--input-long-width);
   }
   @media screen and (max-width: 625px) {
@@ -39,11 +39,11 @@ const Label = styled.label`
   font-weight: bold;
 `;
 
-function Input({ variant = 'edit', id, label, type = 'text', value, onChange }) {
+function Input({ variant = 'edit', id, label, type = 'text', ...props }) {
   return (
     <div>
       <Label htmlFor={id}>{label}</Label>
-      <StyledInput id={id} type={type} variant={variant} value={value} onChange={onChange} />
+      <StyledInput id={id} type={type} variant={variant} {...props} />
     </div>
   );
 }

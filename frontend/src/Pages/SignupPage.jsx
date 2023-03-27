@@ -224,8 +224,7 @@ function SignupPage() {
             id="nickname"
             name="nickname"
             type="text"
-            // value={form.name}
-            onBlur={e => onChange(e)}
+            onBlur={onChange}
           />
           {nullErrors.nickname && <p>{nullErrors.nickname}</p>}
           {errors.nickname && <p>{errors.nickname}</p>}
@@ -236,7 +235,6 @@ function SignupPage() {
             id="email"
             name="email"
             type="email"
-            // value={form.email}
             onBlur={onChange}
           />
           {nullErrors.email && <p>{nullErrors.email}</p>}
@@ -247,7 +245,6 @@ function SignupPage() {
             id="password"
             name="password"
             type="password"
-            // value={form.password}
             onBlur={onChange}
           />
           {nullErrors.password && <p>{nullErrors.password}</p>}
@@ -258,7 +255,6 @@ function SignupPage() {
             id="password-retype"
             name="passwordRetype"
             type="password"
-            // value={form.passwordRetype}
             onBlur={onChange}
           />
           {nullErrors.passwordRetype && <p>{nullErrors.passwordRetype}</p>}
@@ -269,7 +265,6 @@ function SignupPage() {
             id="dogName"
             name="dogName"
             type="text"
-            // value={form.dogName}
             onBlur={onChange}
           />
           {nullErrors.dogName && <p>{nullErrors.dogName}</p>}
