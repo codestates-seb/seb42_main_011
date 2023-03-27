@@ -74,7 +74,6 @@ function SignupPage() {
     dogName: '',
   });
   const [exists, setExists] = useState({});
-  const { message } = useSelector(state => state.message);
 
   const dispatch = useDispatch();
 
@@ -276,7 +275,6 @@ function SignupPage() {
           </ButtonContainer>
         </SignupForm>
       )}
-      {message && <div>{message}</div>}
     </FormContainer>
   );
 }

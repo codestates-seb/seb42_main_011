@@ -6,7 +6,6 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import Input from '../components/UI/Input';
 import Button from '../components/UI/Button';
 import { login } from '../redux/actions/auth';
-import useInput from '../hooks/useInput';
 
 // 스타일
 const FormContainer = styled.section`
@@ -85,7 +84,6 @@ function LoginPage() {
   const [loading, setLoading] = useState(false);
 
   const { isLoggedIn } = useSelector(state => state.auth);
-  const { message } = useSelector(state => state.message);
 
   const dispatch = useDispatch();
 
@@ -137,7 +135,6 @@ function LoginPage() {
             <ForgotPassword>비밀번호를 잊어버렸나요?</ForgotPassword>
           </Link>
         </PasswordContainer>
-        {message && <div>{message}</div>}
         <ButtonContainer>
           <Button variant="large" disabled={loading}>
             {/* 로딩 시 여기에 spinner 추가할지? */}

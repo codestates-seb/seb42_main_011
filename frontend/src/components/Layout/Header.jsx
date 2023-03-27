@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
@@ -6,7 +6,6 @@ import Button from '../UI/Button';
 import { ReactComponent as MainLogo } from '../../assets/logo/logo.svg';
 
 import { logout } from '../../redux/actions/auth';
-import { clearMessage } from '../../redux/actions/message';
 import AuthVerify from '../../common/AuthVerify';
 
 const HeaderWrapper = styled.header`
@@ -120,12 +119,6 @@ function Header() {
   const dispatch = useDispatch();
 
   const location = useLocation();
-
-  useEffect(() => {
-    if (['/login', '/signup'].includes(location.pathname)) {
-      dispatch(clearMessage()); // clear message when changing location
-    }
-  }, [dispatch, location]);
 
   const handleLogout = useCallback(() => {
     dispatch(logout());
