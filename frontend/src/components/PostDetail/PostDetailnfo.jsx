@@ -3,9 +3,6 @@ import styled, { css } from 'styled-components';
 
 import UserName from '../UI/UserName';
 
-import { ReactComponent as IconHeartSvg } from '../../assets/icons/icon-heart.svg';
-import { ReactComponent as IconLocationSvg } from '../../assets/icons/icon-location.svg';
-
 const imageCSS = css`
   border: var(--border);
   object-fit: cover;
@@ -44,58 +41,7 @@ const Picture = styled.img`
   width: inherit;
 `;
 
-const InfoContainer = styled.div`
-  align-self: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 18px;
-
-  font-weight: 500;
-  font-size: var(--font-size-16);
-  line-height: 23px;
-`;
-
-const HeartContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-`;
-
-const HeartIcon = styled(IconHeartSvg)`
-  width: 28px;
-  height: 26px;
-`;
-
-const HeartText = styled.p``;
-
-const HeartCount = styled.p`
-  color: var(--color-tertiary);
-`;
-
-const LcationContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-`;
-
-const LocationIcon = styled(IconLocationSvg)`
-  width: 16px;
-  height: 23px;
-`;
-
-const Location = styled.span``;
-
-function PostDetailnfo({
-  profileUrl,
-  dogName,
-  nickname,
-  photoUrl,
-  likeCount,
-  amenityName,
-}) {
+function PostDetailnfo({ profileUrl, dogName, nickname, photoUrl, children }) {
   return (
     <Container>
       <Profile>
@@ -103,17 +49,7 @@ function PostDetailnfo({
         <UserName dogName={dogName} nickname={nickname} />
       </Profile>
       <Picture src={photoUrl} alt="게시글 사진" />
-      <InfoContainer>
-        <HeartContainer>
-          <HeartIcon />
-          <HeartText>맘에 들어요</HeartText>
-          <HeartCount>{likeCount}</HeartCount>
-        </HeartContainer>
-        <LcationContainer>
-          <LocationIcon />
-          <Location>{amenityName}</Location>
-        </LcationContainer>
-      </InfoContainer>
+      {children}
     </Container>
   );
 }

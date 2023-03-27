@@ -25,6 +25,9 @@ const PostDetailContainer = styled(Card)`
 
   gap: 18px;
   background-color: var(--color-light-0);
+  @media screen and (max-width: 1199px) {
+    scale: calc(0.9);
+  }
 `;
 
 const Button = styled.button`
@@ -105,9 +108,7 @@ function PostNewPage({ onClose }) {
       latitude: place.y,
     };
 
-    const accessToken =
-      'Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjo4LCJ1c2VybmFtZSI6ImF3ZWFzZEBtdW5nZmx1ZW5jZXIuY29tIiwic3ViIjoiYXdlYXNkQG11bmdmbHVlbmNlci5jb20iLCJpYXQiOjE2Nzk1Njg4NTIsImV4cCI6MTY3OTkxNDQ1Mn0.rxgfiu-_haGhQl474CcCyE2NkHaQDGmOm7beF3BCJgAEZ9FiTZ-8US3bIN9qLfoGEzCtG53JDPtTgj8M2m7HoQ';
-    mutateAsync({ postData, photoImage, accessToken });
+    mutateAsync({ postData, photoImage });
     closeModal();
   };
 

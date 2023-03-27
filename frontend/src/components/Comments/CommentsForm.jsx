@@ -7,6 +7,7 @@ const Form = styled.form`
   display: flex;
   align-items: center;
   position: relative;
+  width: 98.5%;
 
   ::before {
     content: '';
@@ -34,12 +35,15 @@ const StyledIconComments = styled(IconComments)`
   justify-items: flex-end;
   align-self: end;
   height: inherit;
+  margin-left: -3px;
 `;
 
 function CommentsForm({ onSubmit }) {
-  const [{ commentInput }, onChange, reset] = useInputs({ commentInput: '' });
+  const [{ commentContent }, onChange, reset] = useInputs({
+    commentContent: '',
+  });
 
-  const handleKetDown = event => {
+  const handleKetDown = async event => {
     if (event.nativeEvent.isComposing) {
       // isComposing 이 true 이면조합 중이므로 동작을 막는다.
       return;
@@ -51,7 +55,8 @@ function CommentsForm({ onSubmit }) {
 
     if (event.key === 'Enter') {
       event.preventDefault();
-      onSubmit(commentInput);
+
+      await onSubmit({ commentContent });
       reset();
     }
   };
@@ -60,9 +65,9 @@ function CommentsForm({ onSubmit }) {
     <Form>
       <StyledIconComments />
       <Input
-        value={commentInput}
-        name="commentInput"
-        id="commentInput"
+        value={commentContent}
+        name="commentContent"
+        id="commentContent"
         placeholder="댓글 달기!"
         onChange={onChange}
         onKeyDown={handleKetDown}

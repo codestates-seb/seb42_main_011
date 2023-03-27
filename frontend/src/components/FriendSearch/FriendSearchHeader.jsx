@@ -38,12 +38,15 @@ const SEARCH_OPTIONS = [
   { name: '강아지 이름', value: 'dogName' },
 ];
 
-function FriendSearchHeader({ initialName = '', initialType = '' }) {
+function FriendSearchHeader({ initialName = '', initialType = '', onSubmit }) {
+  const navigate = useNavigate();
   const [{ searchName }, onChange] = useInputs({
     searchName: initialName,
   });
   const [searchType, setSearchType] = useState(initialType);
-  const naviate = useNavigate();
+  const defaultOption = SEARCH_OPTIONS.filter(
+    option => option.value === initialType,
+  )[0].name;
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -56,7 +59,8 @@ function FriendSearchHeader({ initialName = '', initialType = '' }) {
     }
 
     if (event.key === 'Enter') {
-      naviate(
+      onSubmit({ newSearchName: searchName, newSearchType: searchType });
+      navigate(
         `/friend/search?searchType=${searchType}&searchName=${searchName}`,
       );
     }
@@ -74,6 +78,11 @@ function FriendSearchHeader({ initialName = '', initialType = '' }) {
     >
       <FriendSearchWrapper>
         <FriendSearchForm onSubmit={handleSubmit}>
+          <DropdownFriend
+            onSelect={handleSelect}
+            defaultDlsplayText={defaultOption}
+            options={SEARCH_OPTIONS}
+          />
           <FriendSearchInput
             value={searchName}
             onKeyDown={handleKeyDown}
@@ -82,11 +91,6 @@ function FriendSearchHeader({ initialName = '', initialType = '' }) {
             placeholder="검색"
             onChange={onChange}
             required
-          />
-          <DropdownFriend
-            onSelect={handleSelect}
-            defaultDlsplayText="필터"
-            options={SEARCH_OPTIONS}
           />
         </FriendSearchForm>
       </FriendSearchWrapper>
