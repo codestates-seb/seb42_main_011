@@ -1,19 +1,18 @@
-import { useQuery } from 'react-query';
-import { getBulletinPost } from '../../api/bulletinPostsApi';
+import { useMutation } from 'react-query';
+import { createBulletinPost } from '../../api/bulletinPostsApi';
 
-const queryKey = 'postDetail';
+const queryKey = 'creaetBulletinPosts';
 
-const useCreateBulletinPost = ({ bulletinId, enabled = true }) => {
-  const { data, refetch } = useQuery(
-    [queryKey],
-    () => getBulletinPost({ bulletinId }),
-    {
-      enabled,
-      suspense: true,
-    },
-  );
+const useCreateBulletinPost = ({
+  onSuccess = () => {},
+  onError = () => {},
+}) => {
+  const { mutateAsync, mutate } = useMutation(queryKey, createBulletinPost, {
+    onSuccess,
+    onError,
+  });
 
-  return { data, refetch, queryKey };
+  return { mutateAsync, mutate };
 };
 
 export default useCreateBulletinPost;
