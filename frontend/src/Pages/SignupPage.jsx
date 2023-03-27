@@ -175,8 +175,6 @@ function SignupPage() {
         }
       });
   }, [form.email, form.nickname]);
-  // console.log(exists);
-  console.log(form.nickname);
 
   const handleSubmit = e => {
     e.preventDefault();

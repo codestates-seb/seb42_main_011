@@ -9,18 +9,19 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  SET_ACCESS_TOKEN,
 } from '../actions/type';
 
 const accessToken = JSON.parse(localStorage.getItem('accessToken'));
-let user = null;
-if (accessToken) {
-  user = jwtDecode(localStorage.getItem('accessToken')).memberId;
-}
-const initialState = accessToken
-  ? { isLoggedIn: true, user }
-  : { isLoggedIn: false, user: null };
+const user = accessToken
+  ? jwtDecode(localStorage.getItem('accessToken')).memberId
+  : null;
 
-export default function auth(state = initialState, action) {
+const initialState = accessToken
+  ? { isLoggedIn: true, user, accessToken }
+  : { isLoggedIn: false, user: null, accessToken: null };
+
+function auth(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
@@ -52,7 +53,14 @@ export default function auth(state = initialState, action) {
         isLoggedIn: false,
         user: null,
       };
+    case SET_ACCESS_TOKEN:
+      return {
+        ...state,
+        accessToken: payload,
+      };
     default:
       return state;
   }
 }
+
+export default auth;

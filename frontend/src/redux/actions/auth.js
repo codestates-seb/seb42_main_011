@@ -20,47 +20,10 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  SET_ACCESS_TOKEN,
 } from './type';
 
 import * as AuthService from '../services/auth.service';
-
-// function register(email, password, nickname, dogName, dogGender) {
-//   return function (dispatch) {
-//     AuthService.register(email, password, nickname, dogName, dogGender).then(
-//       response => {
-//         dispatch({
-//           type: REGISTER_SUCCESS,
-//         });
-
-//         dispatch({
-//           type: SET_MESSAGE,
-//           payload: response.data.message,
-//         });
-
-//         return Promise.resolve();
-//       },
-
-//       error => {
-//         const message =
-//           (error.response &&
-//             error.response.data &&
-//             error.response.data.message) ||
-//           error.message ||
-//           error.toString();
-//         dispatch({
-//           type: REGISTER_FAIL,
-//         });
-
-//         dispatch({
-//           type: SET_MESSAGE,
-//           payload: message,
-//         });
-
-//         return Promise.reject();
-//       },
-//     );
-//   };
-// }
 
 const register = (email, password, nickname, dogName, dogGender) => dispatch =>
   AuthService.register(email, password, nickname, dogName, dogGender)
@@ -79,52 +42,6 @@ const register = (email, password, nickname, dogName, dogGender) => dispatch =>
       return Promise.reject();
     });
 
-// function login(email, password) {
-//   return function (dispatch) {
-//     AuthService.login(email, password).then(
-//       data => {
-//         try {
-//           const userId = AuthService.onLoginSuccess(data);
-//           dispatch({
-//             type: LOGIN_SUCCESS,
-//             payload: { user: userId },
-//           });
-//           return Promise.resolve();
-//         } catch (error) {
-//           console.log(error);
-//           return Promise.reject();
-//         }
-//       },
-//       error => {
-//         console.log(error);
-//         let message = '';
-//         if (error.response.status === 401) {
-//           message = '등록되지 않은 이메일이거나 비밀번호가 일치하지 않습니다.';
-//         } else {
-//           // message = (error.response &&
-//           //                 error.response.data &&
-//           //                 error.response.data.message) ||
-//           //               error.message ||
-//           //               error.toString();
-//           message =
-//             '일시적인 오류로 로그인에 실패했습니다. 잠시 후 다시 시도해주세요.';
-//           console.log(error.toString());
-//         }
-
-//         dispatch({
-//           type: LOGIN_FAIL,
-//         });
-
-//         dispatch({
-//           type: SET_MESSAGE,
-//           payload: message,
-//         });
-
-//         return Promise.reject();
-//       },
-//     );
-//   };
-// }
 const login = (email, password) => dispatch =>
   AuthService.login(email, password)
     .then(data => {
@@ -136,26 +53,18 @@ const login = (email, password) => dispatch =>
       return Promise.resolve();
     })
     .catch(error => {
-      // let message = '';
-      // if (error.response.status === 401) {
-      //   message = '등록되지 않은 이메일이거나 비밀번호가 일치하지 않습니다.';
-      // } else {
-      //   // message = (error.response &&
-      //   //                 error.response.data &&
-      //   //                 error.response.data.message) ||
-      //   //               error.message ||
-      //   //               error.toString();
-      //   message =
-      //     '일시적인 오류로 로그인에 실패했습니다. 잠시 후 다시 시도해주세요.';
-      //   console.log(error.toString());
-      // }
-
       dispatch({
         type: LOGIN_FAIL,
       });
 
       throw error;
     });
+
+const setAccessToken = accessToken => dispatch =>
+  dispatch({
+    type: SET_ACCESS_TOKEN,
+    payload: accessToken,
+  });
 
 const logout = () => dispatch => {
   AuthService.logout();
@@ -164,13 +73,4 @@ const logout = () => dispatch => {
   });
 };
 
-// export const logout = () => dispatch => {
-// AuthService.logout();
-// dispatch({
-//   type: LOGOUT,
-// });
-// };
-
-// export const resetPassword
-
-export { register, login, logout };
+export { register, login, setAccessToken, logout };
