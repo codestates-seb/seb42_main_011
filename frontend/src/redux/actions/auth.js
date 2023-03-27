@@ -20,7 +20,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
-  SET_ACCESS_TOKEN,
+  // SET_ACCESS_TOKEN,
 } from './type';
 
 import * as AuthService from '../services/auth.service';
@@ -60,11 +60,11 @@ const login = (email, password) => dispatch =>
       throw error;
     });
 
-const setAccessToken = accessToken => dispatch =>
-  dispatch({
-    type: SET_ACCESS_TOKEN,
-    payload: accessToken,
-  });
+// const setAccessToken = accessToken => dispatch =>
+//   dispatch({
+//     type: SET_ACCESS_TOKEN,
+//     payload: accessToken,
+//   });
 
 const logout = () => dispatch => {
   AuthService.logout();
@@ -73,4 +73,4 @@ const logout = () => dispatch => {
   });
 };
 
-export { register, login, setAccessToken, logout };
+export { register, login, logout };

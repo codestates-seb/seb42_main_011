@@ -1,7 +1,6 @@
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 // eslint-disable-next-line import/no-cycle
-import { setAccessToken } from '../redux/actions/auth';
 import authHeader from '../redux/services/auth-header';
 
 // 로그인 만료(액세스 토큰 기한 만료) & 페이지 새로고침시
@@ -40,13 +39,12 @@ const onSilentRefresh = () => {
 //   }
 // };
 
-const onLoginSuccess = response => dispatch => {
+const onLoginSuccess = response => {
   setTimeout(onSilentRefresh, JWT_EXPIRY_TIME - 60000);
   const accessToken = JSON.stringify(
     response.headers.authorization.split(' ')[1],
   );
 
-  dispatch(setAccessToken(accessToken));
   try {
     const user = jwtDecode(accessToken);
     return user.memberId;
