@@ -131,10 +131,9 @@ function CommentsItem({
   memberId,
   onDelete,
   onUpdate,
-  initShowSeeMoreMenu = false,
 }) {
   const [editMode, setEditMode] = useState(false);
-  const [showSeeMoreMenu, setShowSeeMoreMenu] = useState(initShowSeeMoreMenu);
+  const [showSeeMoreMenu, setShowSeeMoreMenu] = useState(false);
   const [newContent, setNewContent] = useState(commentContent);
   const handleSeeMoreButton = () => {
     setShowSeeMoreMenu(true);
@@ -146,7 +145,11 @@ function CommentsItem({
   };
 
   const handleCompleteClick = () => {
-    onUpdate({ commentId, newContent });
+    if (commentContent !== newContent) {
+      onUpdate({ commentId, newContent });
+    }
+
+    setEditMode(false);
   };
 
   const handleDeleteClick = () => {
@@ -162,6 +165,10 @@ function CommentsItem({
     const content = event.target.value;
 
     setNewContent(content);
+  };
+
+  const handleOusideClick = () => {
+    setShowSeeMoreMenu(false);
   };
 
   return (
@@ -198,7 +205,11 @@ function CommentsItem({
       )}
 
       {showSeeMoreMenu && (
-        <EditMenu onEdit={handleEditMenu} onDelete={handleDeleteClick} />
+        <EditMenu
+          onOutsideClick={handleOusideClick}
+          onEdit={handleEditMenu}
+          onDelete={handleDeleteClick}
+        />
       )}
     </StyledCommenstItem>
   );

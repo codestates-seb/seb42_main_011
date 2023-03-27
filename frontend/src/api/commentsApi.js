@@ -15,11 +15,11 @@ async function createComments({ commentContent, bulletinPostId }) {
     .then(({ data }) => data);
 }
 
-async function updateComments({ commentContent, bulletinPostId }) {
+async function updateComments({ commentId, commentContent }) {
   return api
     .patch(
-      `/comments`,
-      { commentContent, bulletinPostId },
+      `/comments/${commentId}`,
+      { commentContent },
       {
         headers: {
           ...authHeader(),
@@ -29,44 +29,14 @@ async function updateComments({ commentContent, bulletinPostId }) {
     .then(({ data }) => data);
 }
 
-async function deleteComments({ commentContent, bulletinPostId }) {
+async function deleteComments({ commentId }) {
   return api
-    .delete(
-      `/comments`,
-      { commentContent, bulletinPostId },
-      {
-        headers: {
-          ...authHeader(),
-        },
+    .delete(`/comments/${commentId}`, {
+      headers: {
+        ...authHeader(),
       },
-    )
+    })
     .then(({ data }) => data);
 }
 
-const login = (username, password) =>
-  api
-    .post(
-      `/auth/login`,
-      {
-        username,
-        password,
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
-    )
-    .then(response => {
-      // localStorage.setItem("accessToken", JSON.stringify(response.data.));
-      // Cookies.set("refreshToken", response.data.refreshToken);
-      localStorage.setItem('tokens', JSON.stringify(response.data));
-      // TODO: user info를 user state에 저장하는 코드 작성
-
-      return response.data;
-    })
-    .catch(error => {
-      console.log(error);
-    });
-
-export { createComments, updateComments, deleteComments, login };
+export { createComments, updateComments, deleteComments };

@@ -21,7 +21,7 @@ public class EmailServiceImpl implements EmailService{
 
     @Autowired
     private JavaMailSender mailSender;
-    private static final String DOMAIN = "https://localhost:3000";
+    private static final String DOMAIN = "http://my-buddy.co.kr";
     private final JwtTokenizer jwtTokenizer;
     private final MemberRepository memberRepository;
 
