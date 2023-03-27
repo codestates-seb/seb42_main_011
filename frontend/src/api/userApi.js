@@ -1,4 +1,5 @@
 import axios from 'axios';
+import authHeader from '../redux/services/auth-header';
 
 const BASE_URL = '/api/v1';
 
@@ -80,6 +81,16 @@ async function deleteUserFollow({ memberId, accessToken }) {
     .then(({ data }) => data);
 }
 
+async function getUserInfo({ memberId }) {
+  return api
+    .get(`/members/${memberId}/info`, {
+      headers: {
+        ...authHeader(),
+      },
+    })
+    .then(({ data }) => data);
+}
+
 export {
   getUserProfile,
   getUserFollower,
@@ -87,4 +98,5 @@ export {
   updateUser,
   postUserFollow,
   deleteUserFollow,
+  getUserInfo,
 };
