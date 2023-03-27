@@ -8,6 +8,8 @@ import Button from '../components/UI/Button';
 import { register } from '../redux/actions/auth';
 import signupNullCheck from './SignupNullCheck';
 import { emailVerify, nicknameVerify } from '../api/authApi';
+import useInputs from '../hooks/useInputs';
+import useInput from '../hooks/useInput';
 
 const FormContainer = styled.section`
   display: flex;
@@ -48,12 +50,17 @@ const ButtonContainer = styled.div`
 
 function SignupPage() {
   // 기능 구현
-  const [nickname, setNickname] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordRetype, setPasswordRetype] = useState('');
-  const [dogName, setDogName] = useState('');
+  const [form, onChange, reset] = useInputs({
+    nickname: '',
+    email: '',
+    password: '',
+    passwordRetype: '',
+    dogName: '',
+  });
   const [dogGender, setDogGender] = useState('');
+  const onChangeDogGender = selectedValue => {
+    setDogGender(selectedValue);
+  };
 
   const [successful, setSuccessful] = useState(false);
   const [nullErrors, setNullErrors] = useState({});
@@ -64,36 +71,13 @@ function SignupPage() {
     passwordRetype: '',
     dogName: '',
   });
-  const [exists, setExists] = useState({
-    email: '',
-    nickname: '',
-  });
-
+  const [exists, setExists] = useState({});
   const { message } = useSelector(state => state.message);
 
   const dispatch = useDispatch();
 
-  const onChangeNickname = e => {
-    setNickname(e.target.value);
-  };
-  const onChangeEmail = e => {
-    setEmail(e.target.value);
-  };
-  const onChangePassword = e => {
-    setPassword(e.target.value);
-  };
-  const onChangePasswordRetype = e => {
-    setPasswordRetype(e.target.value);
-  };
-  const onChangeDogName = e => {
-    setDogName(e.target.value);
-  };
-  const onChangeDogGender = selectedValue => {
-    setDogGender(selectedValue);
-  };
-
   const checkLength = () => {
-    if (nickname.length > 10) {
+    if (form.nickname.length > 10) {
       setErrors(prev => ({
         ...prev,
         nickname: '닉네임은 10자 이하여야 합니다.',
@@ -101,7 +85,7 @@ function SignupPage() {
     } else {
       setErrors(prev => ({ ...prev, nickname: '' }));
     }
-    if (dogName.length > 10) {
+    if (form.dogName.length > 10) {
       setErrors(prev => ({
         ...prev,
         dogName: '강아지 이름은 10자 이하여야 합니다.',
@@ -113,8 +97,8 @@ function SignupPage() {
 
   const passwordVerify = input =>
     /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{8,20}$/.test(input);
-  const passwordRetypeVerify = (pw, pwRetype) => {
-    if (pw !== pwRetype) {
+  const passwordRetypeVerify = (password, passwordRetype) => {
+    if (password !== passwordRetype) {
       setErrors(prev => ({
         ...prev,
         passwordRetype: '비밀번호가 일치하지 않습니다.',
@@ -125,11 +109,11 @@ function SignupPage() {
   };
 
   useEffect(() => {
-    passwordRetypeVerify(password, passwordRetype);
-  }, [password, passwordRetype]);
+    passwordRetypeVerify(form.password, form.passwordRetype);
+  }, [form.password, form.passwordRetype]);
 
   useEffect(() => {
-    if (!passwordVerify(password) && password.length > 0) {
+    if (!passwordVerify(form.password) && form.password.length > 0) {
       setErrors(prev => ({
         ...prev,
         password:
@@ -138,20 +122,20 @@ function SignupPage() {
     } else {
       setErrors(prev => ({ ...prev, password: '' }));
     }
-  }, [password]);
+  }, [form.password]);
 
   useEffect(() => {
     checkLength();
-  }, [nickname, dogName]);
+  }, [form.nickname, form.dogName]);
 
   useEffect(() => {
-    emailVerify(email)
-      .then(response => {
+    emailVerify(form.email)
+      .then(
         setExists(prev => ({
           ...prev,
           email: '',
-        }));
-      })
+        })),
+      )
       .catch(error => {
         if (error.response.status === 409) {
           setExists(prev => ({
@@ -167,7 +151,7 @@ function SignupPage() {
         }
       });
 
-    nicknameVerify(nickname)
+    nicknameVerify(form.nickname)
       .then(response => {
         setExists(prev => ({
           ...prev,
@@ -188,26 +172,35 @@ function SignupPage() {
           console.log(error);
         }
       });
-  }, [email, nickname]);
-  console.log(exists);
+  }, [form.email, form.nickname]);
+  // console.log(exists);
+  console.log(form.nickname);
 
   const handleSubmit = e => {
     e.preventDefault();
     setSuccessful(false);
     setNullErrors(
       signupNullCheck({
-        nickname,
-        email,
-        password,
-        passwordRetype,
-        dogName,
+        nickname: form.nickname,
+        email: form.email,
+        password: form.password,
+        passwordRetype: form.passwordRetype,
+        dogName: form.dogName,
         dogGender,
       }),
     );
 
     // 빈칸 유효성 검사 통과했을 경우
     if (Object.keys(nullErrors).length === 0) {
-      dispatch(register(email, password, nickname, dogName, dogGender))
+      dispatch(
+        register(
+          form.email,
+          form.password,
+          form.nickname,
+          form.dogName,
+          dogGender,
+        ),
+      )
         .then(() => {
           setSuccessful(true);
         })
@@ -225,10 +218,11 @@ function SignupPage() {
           <Input
             variant="large"
             label="닉네임"
-            id="name"
+            id="nickname"
+            name="nickname"
             type="text"
-            value={nickname}
-            onChange={onChangeNickname}
+            // value={form.name}
+            onBlur={e => onChange(e)}
           />
           {nullErrors.nickname && <p>{nullErrors.nickname}</p>}
           {errors.nickname && <p>{errors.nickname}</p>}
@@ -237,9 +231,10 @@ function SignupPage() {
             variant="large"
             label="이메일"
             id="email"
+            name="email"
             type="email"
-            value={email}
-            onChange={onChangeEmail}
+            // value={form.email}
+            onBlur={onChange}
           />
           {nullErrors.email && <p>{nullErrors.email}</p>}
           {exists.email && <p>{exists.email}</p>}
@@ -247,9 +242,10 @@ function SignupPage() {
             variant="large"
             label="비밀번호"
             id="password"
+            name="password"
             type="password"
-            value={password}
-            onChange={onChangePassword}
+            // value={form.password}
+            onBlur={onChange}
           />
           {nullErrors.password && <p>{nullErrors.password}</p>}
           {errors.password && <p>{errors.password}</p>}
@@ -257,19 +253,21 @@ function SignupPage() {
             variant="large"
             label="비밀번호 확인"
             id="password-retype"
+            name="passwordRetype"
             type="password"
-            value={passwordRetype}
-            onChange={onChangePasswordRetype}
+            // value={form.passwordRetype}
+            onBlur={onChange}
           />
           {nullErrors.passwordRetype && <p>{nullErrors.passwordRetype}</p>}
           {errors.passwordRetype && <p>{errors.passwordRetype}</p>}
           <Input
             variant="large"
             label="강아지 이름"
-            id="dogname"
+            id="dogName"
+            name="dogName"
             type="text"
-            value={dogName}
-            onChange={onChangeDogName}
+            // value={form.dogName}
+            onBlur={onChange}
           />
           {nullErrors.dogName && <p>{nullErrors.dogName}</p>}
           {errors.dogName && <p>{errors.dogName}</p>}

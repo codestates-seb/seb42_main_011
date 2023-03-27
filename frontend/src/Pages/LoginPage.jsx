@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -5,6 +6,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import Input from '../components/UI/Input';
 import Button from '../components/UI/Button';
 import { login } from '../redux/actions/auth';
+import useInput from '../hooks/useInput';
 
 // 스타일
 const FormContainer = styled.section`

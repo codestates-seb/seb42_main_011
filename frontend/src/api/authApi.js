@@ -11,7 +11,7 @@ async function emailVerify(input) {
     },
     {
       headers: {
-        'ngrok-skip-browser-warning': '12',
+        'ngrok-skip-browser-warning': 'skip-browser-warning',
         withCredentials: true,
       },
     },
@@ -27,7 +27,7 @@ async function nicknameVerify(input) {
     },
     {
       headers: {
-        'ngrok-skip-browser-warning': '12',
+        'ngrok-skip-browser-warning': 'skip-browser-warning',
         withCredentials: true,
       },
     },

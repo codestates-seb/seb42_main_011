@@ -61,6 +61,7 @@ const register = (email, password, nickname, dogName, dogGender) => {
   return axios.postForm(`/api/v1/members`, form, {
     headers: {
       'Content-Type': 'multipart/form-data',
+      'ngrok-skip-browser-warning': '12',
     },
     withCredentials: true,
   });
@@ -96,6 +97,7 @@ const login = (username, password) =>
       {
         headers: {
           'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': '12',
         },
         withCredentials: true,
       },
@@ -112,6 +114,7 @@ const onSilentRefresh = () => {
   axios
     .post(`/api/v1/auth/refresh`, null, {
       headers: authHeader(),
+      'ngrok-skip-browser-warning': '12',
       withCredentials: true,
     })
     .then(onLoginSuccess)
@@ -159,7 +162,10 @@ const onLoginSuccess = response => {
 // }
 const logout = () => {
   // const accessToken = localStorage.getItem('user');
-  axios.post(`/api/v1/auth/logout`, null, { headers: authHeader() });
+  axios.post(`/api/v1/auth/logout`, null, {
+    headers: authHeader(),
+    'ngrok-skip-browser-warning': '12',
+  });
   localStorage.removeItem('accessToken');
   Cookies.remove('Refresh');
 };
