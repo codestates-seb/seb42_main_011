@@ -13,7 +13,7 @@ jobs:
         run: yarn install
         working-directory: ./frontend
       - name: Build
-        run: yarn run build
+        run: npm run build
         working-directory: ./frontend
       - name: Sync Bucket
         env:
