@@ -1,125 +1,148 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import useInput from '../../hooks/useInput';
-import useModal from '../../hooks/useModal';
+import { useQueryClient } from 'react-query';
+
 import Card from '../UI/Card/Card';
-import PostNewMap from './PostNewMap';
+import PostNewlnfo from './PostNewlnfo';
+import PostDetailHeader from '../PostDetail/PostDetailHeader';
+import PostNewContent from './PostNewContent';
+import ModalBase from '../UI/Modal/ModalBase';
+import PostDetailPage from '../../Pages/PostDetailPage';
 
-const Container = styled.section`
+import useModal from '../../hooks/useModal';
+import useGetMembersInfo from '../../hooks/members/useGetMembersInfo';
+import useCreateBulletinPost from '../../hooks/bulletinPosts/useCreateBulletinPost';
+
+const PostDetailContainer = styled(Card)`
   display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  gap: 16px;
+  max-width: 1163px;
+  max-height: 800px;
   height: 100%;
   width: 100%;
-
-  overflow-y: hidden;
-  padding-top: 100px;
-  padding: 90px 0 0 0;
-
-  border-left: var(--border);
-`;
-
-const PostNewContent = styled(Card)`
-  margin: 0 16px;
-
-  width: calc(100% - 16px - 16px);
-  min-height: 280px;
-  padding: 14px 19px;
-
-  font-weight: 500;
-  font-size: var(--font-size-16);
-  line-height: 23px;
-
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  word-break: keep-all;
-  resize: none;
-`;
-
-const LocationContainer = styled.div`
-  padding: 10px 23px;
-  border-top: var(--border);
-  border-bottom: var(--border);
-
-  width: 100%;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 5px;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+
+  gap: 18px;
+  background-color: var(--color-light-0);
+  @media screen and (max-width: 1199px) {
+    scale: calc(0.9);
+  }
 `;
 
-const LactionButtonContainer = styled.div`
-  flex: 1 1 0;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  gap: 5px;
+const Button = styled.button`
+  padding: 8px;
+  border: var(--border);
+  border-radius: 5px;
 `;
 
-const LocationText = styled.p`
-  font-weight: 500;
-  font-size: 13px;
-  line-height: 19px;
-`;
+function PostNew({ onClose, memberId }) {
+  const today = new Date();
+  const [content, setContent] = useState('');
+  const [place, setPlace] = useState('');
+  const [photoImage, setPhotoImage] = useState('');
+  const [disabledSubmit, setDisabledSubmit] = useState(true);
+  const { openModal, closeModal, closeModalbyIndex } = useModal();
+  const { data } = useGetMembersInfo({ memberId });
+  const queryClient = useQueryClient();
 
-const LocationSelectButton = styled.button`
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 23px;
-  color: #097bed;
-`;
+  const { mutateAsync } = useCreateBulletinPost({
+    onSuccess: responseData => {
+      queryClient.setQueriesData('postDetail', () => responseData);
 
-const SelectedLocation = styled.p`
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 19px;
-  word-break: keep-all;
-  max-width: 120px;
-`;
+      openModal(
+        <PostDetailPage
+          bulletinId={responseData.data.bulletinPostId}
+          onClose={closeModal}
+        />,
+      );
 
-function PostNew({ onContentChange, onSelectPlace }) {
-  const { openModal, closeModal } = useModal();
-  const [content, dValue, setContent] = useInput('', 300);
-  const [place, setPlace] = useState();
+      closeModalbyIndex(0);
+    },
+    onError: () => {
+      openModal(
+        <ModalBase
+          title="실패"
+          content="게시글 등록에 실패했습니다"
+          buttons={<Button onClick={closeModal}>확인</Button>}
+        />,
+      );
+    },
+  });
 
-  useEffect(() => {
-    onContentChange(content);
-  }, [dValue]);
+  const handleContentChange = newContent => {
+    setContent(newContent);
+  };
 
-  const handleSelect = newPlace => {
-    onSelectPlace(newPlace);
+  const handleSelectPlace = newPlace => {
     setPlace(newPlace);
   };
 
-  const handleLoactionSelectClick = () => {
-    openModal(<PostNewMap onSelect={handleSelect} onClose={closeModal} />);
+  const handleSelectImage = newImage => {
+    setPhotoImage(newImage);
+  };
+
+  useEffect(() => {
+    if (content && place && photoImage) {
+      setDisabledSubmit(false);
+    } else {
+      setDisabledSubmit(true);
+    }
+  }, [content, place, photoImage]);
+
+  const sendData = async () => {
+    const postData = {
+      postContent: content,
+      addressId: place.id,
+      amenityName: place.place_name,
+      address: place.address_name,
+      longitude: place.x,
+      latitude: place.y,
+    };
+
+    mutateAsync({ postData, photoImage });
+    closeModal();
+  };
+
+  const handleSubmit = async () => {
+    openModal(
+      <ModalBase
+        title="게시글 등록"
+        content="정말 등록하시겠습니까?"
+        buttons={
+          <Fragment>
+            <Button onClick={() => sendData()}>확인</Button>
+            <Button onClick={closeModal}>취소</Button>
+          </Fragment>
+        }
+      />,
+    );
   };
 
   return (
-    <Container>
-      <PostNewContent
-        onChange={setContent}
-        tag="textarea"
-        placeholder="입력해주세요"
-        value={content}
+    <PostDetailContainer tag="article" borderRadius="20px">
+      <PostDetailHeader
+        createdAt={today}
+        dogName={data.dogName}
+        nickname={data.nickname}
+        onClose={onClose}
+        onSubmit={handleSubmit}
+        disabledSubmit={disabledSubmit}
+        isEdit
       />
-      <LocationContainer>
-        <LactionButtonContainer>
-          <LocationText>
-            사진에 있는 장소를 추천하고 싶으시다면 위치를 추가해주세요!
-          </LocationText>
-          <LocationSelectButton
-            type="button"
-            onClick={handleLoactionSelectClick}
-          >
-            {place ? '위치(수정)' : '위치(선택)'}
-          </LocationSelectButton>
-        </LactionButtonContainer>
-        {place && <SelectedLocation>{place.place_name} </SelectedLocation>}
-      </LocationContainer>
-    </Container>
+      <PostNewlnfo
+        profileUrl={data.profileUrl}
+        dogName={data.dogName}
+        nickname={data.nickname}
+        onSelectImage={handleSelectImage}
+      />
+
+      <PostNewContent
+        onContentChange={handleContentChange}
+        onSelectPlace={handleSelectPlace}
+      />
+    </PostDetailContainer>
   );
 }
 
