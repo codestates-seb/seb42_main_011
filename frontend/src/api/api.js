@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const BASE_URL = '/api/v1';
+const BASE_URL =
+  'http://ec2-43-200-164-30.ap-northeast-2.compute.amazonaws.com:8081';
 
 const api = axios.create({
   baseURL: BASE_URL,
   headers: {
-    'ngrok-skip-browser-warning': '12',
     withCredentials: true,
   },
 });
