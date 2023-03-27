@@ -4,8 +4,8 @@ import { getUserInfo } from '../../api/userApi';
 const queryKey = 'getUserInfo';
 
 const useGetMembersInfo = ({ memberId, enabled = true }) => {
-  const { data, refetch } = useQuery(
-    [queryKey],
+  const { data, refetch, isLoading, isError } = useQuery(
+    queryKey,
     () => getUserInfo({ memberId }),
     {
       enabled,
@@ -13,7 +13,7 @@ const useGetMembersInfo = ({ memberId, enabled = true }) => {
     },
   );
 
-  return { data, refetch, queryKey };
+  return { data, refetch, queryKey, isLoading, isError };
 };
 
 export default useGetMembersInfo;
