@@ -4,7 +4,8 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import ModalProvider from './components/UI/Modal/ModalProvider';
 import Router from './Router';
 import GlobalStyles from './styles/GlobalStyles';
-import { onSilentRefresh } from './redux/services/auth.service';
+import { onSilentRefresh } from './api/tokenApi';
+import useAccessToken from './hooks/useAccessToken';
 
 const queryClient = new QueryClient();
 
@@ -14,6 +15,11 @@ function App() {
       onSilentRefresh();
     }, []);
   }
+
+  const accessToken = useAccessToken();
+  useEffect(() => {
+    console.log(accessToken);
+  }, [accessToken]);
 
   return (
     <QueryClientProvider client={queryClient}>
