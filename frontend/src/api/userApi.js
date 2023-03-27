@@ -1,3 +1,7 @@
+
+import authHeader from '../redux/services/auth-header';
+import api from './api';
+
 import axios from 'axios';
 import authHeader from '../redux/services/auth-header';
 
@@ -14,13 +18,7 @@ async function getUserProfile({ memberId, userData }) {
   return api.get(`/members/${memberId}`, userData).then(({ data }) => data);
 }
 
-async function updateUser({
-  memberId,
-  nickname,
-  aboutMe,
-  profileImage,
-  accessToken,
-}) {
+async function updateUser({ memberId, nickname, aboutMe, profileImage }) {
   const form = new FormData();
 
   form.append(
@@ -35,47 +33,57 @@ async function updateUser({
     .post(`/members/${memberId}`, form, {
       headers: {
         'Content-Type': `multipart/form-data`,
-        authorization: accessToken,
+        ...authHeader(),
       },
     })
     .then(({ data }) => data);
 }
 
-async function getUserFollower({ page = 1, size = 10, accessToken }) {
+async function deleteUser({ memberId }) {
+  return api
+    .delete(`/members/${memberId}`, {
+      headers: {
+        ...authHeader(),
+      },
+    })
+    .then(({ data }) => data);
+}
+
+async function getUserFollower({ page = 1, size = 10 }) {
   return api
     .get(`/followers/follower?page=${page}&size=${size}`, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        ...authHeader(),
       },
     })
     .then(({ data }) => data);
 }
 
-async function getUserFollowing({ page = 1, size = 10, accessToken }) {
+async function getUserFollowing({ page = 1, size = 10 }) {
   return api
     .get(`/followers/followee?page=${page}&size=${size}`, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        ...authHeader(),
       },
     })
     .then(({ data }) => data);
 }
 
-async function postUserFollow({ memberId, userData, accessToken }) {
+async function postUserFollow({ memberId, userData }) {
   return api
     .post(`/followers?followeeId=${memberId}`, userData, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        ...authHeader(),
       },
     })
     .then(({ data }) => data);
 }
 
-async function deleteUserFollow({ memberId, accessToken }) {
+async function deleteUserFollow({ memberId }) {
   return api
     .delete(`/followers?followeeId=${memberId}`, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        ...authHeader(),
       },
     })
     .then(({ data }) => data);
@@ -98,5 +106,6 @@ export {
   updateUser,
   postUserFollow,
   deleteUserFollow,
+  deleteUser,
   getUserInfo,
 };

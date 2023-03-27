@@ -49,6 +49,8 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
   const userData = userdata;
   const { openModal } = useModal();
   const [isFollowing, setIsFollowing] = useState(false);
+  const [isLoadingFollowingStatus, setIsLoadingFollowingStatus] =
+    useState(true);
 
   // Button change
   const userFollowMutation = useMutation(postUserFollow, {
@@ -66,13 +68,13 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
   useEffect(() => {
     async function checkFollowingStatus() {
       try {
-        const followingStatus = await getUserFollowing({
-          memberId,
-          accessToken: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjo4LCJ1c2VybmFtZSI6ImF3ZWFzZEBtdW5nZmx1ZW5jZXIuY29tIiwic3ViIjoiYXdlYXNkQG11bmdmbHVlbmNlci5jb20iLCJpYXQiOjE2Nzk2MjAzMjgsImV4cCI6MTY3OTk2NTkyOH0.PrPMxPM5jFZF8fpiuCbuzcgtUZ-vfwyvg8u49TslrD0WwK_eMNaaoLG3o-QJJbZAuggZyJ-4YildiF4dPs1Aeg`,
-        });
-        setIsFollowing(followingStatus);
+        setIsLoadingFollowingStatus(true);
+        const data = await getUserFollowing({ memberId });
+        setIsFollowing(data.isFollowing);
       } catch (error) {
         console.error('Failed to check following status:', error);
+      } finally {
+        setIsLoadingFollowingStatus(false);
       }
     }
 
@@ -86,7 +88,6 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
         await userFollowDeleteMutation.mutateAsync(
           {
             memberId,
-            accessToken: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjo4LCJ1c2VybmFtZSI6ImF3ZWFzZEBtdW5nZmx1ZW5jZXIuY29tIiwic3ViIjoiYXdlYXNkQG11bmdmbHVlbmNlci5jb20iLCJpYXQiOjE2Nzk2MjAzMjgsImV4cCI6MTY3OTk2NTkyOH0.PrPMxPM5jFZF8fpiuCbuzcgtUZ-vfwyvg8u49TslrD0WwK_eMNaaoLG3o-QJJbZAuggZyJ-4YildiF4dPs1Aeg`,
           },
           {
             onSuccess: () => {
@@ -113,7 +114,6 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
         await userFollowMutation.mutateAsync(
           {
             memberId,
-            accessToken: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjo4LCJ1c2VybmFtZSI6ImF3ZWFzZEBtdW5nZmx1ZW5jZXIuY29tIiwic3ViIjoiYXdlYXNkQG11bmdmbHVlbmNlci5jb20iLCJpYXQiOjE2Nzk2MjAzMjgsImV4cCI6MTY3OTk2NTkyOH0.PrPMxPM5jFZF8fpiuCbuzcgtUZ-vfwyvg8u49TslrD0WwK_eMNaaoLG3o-QJJbZAuggZyJ-4YildiF4dPs1Aeg`,
           },
           {
             onSuccess: () => {
@@ -146,6 +146,16 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
     return null;
   }
 
+  const getFollowButtonText = () => {
+    if (isLoadingFollowingStatus) {
+      return '로딩중...';
+    }
+    if (isFollowing) {
+      return '팔로우끊기';
+    }
+    return '팔로우';
+  };
+
   // Button change by location
   if (isMyPage) {
     AboumeButton = (
@@ -155,8 +165,12 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
     );
   } else {
     AboumeButton = (
-      <FollowButton variant="medium" onClick={handleFollowClick}>
-        {isFollowing ? '팔로우끊기' : '팔로우'}
+      <FollowButton
+        variant="medium"
+        onClick={handleFollowClick}
+        disabled={isLoadingFollowingStatus}
+      >
+        {getFollowButtonText()}
       </FollowButton>
     );
   }
