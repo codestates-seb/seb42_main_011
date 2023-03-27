@@ -17,8 +17,14 @@ function ModalProvider({ children }) {
     setModals([]);
   };
 
+  const closeModalbyIndex = deletedIndex => {
+    setModals(prevStack =>
+      prevStack.filter((_, index) => index !== deletedIndex),
+    );
+  };
+
   const providerValue = useMemo(
-    () => ({ openModal, closeModal, closeAllModal }),
+    () => ({ openModal, closeModal, closeAllModal, closeModalbyIndex }),
     [openModal, closeModal],
   );
 

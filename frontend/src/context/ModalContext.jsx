@@ -5,4 +5,5 @@ export default createContext({
   openModal: () => {},
   closeModal: () => {},
   closeAllModal: () => {},
+  closeModalbyIndex: () => {},
 });

@@ -80,7 +80,7 @@ function ModalBase({ title, content, buttons }) {
           </CancleButton>
         </Header>
         <Content>{content}</Content>
-        {buttons && <Footer onClick={handleExitAnimation}>{buttons}</Footer>}
+        {buttons && <Footer>{buttons}</Footer>}
       </Warapper>
     </ModalNonContent>
   );
