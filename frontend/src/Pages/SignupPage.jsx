@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import Input from '../components/UI/Input';
 import DropdownGender from '../components/UI/Dropdown/DropdownGender';
 import Button from '../components/UI/Button';
@@ -52,6 +52,7 @@ const ButtonContainer = styled.div`
 function SignupPage() {
   // 기능 구현
   const navigate = useNavigate();
+  const { isLoggedIn } = useSelector(state => state.auth);
   const [form, onChange, reset] = useInputs({
     nickname: '',
     email: '',
@@ -211,6 +212,10 @@ function SignupPage() {
         });
     }
   };
+
+  if (isLoggedIn) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <FormContainer>

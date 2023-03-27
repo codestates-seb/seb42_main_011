@@ -87,14 +87,21 @@ function LoginPage() {
 
   const dispatch = useDispatch();
 
+  const [error, setError] = useState('');
+
   const handleLogin = e => {
     e.preventDefault();
     setLoading(true);
     dispatch(login(email, password))
       .then(() => navigate('/'))
-      // window.location.reload();)
-      .catch(error => {
-        console.log(error);
+      .catch(err => {
+        if (err.response.status === 401) {
+          setError('등록되지 않은 이메일이거나 비밀번호가 일치하지 않습니다.');
+        } else {
+          setError(
+            '일시적인 오류로 로그인에 실패했습니다. 잠시 후 다시 시도해주세요.',
+          );
+        }
         setLoading(false);
       });
   };
@@ -141,6 +148,7 @@ function LoginPage() {
             로그인
           </Button>
         </ButtonContainer>
+        {error && <p>{error}</p>}
       </LoginForm>
     </FormContainer>
   );

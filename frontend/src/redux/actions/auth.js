@@ -135,7 +135,7 @@ const login = (email, password) => dispatch =>
 
       return Promise.resolve();
     })
-    .catch(() => {
+    .catch(error => {
       // let message = '';
       // if (error.response.status === 401) {
       //   message = '등록되지 않은 이메일이거나 비밀번호가 일치하지 않습니다.';
@@ -154,7 +154,7 @@ const login = (email, password) => dispatch =>
         type: LOGIN_FAIL,
       });
 
-      return Promise.reject();
+      throw error;
     });
 
 const logout = () => dispatch => {
