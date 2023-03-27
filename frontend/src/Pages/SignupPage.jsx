@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import Input from '../components/UI/Input';
 import DropdownGender from '../components/UI/Dropdown/DropdownGender';
 import Button from '../components/UI/Button';
@@ -50,6 +51,7 @@ const ButtonContainer = styled.div`
 
 function SignupPage() {
   // 기능 구현
+  const navigate = useNavigate();
   const [form, onChange, reset] = useInputs({
     nickname: '',
     email: '',
@@ -203,6 +205,7 @@ function SignupPage() {
       )
         .then(() => {
           setSuccessful(true);
+          navigate('/login');
         })
         .catch(() => {
           setSuccessful(false);

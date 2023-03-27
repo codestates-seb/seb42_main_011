@@ -1,6 +1,7 @@
 package com.mybuddy.global.advice;
 
 import com.mybuddy.global.exception.LogicException;
+import com.mybuddy.global.exception.StorageException;
 import com.mybuddy.global.utils.ErrorResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import javax.validation.ConstraintViolationException;
@@ -85,7 +88,26 @@ public class GlobalExceptionAdvice {
     public ErrorResponse handleMissingServletRequestPartException(
             MissingServletRequestPartException e) {
             
-            final ErrorResponse response = ErrorResponse.of(HttpStatus.BAD_REQUEST,
+        final ErrorResponse response = ErrorResponse.of(HttpStatus.BAD_REQUEST,
+                e.getMessage());
+
+        return response;
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(value = HttpStatus.PAYLOAD_TOO_LARGE)
+    public ErrorResponse handleMultipartExceptionPayloadTooLarge(MaxUploadSizeExceededException e) {
+
+        final ErrorResponse response = ErrorResponse.of(HttpStatus.PAYLOAD_TOO_LARGE,
+                "Maximum upload size exceeded, exceeds its maximum permitted size of 10MB");
+
+        return response;
+    }
+    @ExceptionHandler
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleStorageException(StorageException e) {
+
+        final ErrorResponse response = ErrorResponse.of(HttpStatus.BAD_REQUEST,
                 e.getMessage());
 
         return response;
