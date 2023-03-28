@@ -49,6 +49,9 @@ const ImageChangeBtn = styled(Button)`
   margin-top: 5px;
   margin-left: -15px;
   background-color: var(--color-dark-0);
+  &:first-of-type {
+    margin-right: 20px;
+  }
   &:hover {
     background-color: var(--color-primary);
   }
