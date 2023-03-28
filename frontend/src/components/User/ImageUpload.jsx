@@ -1,10 +1,6 @@
 import { useRef, useState, forwardRef } from 'react';
-import { useMutation } from 'react-query';
 import styled from 'styled-components';
-import { updateUser } from '../../api/userApi';
-import useModal from '../../hooks/useModal';
 import Button from '../UI/Button';
-import ModalBase from '../UI/Modal/ModalBase';
 import UserpageProfile from '../UI/UserpageProfile';
 
 const ImageWrapper = styled.section`
@@ -57,15 +53,13 @@ const ImageChangeBtn = styled(Button)`
   }
 `;
 
-function ImageUpload({ profileUrl, memberId, nickname, aboutMe }) {
-  const { openModal } = useModal();
+function ImageUpload({ profileUrl, nickname, setFile }) {
   const uploadedImage = useRef(null);
   const imageUploader = useRef(null);
-  const [Image, setImage] = useState(profileUrl);
-  const [file, setFile] = useState(null);
-  const updateUserMutation = useMutation(updateUser);
-
-  console.log(file);
+  const [Image, setImage] = useState(
+    profileUrl ??
+      'https://cdn-icons-png.flaticon.com/512/1130/1130933.png?w=2000&t=st=1680005925~exp=1680006525~hmac=8e8077d62e937c5ca56e24827f856a436440d7fb244eff53af34fffddc88d213',
+  );
 
   // File select window
   const handleImageUpload = () => {
@@ -86,44 +80,8 @@ function ImageUpload({ profileUrl, memberId, nickname, aboutMe }) {
     }
   };
 
-  // Click api call (profileImage)
-  const handleUpdateProfileImg = async () => {
-    try {
-      if (file) {
-        await updateUserMutation.mutateAsync(
-          {
-            memberId,
-            profileImage: file,
-            nickname,
-            aboutMe,
-          },
-          {
-            onSuccess: () => {
-              openModal(
-                <ModalBase
-                  title="IMAGE"
-                  content="프로필 이미지 변경 완료! :)"
-                  buttons={<Button>확인</Button>}
-                />,
-              );
-            },
-            onError: () => {
-              openModal(
-                <ModalBase
-                  title="IMAGE"
-                  content="프로필 이미지 변경에 실패했어요 :/"
-                  buttons={<Button>확인</Button>}
-                />,
-              );
-            },
-          },
-        );
-
-        setImage(URL.createObjectURL(file)); // Image preview update
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  const handleUpdateProfileImg = () => {
+    handleImageUpload();
   };
 
   return (
@@ -141,26 +99,16 @@ function ImageUpload({ profileUrl, memberId, nickname, aboutMe }) {
         <ProfileImg
           src={Image}
           forwardedRef={uploadedImage}
-          alt="프로필 이미지"
+          alt={`${nickname}의프로필 이미지`}
         />
       </ProfilePicture>
       <BtnWrapper>
-        <ImageChangeBtn
-          variant="medium"
-          onClick={event => {
-            handleImageUpload(event);
-          }}
-        >
+        <ImageChangeBtn variant="medium" onClick={handleUpdateProfileImg}>
           이미지 변경
-        </ImageChangeBtn>
-        <ImageChangeBtn
-          variant="medium"
-          onClick={event => handleUpdateProfileImg(event)}
-        >
-          이미지 저장
         </ImageChangeBtn>
       </BtnWrapper>
     </ImageWrapper>
   );
 }
+
 export default ImageUpload;

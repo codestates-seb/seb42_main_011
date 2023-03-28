@@ -91,7 +91,7 @@ const CancelBtn = styled(Button)`
   }
 `;
 
-function UserEditContent({ onCancel, memberId, nickname, aboutMe }) {
+function UserEditContent({ onCancel, memberId, nickname, aboutMe, file }) {
   const { openModal } = useModal();
   const [UserNickname, setUserNickname] = useState(nickname);
   const [UserAboutMe, setUserAboutMe] = useState(aboutMe);
@@ -107,8 +107,8 @@ function UserEditContent({ onCancel, memberId, nickname, aboutMe }) {
 
   // Debounce Nickname
   useEffect(() => {
-    if (debouncedNickname.length < 4 || debouncedNickname.length > 10) {
-      setNicknameError('닉네임은 4-10자 사이로 작성 해주세요.');
+    if (debouncedNickname.length < 2 || debouncedNickname.length > 10) {
+      setNicknameError('닉네임은 10자 이하로 작성 해주세요.');
     } else {
       setNicknameError('');
     }
@@ -142,6 +142,7 @@ function UserEditContent({ onCancel, memberId, nickname, aboutMe }) {
       await updateUserMutation.mutateAsync(
         {
           memberId,
+          profileImage: file,
           nickname: UserNickname,
           aboutMe: UserAboutMe,
         },

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
@@ -89,6 +89,8 @@ const StripeImg = styled(Stripeshape)`
 function UserEditPage() {
   const { memberId } = useParams();
   const navigate = useNavigate();
+  const [file, setFile] = useState(null);
+  console.log(file);
   const {
     isLoading,
     error,
@@ -112,9 +114,8 @@ function UserEditPage() {
       <Profile>
         <ImageUpload
           profileUrl={Userdata.data.profileUrl}
-          memberId={memberId}
           nickname={Userdata.data.nickname}
-          aboutMe={Userdata.data.aboutMe}
+          setFile={setFile}
         />
       </Profile>
       <MyPageContent>
@@ -129,6 +130,7 @@ function UserEditPage() {
               nickname={Userdata.data.nickname}
               aboutMe={Userdata.data.aboutMe}
               profileUrl={Userdata.data.profileUrl}
+              file={file}
             />
             <StripeImg />
           </ContentBox>
