@@ -8,13 +8,6 @@ const Warapper = styled.ul`
   width: 100%;
   gap: 8px;
   padding: 8px;
-  overflow-y: auto;
-  -ms-overflow-style: none; /* 인터넷 익스플로러 */
-  scrollbar-width: none; /* 파이어폭스 */
-
-  ::-webkit-scrollbar {
-    display: none;
-  }
 `;
 
 function CommentsList({ onClick, children }) {

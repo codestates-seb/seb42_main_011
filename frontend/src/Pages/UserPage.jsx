@@ -2,7 +2,6 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { useLocation, useParams } from 'react-router-dom';
-/* import { useSelector } from 'react-redux'; */
 import { useSelector } from 'react-redux';
 import UserInfoComponent from '../components/User/UserInfoComponent';
 import UserProfileImg from '../components/User/UserProfileImg';
@@ -76,7 +75,7 @@ function UserPage() {
   }
 
   const handleDeleteButtnClick = () => {
-    openModal(<UserDeleteModal />);
+    openModal(<UserDeleteModal memberId={pageMemberId} />);
   };
 
   const {

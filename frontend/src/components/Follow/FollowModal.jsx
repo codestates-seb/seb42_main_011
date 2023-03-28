@@ -19,7 +19,8 @@ const NoFollowing = styled.div`
 
 const FollowingListCard = styled.div`
   width: 371px;
-  height: 410px;
+  height: auto;
+  max-height: 410px;
   margin-top: 10px;
   display: flex;
   flex-direction: column;
@@ -100,7 +101,6 @@ function FollowModal() {
     getUserFollowing({
       page: 1,
       size: 10,
-      accessToken: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjo4LCJ1c2VybmFtZSI6ImF3ZWFzZEBtdW5nZmx1ZW5jZXIuY29tIiwic3ViIjoiYXdlYXNkQG11bmdmbHVlbmNlci5jb20iLCJpYXQiOjE2Nzk2MjAzMjgsImV4cCI6MTY3OTk2NTkyOH0.PrPMxPM5jFZF8fpiuCbuzcgtUZ-vfwyvg8u49TslrD0WwK_eMNaaoLG3o-QJJbZAuggZyJ-4YildiF4dPs1Aeg`,
     }),
   );
 

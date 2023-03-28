@@ -2,7 +2,7 @@ name: client
 on:
   push:
     branches:
-      - dev
+      - fe/feat/deploy
 jobs:
   build:
     runs-on: ubuntu-20.04
@@ -13,7 +13,7 @@ jobs:
         run: yarn install
         working-directory: ./frontend
       - name: Build
-        run: yarn run build
+        run: npm run build
         working-directory: ./frontend
       - name: Sync Bucket
         env:
