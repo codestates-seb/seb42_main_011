@@ -254,7 +254,7 @@ function SignupPage() {
           name="nickname"
           type="text"
           onBlur={onChange}
-          isSignup
+          isFade
         >
           {[nullErrors.nickname, errors.nickname, exists.nickname]}
         </Input>
@@ -266,7 +266,7 @@ function SignupPage() {
           name="email"
           type="email"
           onBlur={onChange}
-          isSignup
+          isFade
         >
           {[nullErrors.email, exists.email]}
         </Input>
@@ -278,7 +278,7 @@ function SignupPage() {
           name="password"
           type="password"
           onBlur={onChange}
-          isSignup
+          isFade
         >
           {[nullErrors.password, errors.password]}
         </Input>
@@ -290,7 +290,7 @@ function SignupPage() {
           name="passwordRetype"
           type="password"
           onBlur={onChange}
-          isSignup
+          isFade
         >
           {[nullErrors.passwordRetype, errors.passwordRetype]}
         </Input>
@@ -302,13 +302,13 @@ function SignupPage() {
           name="dogName"
           type="text"
           onBlur={onChange}
-          isSignup
+          isFade
         >
           {[nullErrors.dogName, errors.dogName]}
         </Input>
 
         <DropdownGender onSelect={onChangeDogGender}>
-          {[nullErrors.dogGender]}
+          {nullErrors.dogGender}
         </DropdownGender>
 
         <ButtonContainer>
