@@ -1,4 +1,4 @@
-import React, { Fragment, Suspense, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useMutation } from 'react-query';
 import { useSelector } from 'react-redux';
@@ -11,7 +11,7 @@ import ModalBase from '../components/UI/Modal/ModalBase';
 
 import { createBulletinPost } from '../api/bulletinPostsApi';
 import useModal from '../hooks/useModal';
-import RetryErrorBoundary from '../components/RetryErrorBoundary';
+
 import useGetMembersInfo from '../hooks/members/useGetMembersInfo';
 
 const PostDetailContainer = styled(Card)`
@@ -37,13 +37,6 @@ const Button = styled.button`
   border: var(--border);
   border-radius: 5px;
 `;
-
-// const DUMY = {
-//   nickname: '알파벳',
-//   dogName: '더닝크루거',
-//   profileUrl:
-//     'https://images.unsplash.com/photo-1561037404-61cd46aa615b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-// };
 
 function PostNewPage({ onClose }) {
   const today = new Date();
@@ -132,32 +125,28 @@ function PostNewPage({ onClose }) {
   };
 
   return (
-    <RetryErrorBoundary>
-      <Suspense>
-        <PostDetailContainer tag="article" borderRadius="20px">
-          <PostDetailHeader
-            createdAt={today}
-            dogName={data.dogName}
-            nickname={data.nickname}
-            onClose={onClose}
-            onSubmit={handleSubmit}
-            disabledSubmit={disabledSubmit}
-            isEdit
-          />
-          <PostNewlnfo
-            profileUrl={data.profileUrl}
-            dogName={data.dogName}
-            nickname={data.nickname}
-            onSelectImage={handleSelectImage}
-          />
+    <PostDetailContainer tag="article" borderRadius="20px">
+      <PostDetailHeader
+        createdAt={today}
+        dogName={data.dogName}
+        nickname={data.nickname}
+        onClose={onClose}
+        onSubmit={handleSubmit}
+        disabledSubmit={disabledSubmit}
+        isEdit
+      />
+      <PostNewlnfo
+        profileUrl={data.profileUrl}
+        dogName={data.dogName}
+        nickname={data.nickname}
+        onSelectImage={handleSelectImage}
+      />
 
-          <PostNew
-            onContentChange={handleContentChange}
-            onSelectPlace={handleSelectPlace}
-          />
-        </PostDetailContainer>
-      </Suspense>
-    </RetryErrorBoundary>
+      <PostNew
+        onContentChange={handleContentChange}
+        onSelectPlace={handleSelectPlace}
+      />
+    </PostDetailContainer>
   );
 }
 
