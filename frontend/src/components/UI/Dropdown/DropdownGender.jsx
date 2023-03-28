@@ -174,11 +174,9 @@ function DropdownGender({
           </DropdownListItem>
         </DropdownList>
       )}
-      {children && (
-        <Fade bottom>
-          <ErrorMessage>{children}</ErrorMessage>
-        </Fade>
-      )}
+      <Fade bottom cascade>
+        {children && <ErrorMessage>{children}</ErrorMessage>}
+      </Fade>
     </DropdownContainer>
   );
 }
