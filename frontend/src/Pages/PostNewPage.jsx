@@ -15,6 +15,7 @@ import useGetMembersInfo from '../hooks/members/useGetMembersInfo';
 import PostEditHeader from '../components/PostEdit/PostEditHeader';
 import PostDetailPage from './PostDetailPage';
 import Button from '../components/UI/Button';
+import useAxiosErrorModal from '../hooks/useAxiosErrorModal';
 
 const PostDetailContainer = styled(Card)`
   display: flex;
@@ -43,6 +44,7 @@ function PostNewPage({ onClose }) {
   const { openModal, closeModal, closeModalByIndex } = useModal();
   const memberId = useSelector(state => state.auth.user);
   const { data } = useGetMembersInfo({ memberId });
+  const onError = useAxiosErrorModal(true);
 
   const { mutateAsync } = useMutation(
     'creaetBulletinPosts',
@@ -58,15 +60,7 @@ function PostNewPage({ onClose }) {
 
         closeModalByIndex(0);
       },
-      onError: () => {
-        openModal(
-          <ModalBase
-            title="실패"
-            content="게시글 등록에 실패했습니다"
-            buttons={<Button onClick={closeModal}>확인</Button>}
-          />,
-        );
-      },
+      onError,
     },
   );
 

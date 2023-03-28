@@ -17,6 +17,7 @@ import useModal from '../../hooks/useModal';
 import useGetBulletinPost from '../../hooks/bulletinPosts/useGetBulletinPost';
 import useDeleteBulletinPost from '../../hooks/bulletinPosts/useDeleteBulletinPost';
 import Button from '../UI/Button';
+import useAxiosErrorModal from '../../hooks/useAxiosErrorModal';
 
 const ContentsContainer = styled.section`
   display: flex;
@@ -46,6 +47,8 @@ const InfoContainer = styled.div`
 
 function PostDetail({ userId, bulletinId, onClose }) {
   const queryClient = useQueryClient();
+  const onError = useAxiosErrorModal(true);
+
   const { openModal, closeModal, closeAllModal, closeModalByIndex } =
     useModal();
   const {
@@ -93,7 +96,7 @@ function PostDetail({ userId, bulletinId, onClose }) {
         />,
       );
     },
-    onError: () => {},
+    onError,
   });
 
   const handleClose = () => {

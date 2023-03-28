@@ -18,6 +18,7 @@ import PostDetailPage from '../../Pages/PostDetailPage';
 
 import useGetAmenity from '../../hooks/amenity/useGetAmenity';
 import Button from '../UI/Button';
+import useAxiosErrorModal from '../../hooks/useAxiosErrorModal';
 
 const ContentsContainer = styled.section`
   display: flex;
@@ -66,6 +67,7 @@ function PostDetail({
   const [disabledSubmit, setDisabledSubmit] = useState(true);
   const { data } = useGetAmenity({ amenityId });
   const [displayImage, setDisplayImage] = useState(photoUrl);
+  const onError = useAxiosErrorModal(true);
 
   const [updateData, setUpdateData] = useState({
     postContent,
@@ -124,7 +126,7 @@ function PostDetail({
 
       closeModalByIndex(0);
     },
-    onError: () => {},
+    onError,
   });
 
   const handleClose = () => {
