@@ -125,28 +125,30 @@ function PostNewPage({ onClose }) {
   };
 
   return (
-    <PostDetailContainer tag="article" borderRadius="20px">
-      <PostDetailHeader
-        createdAt={today}
-        dogName={data.dogName}
-        nickname={data.nickname}
-        onClose={onClose}
-        onSubmit={handleSubmit}
-        disabledSubmit={disabledSubmit}
-        isEdit
-      />
-      <PostNewlnfo
-        profileUrl={data.profileUrl}
-        dogName={data.dogName}
-        nickname={data.nickname}
-        onSelectImage={handleSelectImage}
-      />
+    data && (
+      <PostDetailContainer tag="article" borderRadius="20px">
+        <PostDetailHeader
+          createdAt={today}
+          dogName={data.dogName}
+          nickname={data.nickname}
+          onClose={onClose}
+          onSubmit={handleSubmit}
+          disabledSubmit={disabledSubmit}
+          isEdit
+        />
+        <PostNewlnfo
+          profileUrl={data.profileUrl}
+          dogName={data.dogName}
+          nickname={data.nickname}
+          onSelectImage={handleSelectImage}
+        />
 
-      <PostNew
-        onContentChange={handleContentChange}
-        onSelectPlace={handleSelectPlace}
-      />
-    </PostDetailContainer>
+        <PostNew
+          onContentChange={handleContentChange}
+          onSelectPlace={handleSelectPlace}
+        />
+      </PostDetailContainer>
+    )
   );
 }
 
