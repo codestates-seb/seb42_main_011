@@ -28,33 +28,42 @@ function FriendSearchPage() {
 
   console.log('1111', searchOptions.searchName, searchOptions.searchType);
 
-  const { data, fetchNextPage, hasNextPage, isError, isLoading, refetch } =
-    useInfiniteQuery(
-      'friendSearch',
-      ({ pageParam = 1 }) =>
-        searchFriends({
-          page: pageParam,
-          size: 10,
-          type: searchOptions.searchType,
-          name: searchOptions.searchName,
-        }),
-      {
-        getNextPageParam: (lastPage, pages) => {
-          if (pages.length === lastPage.pageInfo.totalPages) {
-            return undefined;
-          }
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isError,
+    isLoading,
+    refetch,
+    remove,
+  } = useInfiniteQuery(
+    'friendSearch',
+    ({ pageParam = 1 }) =>
+      searchFriends({
+        page: pageParam,
+        size: 10,
+        type: searchOptions.searchType,
+        name: searchOptions.searchName,
+      }),
+    {
+      enabled: false,
+      getNextPageParam: (lastPage, pages) => {
+        if (pages.length === lastPage.pageInfo.totalPages) {
+          return undefined;
+        }
 
-          return lastPage.pageInfo.page + 1;
-        },
+        return lastPage.pageInfo.page + 1;
       },
-    );
+    },
+  );
 
   const handleSumbit = (newSearchName, newSearchType) => {
     setSearchOptions({ searchName: newSearchName, searchType: newSearchType });
   };
 
   useEffect(() => {
-    refetch();
+    remove();
+    if (searchOptions.searchName.length > 0) refetch();
   }, [searchOptions]);
 
   return (
