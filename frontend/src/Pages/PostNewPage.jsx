@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 
 import Card from '../components/UI/Card/Card';
 import PostNewlnfo from '../components/PostNew/PostNewlnfo';
-import PostDetailHeader from '../components/PostDetail/PostDetailHeader';
 import PostNew from '../components/PostNew';
 import ModalBase from '../components/UI/Modal/ModalBase';
 
@@ -13,6 +12,7 @@ import { createBulletinPost } from '../api/bulletinPostsApi';
 import useModal from '../hooks/useModal';
 
 import useGetMembersInfo from '../hooks/members/useGetMembersInfo';
+import PostEditHeader from '../components/PostEdit/PostEditHeader';
 
 const PostDetailContainer = styled(Card)`
   display: flex;
@@ -127,7 +127,7 @@ function PostNewPage({ onClose }) {
   return (
     data && (
       <PostDetailContainer tag="article" borderRadius="20px">
-        <PostDetailHeader
+        <PostEditHeader
           createdAt={today}
           dogName={data.dogName}
           nickname={data.nickname}
