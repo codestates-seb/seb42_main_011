@@ -9,30 +9,15 @@ import { ReactComponent as Feed6 } from '../../assets/Info/feed6.svg';
 
 const FeedInfoWrapper = styled.div`
   width: 100%;
-  height: 700px;
+  height: 800px;
   background-color: var(--color-light-0);
-  margin: 15px auto;
+  margin: 10px auto;
   border-radius: 15px;
   padding: 40px 40px 0;
-`;
 
-const FeedFlow = styled.div`
-  width: 100%;
-  height: 100%;
-  color: var(--color-light-0);
-  line-height: 50px;
-`;
-const FeedTrack = styled.div`
-  display: flex;
-  flex: 0 0 auto;
-  white-space: nowrap;
-  overflow: hidden;
-`;
-const FeedTrackContent = styled.div`
-  display: inline-flex;
-  width: 100%;
-  animation: Loop 30s linear infinite;
-  padding-right: 6vw;
+  @media screen and (max-width: 1199px) {
+    height: 700px;
+  }
 `;
 
 const InfoTitle = styled.h2`
@@ -41,16 +26,42 @@ const InfoTitle = styled.h2`
   margin-bottom: 20px;
   font-weight: normal;
 `;
+
 const InfoText = styled.p`
-  margin-bottom: 30px;
+  margin-bottom: 90px;
+  font-size: 20px;
+  font-weight: 500;
+  @media screen and (max-width: 1199px) {
+    margin-bottom: 30px;
+  }
 `;
+
+const FeedFlow = styled.div`
+  width: 100%;
+  height: 100%;
+  color: var(--color-light-0);
+  line-height: 50px;
+`;
+
+const FeedTrack = styled.div`
+  display: flex;
+  flex: 0 0 auto;
+  white-space: nowrap;
+  overflow: hidden;
+`;
+
+const FeedTrackContent = styled.div`
+  display: inline-flex;
+  width: 100%;
+  animation: Loop 30s linear infinite;
+  padding-right: 6vw;
+`;
+
 function FeedInfoCard() {
   return (
     <FeedInfoWrapper>
       <InfoTitle>feed</InfoTitle>
-      <InfoText>
-        소개 텍스트다아아아아아아아아아아아아아아아아아앙아아아아아아아아
-      </InfoText>
+      <InfoText>마이버디에서 멍친구들의 다양한 피드를 확인해보세요!</InfoText>
       <FeedFlow>
         <FeedTrack>
           <FeedTrackContent>

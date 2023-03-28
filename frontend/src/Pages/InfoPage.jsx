@@ -15,6 +15,7 @@ import InfoCard from '../components/Info/InfoCard';
 
 const MainWrapper = styled.div`
   width: 100%;
+  min-width: 900px;
   height: calc(100vh - 200px);
   padding-bottom: 30px;
   background-color: var(--color-dark-0);
@@ -76,7 +77,7 @@ const MainContentWrapper = styled.div`
 `;
 
 const CardWrapper = styled.div`
-  width: 95%;
+  width: 97%;
   margin: 0 auto;
 `;
 

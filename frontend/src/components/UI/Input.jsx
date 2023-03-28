@@ -1,6 +1,6 @@
-import styled, { css } from 'styled-components';
-import Fade from 'react-reveal/Fade';
 import React from 'react';
+import { Fade } from 'react-reveal';
+import styled, { css } from 'styled-components';
 
 const InputContainer = styled.div`
   width: var(--input-box-width);
@@ -55,8 +55,9 @@ const ErrorMessage = styled.p`
   color: var(--color-tertiary);
   font-size: 0.867rem;
   padding-left: 2px;
-  padding-top: 4px;
+  padding-top: 5px;
   word-wrap: break-word;
+  margin-top: 5px;
 
   ${({ variant }) => VARIANTS[variant]}
   width: var(--input-box-width);
