@@ -9,7 +9,6 @@ const useGetMembersInfo = ({ memberId, enabled = true }) => {
     () => getUserInfo({ memberId }),
     {
       enabled,
-      suspense: true,
     },
   );
 
