@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useQueryClient } from 'react-query';
 import styled from 'styled-components';
 
 import { ReactComponent as IconHeartSvg } from '../../assets/icons/icon-heart.svg';
+
 import useDebounce from '../../hooks/useDebounce';
+import useCreateBulletinPostLike from '../../hooks/bulletinPostsLike/useCreateBulletinPostLike';
+import useDeleteBulletinPostLike from '../../hooks/bulletinPostsLike/useDeleteBulletinPostLike';
 
 const HeartContainer = styled.div`
   display: flex;
@@ -29,10 +33,47 @@ const HeartCount = styled.p`
   color: var(--color-tertiary);
 `;
 
-function PostDetailHeart({ likeCount, onClick, likeByUser }) {
+function PostDetailHeart({ likeCount, likeByUser, bulletinId }) {
+  const queryClient = useQueryClient();
   const [heart, setHeart] = useState(likeByUser);
   const [count, setCount] = useState(likeCount);
   const debouncedHeart = useDebounce(heart, 3000);
+
+  const { mutateAsync: likeMutate } = useCreateBulletinPostLike({
+    onSuccess: responseData => {
+      queryClient.setQueriesData('postDetail', oldData => ({
+        ...oldData,
+        data: {
+          ...oldData.data,
+          likeByUser: 1,
+          likeCount: responseData.data.likeCount,
+        },
+      }));
+    },
+    onError: () => {},
+  });
+
+  const { mutateAsync: unlikeMutate } = useDeleteBulletinPostLike({
+    onSuccess: responseData => {
+      queryClient.setQueriesData('postDetail', oldData => ({
+        ...oldData,
+        data: {
+          ...oldData.data,
+          likeByUser: 0,
+          likeCount: responseData.data.likeCount,
+        },
+      }));
+    },
+    onError: () => {},
+  });
+
+  const handleLike = newLikeByUser => {
+    if (newLikeByUser === 0) {
+      unlikeMutate({ bulletinId });
+      return;
+    }
+    likeMutate({ bulletinId });
+  };
 
   const handleHeartClick = () => {
     if (heart === 0) {
@@ -49,7 +90,7 @@ function PostDetailHeart({ likeCount, onClick, likeByUser }) {
 
   useEffect(() => {
     if (likeByUser !== debouncedHeart) {
-      onClick(debouncedHeart);
+      handleLike(debouncedHeart);
     }
   }, [debouncedHeart]);
 

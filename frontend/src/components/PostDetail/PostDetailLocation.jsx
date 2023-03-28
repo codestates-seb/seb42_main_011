@@ -17,9 +17,9 @@ const LocationIcon = styled(IconLocationSvg)`
 
 const Location = styled.span``;
 
-function PostDetailLocation({ amenityName }) {
+function PostDetailLocation({ amenityName, className }) {
   return (
-    <LcationContainer>
+    <LcationContainer className={className}>
       <LocationIcon />
       <Location>{amenityName}</Location>
     </LcationContainer>

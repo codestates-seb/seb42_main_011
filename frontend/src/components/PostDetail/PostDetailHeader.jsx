@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as IconCheck } from '../../assets/icons/icon-check.svg';
 import { ReactComponent as IconSeeMore } from '../../assets/icons/icon-see-more-small.svg';
@@ -99,9 +99,7 @@ const MenuButton = styled.button`
 function PostDetailContentsHeader({
   createdAt,
   dogName,
-  disabledSubmit = false,
   onClose,
-  onSubmit,
   onDelete,
   onEdit,
   menuButtonType = 'new',
@@ -126,8 +124,10 @@ function PostDetailContentsHeader({
           {
             none: null,
             edit: (
-              <MenuButton type="button" onClick={handleSeeMoreButtonClick}>
-                <SeeMoreIcon />
+              <Fragment>
+                <MenuButton type="button" onClick={handleSeeMoreButtonClick}>
+                  <SeeMoreIcon />
+                </MenuButton>
                 {showSeeMoreMenu && (
                   <EditMenu
                     onOutsideClick={handleOusideClick}
@@ -135,16 +135,7 @@ function PostDetailContentsHeader({
                     onDelete={onDelete}
                   />
                 )}
-              </MenuButton>
-            ),
-            new: (
-              <MenuButton
-                type="button"
-                onClick={onSubmit}
-                disabled={disabledSubmit}
-              >
-                <CompleteIcon />
-              </MenuButton>
+              </Fragment>
             ),
           }[menuButtonType]
         }
