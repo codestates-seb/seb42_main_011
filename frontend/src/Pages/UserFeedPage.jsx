@@ -51,7 +51,7 @@ const NoDataText = styled.p`
   line-height: 3rem;
   font-size: var(--font-size-20);
   font-weight: 500;
-  margin-top: 20px;
+  margin-top: 15px;
 `;
 function UserFeedPage({ userdata, isMyPage }) {
   const { openModal, closeModal } = useModal();

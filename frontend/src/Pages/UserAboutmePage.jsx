@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useMutation } from 'react-query';
+import { useSelector } from 'react-redux';
 import Button from '../components/UI/Button';
 import {
   deleteUserFollow,
@@ -51,26 +52,37 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
   const [isFollowing, setIsFollowing] = useState(false);
   const [isLoadingFollowingStatus, setIsLoadingFollowingStatus] =
     useState(true);
+  const { user: currentUser } = useSelector(state => state.auth);
 
   // Button change
   const userFollowMutation = useMutation(postUserFollow, {
     onSettled: () => {
       setIsFollowing(true);
+      localStorage.setItem(`following_${memberId}`, true);
     },
   });
 
   const userFollowDeleteMutation = useMutation(deleteUserFollow, {
     onSettled: () => {
       setIsFollowing(false);
+      localStorage.setItem(`following_${memberId}`, false);
     },
   });
 
+  // Check following status from local storage
   useEffect(() => {
     async function checkFollowingStatus() {
       try {
         setIsLoadingFollowingStatus(true);
-        const data = await getUserFollowing({ memberId });
-        setIsFollowing(data.isFollowing);
+        const storedFollowingStatus = localStorage.getItem(
+          `following_${memberId}`,
+        );
+        if (storedFollowingStatus !== null) {
+          setIsFollowing(JSON.parse(storedFollowingStatus));
+        } else {
+          const data = await getUserFollowing({ memberId });
+          setIsFollowing(data.isFollowing);
+        }
       } catch (error) {
         console.error('Failed to check following status:', error);
       } finally {
@@ -95,7 +107,11 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
                 <ModalBase
                   title="UNFOLLOW"
                   content="팔로우를 끊었어요 :)"
-                  buttons={<Button>확인</Button>}
+                  buttons={
+                    <Button onClick={() => window.location.reload()}>
+                      확인
+                    </Button>
+                  }
                 />,
               );
             },
@@ -104,7 +120,11 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
                 <ModalBase
                   title="UNFOLLOW"
                   content="팔로우 끊기에 실패했어요 :/"
-                  buttons={<Button>확인</Button>}
+                  buttons={
+                    <Button onClick={() => window.location.reload()}>
+                      확인
+                    </Button>
+                  }
                 />,
               );
             },
@@ -121,7 +141,11 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
                 <ModalBase
                   title="FOLLOW"
                   content="팔로우 했어요! :)"
-                  buttons={<Button>확인</Button>}
+                  buttons={
+                    <Button onClick={() => window.location.reload()}>
+                      확인
+                    </Button>
+                  }
                 />,
               );
             },
@@ -130,7 +154,11 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
                 <ModalBase
                   title="FOLLOW"
                   content="팔로우에 실패했어요 :/"
-                  buttons={<Button>확인</Button>}
+                  buttons={
+                    <Button onClick={() => window.location.reload()}>
+                      확인
+                    </Button>
+                  }
                 />,
               );
             },
@@ -164,7 +192,7 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
       </Link>
     );
   } else {
-    AboumeButton = (
+    AboumeButton = currentUser ? (
       <FollowButton
         variant="medium"
         onClick={handleFollowClick}
@@ -172,7 +200,7 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
       >
         {getFollowButtonText()}
       </FollowButton>
-    );
+    ) : null;
   }
   return (
     <div>

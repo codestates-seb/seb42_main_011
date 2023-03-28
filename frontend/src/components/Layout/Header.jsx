@@ -167,8 +167,12 @@ function Header() {
             </LinkStyle>
             <LinkStyle>
               <NavLink
-                end
-                className={({ isActive }) => (isActive ? 'selected' : '')}
+                className={() =>
+                  location.pathname.startsWith('/place') ||
+                  location.pathname.startsWith('/amenity')
+                    ? 'selected'
+                    : ''
+                }
                 to="/place"
               >
                 <Menu>추천장소</Menu>
