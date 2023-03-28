@@ -14,6 +14,7 @@ function MapContainer({ searchPlace }) {
     const options = {
       center: new kakao.maps.LatLng(37.576030700103, 126.97672186606),
       level: 3,
+      draggable: true,
     };
     const map = new kakao.maps.Map(container, options);
 
