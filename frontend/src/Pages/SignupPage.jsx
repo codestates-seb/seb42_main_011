@@ -10,7 +10,8 @@ import { register } from '../redux/actions/auth';
 import signupNullCheck from './SignupNullCheck';
 import { emailVerify, nicknameVerify } from '../api/authApi';
 import useInputs from '../hooks/useInputs';
-import useInput from '../hooks/useInput';
+import useModal from '../hooks/useModal';
+import ModalBase from '../components/UI/Modal/ModalBase';
 
 const FormContainer = styled.section`
   display: flex;
@@ -52,6 +53,7 @@ const ButtonContainer = styled.div`
 function SignupPage() {
   // 기능 구현
   const navigate = useNavigate();
+  const { openModal, closeModal } = useModal();
   const { isLoggedIn } = useSelector(state => state.auth);
   const [form, onChange, reset] = useInputs({
     nickname: '',
@@ -175,8 +177,6 @@ function SignupPage() {
         }
       });
   }, [form.email, form.nickname]);
-  // console.log(exists);
-  console.log(form.nickname);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -205,6 +205,13 @@ function SignupPage() {
       )
         .then(() => {
           setSuccessful(true);
+          openModal(
+            <ModalBase
+              title="가입이 완료되었습니다."
+              content="마이버디에 오신 것을 환영합니다!"
+              buttons={<Button onClick={closeModal}>확인</Button>}
+            />,
+          );
           navigate('/login');
         })
         .catch(() => {
@@ -229,10 +236,10 @@ function SignupPage() {
             name="nickname"
             type="text"
             onBlur={onChange}
-          />
-          {nullErrors.nickname && <p>{nullErrors.nickname}</p>}
-          {errors.nickname && <p>{errors.nickname}</p>}
-          {exists.nickname && <p>{exists.nickname}</p>}
+          >
+            {[nullErrors.nickname, errors.nickname, exists.nickname]}
+          </Input>
+
           <Input
             variant="large"
             label="이메일"
@@ -240,9 +247,10 @@ function SignupPage() {
             name="email"
             type="email"
             onBlur={onChange}
-          />
-          {nullErrors.email && <p>{nullErrors.email}</p>}
-          {exists.email && <p>{exists.email}</p>}
+          >
+            {[nullErrors.email, exists.email]}
+          </Input>
+
           <Input
             variant="large"
             label="비밀번호"
@@ -250,9 +258,10 @@ function SignupPage() {
             name="password"
             type="password"
             onBlur={onChange}
-          />
-          {nullErrors.password && <p>{nullErrors.password}</p>}
-          {errors.password && <p>{errors.password}</p>}
+          >
+            {[nullErrors.password, errors.password]}
+          </Input>
+
           <Input
             variant="large"
             label="비밀번호 확인"
@@ -260,9 +269,10 @@ function SignupPage() {
             name="passwordRetype"
             type="password"
             onBlur={onChange}
-          />
-          {nullErrors.passwordRetype && <p>{nullErrors.passwordRetype}</p>}
-          {errors.passwordRetype && <p>{errors.passwordRetype}</p>}
+          >
+            {[nullErrors.passwordRetype, errors.passwordRetype]}
+          </Input>
+
           <Input
             variant="large"
             label="강아지 이름"
@@ -270,11 +280,14 @@ function SignupPage() {
             name="dogName"
             type="text"
             onBlur={onChange}
-          />
-          {nullErrors.dogName && <p>{nullErrors.dogName}</p>}
-          {errors.dogName && <p>{errors.dogName}</p>}
-          <DropdownGender onSelect={onChangeDogGender} />
-          {nullErrors.dogGender && <p>{nullErrors.dogGender}</p>}
+          >
+            {[nullErrors.dogName, errors.dogName]}
+          </Input>
+
+          <DropdownGender onSelect={onChangeDogGender}>
+            {[nullErrors.dogGender]}
+          </DropdownGender>
+
           <ButtonContainer>
             <Button variant="large">회원가입</Button>
           </ButtonContainer>

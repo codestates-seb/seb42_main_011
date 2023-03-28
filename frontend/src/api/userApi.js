@@ -1,18 +1,5 @@
-
 import authHeader from '../redux/services/auth-header';
 import api from './api';
-
-import axios from 'axios';
-import authHeader from '../redux/services/auth-header';
-
-const BASE_URL = '/api/v1';
-
-const api = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    'ngrok-skip-browser-warning': '12',
-  },
-});
 
 async function getUserProfile({ memberId, userData }) {
   return api.get(`/members/${memberId}`, userData).then(({ data }) => data);

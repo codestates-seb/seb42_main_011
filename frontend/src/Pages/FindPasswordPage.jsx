@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import Input from '../components/UI/Input';
 import Button from '../components/UI/Button';
 import { sendEmail } from '../api/authApi';
+import useModal from '../hooks/useModal';
+import ModalBase from '../components/UI/Modal/ModalBase';
 
 const FormContainer = styled.section`
   display: flex;
@@ -37,6 +39,7 @@ const FindForm = styled.form`
   justify-content: center;
   align-items: center;
   row-gap: 30px;
+  align-items: center;
 `;
 
 const ButtonContainer = styled.div`
@@ -48,6 +51,7 @@ const ButtonContainer = styled.div`
 `;
 
 function FindPasswordPage() {
+  const { openModal, closeModal } = useModal();
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
 
@@ -58,13 +62,24 @@ function FindPasswordPage() {
     e.preventDefault();
     sendEmail(email)
       .then(() => {
-        alert('이메일이 전송되었습니다.');
+        openModal(
+          <ModalBase
+            title="이메일이 전송되었습니다."
+            content="메일함을 확인해주세요!"
+            buttons={<Button onClick={closeModal}>확인</Button>}
+          />,
+        );
         navigate('/login');
       })
-      .catch(error => {
-        console.log(error);
-        alert('다시 시도해주세요.');
-      });
+      .catch(
+        openModal(
+          <ModalBase
+            title="이메일 전송 실패"
+            content="오류가 발생했거나 잘못된 메일을 입력했습니다."
+            buttons={<Button onClick={closeModal}>확인</Button>}
+          />,
+        ),
+      );
   };
 
   return (

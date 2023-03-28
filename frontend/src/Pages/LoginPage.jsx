@@ -74,6 +74,13 @@ const ButtonContainer = styled.div`
   margin-bottom: 100px;
 `;
 
+const ErrorMessage = styled.p`
+  color: var(--color-tertiary);
+  font-size: 0.867rem;
+  padding-left: 2px;
+  padding-top: 4px;
+`;
+
 function LoginPage() {
   // 기능구현
   const navigate = useNavigate();
@@ -126,7 +133,6 @@ function LoginPage() {
           value={email}
           onChange={e => setEmail(e.target.value)}
         />
-
         <PasswordContainer>
           <Input
             required
@@ -141,14 +147,14 @@ function LoginPage() {
           <Link to="/password/find">
             <ForgotPassword>비밀번호를 잊어버렸나요?</ForgotPassword>
           </Link>
-        </PasswordContainer>
+        </PasswordContainer>{' '}
+        {error && <ErrorMessage>{error}</ErrorMessage>}
         <ButtonContainer>
           <Button variant="large" disabled={loading}>
             {/* 로딩 시 여기에 spinner 추가할지? */}
             로그인
           </Button>
         </ButtonContainer>
-        {error && <p>{error}</p>}
       </LoginForm>
     </FormContainer>
   );
