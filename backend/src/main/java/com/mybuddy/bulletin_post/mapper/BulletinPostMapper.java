@@ -101,6 +101,7 @@ public interface BulletinPostMapper {
                 postId,
                 bulletinPost.getPhotoUrl(),
                 bulletinPost.getPostContent(),
+                bulletinPost.getCreatedAt(),
                 member.getMemberId(),
                 member.getNickname(),
                 member.getDogName(),

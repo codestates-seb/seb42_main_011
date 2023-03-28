@@ -94,6 +94,7 @@ public class BulletinPostDto {
         private final long bulletinPostId;
         private final String photoUrl;
         private final String postContent;
+        private final LocalDateTime createdAt;
 
         private final long memberId;
         private final String nickname;
@@ -103,10 +104,11 @@ public class BulletinPostDto {
         private final long commentCount;
 
         @Builder
-        public ResponseForFeed(long bulletinPostId, String photoUrl, String postContent, long memberId, String nickname, String dogName, List<CommentResponseDto> commentList, long commentCount) {
+        public ResponseForFeed(long bulletinPostId, String photoUrl, String postContent, LocalDateTime createdAt, long memberId, String nickname, String dogName, List<CommentResponseDto> commentList, long commentCount) {
             this.bulletinPostId = bulletinPostId;
             this.photoUrl = photoUrl;
             this.postContent = postContent;
+            this.createdAt = createdAt;
             this.memberId = memberId;
             this.nickname = nickname;
             this.dogName = dogName;
