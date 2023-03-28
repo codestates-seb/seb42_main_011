@@ -108,7 +108,6 @@ public class SecurityConfiguration {
 
         // CORS 구성
         CorsConfiguration configuration = new CorsConfiguration();
-
         configuration.addAllowedOriginPattern("*");
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
@@ -142,7 +141,7 @@ public class SecurityConfiguration {
 //        configuration.addExposedHeader("Access-Control-Allow-Methods");
 //
 //        //CORS 요청 처리시 자격 증명 포함 여부 명시적으로 지정 : Cookie-Axios를 위함
-//        configuration.setAllowCredentials(true);
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
