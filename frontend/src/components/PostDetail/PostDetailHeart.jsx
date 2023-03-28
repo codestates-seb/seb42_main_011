@@ -7,6 +7,7 @@ import { ReactComponent as IconHeartSvg } from '../../assets/icons/icon-heart.sv
 import useDebounce from '../../hooks/useDebounce';
 import useCreateBulletinPostLike from '../../hooks/bulletinPostsLike/useCreateBulletinPostLike';
 import useDeleteBulletinPostLike from '../../hooks/bulletinPostsLike/useDeleteBulletinPostLike';
+import useAxiosErrorModal from '../../hooks/useAxiosErrorModal';
 
 const HeartContainer = styled.div`
   display: flex;
@@ -38,6 +39,7 @@ function PostDetailHeart({ likeCount, likeByUser, bulletinId }) {
   const [heart, setHeart] = useState(likeByUser);
   const [count, setCount] = useState(likeCount);
   const debouncedHeart = useDebounce(heart, 3000);
+  const onError = useAxiosErrorModal();
 
   const { mutateAsync: likeMutate } = useCreateBulletinPostLike({
     onSuccess: responseData => {
@@ -50,7 +52,7 @@ function PostDetailHeart({ likeCount, likeByUser, bulletinId }) {
         },
       }));
     },
-    onError: () => {},
+    onError,
   });
 
   const { mutateAsync: unlikeMutate } = useDeleteBulletinPostLike({
@@ -64,7 +66,7 @@ function PostDetailHeart({ likeCount, likeByUser, bulletinId }) {
         },
       }));
     },
-    onError: () => {},
+    onError,
   });
 
   const handleLike = newLikeByUser => {

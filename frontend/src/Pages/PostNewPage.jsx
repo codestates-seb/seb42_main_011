@@ -14,6 +14,8 @@ import useModal from '../hooks/useModal';
 import useGetMembersInfo from '../hooks/members/useGetMembersInfo';
 import PostEditHeader from '../components/PostEdit/PostEditHeader';
 import PostDetailPage from './PostDetailPage';
+import Button from '../components/UI/Button';
+import useAxiosErrorModal from '../hooks/useAxiosErrorModal';
 
 const PostDetailContainer = styled(Card)`
   display: flex;
@@ -33,12 +35,6 @@ const PostDetailContainer = styled(Card)`
   }
 `;
 
-const Button = styled.button`
-  padding: 8px;
-  border: var(--border);
-  border-radius: 5px;
-`;
-
 function PostNewPage({ onClose }) {
   const today = new Date();
   const [content, setContent] = useState('');
@@ -48,6 +44,7 @@ function PostNewPage({ onClose }) {
   const { openModal, closeModal, closeModalByIndex } = useModal();
   const memberId = useSelector(state => state.auth.user);
   const { data } = useGetMembersInfo({ memberId });
+  const onError = useAxiosErrorModal(true);
 
   const { mutateAsync } = useMutation(
     'creaetBulletinPosts',
@@ -63,15 +60,7 @@ function PostNewPage({ onClose }) {
 
         closeModalByIndex(0);
       },
-      onError: () => {
-        openModal(
-          <ModalBase
-            title="실패"
-            content="게시글 등록에 실패했습니다"
-            buttons={<Button onClick={closeModal}>확인</Button>}
-          />,
-        );
-      },
+      onError,
     },
   );
 
@@ -114,6 +103,7 @@ function PostNewPage({ onClose }) {
       <ModalBase
         title="게시글 등록"
         content="정말 등록하시겠습니까?"
+        isFooterAnimaonClose={false}
         buttons={
           <Fragment>
             <Button onClick={() => sendData()}>확인</Button>

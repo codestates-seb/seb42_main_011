@@ -17,6 +17,8 @@ import PostNewMap from '../PostNew/PostNewMap';
 import PostDetailPage from '../../Pages/PostDetailPage';
 
 import useGetAmenity from '../../hooks/amenity/useGetAmenity';
+import Button from '../UI/Button';
+import useAxiosErrorModal from '../../hooks/useAxiosErrorModal';
 
 const ContentsContainer = styled.section`
   display: flex;
@@ -46,12 +48,6 @@ const InfoContainer = styled.div`
   position: relative;
 `;
 
-const Button = styled.button`
-  padding: 8px;
-  border: var(--border);
-  border-radius: 5px;
-`;
-
 function PostDetail({
   createdAt,
   dogName,
@@ -71,6 +67,7 @@ function PostDetail({
   const [disabledSubmit, setDisabledSubmit] = useState(true);
   const { data } = useGetAmenity({ amenityId });
   const [displayImage, setDisplayImage] = useState(photoUrl);
+  const onError = useAxiosErrorModal(true);
 
   const [updateData, setUpdateData] = useState({
     postContent,
@@ -129,7 +126,7 @@ function PostDetail({
 
       closeModalByIndex(0);
     },
-    onError: () => {},
+    onError,
   });
 
   const handleClose = () => {
@@ -156,6 +153,7 @@ function PostDetail({
       <ModalBase
         title="게시글 수정"
         content="게시글을 정말 수정하시겠습니까?"
+        isFooterAnimaonClose={false}
         buttons={
           <Fragment>
             <Button

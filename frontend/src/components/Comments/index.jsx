@@ -8,6 +8,7 @@ import CommentsList from './CommentsList';
 import useUpdateComments from '../../hooks/comments/useUpdateComments';
 import useDeleteComments from '../../hooks/comments/useDeleteComments';
 import { StyleScrollNone } from '../../styles/shared';
+import useAxiosErrorModal from '../../hooks/useAxiosErrorModal';
 
 const Wrapper = styled.section`
   height: 47.6%;
@@ -27,6 +28,7 @@ const CommentListWrapper = styled.div`
 
 function Comments({ userId, commentList, commentCount }) {
   const queryClient = useQueryClient();
+  const onError = useAxiosErrorModal(true);
 
   const { mutateAsync: updateCommentsMutate } = useUpdateComments({
     onSuccess: responseData => {
@@ -44,14 +46,14 @@ function Comments({ userId, commentList, commentCount }) {
         },
       }));
     },
-    onError: () => {},
+    onError,
   });
 
   const { mutateAsync: deleteCommentsMutate } = useDeleteComments({
     onSuccess: () => {
       queryClient.invalidateQueries('postDetail');
     },
-    onError: () => {},
+    onError,
   });
 
   const handleUpdate = ({ commentId, newContent }) => {

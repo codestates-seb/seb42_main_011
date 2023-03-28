@@ -16,6 +16,8 @@ import PostEditPage from '../../Pages/PostEditPage';
 import useModal from '../../hooks/useModal';
 import useGetBulletinPost from '../../hooks/bulletinPosts/useGetBulletinPost';
 import useDeleteBulletinPost from '../../hooks/bulletinPosts/useDeleteBulletinPost';
+import Button from '../UI/Button';
+import useAxiosErrorModal from '../../hooks/useAxiosErrorModal';
 
 const ContentsContainer = styled.section`
   display: flex;
@@ -43,14 +45,10 @@ const InfoContainer = styled.div`
   width: 100%;
 `;
 
-const Button = styled.button`
-  padding: 8px;
-  border: var(--border);
-  border-radius: 5px;
-`;
-
 function PostDetail({ userId, bulletinId, onClose }) {
   const queryClient = useQueryClient();
+  const onError = useAxiosErrorModal(true);
+
   const { openModal, closeModal, closeAllModal, closeModalByIndex } =
     useModal();
   const {
@@ -94,11 +92,11 @@ function PostDetail({ userId, bulletinId, onClose }) {
         <ModalBase
           title="게시글 삭제 완료"
           content="게시글이 삭제 되었습니다"
-          buttons={<Button onClick={closeModal}>확인</Button>}
+          buttons={<Button>확인</Button>}
         />,
       );
     },
-    onError: () => {},
+    onError,
   });
 
   const handleClose = () => {
@@ -110,6 +108,7 @@ function PostDetail({ userId, bulletinId, onClose }) {
       <ModalBase
         title="게시글 삭제"
         content="게시글을 정말 삭제하시겠습니까?"
+        isFooterAnimaonClose={false}
         buttons={
           <Fragment>
             <Button
