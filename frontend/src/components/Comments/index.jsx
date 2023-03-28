@@ -37,7 +37,7 @@ function Comments({ userId, commentList, commentCount }) {
           commentList: [
             ...oldData.data.commentList.map(x =>
               x.commentId === responseData.data.commentId
-                ? responseData.data
+                ? { ...x, commentContent: responseData.data.commentContent }
                 : x,
             ),
           ],

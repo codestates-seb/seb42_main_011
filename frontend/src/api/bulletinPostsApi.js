@@ -5,7 +5,7 @@ async function updateBulletinPost({ bulletinId, postData, photoImage }) {
   const form = new FormData();
 
   form.append(
-    'createDto',
+    'patchDto',
     new Blob([JSON.stringify(postData)], {
       type: 'application/json',
     }),
@@ -14,9 +14,10 @@ async function updateBulletinPost({ bulletinId, postData, photoImage }) {
   if (photoImage) {
     form.append('photoImage', photoImage);
   }
+  console.log(photoImage);
 
   return api
-    .patchForm(`/bulletin-posts/${bulletinId}`, form, {
+    .patch(`/bulletin-posts/${bulletinId}`, form, {
       headers: {
         'Content-Type': 'multipart/form-data',
         ...authHeader(),

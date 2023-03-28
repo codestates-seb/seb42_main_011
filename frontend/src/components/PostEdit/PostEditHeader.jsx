@@ -1,9 +1,8 @@
-import React, { Fragment, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { ReactComponent as IconCheck } from '../../assets/icons/icon-check.svg';
 import { ReactComponent as IconSeeMore } from '../../assets/icons/icon-see-more-small.svg';
 import { ReactComponent as IconCancle } from '../../assets/icons/icon-cancle.svg';
-import EditAndRemoveButton from '../UI/EditAndRemoveButton';
 
 const Header = styled.section`
   position: absolute;
@@ -51,13 +50,6 @@ const SeeMoreIcon = styled(IconSeeMore)`
   width: 32px;
 `;
 
-const EditMenu = styled(EditAndRemoveButton)`
-  position: absolute;
-  right: 50px;
-  bottom: -40px;
-  z-index: 999;
-`;
-
 const MenuButton = styled.button`
   display: flex;
   align-items: center;
@@ -96,50 +88,23 @@ const MenuButton = styled.button`
   }
 `;
 
-function PostDetailContentsHeader({
+function PostEditHeader({
   createdAt,
   dogName,
+  disabledSubmit = false,
   onClose,
-  onDelete,
-  onEdit,
-  menuButtonType = 'new',
+  onSubmit,
 }) {
   const displayDate = new Date(createdAt).toISOString().split('T')[0];
   const displayTitleText = `${displayDate} ${dogName}의 일기`;
-  const [showSeeMoreMenu, setShowSeeMoreMenu] = useState(false);
-
-  const handleOusideClick = () => {
-    setShowSeeMoreMenu(false);
-  };
-
-  const handleSeeMoreButtonClick = () => {
-    setShowSeeMoreMenu(true);
-  };
 
   return (
     <Header>
       <Title>{displayTitleText}</Title>
       <ButtonContainer>
-        {
-          {
-            none: null,
-            edit: (
-              <Fragment>
-                <MenuButton type="button" onClick={handleSeeMoreButtonClick}>
-                  <SeeMoreIcon />
-                </MenuButton>
-                {showSeeMoreMenu && (
-                  <EditMenu
-                    onOutsideClick={handleOusideClick}
-                    onEdit={onEdit}
-                    onDelete={onDelete}
-                  />
-                )}
-              </Fragment>
-            ),
-          }[menuButtonType]
-        }
-
+        <MenuButton type="button" onClick={onSubmit} disabled={disabledSubmit}>
+          <CompleteIcon />
+        </MenuButton>
         <MenuButton type="button" onClick={onClose}>
           <CloseIcon />
         </MenuButton>
@@ -148,4 +113,4 @@ function PostDetailContentsHeader({
   );
 }
 
-export default PostDetailContentsHeader;
+export default PostEditHeader;

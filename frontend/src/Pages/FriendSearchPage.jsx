@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useInfiniteQuery } from 'react-query';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import searchFriends from '../api/searchApi';
 
@@ -17,61 +17,68 @@ const Container = styled.section`
 
 function FriendSearchPage() {
   const navigate = useNavigate();
+  const [searchOptions, setSearchOptions] = useState({
+    searchName: '',
+    searchType: '',
+  });
 
   const handleClick = memberId => {
     navigate(`/user/${memberId}`);
   };
 
-  const [searchParams, setSearchParams] = useSearchParams({
-    searchType: 'dogName',
-    searchName: '',
-  });
+  console.log('1111', searchOptions.searchName, searchOptions.searchType);
 
-  const searchType = searchParams.get('searchType');
-  const searchName = searchParams.get('searchName');
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isError,
+    isLoading,
+    refetch,
+    remove,
+  } = useInfiniteQuery(
+    'friendSearch',
+    ({ pageParam = 1 }) =>
+      searchFriends({
+        page: pageParam,
+        size: 10,
+        type: searchOptions.searchType,
+        name: searchOptions.searchName,
+      }),
+    {
+      enabled: false,
+      getNextPageParam: (lastPage, pages) => {
+        if (pages.length === lastPage.pageInfo.totalPages) {
+          return undefined;
+        }
 
-  const handleSubmit = ({ newSearchName, newSearchType }) => {
-    setSearchParams({ searchName: newSearchName, searchType: newSearchType });
+        return lastPage.pageInfo.page + 1;
+      },
+    },
+  );
+
+  const handleSumbit = (newSearchName, newSearchType) => {
+    setSearchOptions({ searchName: newSearchName, searchType: newSearchType });
   };
 
-  const { data, fetchNextPage, hasNextPage, isError, isLoading, refetch } =
-    useInfiniteQuery(
-      'friendSearch',
-      ({ pageParam = 1 }) =>
-        searchFriends({
-          page: pageParam,
-          size: 10,
-          type: searchType,
-          name: searchName,
-        }),
-      {
-        getNextPageParam: (lastPage, pages) => {
-          if (pages.length === lastPage.pageInfo.totalPages) {
-            return undefined;
-          }
-
-          return lastPage.pageInfo.page + 1;
-        },
-      },
-    );
-
   useEffect(() => {
-    refetch();
-  }, [searchType, searchName]);
+    remove();
+    if (searchOptions.searchName.length > 0) refetch();
+  }, [searchOptions]);
 
   return (
     <Container>
       <FriendSearchHeader
-        initialType={searchType || 'dogName'}
-        initialName={searchName || ''}
-        onSubmit={handleSubmit}
+        initialType={searchOptions.searchType || 'dogName'}
+        initialName={searchOptions.searchName || ''}
+        onSubmit={handleSumbit}
       />
 
       <FriendSearch>
-        {searchName && searchType && (
+        {searchOptions.searchName && searchOptions.searchType && (
           <FriendSearchList
-            searchType={searchType}
-            searchName={searchName}
+            searchType={searchOptions.searchType}
+            searchName={searchOptions.searchName}
             colWidth="280px"
             onClick={handleClick}
           >
@@ -84,7 +91,10 @@ function FriendSearchPage() {
                     const props = {
                       memberId,
                       photoUrl,
-                      name: searchType === 'dogName' ? dogName : nickname,
+                      name:
+                        searchOptions.searchType === 'dogName'
+                          ? dogName
+                          : nickname,
                       key: memberId,
                       isLastItem:
                         pageIndex === Number(data.pages.length) - 1 &&

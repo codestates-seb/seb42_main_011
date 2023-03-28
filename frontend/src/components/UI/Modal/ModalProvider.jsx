@@ -13,12 +13,16 @@ function ModalProvider({ children }) {
     setModals(prevStack => prevStack.slice(0, -1));
   };
 
+  const closeModalByIndex = index => {
+    setModals(prevStack => prevStack.filter((_, i) => i !== index));
+  };
+
   const closeAllModal = () => {
     setModals([]);
   };
 
   const providerValue = useMemo(
-    () => ({ openModal, closeModal, closeAllModal }),
+    () => ({ openModal, closeModal, closeAllModal, closeModalByIndex }),
     [openModal, closeModal],
   );
 

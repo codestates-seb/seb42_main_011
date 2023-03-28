@@ -1,39 +1,21 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import styled from 'styled-components';
 import { useQueryClient } from 'react-query';
 
-import Card from '../UI/Card/Card';
 import PostDetailHeader from './PostDetailHeader';
 import PostDetailnfo from './PostDetailnfo';
-import PostDetailHeart from './PostDetailHeart';
-import PostDetailLocation from './PostDetailLocation';
+import PostDetailContent from './PostDetailContent';
 import ModalBase from '../UI/Modal/ModalBase';
 import Comments from '../Comments';
 import CommentsForm from '../Comments/CommentsForm';
 
+import PostDetailHeart from './PostDetailHeart';
+import PostDetailLocation from './PostDetailLocation';
+import PostEditPage from '../../Pages/PostEditPage';
+
 import useModal from '../../hooks/useModal';
 import useGetBulletinPost from '../../hooks/bulletinPosts/useGetBulletinPost';
-import useUpdateBulletinPost from '../../hooks/bulletinPosts/useUpdateBulletinPost';
 import useDeleteBulletinPost from '../../hooks/bulletinPosts/useDeleteBulletinPost';
-import useCreateComments from '../../hooks/comments/useCreateComments';
-import useCreateBulletinPostLike from '../../hooks/bulletinPostsLike/useCreateBulletinPostLike';
-import useDeleteBulletinPostLike from '../../hooks/bulletinPostsLike/useDeleteBulletinPostLike';
-
-const PostDetailContent = styled(Card)`
-  min-height: 280px;
-  padding: 12px 14px;
-  transform: translate(-5px, -6px);
-  box-shadow: 5px 6px 0 0 var(--color-dark-0);
-
-  font-weight: 500;
-  font-size: var(--font-size-16);
-  line-height: 23px;
-
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  word-break: keep-all;
-  resize: none;
-`;
 
 const ContentsContainer = styled.section`
   display: flex;
@@ -57,6 +39,8 @@ const InfoContainer = styled.div`
   font-weight: 500;
   font-size: var(--font-size-16);
   line-height: 23px;
+  position: relative;
+  width: 100%;
 `;
 
 const Button = styled.button`
@@ -66,69 +50,40 @@ const Button = styled.button`
 `;
 
 function PostDetail({ userId, bulletinId, onClose }) {
-  const [isEditMode, setIsEditMode] = useState();
   const queryClient = useQueryClient();
-  const { openModal, closeModal, closeAllModal } = useModal();
-  const { data, queryKey } = useGetBulletinPost({
+  const { openModal, closeModal, closeAllModal, closeModalByIndex } =
+    useModal();
+  const {
+    data: {
+      data: {
+        createdAt,
+        dogName,
+        nickname,
+        bulletinPostId,
+        profileUrl,
+        likeCount,
+        likeByUser,
+        amenityName,
+        postContent,
+        commentList,
+        commentCount,
+        photoUrl,
+        memberId,
+        amenityId,
+      },
+    },
+    queryKey,
+  } = useGetBulletinPost({
     bulletinId,
   });
 
-  const { mutateAsync: commentMutate } = useCreateComments({
-    onSuccess: () => {
-      queryClient.invalidateQueries(queryKey);
-    },
-    onError: () => {
-      openModal(
-        <ModalBase
-          title="실패"
-          content="게시글 등록에 실패했습니다"
-          buttons={<Button onClick={closeModal}>확인</Button>}
-        />,
-      );
-    },
-  });
+  const getMenuButtonType = () => {
+    if (userId !== memberId) {
+      return 'none';
+    }
 
-  const { mutateAsync: likeMutate } = useCreateBulletinPostLike({
-    onSuccess: responseData => {
-      queryClient.setQueriesData(queryKey, oldData => ({
-        ...oldData,
-        data: {
-          ...oldData.data,
-          likeByUser: 1,
-          likeCount: responseData.data.likeCount,
-        },
-      }));
-    },
-    onError: () => {},
-  });
-
-  const { mutateAsync: unlikeMutate } = useDeleteBulletinPostLike({
-    onSuccess: responseData => {
-      queryClient.setQueriesData(queryKey, oldData => ({
-        ...oldData,
-        data: {
-          ...oldData.data,
-          likeByUser: 0,
-          likeCount: responseData.data.likeCount,
-        },
-      }));
-    },
-    onError: () => {},
-  });
-
-  const { mutateAsync: updateMutate } = useUpdateBulletinPost({
-    onSuccess: responseData => {
-      queryClient.setQueriesData(queryKey, oldData => ({
-        ...oldData,
-        data: {
-          ...oldData.data,
-          likeByUser: 0,
-          likeCount: responseData.data.likeCount,
-        },
-      }));
-    },
-    onError: () => {},
-  });
+    return 'edit';
+  };
 
   const { mutateAsync: deleteMutate } = useDeleteBulletinPost({
     onSuccess: () => {
@@ -146,31 +101,11 @@ function PostDetail({ userId, bulletinId, onClose }) {
     onError: () => {},
   });
 
-  const handleLikeClick = likeByUser => {
-    if (likeByUser === 0) {
-      unlikeMutate({ bulletinId });
-      return;
-    }
-    likeMutate({ bulletinId });
-  };
-
   const handleClose = () => {
-    queryClient.removeQueries(queryKey);
     onClose();
   };
 
-  const handleCommentSubmit = async ({ commentContent }) => {
-    await commentMutate({
-      commentContent,
-      bulletinPostId: bulletinId,
-    });
-  };
-
-  const handleEditClick = () => {
-    setIsEditMode(true);
-  };
-
-  const handleDeleteClick = bulletinPostId => {
+  const handleDeleteClick = () => {
     openModal(
       <ModalBase
         title="게시글 삭제"
@@ -184,7 +119,6 @@ function PostDetail({ userId, bulletinId, onClose }) {
             </Button>
             <Button
               onClick={() => {
-                setIsEditMode(false);
                 closeModal();
               }}
             >
@@ -196,51 +130,65 @@ function PostDetail({ userId, bulletinId, onClose }) {
     );
   };
 
-  const handleSubmitClick = (bulletinPostId, postData, photoImage) => {
-    updateMutate({ bulletinId: bulletinPostId, postData, photoImage });
+  const handleEdit = () => {
+    openModal(
+      <PostEditPage
+        createdAt={createdAt}
+        dogName={dogName}
+        nickname={nickname}
+        bulletinPostId={bulletinPostId}
+        profileUrl={profileUrl}
+        likeCount={likeCount}
+        likeByUser={likeByUser}
+        amenityName={amenityName}
+        postContent={postContent}
+        commentList={commentList}
+        commentCount={commentCount}
+        photoUrl={photoUrl}
+        onClose={onClose}
+        amenityId={amenityId}
+      />,
+    );
+    closeModalByIndex(0);
   };
 
-  const tag = isEditMode ? 'textarea' : 'section';
+  useEffect(() => () => queryClient.removeQueries(queryKey), []);
 
   return (
-    data && (
+    bulletinPostId && (
       <Fragment>
         <PostDetailHeader
-          createdAt={data.data.createdAt}
-          dogName={data.data.dogName}
-          nickname={data.data.nickname}
-          menuButtonType={userId === data.data.memberId ? 'edit' : 'none'}
+          createdAt={createdAt}
+          dogName={dogName}
+          nickname={nickname}
+          menuButtonType={getMenuButtonType()}
           onClose={handleClose}
-          onEdit={handleEditClick}
-          onDelete={() => handleDeleteClick(data.data.bulletinPostId)}
-          onSubmit={handleSubmitClick}
+          onEdit={handleEdit}
+          onDelete={() => handleDeleteClick(bulletinPostId)}
         />
-
         <PostDetailnfo
-          profileUrl={data.data.profileUrl}
-          dogName={data.data.dogName}
-          nickname={data.data.nickname}
-          photoUrl={data.data.photoUrl}
+          profileUrl={profileUrl}
+          dogName={dogName}
+          nickname={nickname}
+          photoUrl={photoUrl}
         >
           <InfoContainer>
             <PostDetailHeart
-              likeCount={data.data.likeCount}
-              onClick={handleLikeClick}
-              likeByUser={data.data.likeByUser}
+              likeCount={likeCount}
+              bulletinId={bulletinPostId}
+              likeByUser={likeByUser}
             />
-            <PostDetailLocation amenityName={data.data.amenityName} />
+            <PostDetailLocation amenityName={amenityName} />
           </InfoContainer>
         </PostDetailnfo>
         <ContentsContainer>
-          <PostDetailContent tag={tag} borderRadius="5px">
-            {data.data.postContent}
-          </PostDetailContent>
+          <PostDetailContent postContent={postContent} />
           <Comments
             userId={userId}
-            commentList={data.data.commentList}
-            commentCount={data.data.commentCount}
+            commentList={commentList}
+            commentCount={commentCount}
           />
-          <CommentsForm onSubmit={handleCommentSubmit} />
+          <CommentsForm bulletinId={bulletinPostId} />
         </ContentsContainer>
       </Fragment>
     )
