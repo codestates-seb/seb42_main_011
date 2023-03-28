@@ -29,7 +29,7 @@ function Loading() {
   return <div> 로딩 중입니다. </div>;
 }
 
-function PostDetailPage({
+function PostEditPage({
   createdAt,
   dogName,
   nickname,
@@ -71,4 +71,4 @@ function PostDetailPage({
   );
 }
 
-export default PostDetailPage;
+export default PostEditPage;
