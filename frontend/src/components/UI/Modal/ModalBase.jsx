@@ -82,7 +82,7 @@ function ModalBase({ title, content, buttons, isFooterAnimaonClose = true }) {
         <Content>{content}</Content>
         {buttons && (
           <Footer
-            onClikc={isFooterAnimaonClose ? handleExitAnimation : () => {}}
+            onClick={isFooterAnimaonClose ? handleExitAnimation : () => {}}
           >
             {buttons}
           </Footer>
