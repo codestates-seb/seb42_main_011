@@ -63,7 +63,7 @@ const ContentStlye = css`
 
 const Content = styled.div`
   ${ContentStlye}
-  max-width: 280px;
+
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: normal;
@@ -81,8 +81,6 @@ const ContentEdit = styled.textarea`
   padding: 6px;
   resize: none;
   line-height: 20px;
-  overflow: hidden;
-  height: auto;
 `;
 
 const SeeMoreSvg = styled(IconSeeMore)`
@@ -132,6 +130,15 @@ const MenuButton = styled.button`
     color: ${({ showSeeMoreMenu }) =>
       showSeeMoreMenu ? 'var(--color-secondary)' : 'inherit'};
   }
+`;
+
+const EditMenuWrapper = styled.div`
+  width: 24px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
 `;
 
 function CommentsItem({
@@ -215,14 +222,16 @@ function CommentsItem({
       ) : (
         <Fragment>
           <Content>{commentContent}</Content>
-          {displayEditMenu ? (
-            <MenuButton
-              showSeeMoreMenu={showSeeMoreMenu}
-              onClick={handleSeeMoreButton}
-            >
-              <SeeMoreSvg />
-            </MenuButton>
-          ) : null}
+          <EditMenuWrapper>
+            {displayEditMenu ? (
+              <MenuButton
+                showSeeMoreMenu={showSeeMoreMenu}
+                onClick={handleSeeMoreButton}
+              >
+                <SeeMoreSvg />
+              </MenuButton>
+            ) : null}
+          </EditMenuWrapper>
         </Fragment>
       )}
 
