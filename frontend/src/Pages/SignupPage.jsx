@@ -189,7 +189,11 @@ function SignupPage() {
     );
 
     // 빈칸 유효성 검사 통과했을 경우
-    if (Object.keys(nullErrors).length === 0) {
+    if (
+      Object.keys(nullErrors).length === 0 &&
+      passwordVerify(form.password) &&
+      form.password === form.passwordRetype
+    ) {
       dispatch(
         register(
           form.email,
