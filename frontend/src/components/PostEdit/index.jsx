@@ -14,6 +14,7 @@ import CommentsForm from '../Comments/CommentsForm';
 import ImageUploadButton from '../UI/ImageUploadButton';
 import PostEditLocation from './PostEditLocation';
 import PostNewMap from '../PostNew/PostNewMap';
+import PostDetailPage from '../../Pages/PostDetailPage';
 
 import useGetAmenity from '../../hooks/amenity/useGetAmenity';
 
@@ -66,7 +67,7 @@ function PostDetail({
   amenityId,
 }) {
   const queryClient = useQueryClient();
-  const { openModal, closeModal } = useModal();
+  const { openModal, closeModal, closeModalByIndex } = useModal();
   const [disabledSubmit, setDisabledSubmit] = useState(true);
   const { data } = useGetAmenity({ amenityId });
   const [displayImage, setDisplayImage] = useState(photoUrl);
@@ -119,6 +120,14 @@ function PostDetail({
   const { mutateAsync: updateMutate } = useUpdateBulletinPost({
     onSuccess: responseData => {
       queryClient.setQueriesData('postDetail', () => responseData);
+      openModal(
+        <PostDetailPage
+          bulletinId={responseData.data.bulletinPostId}
+          onClose={closeModal}
+        />,
+      );
+
+      closeModalByIndex(0);
     },
     onError: () => {},
   });
