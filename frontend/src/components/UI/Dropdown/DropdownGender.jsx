@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
+import Fade from 'react-reveal/Fade';
 import { ReactComponent as IconMan } from '../../../assets/icons/icon-man.svg';
 import { ReactComponent as IconWoman } from '../../../assets/icons/icon-woman.svg';
 import { ReactComponent as IconDown } from '../../../assets/icons/icon-down.svg';
@@ -174,7 +175,11 @@ function DropdownGender({
         </DropdownList>
       )}
       {children &&
-        children.map((el, idx) => <ErrorMessage key={idx}>{el}</ErrorMessage>)}
+        children.map((el, idx) => (
+          <Fade bottom>
+            <ErrorMessage key={idx}>{el}</ErrorMessage>
+          </Fade>
+        ))}
     </DropdownContainer>
   );
 }

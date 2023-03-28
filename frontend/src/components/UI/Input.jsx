@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import Fade from 'react-reveal/Fade';
 
 const InputContainer = styled.div`
   width: var(--input-box-width);
@@ -78,11 +79,14 @@ function Input({
     <InputContainer>
       <Label htmlFor={id}>{label}</Label>
       <StyledInput id={id} type={type} variant={variant} {...props} />
+
       {children &&
         children.map((el, idx) => (
-          <ErrorMessage variant={variant} key={idx}>
-            {el}
-          </ErrorMessage>
+          <Fade bottom>
+            <ErrorMessage variant={variant} key={idx}>
+              {el}
+            </ErrorMessage>
+          </Fade>
         ))}
     </InputContainer>
   );

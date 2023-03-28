@@ -67,7 +67,6 @@ function SignupPage() {
     setDogGender(selectedValue);
   };
 
-  const [successful, setSuccessful] = useState(false);
   const [nullErrors, setNullErrors] = useState({});
   const [errors, setErrors] = useState({
     nickname: '',
@@ -156,7 +155,7 @@ function SignupPage() {
       });
 
     nicknameVerify(form.nickname)
-      .then(response => {
+      .then(() => {
         setExists(prev => ({
           ...prev,
           nickname: '',
@@ -180,7 +179,6 @@ function SignupPage() {
 
   const handleSubmit = e => {
     e.preventDefault();
-    setSuccessful(false);
     setNullErrors(
       signupNullCheck({
         nickname: form.nickname,
@@ -204,7 +202,6 @@ function SignupPage() {
         ),
       )
         .then(() => {
-          setSuccessful(true);
           openModal(
             <ModalBase
               title="가입이 완료되었습니다."
@@ -214,9 +211,7 @@ function SignupPage() {
           );
           navigate('/login');
         })
-        .catch(() => {
-          setSuccessful(false);
-        });
+        .catch(() => {});
     }
   };
 
@@ -227,72 +222,71 @@ function SignupPage() {
   return (
     <FormContainer>
       <Title>회원가입</Title>
-      {!successful && (
-        <SignupForm onSubmit={handleSubmit}>
-          <Input
-            variant="large"
-            label="닉네임"
-            id="nickname"
-            name="nickname"
-            type="text"
-            onBlur={onChange}
-          >
-            {[nullErrors.nickname, errors.nickname, exists.nickname]}
-          </Input>
 
-          <Input
-            variant="large"
-            label="이메일"
-            id="email"
-            name="email"
-            type="email"
-            onBlur={onChange}
-          >
-            {[nullErrors.email, exists.email]}
-          </Input>
+      <SignupForm onSubmit={handleSubmit}>
+        <Input
+          variant="large"
+          label="닉네임"
+          id="nickname"
+          name="nickname"
+          type="text"
+          onBlur={onChange}
+        >
+          {[nullErrors.nickname, errors.nickname, exists.nickname]}
+        </Input>
 
-          <Input
-            variant="large"
-            label="비밀번호"
-            id="password"
-            name="password"
-            type="password"
-            onBlur={onChange}
-          >
-            {[nullErrors.password, errors.password]}
-          </Input>
+        <Input
+          variant="large"
+          label="이메일"
+          id="email"
+          name="email"
+          type="email"
+          onBlur={onChange}
+        >
+          {[nullErrors.email, exists.email]}
+        </Input>
 
-          <Input
-            variant="large"
-            label="비밀번호 확인"
-            id="password-retype"
-            name="passwordRetype"
-            type="password"
-            onBlur={onChange}
-          >
-            {[nullErrors.passwordRetype, errors.passwordRetype]}
-          </Input>
+        <Input
+          variant="large"
+          label="비밀번호"
+          id="password"
+          name="password"
+          type="password"
+          onBlur={onChange}
+        >
+          {[nullErrors.password, errors.password]}
+        </Input>
 
-          <Input
-            variant="large"
-            label="강아지 이름"
-            id="dogName"
-            name="dogName"
-            type="text"
-            onBlur={onChange}
-          >
-            {[nullErrors.dogName, errors.dogName]}
-          </Input>
+        <Input
+          variant="large"
+          label="비밀번호 확인"
+          id="password-retype"
+          name="passwordRetype"
+          type="password"
+          onBlur={onChange}
+        >
+          {[nullErrors.passwordRetype, errors.passwordRetype]}
+        </Input>
 
-          <DropdownGender onSelect={onChangeDogGender}>
-            {[nullErrors.dogGender]}
-          </DropdownGender>
+        <Input
+          variant="large"
+          label="강아지 이름"
+          id="dogName"
+          name="dogName"
+          type="text"
+          onBlur={onChange}
+        >
+          {[nullErrors.dogName, errors.dogName]}
+        </Input>
 
-          <ButtonContainer>
-            <Button variant="large">회원가입</Button>
-          </ButtonContainer>
-        </SignupForm>
-      )}
+        <DropdownGender onSelect={onChangeDogGender}>
+          {[nullErrors.dogGender]}
+        </DropdownGender>
+
+        <ButtonContainer>
+          <Button variant="large">회원가입</Button>
+        </ButtonContainer>
+      </SignupForm>
     </FormContainer>
   );
 }
