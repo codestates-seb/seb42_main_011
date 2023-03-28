@@ -1,7 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useQueryClient } from 'react-query';
+
 import useInputs from '../../hooks/useInputs';
+import useCreateComments from '../../hooks/comments/useCreateComments';
+
 import { ReactComponent as IconComments } from '../../assets/icons/icon-comments.svg';
+import useModal from '../../hooks/useModal';
+import ModalBase from '../UI/Modal/ModalBase';
 
 const Form = styled.form`
   display: flex;
@@ -38,10 +44,41 @@ const StyledIconComments = styled(IconComments)`
   margin-left: -3px;
 `;
 
-function CommentsForm({ onSubmit }) {
+const Button = styled.button`
+  padding: 8px;
+  border: var(--border);
+  border-radius: 5px;
+`;
+
+function CommentsForm({ bulletinId }) {
+  const queryClient = useQueryClient();
+  const { openModal, closeModal } = useModal();
+
   const [{ commentContent }, onChange, reset] = useInputs({
     commentContent: '',
   });
+
+  const { mutateAsync: commentMutate } = useCreateComments({
+    onSuccess: () => {
+      queryClient.invalidateQueries('postDetail');
+    },
+    onError: () => {
+      openModal(
+        <ModalBase
+          title="실패"
+          content="게시글 등록에 실패했습니다"
+          buttons={<Button onClick={closeModal}>확인</Button>}
+        />,
+      );
+    },
+  });
+
+  const handleCommentSubmit = async newCommentContent => {
+    await commentMutate({
+      commentContent: newCommentContent,
+      bulletinPostId: bulletinId,
+    });
+  };
 
   const handleKetDown = async event => {
     if (event.nativeEvent.isComposing) {
@@ -56,7 +93,7 @@ function CommentsForm({ onSubmit }) {
     if (event.key === 'Enter') {
       event.preventDefault();
 
-      await onSubmit({ commentContent });
+      await handleCommentSubmit(commentContent);
       reset();
     }
   };
