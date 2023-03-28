@@ -108,30 +108,39 @@ public class SecurityConfiguration {
 
         // CORS 구성
         CorsConfiguration configuration = new CorsConfiguration();
-
-        // 허용할 출처(origin) 명시적으로 지정
-        configuration.addAllowedOrigin("http://my-buddy.co.kr");
-        configuration.addAllowedOrigin("https://my-buddy.co.kr");
-        configuration.addAllowedOrigin("http://my-buddy.shop");
-        configuration.addAllowedOrigin("https://my-buddy.shop");
-
-
-        //AllowedMethods
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE", "OPTIONS"));
-
-        //AllowedHeader
-        configuration.addAllowedHeader("Authorization");
-        configuration.addAllowedHeader("Content-Type");
-        configuration.addAllowedHeader("Accept");
-        configuration.addAllowedHeader("Origin");
-
-        //ExposedHeader
+        configuration.addAllowedOriginPattern("*");
+        configuration.addAllowedMethod("*");
+        configuration.addAllowedHeader("*");
+        configuration.addExposedHeader("*");
         configuration.addExposedHeader("Authorization");
         configuration.addExposedHeader("Access-Control-Allow-Credentials");
-        configuration.addExposedHeader("Access-Control-Allow-Origin");
-        configuration.addExposedHeader("Access-Control-Allow-Methods");
 
-        //CORS 요청 처리시 자격 증명 포함 여부 명시적으로 지정 : Cookie-Axios를 위함
+        // 허용할 출처(origin) 명시적으로 지정
+//
+//        configuration.addAllowedMethod("*");
+//        configuration.addAllowedOrigin("http://my-buddy.co.kr");
+//        configuration.addAllowedOrigin("https://my-buddy.co.kr");
+//        configuration.addAllowedOrigin("http://my-buddy.shop");
+//        configuration.addAllowedOrigin("https://my-buddy.shop");
+//
+//
+//        //AllowedMethods
+//        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE", "OPTIONS"));
+//
+//        //AllowedHeader
+//        configuration.addAllowedHeader("Authorization");
+//        configuration.addAllowedHeader("Content-Type");
+//        configuration.addAllowedHeader("Accept");
+//        configuration.addAllowedHeader("Origin");
+//        configuration.addAllowedHeader("X-Requested-With");
+//
+//        //ExposedHeader
+//        configuration.addExposedHeader("Authorization");
+//        configuration.addExposedHeader("Access-Control-Allow-Credentials");
+//        configuration.addExposedHeader("Access-Control-Allow-Origin");
+//        configuration.addExposedHeader("Access-Control-Allow-Methods");
+//
+//        //CORS 요청 처리시 자격 증명 포함 여부 명시적으로 지정 : Cookie-Axios를 위함
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

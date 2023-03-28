@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
 import Card from '../components/UI/Card/Card';
 import PostDetail from '../components/PostDetail';
@@ -29,15 +30,17 @@ function Loading() {
 }
 
 function PostDetailPage({ bulletinId, onClose }) {
+  const userId = useSelector(state => state.auth.user);
+
   return (
-    <PostDetailContainer
-      tag="article"
-      borderRadius="20px"
-      data-post-id={bulletinId}
-    >
+    <PostDetailContainer tag="article" borderRadius="20px">
       <RetryErrorBoundary>
         <Suspense fallback={<Loading />}>
-          <PostDetail bulletinId={bulletinId} onClose={onClose} />
+          <PostDetail
+            userId={userId}
+            bulletinId={bulletinId}
+            onClose={onClose}
+          />
         </Suspense>
       </RetryErrorBoundary>
     </PostDetailContainer>

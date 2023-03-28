@@ -25,7 +25,7 @@ const CommentListWrapper = styled.div`
   ${StyleScrollNone}
 `;
 
-function Comments({ commentList, commentCount }) {
+function Comments({ userId, commentList, commentCount }) {
   const queryClient = useQueryClient();
 
   const { mutateAsync: updateCommentsMutate } = useUpdateComments({
@@ -86,6 +86,7 @@ function Comments({ commentList, commentCount }) {
                 profileUrl={profileUrl}
                 onUpdate={handleUpdate}
                 onDelete={handleDelete}
+                displayEditMenu={userId === memberId}
               />
             ),
           )}

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import styled from 'styled-components';
 import { useQueryClient } from 'react-query';
 
@@ -13,6 +13,8 @@ import CommentsForm from '../Comments/CommentsForm';
 
 import useModal from '../../hooks/useModal';
 import useGetBulletinPost from '../../hooks/bulletinPosts/useGetBulletinPost';
+import useUpdateBulletinPost from '../../hooks/bulletinPosts/useUpdateBulletinPost';
+import useDeleteBulletinPost from '../../hooks/bulletinPosts/useDeleteBulletinPost';
 import useCreateComments from '../../hooks/comments/useCreateComments';
 import useCreateBulletinPostLike from '../../hooks/bulletinPostsLike/useCreateBulletinPostLike';
 import useDeleteBulletinPostLike from '../../hooks/bulletinPostsLike/useDeleteBulletinPostLike';
@@ -63,9 +65,10 @@ const Button = styled.button`
   border-radius: 5px;
 `;
 
-function PostDetail({ bulletinId, onClose, isEdit = false }) {
+function PostDetail({ userId, bulletinId, onClose }) {
+  const [isEditMode, setIsEditMode] = useState();
   const queryClient = useQueryClient();
-  const { openModal, closeModal } = useModal();
+  const { openModal, closeModal, closeAllModal } = useModal();
   const { data, queryKey } = useGetBulletinPost({
     bulletinId,
   });
@@ -113,6 +116,36 @@ function PostDetail({ bulletinId, onClose, isEdit = false }) {
     onError: () => {},
   });
 
+  const { mutateAsync: updateMutate } = useUpdateBulletinPost({
+    onSuccess: responseData => {
+      queryClient.setQueriesData(queryKey, oldData => ({
+        ...oldData,
+        data: {
+          ...oldData.data,
+          likeByUser: 0,
+          likeCount: responseData.data.likeCount,
+        },
+      }));
+    },
+    onError: () => {},
+  });
+
+  const { mutateAsync: deleteMutate } = useDeleteBulletinPost({
+    onSuccess: () => {
+      queryClient.removeQueries(queryKey);
+      closeAllModal();
+
+      openModal(
+        <ModalBase
+          title="게시글 삭제 완료"
+          content="게시글이 삭제 되었습니다"
+          buttons={<Button onClick={closeModal}>확인</Button>}
+        />,
+      );
+    },
+    onError: () => {},
+  });
+
   const handleLikeClick = likeByUser => {
     if (likeByUser === 0) {
       unlikeMutate({ bulletinId });
@@ -133,7 +166,41 @@ function PostDetail({ bulletinId, onClose, isEdit = false }) {
     });
   };
 
-  const tag = isEdit ? 'textarea' : 'section';
+  const handleEditClick = () => {
+    setIsEditMode(true);
+  };
+
+  const handleDeleteClick = bulletinPostId => {
+    openModal(
+      <ModalBase
+        title="게시글 삭제"
+        content="게시글을 정말 삭제하시겠습니까?"
+        buttons={
+          <Fragment>
+            <Button
+              onClick={() => deleteMutate({ bulletinId: bulletinPostId })}
+            >
+              확인
+            </Button>
+            <Button
+              onClick={() => {
+                setIsEditMode(false);
+                closeModal();
+              }}
+            >
+              취소
+            </Button>
+          </Fragment>
+        }
+      />,
+    );
+  };
+
+  const handleSubmitClick = (bulletinPostId, postData, photoImage) => {
+    updateMutate({ bulletinId: bulletinPostId, postData, photoImage });
+  };
+
+  const tag = isEditMode ? 'textarea' : 'section';
 
   return (
     data && (
@@ -142,7 +209,11 @@ function PostDetail({ bulletinId, onClose, isEdit = false }) {
           createdAt={data.data.createdAt}
           dogName={data.data.dogName}
           nickname={data.data.nickname}
+          menuButtonType={userId === data.data.memberId ? 'edit' : 'none'}
           onClose={handleClose}
+          onEdit={handleEditClick}
+          onDelete={() => handleDeleteClick(data.data.bulletinPostId)}
+          onSubmit={handleSubmitClick}
         />
 
         <PostDetailnfo
@@ -165,6 +236,7 @@ function PostDetail({ bulletinId, onClose, isEdit = false }) {
             {data.data.postContent}
           </PostDetailContent>
           <Comments
+            userId={userId}
             commentList={data.data.commentList}
             commentCount={data.data.commentCount}
           />

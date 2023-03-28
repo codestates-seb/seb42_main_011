@@ -15,6 +15,7 @@ import FriendSearchPage from './Pages/FriendSearchPage';
 import UserEditPage from './Pages/UserEditPage';
 import PlacePage from './Pages/PlacePage';
 import InfoPage from './Pages/InfoPage';
+import AmenityPage from './Pages/AmenityPage';
 
 function Router() {
   return (
@@ -31,6 +32,7 @@ function Router() {
         <Route path="/" element={<HomePage />} />
         <Route path="/friend/search" element={<FriendSearchPage />} />
         <Route path="/place" element={<PlacePage />} />
+        <Route path="/amenity/:amenityId" element={<AmenityPage />} />
         <Route path="/info" element={<InfoPage />} />
       </Route>
 
