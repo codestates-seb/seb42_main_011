@@ -69,6 +69,7 @@ function PostDetail({ userId, bulletinId, onClose }) {
         commentCount,
         photoUrl,
         memberId,
+        amenityId,
       },
     },
     queryKey,
@@ -145,6 +146,7 @@ function PostDetail({ userId, bulletinId, onClose }) {
         commentCount={commentCount}
         photoUrl={photoUrl}
         onClose={onClose}
+        amenityId={amenityId}
       />,
     );
     closeModalByIndex(0);
