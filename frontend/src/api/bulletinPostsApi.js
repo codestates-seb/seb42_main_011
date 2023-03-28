@@ -1,10 +1,36 @@
 import authHeader from '../redux/services/auth-header';
 import api from './api';
 
-async function updateBulletinPost({ bulletinId, postData }) {
+async function updateBulletinPost({ bulletinId, postData, photoImage }) {
+  const form = new FormData();
+
+  form.append(
+    'createDto',
+    new Blob([JSON.stringify(postData)], {
+      type: 'application/json',
+    }),
+  );
+
+  if (photoImage) {
+    form.append('photoImage', photoImage);
+  }
+
   return api
-    .patchForm(`/bulletin-posts/${bulletinId}`, postData, {
-      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    .patchForm(`/bulletin-posts/${bulletinId}`, form, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        ...authHeader(),
+      },
+    })
+    .then(({ data }) => data);
+}
+
+async function deleteBulletinPost({ bulletinId }) {
+  return api
+    .delete(`/bulletin-posts/${bulletinId}`, {
+      headers: {
+        ...authHeader(),
+      },
     })
     .then(({ data }) => data);
 }
@@ -68,9 +94,10 @@ async function deleteBulletinPostLike({ bulletinId }) {
 }
 
 export {
-  updateBulletinPost,
-  createBulletinPost,
   getBulletinPost,
+  createBulletinPost,
+  updateBulletinPost,
+  deleteBulletinPost,
   getBulletinPostList,
   createBulletinPostLike,
   deleteBulletinPostLike,

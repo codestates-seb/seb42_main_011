@@ -44,8 +44,6 @@ function EditAndRemoveButton({
   onOutsideClick = () => {},
 }) {
   const handleOutsideClick = event => {
-    console.log(event.target);
-
     if (event.target.matches('Button')) {
       return;
     }
