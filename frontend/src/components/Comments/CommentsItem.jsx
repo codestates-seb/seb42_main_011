@@ -12,7 +12,7 @@ import useModal from '../../hooks/useModal';
 const StyledCommenstItem = styled(Card)`
   width: 100%;
   height: 100%;
-  flex: 1 1 0;
+
   min-height: 80px;
   padding: 10px;
   /* transform: translate(-0.25rem, -0.25rem); */
@@ -63,15 +63,26 @@ const ContentStlye = css`
 
 const Content = styled.div`
   ${ContentStlye}
+  max-width: 280px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: normal;
+  text-align: left;
+  word-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 `;
 
 const ContentEdit = styled.textarea`
   ${ContentStlye}
   border: var(--border);
-  height: 100%;
+  height: auto;
   padding: 6px;
   resize: none;
   line-height: 20px;
+  overflow: hidden;
+  height: auto;
 `;
 
 const SeeMoreSvg = styled(IconSeeMore)`
@@ -105,7 +116,7 @@ const EditCompleteSvg = styled(IconCheck)`
 const EditMenu = styled(EditAndRemoveButton)`
   position: absolute;
   right: -9px;
-  bottom: -40px;
+  bottom: calc(50% - 80px);
   z-index: 999;
 `;
 
@@ -192,6 +203,7 @@ function CommentsItem({
             value={newContent}
             name="newContent"
             onChange={handleChange}
+            row={3}
           />
           <MenuButton onClick={handleCompleteClick}>
             <EditCompleteSvg />
