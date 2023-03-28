@@ -20,7 +20,7 @@ module.exports = {
     'import/no-extraneous-dependencies': [
       'error',
       {
-        devDependencies: ["*.{js,jsx}", "*.service.{js,jsx}"],
+        devDependencies: ['*.{js,jsx}', '*.service.{js,jsx}'],
         optionalDependencies: false,
         peerDependencies: false,
       },
@@ -30,5 +30,6 @@ module.exports = {
     'react/no-array-index-key': 'off',
     'no-console': 'off',
     'no-alert': 'off',
+    'import/no-cycle': 'off',
   },
 };
