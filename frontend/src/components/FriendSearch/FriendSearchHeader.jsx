@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 
 import PostHeader from '../UI/PostHeader';
 import DropdownFriend from '../UI/Dropdown/DropdownFriend';
@@ -39,7 +38,6 @@ const SEARCH_OPTIONS = [
 ];
 
 function FriendSearchHeader({ initialName = '', initialType = '', onSubmit }) {
-  const navigate = useNavigate();
   const [{ searchName }, onChange] = useInputs({
     searchName: initialName,
   });
@@ -59,10 +57,7 @@ function FriendSearchHeader({ initialName = '', initialType = '', onSubmit }) {
     }
 
     if (event.key === 'Enter') {
-      onSubmit({ newSearchName: searchName, newSearchType: searchType });
-      navigate(
-        `/friend/search?searchType=${searchType}&searchName=${searchName}`,
-      );
+      onSubmit(searchName, searchType);
     }
   };
 

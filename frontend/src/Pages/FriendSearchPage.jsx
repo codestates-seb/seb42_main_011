@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useInfiniteQuery } from 'react-query';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import searchFriends from '../api/searchApi';
 
@@ -17,22 +17,16 @@ const Container = styled.section`
 
 function FriendSearchPage() {
   const navigate = useNavigate();
+  const [searchOptions, setSearchOptions] = useState({
+    searchName: '',
+    searchType: '',
+  });
 
   const handleClick = memberId => {
     navigate(`/user/${memberId}`);
   };
 
-  const [searchParams, setSearchParams] = useSearchParams({
-    searchType: 'dogName',
-    searchName: '',
-  });
-
-  const searchType = searchParams.get('searchType');
-  const searchName = searchParams.get('searchName');
-
-  const handleSubmit = ({ newSearchName, newSearchType }) => {
-    setSearchParams({ searchName: newSearchName, searchType: newSearchType });
-  };
+  console.log('1111', searchOptions.searchName, searchOptions.searchType);
 
   const { data, fetchNextPage, hasNextPage, isError, isLoading, refetch } =
     useInfiniteQuery(
@@ -41,8 +35,8 @@ function FriendSearchPage() {
         searchFriends({
           page: pageParam,
           size: 10,
-          type: searchType,
-          name: searchName,
+          type: searchOptions.searchType,
+          name: searchOptions.searchName,
         }),
       {
         getNextPageParam: (lastPage, pages) => {
@@ -55,23 +49,27 @@ function FriendSearchPage() {
       },
     );
 
+  const handleSumbit = (newSearchName, newSearchType) => {
+    setSearchOptions({ searchName: newSearchName, searchType: newSearchType });
+  };
+
   useEffect(() => {
     refetch();
-  }, [searchType, searchName]);
+  }, [searchOptions]);
 
   return (
     <Container>
       <FriendSearchHeader
-        initialType={searchType || 'dogName'}
-        initialName={searchName || ''}
-        onSubmit={handleSubmit}
+        initialType={searchOptions.searchType || 'dogName'}
+        initialName={searchOptions.searchName || ''}
+        onSubmit={handleSumbit}
       />
 
       <FriendSearch>
-        {searchName && searchType && (
+        {searchOptions.searchName && searchOptions.searchType && (
           <FriendSearchList
-            searchType={searchType}
-            searchName={searchName}
+            searchType={searchOptions.searchType}
+            searchName={searchOptions.searchName}
             colWidth="280px"
             onClick={handleClick}
           >
@@ -84,7 +82,10 @@ function FriendSearchPage() {
                     const props = {
                       memberId,
                       photoUrl,
-                      name: searchType === 'dogName' ? dogName : nickname,
+                      name:
+                        searchOptions.searchType === 'dogName'
+                          ? dogName
+                          : nickname,
                       key: memberId,
                       isLastItem:
                         pageIndex === Number(data.pages.length) - 1 &&
