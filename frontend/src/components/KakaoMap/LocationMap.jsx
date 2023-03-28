@@ -12,7 +12,7 @@ const NoData = styled.div`
   border: var(--border);
   width: 100%;
   height: 100%;
-  max-height: 53vh;
+  max-height: 56vh;
   overflow: hidden;
   position: relative;
 `;
@@ -52,7 +52,6 @@ function LocationMap({ data }) {
   }
 
   const SelectData = data.data.data;
-  console.log(SelectData);
   useEffect(() => {
     const container = document.getElementById('myMap');
     const DEFAULT_LOCATION = new kakao.maps.LatLng(
@@ -61,7 +60,8 @@ function LocationMap({ data }) {
     );
     const options = {
       center: DEFAULT_LOCATION,
-      level: 4,
+      level: 3,
+      draggable: true,
     };
     const map = new kakao.maps.Map(container, options);
 

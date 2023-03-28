@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Card from '../components/UI/Card/Card';
 
@@ -91,6 +92,13 @@ const NoDataText = styled.p`
 `;
 
 function UserPlacePage({ userdata, isMypage }) {
+  const navigate = useNavigate();
+
+  const handlePlaceClick = (amenityId, amenityName) => {
+    console.log('amenityId:', amenityId, 'amenityName:', amenityName);
+    navigate(`/amenity/${amenityId}`, { state: { amenityName } });
+  };
+
   if (!userdata) {
     return null;
   }
@@ -100,7 +108,10 @@ function UserPlacePage({ userdata, isMypage }) {
         {userdata?.amenityForMyPageResponseDtos?.length ? (
           userdata.amenityForMyPageResponseDtos.map(
             ({ amenityId, amenityName, address, photoUrl }) => (
-              <PlaceCard key={amenityId}>
+              <PlaceCard
+                key={amenityId}
+                onClick={() => handlePlaceClick(amenityId, amenityName)}
+              >
                 <Place>
                   <PlaceImg
                     src={photoUrl}

@@ -1,10 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 
 import { ReactComponent as HomeShape } from '../../assets/shape/home_shape.svg';
+import { ReactComponent as PlaceShape } from '../../assets/shape/place_shape.svg';
 
 import FeedsHeader from './FeedsHeader';
+import PlaceHeader from '../Place/PlaceHeader';
 
 const Container = styled.article`
   width: 100%;
@@ -41,13 +43,30 @@ const HomeYellowShape = styled(HomeShape)`
   right: 10px;
 `;
 
-function Feeds({ children }) {
+const PlaceOrangeShape = styled(PlaceShape)`
+  position: fixed;
+  top: 140px;
+  right: 90px;
+  transform: scale(1.3);
+  -webkit-transform: scale(1.3);
+`;
+
+function Feeds({ children, amenityId, amenityName }) {
+  const location = useLocation();
+  const isAmenityPage = location.pathname.includes('/amenity');
+
+  const Shape = isAmenityPage ? PlaceOrangeShape : HomeYellowShape;
+
   return (
     <Container>
-      <FeedsHeader />
+      {isAmenityPage ? (
+        <PlaceHeader amenityId={amenityId} amenityName={amenityName} />
+      ) : (
+        <FeedsHeader />
+      )}
       <FeesdWrapper>
         <FeedsContainer>
-          <HomeYellowShape />
+          <Shape />
           {children}
         </FeedsContainer>
       </FeesdWrapper>
