@@ -128,7 +128,10 @@ function FollowModal() {
               <FollowingCard onClick={() => handleCardClick(memberId)}>
                 <Profile>
                   <ProfileImg
-                    src={profileUrl}
+                    src={
+                      profileUrl ??
+                      'https://cdn-icons-png.flaticon.com/512/1130/1130933.png?w=2000&t=st=1680005925~exp=1680006525~hmac=8e8077d62e937c5ca56e24827f856a436440d7fb244eff53af34fffddc88d213'
+                    }
                     alt={`${dogName}의 프로필 이미지`}
                   />
                 </Profile>
