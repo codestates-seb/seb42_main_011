@@ -14,6 +14,7 @@ import useModal from '../hooks/useModal';
 import useGetMembersInfo from '../hooks/members/useGetMembersInfo';
 import PostEditHeader from '../components/PostEdit/PostEditHeader';
 import PostDetailPage from './PostDetailPage';
+import Button from '../components/UI/Button';
 
 const PostDetailContainer = styled(Card)`
   display: flex;
@@ -31,12 +32,6 @@ const PostDetailContainer = styled(Card)`
   @media screen and (max-width: 1199px) {
     scale: calc(0.9);
   }
-`;
-
-const Button = styled.button`
-  padding: 8px;
-  border: var(--border);
-  border-radius: 5px;
 `;
 
 function PostNewPage({ onClose }) {
@@ -114,6 +109,7 @@ function PostNewPage({ onClose }) {
       <ModalBase
         title="게시글 등록"
         content="정말 등록하시겠습니까?"
+        isFooterAnimaonClose={false}
         buttons={
           <Fragment>
             <Button onClick={() => sendData()}>확인</Button>

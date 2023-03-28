@@ -8,6 +8,7 @@ import useCreateComments from '../../hooks/comments/useCreateComments';
 import { ReactComponent as IconComments } from '../../assets/icons/icon-comments.svg';
 import useModal from '../../hooks/useModal';
 import ModalBase from '../UI/Modal/ModalBase';
+import Button from '../UI/Button';
 
 const Form = styled.form`
   display: flex;
@@ -44,15 +45,9 @@ const StyledIconComments = styled(IconComments)`
   margin-left: -3px;
 `;
 
-const Button = styled.button`
-  padding: 8px;
-  border: var(--border);
-  border-radius: 5px;
-`;
-
 function CommentsForm({ bulletinId }) {
   const queryClient = useQueryClient();
-  const { openModal, closeModal } = useModal();
+  const { openModal } = useModal();
 
   const [{ commentContent }, onChange, reset] = useInputs({
     commentContent: '',
@@ -67,7 +62,7 @@ function CommentsForm({ bulletinId }) {
         <ModalBase
           title="실패"
           content="게시글 등록에 실패했습니다"
-          buttons={<Button onClick={closeModal}>확인</Button>}
+          buttons={<Button>확인</Button>}
         />,
       );
     },

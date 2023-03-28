@@ -17,6 +17,7 @@ import PostNewMap from '../PostNew/PostNewMap';
 import PostDetailPage from '../../Pages/PostDetailPage';
 
 import useGetAmenity from '../../hooks/amenity/useGetAmenity';
+import Button from '../UI/Button';
 
 const ContentsContainer = styled.section`
   display: flex;
@@ -44,12 +45,6 @@ const InfoContainer = styled.div`
   width: 100%;
 
   position: relative;
-`;
-
-const Button = styled.button`
-  padding: 8px;
-  border: var(--border);
-  border-radius: 5px;
 `;
 
 function PostDetail({
@@ -156,6 +151,7 @@ function PostDetail({
       <ModalBase
         title="게시글 수정"
         content="게시글을 정말 수정하시겠습니까?"
+        isFooterAnimaonClose={false}
         buttons={
           <Fragment>
             <Button
