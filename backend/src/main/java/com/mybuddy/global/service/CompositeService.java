@@ -54,19 +54,24 @@ public class CompositeService {
                 bulletinPostService.createPost(bulletinPostMapper.bulletinPostCreateDtoToBulletinPost(createDto), loginUserId, amenity, memberService, storageService, photoImage);
 
 
-        return new ApiSingleResponse<>(HttpStatus.OK,"게시물이 생성되었습니다.",bulletinPostMapper.bulletinPostToBulletinPostResponseDto(bulletinPost, bulletinPostService, likeService, loginUserId));
+        return new ApiSingleResponse<>(HttpStatus.OK, "게시물이 생성되었습니다.", bulletinPostMapper.bulletinPostToBulletinPostResponseDto(bulletinPost, bulletinPostService, likeService, loginUserId));
     }
 
     public ApiSingleResponse patchBulletinPost(long postId, Long loginUserId, BulletinPostDto.Patch patchDto, MultipartFile photoImage) {
 
-        //해당 amenity 저장되어있는지 여부 확인후 없으면 저장, 아니면 create 코드
-        AmenityCreateDto amenityCreateDto = amenityMapper.bulletinPostDtoToAmenityCreateDto(patchDto);
-        Amenity amenity = amenityService.findDBAmenity(amenityCreateDto);
+        Amenity amenity = new Amenity(null, null, null, null, null);
+        if (patchDto.getAddress() != null) {
+            //해당 amenity 저장되어있는지 여부 확인후 없으면 저장, 아니면 create 코드
+            AmenityCreateDto amenityCreateDto = amenityMapper.bulletinPostDtoToAmenityCreateDto(patchDto);
+
+            amenity = amenityService.findDBAmenity(amenityCreateDto);
+        }
+
 
         BulletinPost bulletinPost =
-                bulletinPostService.updatePost(bulletinPostMapper.bulletinPostPatchDtoToBulletinPost(patchDto), postId,loginUserId, amenity, memberService, storageService, photoImage);
+                bulletinPostService.updatePost(bulletinPostMapper.bulletinPostPatchDtoToBulletinPost(patchDto), postId, loginUserId, amenity, memberService, storageService, photoImage);
 
-        return new ApiSingleResponse<>(HttpStatus.OK,"게시물이 수정되었습니다.", bulletinPostMapper.bulletinPostToBulletinPostResponseDto(bulletinPost, bulletinPostService, likeService, loginUserId));
+        return new ApiSingleResponse<>(HttpStatus.OK, "게시물이 수정되었습니다.", bulletinPostMapper.bulletinPostToBulletinPostResponseDto(bulletinPost, bulletinPostService, likeService, loginUserId));
     }
 
     public ApiSingleResponse getBulletinPost(long postId, Long loginUserId) {
@@ -95,14 +100,14 @@ public class CompositeService {
 
         Like like = likeService.createLike(postId, loginUserId);
 
-        return new ApiSingleResponse<>(HttpStatus.OK,"좋아요가 생성되었습니다.", likeMapper.toLikeResponseDto(postId, likeService));
+        return new ApiSingleResponse<>(HttpStatus.OK, "좋아요가 생성되었습니다.", likeMapper.toLikeResponseDto(postId, likeService));
     }
 
     public ApiSingleResponse deleteLike(long postId, Long loginUserId) {
 
         likeService.deleteLike(postId, loginUserId);
 
-        return  new ApiSingleResponse<>(HttpStatus.OK,"좋아요가 취소되었습니다.", likeMapper.toLikeResponseDto(postId, likeService));
+        return new ApiSingleResponse<>(HttpStatus.OK, "좋아요가 취소되었습니다.", likeMapper.toLikeResponseDto(postId, likeService));
     }
 
     public ApiMultiResponse searchMembersByName(String type, String name, int page, int size) {

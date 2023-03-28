@@ -56,6 +56,10 @@ public class BulletinPostService {
 
         verifyResourceOwner(obtainedBulletinPost, loginUserId);
 
+        //amenity 연결
+        if(amenity.getAmenityName() != null) {
+            updateBulletinPost.setAmenity(amenity);
+        }
         BulletinPost bulletinPost = customBeanUtils.copyNonNullProperties(updateBulletinPost, obtainedBulletinPost);
 
         Optional.ofNullable(photoImage)
@@ -63,8 +67,7 @@ public class BulletinPostService {
                         bulletinPost.setPhotoUrl(
                         storageService.storeImage(image)));
 
-        //amenity 연결
-        bulletinPost.setAmenity(amenity);
+
 
         BulletinPost updatedBulletinPost = bulletinPostRepository.save(bulletinPost);
 
