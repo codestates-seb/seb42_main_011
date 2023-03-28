@@ -112,6 +112,8 @@ public class SecurityConfiguration {
         // 허용할 출처(origin) 명시적으로 지정
         configuration.addAllowedOrigin("http://my-buddy.co.kr");
         configuration.addAllowedOrigin("https://my-buddy.co.kr");
+        configuration.addAllowedOrigin("http://my-buddy.shop");
+        configuration.addAllowedOrigin("https://my-buddy.shop");
 
 
         //AllowedMethods
