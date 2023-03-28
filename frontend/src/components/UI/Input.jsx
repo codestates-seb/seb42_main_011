@@ -1,4 +1,15 @@
 import styled, { css } from 'styled-components';
+import Fade from 'react-reveal/Fade';
+
+const InputContainer = styled.div`
+  width: var(--input-box-width);
+  @media screen and (min-width: 1174px) {
+    width: var(--input-long-width);
+  }
+  @media screen and (max-width: 625px) {
+    width: var(--input-short-width);
+  }
+`;
 
 const VARIANTS = {
   regular: css`
@@ -16,10 +27,10 @@ const VARIANTS = {
 const StyledInput = styled.input`
   ${({ variant }) => VARIANTS[variant]}
   width: var(--input-box-width);
-  @media screen and (min-height: 1050px){
+  @media screen and (min-height: 1050px) {
     height: 50px;
   }
-  @media screen and (min-width: 1174px){
+  @media screen and (min-width: 1174px) {
     width: var(--input-long-width);
   }
   @media screen and (max-width: 625px) {
@@ -39,12 +50,45 @@ const Label = styled.label`
   font-weight: bold;
 `;
 
-function Input({ variant = 'edit', id, label, type = 'text', value, onChange }) {
+const ErrorMessage = styled.p`
+  color: var(--color-tertiary);
+  font-size: 0.867rem;
+  padding-left: 2px;
+  padding-top: 4px;
+  word-wrap: break-word;
+
+  ${({ variant }) => VARIANTS[variant]}
+  width: var(--input-box-width);
+  @media screen and (min-width: 1174px) {
+    width: var(--input-long-width);
+  }
+  @media screen and (max-width: 625px) {
+    width: var(--input-short-width);
+  }
+`;
+
+function Input({
+  children,
+  variant = 'edit',
+  id,
+  label,
+  type = 'text',
+  ...props
+}) {
   return (
-    <div>
+    <InputContainer>
       <Label htmlFor={id}>{label}</Label>
-      <StyledInput id={id} type={type} variant={variant} value={value} onChange={onChange} />
-    </div>
+      <StyledInput id={id} type={type} variant={variant} {...props} />
+
+      {children &&
+        children.map((el, idx) => (
+          <Fade bottom>
+            <ErrorMessage variant={variant} key={idx}>
+              {el}
+            </ErrorMessage>
+          </Fade>
+        ))}
+    </InputContainer>
   );
 }
 export default Input;

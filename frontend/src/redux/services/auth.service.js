@@ -13,6 +13,32 @@ import Cookies from 'js-cookie';
 import jwtDecode from 'jwt-decode';
 import authHeader from './auth-header';
 
+// function register(email, password, nickname, dogName, dogGender) {
+//   const form = new FormData();
+//   form.append(
+//     'createDto',
+//     new Blob(
+//       [
+//         JSON.stringify({
+//           email,
+//           password,
+//           nickname,
+//           dogName,
+//           dogGender,
+//         }),
+//       ],
+//       {
+//         type: 'application/json',
+//       },
+//     ),
+//   );
+//   return axios.postForm(`/api/v1/members`, form, {
+//     headers: {
+//       'Content-Type': 'multipart/form-data',
+//     },
+//     withCredentials: true,
+//   });
+// }
 const register = (email, password, nickname, dogName, dogGender) => {
   const form = new FormData();
   form.append(
@@ -35,12 +61,31 @@ const register = (email, password, nickname, dogName, dogGender) => {
   return axios.postForm(`/api/v1/members`, form, {
     headers: {
       'Content-Type': 'multipart/form-data',
+      'ngrok-skip-browser-warning': '12',
     },
     withCredentials: true,
   });
 };
 
 // 2. login() : POST { 이메일, 비밀번호 } & JWT를 로컬스토리지에 저장
+// async function login(username, password) {
+//   await axios
+//     .post(
+//       `/api/v1/auth/login`,
+//       {
+//         username,
+//         password,
+//       },
+//       {
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         withCredentials: true,
+//       },
+//     )
+//     // .then(onLoginSuccess)
+//     .then(response => response.data);
+// }
 const login = (username, password) =>
   axios
     .post(
@@ -52,11 +97,13 @@ const login = (username, password) =>
       {
         headers: {
           'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': '12',
         },
         withCredentials: true,
       },
     )
     .then(onLoginSuccess);
+
 // 로그인 만료(액세스 토큰 기한 만료) & 페이지 새로고침시
 // refresh토큰으로 액세스토큰 다시 발급
 
@@ -67,6 +114,7 @@ const onSilentRefresh = () => {
   axios
     .post(`/api/v1/auth/refresh`, null, {
       headers: authHeader(),
+      'ngrok-skip-browser-warning': '12',
       withCredentials: true,
     })
     .then(onLoginSuccess)
@@ -74,9 +122,23 @@ const onSilentRefresh = () => {
       console.log(error);
     });
 };
+
 // 2-2. onLoginSuccess(response)
 // 로그인 성공시 액세스토큰을 로컬스토리지에 저장
 // 액세스토큰 만료시간 1분 전에 로그인을 연장
+// async function onLoginSuccess(response) {
+//   setTimeout(onSilentRefresh, JWT_EXPIRY_TIME - 60000); // 만료 1분 전 refresh함수 실행
+//   const accessToken = JSON.stringify(
+//     response.headers.authorization.split(' ')[1],
+//   );
+//   localStorage.setItem('accessToken', accessToken);
+//   try {
+//     const user = jwtDecode(accessToken);
+//     return user.memberId;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
 const onLoginSuccess = response => {
   setTimeout(onSilentRefresh, JWT_EXPIRY_TIME - 60000); // 만료 1분 전 refresh함수 실행
   const accessToken = JSON.stringify(
@@ -92,9 +154,18 @@ const onLoginSuccess = response => {
 };
 
 // 3. logout() : 로컬스토리지에서 JWT를 삭제
+// async function logout() {
+//   // const accessToken = localStorage.getItem('user');
+//   axios.post(`/api/v1/auth/logout`, null, { headers: authHeader() });
+//   localStorage.removeItem('accessToken');
+//   Cookies.remove('Refresh');
+// }
 const logout = () => {
   // const accessToken = localStorage.getItem('user');
-  axios.post(`/api/v1/auth/logout`, null, { headers: authHeader() });
+  axios.post(`/api/v1/auth/logout`, null, {
+    headers: authHeader(),
+    'ngrok-skip-browser-warning': '12',
+  });
   localStorage.removeItem('accessToken');
   Cookies.remove('Refresh');
 };

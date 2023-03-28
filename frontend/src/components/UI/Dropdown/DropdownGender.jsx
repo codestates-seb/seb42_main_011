@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
+import Fade from 'react-reveal/Fade';
 import { ReactComponent as IconMan } from '../../../assets/icons/icon-man.svg';
 import { ReactComponent as IconWoman } from '../../../assets/icons/icon-woman.svg';
 import { ReactComponent as IconDown } from '../../../assets/icons/icon-down.svg';
@@ -30,10 +31,10 @@ const DropdownListItem = styled.li`
   /* width: 605px; */
   /* width: 100%; */
   flex-grow: 1;
-  @media screen and (min-height: 1050px){
+  @media screen and (min-height: 1050px) {
     height: 50px;
   }
-  @media screen and (min-width: 1174px){
+  @media screen and (min-width: 1174px) {
     width: 480px;
   }
   min-height: 40px;
@@ -63,10 +64,10 @@ const DropdownList = styled.ul`
   top: 100%;
   left: 0;
   z-index: 1;
-  @media screen and (min-height: 1050px){
+  @media screen and (min-height: 1050px) {
     height: 50px;
   }
-  @media screen and (min-width: 1174px){
+  @media screen and (min-width: 1174px) {
     width: 480px;
   }
   box-shadow: inherit;
@@ -116,10 +117,10 @@ const DropdownContainer = styled.div`
     padding: 0 15px;
   }
   min-height: 40px;
-  @media screen and (min-height: 1050px){
+  @media screen and (min-height: 1050px) {
     height: 50px;
   }
-  @media screen and (min-width: 1174px){
+  @media screen and (min-width: 1174px) {
     width: 480px;
   }
 `;
@@ -130,7 +131,21 @@ const DropdownLabel = styled.div`
   margin-bottom: 10px;
 `;
 
-function DropdownGender({ onSelect, defaultDlsplayText = '선택하세요' }) {
+const ErrorMessage = styled.p`
+  position: absolute;
+  z-index: 0;
+  color: var(--color-tertiary);
+  font-size: 0.867rem;
+  padding-left: 2px;
+  padding-top: 4px;
+  bottom: -20px;
+`;
+
+function DropdownGender({
+  children,
+  onSelect,
+  defaultDlsplayText = '선택하세요',
+}) {
   const [isOpen, selectedOption, handleDropdownToggle, handleOptionSelect] =
     useDropdown({
       onSelect,
@@ -159,6 +174,12 @@ function DropdownGender({ onSelect, defaultDlsplayText = '선택하세요' }) {
           </DropdownListItem>
         </DropdownList>
       )}
+      {children &&
+        children.map((el, idx) => (
+          <Fade bottom>
+            <ErrorMessage key={idx}>{el}</ErrorMessage>
+          </Fade>
+        ))}
     </DropdownContainer>
   );
 }

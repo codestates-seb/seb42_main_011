@@ -2,13 +2,16 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import Input from '../components/UI/Input';
 import DropdownGender from '../components/UI/Dropdown/DropdownGender';
 import Button from '../components/UI/Button';
 import { register } from '../redux/actions/auth';
 import signupNullCheck from './SignupNullCheck';
 import { emailVerify, nicknameVerify } from '../api/authApi';
+import useInputs from '../hooks/useInputs';
+import useModal from '../hooks/useModal';
+import ModalBase from '../components/UI/Modal/ModalBase';
 
 const FormContainer = styled.section`
   display: flex;
@@ -50,14 +53,20 @@ const ButtonContainer = styled.div`
 function SignupPage() {
   // 기능 구현
   const navigate = useNavigate();
-  const [nickname, setNickname] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordRetype, setPasswordRetype] = useState('');
-  const [dogName, setDogName] = useState('');
+  const { openModal, closeModal } = useModal();
+  const { isLoggedIn } = useSelector(state => state.auth);
+  const [form, onChange, reset] = useInputs({
+    nickname: '',
+    email: '',
+    password: '',
+    passwordRetype: '',
+    dogName: '',
+  });
   const [dogGender, setDogGender] = useState('');
+  const onChangeDogGender = selectedValue => {
+    setDogGender(selectedValue);
+  };
 
-  const [successful, setSuccessful] = useState(false);
   const [nullErrors, setNullErrors] = useState({});
   const [errors, setErrors] = useState({
     nickname: '',
@@ -66,36 +75,12 @@ function SignupPage() {
     passwordRetype: '',
     dogName: '',
   });
-  const [exists, setExists] = useState({
-    email: '',
-    nickname: '',
-  });
-
-  const { message } = useSelector(state => state.message);
+  const [exists, setExists] = useState({});
 
   const dispatch = useDispatch();
 
-  const onChangeNickname = e => {
-    setNickname(e.target.value);
-  };
-  const onChangeEmail = e => {
-    setEmail(e.target.value);
-  };
-  const onChangePassword = e => {
-    setPassword(e.target.value);
-  };
-  const onChangePasswordRetype = e => {
-    setPasswordRetype(e.target.value);
-  };
-  const onChangeDogName = e => {
-    setDogName(e.target.value);
-  };
-  const onChangeDogGender = selectedValue => {
-    setDogGender(selectedValue);
-  };
-
   const checkLength = () => {
-    if (nickname.length > 10) {
+    if (form.nickname.length > 10) {
       setErrors(prev => ({
         ...prev,
         nickname: '닉네임은 10자 이하여야 합니다.',
@@ -103,7 +88,7 @@ function SignupPage() {
     } else {
       setErrors(prev => ({ ...prev, nickname: '' }));
     }
-    if (dogName.length > 10) {
+    if (form.dogName.length > 10) {
       setErrors(prev => ({
         ...prev,
         dogName: '강아지 이름은 10자 이하여야 합니다.',
@@ -115,8 +100,8 @@ function SignupPage() {
 
   const passwordVerify = input =>
     /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{8,20}$/.test(input);
-  const passwordRetypeVerify = (pw, pwRetype) => {
-    if (pw !== pwRetype) {
+  const passwordRetypeVerify = (password, passwordRetype) => {
+    if (password !== passwordRetype) {
       setErrors(prev => ({
         ...prev,
         passwordRetype: '비밀번호가 일치하지 않습니다.',
@@ -127,11 +112,11 @@ function SignupPage() {
   };
 
   useEffect(() => {
-    passwordRetypeVerify(password, passwordRetype);
-  }, [password, passwordRetype]);
+    passwordRetypeVerify(form.password, form.passwordRetype);
+  }, [form.password, form.passwordRetype]);
 
   useEffect(() => {
-    if (!passwordVerify(password) && password.length > 0) {
+    if (!passwordVerify(form.password) && form.password.length > 0) {
       setErrors(prev => ({
         ...prev,
         password:
@@ -140,20 +125,20 @@ function SignupPage() {
     } else {
       setErrors(prev => ({ ...prev, password: '' }));
     }
-  }, [password]);
+  }, [form.password]);
 
   useEffect(() => {
     checkLength();
-  }, [nickname, dogName]);
+  }, [form.nickname, form.dogName]);
 
   useEffect(() => {
-    emailVerify(email)
-      .then(response => {
+    emailVerify(form.email)
+      .then(
         setExists(prev => ({
           ...prev,
           email: '',
-        }));
-      })
+        })),
+      )
       .catch(error => {
         if (error.response.status === 409) {
           setExists(prev => ({
@@ -169,8 +154,8 @@ function SignupPage() {
         }
       });
 
-    nicknameVerify(nickname)
-      .then(response => {
+    nicknameVerify(form.nickname)
+      .then(() => {
         setExists(prev => ({
           ...prev,
           nickname: '',
@@ -190,100 +175,118 @@ function SignupPage() {
           console.log(error);
         }
       });
-  }, [email, nickname]);
-  console.log(exists);
+  }, [form.email, form.nickname]);
 
   const handleSubmit = e => {
     e.preventDefault();
-    setSuccessful(false);
     setNullErrors(
       signupNullCheck({
-        nickname,
-        email,
-        password,
-        passwordRetype,
-        dogName,
+        nickname: form.nickname,
+        email: form.email,
+        password: form.password,
+        passwordRetype: form.passwordRetype,
+        dogName: form.dogName,
         dogGender,
       }),
     );
 
     // 빈칸 유효성 검사 통과했을 경우
     if (Object.keys(nullErrors).length === 0) {
-      dispatch(register(email, password, nickname, dogName, dogGender))
+      dispatch(
+        register(
+          form.email,
+          form.password,
+          form.nickname,
+          form.dogName,
+          dogGender,
+        ),
+      )
         .then(() => {
-          setSuccessful(true);
+          openModal(
+            <ModalBase
+              title="가입이 완료되었습니다."
+              content="마이버디에 오신 것을 환영합니다!"
+              buttons={<Button onClick={closeModal}>확인</Button>}
+            />,
+          );
           navigate('/login');
         })
-        .catch(() => {
-          setSuccessful(false);
-        });
+        .catch(() => {});
     }
   };
+
+  if (isLoggedIn) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <FormContainer>
       <Title>회원가입</Title>
-      {!successful && (
-        <SignupForm onSubmit={handleSubmit}>
-          <Input
-            variant="large"
-            label="닉네임"
-            id="name"
-            type="text"
-            value={nickname}
-            onChange={onChangeNickname}
-          />
-          {nullErrors.nickname && <p>{nullErrors.nickname}</p>}
-          {errors.nickname && <p>{errors.nickname}</p>}
-          {exists.nickname && <p>{exists.nickname}</p>}
-          <Input
-            variant="large"
-            label="이메일"
-            id="email"
-            type="email"
-            value={email}
-            onChange={onChangeEmail}
-          />
-          {nullErrors.email && <p>{nullErrors.email}</p>}
-          {exists.email && <p>{exists.email}</p>}
-          <Input
-            variant="large"
-            label="비밀번호"
-            id="password"
-            type="password"
-            value={password}
-            onChange={onChangePassword}
-          />
-          {nullErrors.password && <p>{nullErrors.password}</p>}
-          {errors.password && <p>{errors.password}</p>}
-          <Input
-            variant="large"
-            label="비밀번호 확인"
-            id="password-retype"
-            type="password"
-            value={passwordRetype}
-            onChange={onChangePasswordRetype}
-          />
-          {nullErrors.passwordRetype && <p>{nullErrors.passwordRetype}</p>}
-          {errors.passwordRetype && <p>{errors.passwordRetype}</p>}
-          <Input
-            variant="large"
-            label="강아지 이름"
-            id="dogname"
-            type="text"
-            value={dogName}
-            onChange={onChangeDogName}
-          />
-          {nullErrors.dogName && <p>{nullErrors.dogName}</p>}
-          {errors.dogName && <p>{errors.dogName}</p>}
-          <DropdownGender onSelect={onChangeDogGender} />
-          {nullErrors.dogGender && <p>{nullErrors.dogGender}</p>}
-          <ButtonContainer>
-            <Button variant="large">회원가입</Button>
-          </ButtonContainer>
-        </SignupForm>
-      )}
-      {message && <div>{message}</div>}
+
+      <SignupForm onSubmit={handleSubmit}>
+        <Input
+          variant="large"
+          label="닉네임"
+          id="nickname"
+          name="nickname"
+          type="text"
+          onBlur={onChange}
+        >
+          {[nullErrors.nickname, errors.nickname, exists.nickname]}
+        </Input>
+
+        <Input
+          variant="large"
+          label="이메일"
+          id="email"
+          name="email"
+          type="email"
+          onBlur={onChange}
+        >
+          {[nullErrors.email, exists.email]}
+        </Input>
+
+        <Input
+          variant="large"
+          label="비밀번호"
+          id="password"
+          name="password"
+          type="password"
+          onBlur={onChange}
+        >
+          {[nullErrors.password, errors.password]}
+        </Input>
+
+        <Input
+          variant="large"
+          label="비밀번호 확인"
+          id="password-retype"
+          name="passwordRetype"
+          type="password"
+          onBlur={onChange}
+        >
+          {[nullErrors.passwordRetype, errors.passwordRetype]}
+        </Input>
+
+        <Input
+          variant="large"
+          label="강아지 이름"
+          id="dogName"
+          name="dogName"
+          type="text"
+          onBlur={onChange}
+        >
+          {[nullErrors.dogName, errors.dogName]}
+        </Input>
+
+        <DropdownGender onSelect={onChangeDogGender}>
+          {[nullErrors.dogGender]}
+        </DropdownGender>
+
+        <ButtonContainer>
+          <Button variant="large">회원가입</Button>
+        </ButtonContainer>
+      </SignupForm>
     </FormContainer>
   );
 }
