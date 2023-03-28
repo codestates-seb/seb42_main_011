@@ -124,6 +124,7 @@ public class SecurityConfiguration {
         configuration.addAllowedHeader("Content-Type");
         configuration.addAllowedHeader("Accept");
         configuration.addAllowedHeader("Origin");
+        configuration.addAllowedHeader("X-Requested-With");
 
         //ExposedHeader
         configuration.addExposedHeader("Authorization");
