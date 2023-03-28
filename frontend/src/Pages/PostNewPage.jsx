@@ -13,6 +13,7 @@ import useModal from '../hooks/useModal';
 
 import useGetMembersInfo from '../hooks/members/useGetMembersInfo';
 import PostEditHeader from '../components/PostEdit/PostEditHeader';
+import PostDetailPage from './PostDetailPage';
 
 const PostDetailContainer = styled(Card)`
   display: flex;
@@ -44,7 +45,7 @@ function PostNewPage({ onClose }) {
   const [place, setPlace] = useState('');
   const [photoImage, setPhotoImage] = useState('');
   const [disabledSubmit, setDisabledSubmit] = useState(true);
-  const { openModal, closeModal, closeAllModal } = useModal();
+  const { openModal, closeModal, closeModalByIndex } = useModal();
   const memberId = useSelector(state => state.auth.user);
   const { data } = useGetMembersInfo({ memberId });
 
@@ -52,16 +53,15 @@ function PostNewPage({ onClose }) {
     'creaetBulletinPosts',
     createBulletinPost,
     {
-      onSuccess: () => {
+      onSuccess: responseData => {
         openModal(
-          <ModalBase
-            title="성공"
-            content="게시글 등록에 성공했습니다"
-            buttons={<Button onClick={closeModal}>확인</Button>}
+          <PostDetailPage
+            bulletinId={responseData.data.bulletinPostId}
+            onClose={closeModal}
           />,
         );
 
-        closeAllModal();
+        closeModalByIndex(0);
       },
       onError: () => {
         openModal(
