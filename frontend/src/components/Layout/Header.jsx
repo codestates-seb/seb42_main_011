@@ -124,7 +124,7 @@ function Header() {
   };
 
   const { user: currentUser } = useSelector(state => state.auth);
-  // console.log(currentUser);
+
   const dispatch = useDispatch();
 
   const location = useLocation();
@@ -185,7 +185,9 @@ function Header() {
           ) : (
             <div>
               <Link to="/">
-                <Write onClick={handleWriteButtonClick} variant="headerprimary">작성</Write>
+                <Write onClick={handleWriteButtonClick} variant="headerprimary">
+                  작성
+                </Write>
               </Link>
               <Link to={`/user/${currentUser}`}>
                 <Mypage variant="headerprimary">마이페이지</Mypage>

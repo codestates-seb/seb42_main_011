@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import Fade from 'react-reveal/Fade';
+import React from 'react';
 
 const InputContainer = styled.div`
   width: var(--input-box-width);
@@ -73,21 +74,27 @@ function Input({
   id,
   label,
   type = 'text',
+  isFade = false,
   ...props
 }) {
+  let errorMessages = children;
+  if (isFade) {
+    errorMessages = children.filter(el => !!el);
+  }
   return (
     <InputContainer>
       <Label htmlFor={id}>{label}</Label>
       <StyledInput id={id} type={type} variant={variant} {...props} />
 
-      {children &&
-        children.map((el, idx) => (
-          <Fade bottom>
-            <ErrorMessage variant={variant} key={idx}>
-              {el}
-            </ErrorMessage>
-          </Fade>
-        ))}
+      {isFade && errorMessages.length > 0 && (
+        <React.Fragment>
+          {React.Children.map(errorMessages, (el, idx) => (
+            <Fade bottom key={idx}>
+              <ErrorMessage variant={variant}>{el}</ErrorMessage>
+            </Fade>
+          ))}
+        </React.Fragment>
+      )}
     </InputContainer>
   );
 }

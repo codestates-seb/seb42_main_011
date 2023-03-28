@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
+import Fade from 'react-reveal/Fade';
 import Input from '../components/UI/Input';
 import Button from '../components/UI/Button';
 import { login } from '../redux/actions/auth';
 import useModal from '../hooks/useModal';
 import ModalBase from '../components/UI/Modal/ModalBase';
-
 // 스타일
 const FormContainer = styled.section`
   display: flex;
@@ -155,7 +155,11 @@ function LoginPage() {
             <ForgotPassword>비밀번호를 잊어버렸나요?</ForgotPassword>
           </Link>
         </PasswordContainer>{' '}
-        {error && <ErrorMessage>{error}</ErrorMessage>}
+        {error && (
+          <Fade bottom>
+            <ErrorMessage>{error}</ErrorMessage>
+          </Fade>
+        )}
         <ButtonContainer>
           <Button variant="large" disabled={loading}>
             {/* 로딩 시 여기에 spinner 추가할지? */}

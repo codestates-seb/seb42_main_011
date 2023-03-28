@@ -250,6 +250,7 @@ function SignupPage() {
           name="nickname"
           type="text"
           onBlur={onChange}
+          isSignup
         >
           {[nullErrors.nickname, errors.nickname, exists.nickname]}
         </Input>
@@ -261,6 +262,7 @@ function SignupPage() {
           name="email"
           type="email"
           onBlur={onChange}
+          isSignup
         >
           {[nullErrors.email, exists.email]}
         </Input>
@@ -272,6 +274,7 @@ function SignupPage() {
           name="password"
           type="password"
           onBlur={onChange}
+          isSignup
         >
           {[nullErrors.password, errors.password]}
         </Input>
@@ -283,6 +286,7 @@ function SignupPage() {
           name="passwordRetype"
           type="password"
           onBlur={onChange}
+          isSignup
         >
           {[nullErrors.passwordRetype, errors.passwordRetype]}
         </Input>
@@ -294,6 +298,7 @@ function SignupPage() {
           name="dogName"
           type="text"
           onBlur={onChange}
+          isSignup
         >
           {[nullErrors.dogName, errors.dogName]}
         </Input>

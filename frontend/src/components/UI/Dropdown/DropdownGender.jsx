@@ -174,12 +174,11 @@ function DropdownGender({
           </DropdownListItem>
         </DropdownList>
       )}
-      {children &&
-        children.map((el, idx) => (
-          <Fade bottom>
-            <ErrorMessage key={idx}>{el}</ErrorMessage>
-          </Fade>
-        ))}
+      {children && (
+        <Fade bottom>
+          <ErrorMessage>{children}</ErrorMessage>
+        </Fade>
+      )}
     </DropdownContainer>
   );
 }

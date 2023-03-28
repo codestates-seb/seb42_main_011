@@ -181,6 +181,7 @@ function ResetPasswordPage() {
           id="password"
           type="password"
           onChange={handlePasswordChange}
+          isFade
         >
           {[errors.password]}
         </Input>
@@ -190,6 +191,7 @@ function ResetPasswordPage() {
           id="password-retype"
           type="password"
           onChange={handlePasswordRetypeChange}
+          isFade
         >
           {[errors.passwordRetype]}
         </Input>
