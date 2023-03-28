@@ -16,7 +16,7 @@ function PostDetailContent({ postContent, onChange }) {
   const [content, debouncedValue, handleChange] = useInput(postContent, 200);
 
   useEffect(() => {
-    onChange({ type: 'content', value: debouncedValue });
+    onChange({ type: 'postContent', value: debouncedValue });
   }, [debouncedValue]);
 
   return (

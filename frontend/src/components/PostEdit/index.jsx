@@ -12,7 +12,8 @@ import useModal from '../../hooks/useModal';
 import useUpdateBulletinPost from '../../hooks/bulletinPosts/useUpdateBulletinPost';
 import CommentsForm from '../Comments/CommentsForm';
 import ImageUploadButton from '../UI/ImageUploadButton';
-import PostDetailLocation from './PostEditLocation';
+import PostEditLocation from './PostEditLocation';
+import PostNewMap from '../PostNew/PostNewMap';
 
 import useGetAmenity from '../../hooks/amenity/useGetAmenity';
 
@@ -71,7 +72,8 @@ function PostDetail({
   const [displayImage, setDisplayImage] = useState(photoUrl);
 
   const [updateData, setUpdateData] = useState({
-    content: postContent,
+    postContent,
+    amenityName,
     photoImage: '',
     addressId: data.data.addressId,
     address: data.data.address,
@@ -79,10 +81,24 @@ function PostDetail({
     latitude: data.data.latitude,
   });
 
+  const handleSelect = newPlace => {
+    setUpdateData(preState => ({
+      ...preState,
+      addressId: newPlace.id,
+      amenityName: newPlace.place_name,
+      address: newPlace.address_name,
+      longitude: newPlace.x,
+      latitude: newPlace.y,
+    }));
+  };
+
+  const handleLoactionSelectClick = () => {
+    openModal(<PostNewMap onSelect={handleSelect} onClose={closeModal} />);
+  };
+
   useEffect(() => {
-    console.log(updateData.content, postContent);
     if (
-      updateData.content !== postContent ||
+      updateData.postContent !== postContent ||
       updateData.addressId !== data.data.addressId ||
       updateData.photoImage.length > 0
     ) {
@@ -115,17 +131,15 @@ function PostDetail({
     const postData = {};
     let photoImage = '';
 
-    postData.content = updateData.content || postContent;
-    console.log(postData);
+    postData.postContent = updateData.content || postContent;
 
-    if (updateData.addressId !== data.data.addressId) {
-      postData.addressId = updateData.addressId;
-      postData.address = updateData.address;
-      postData.longitude = updateData.longitude;
-      postData.latitude = updateData.latitude;
-    }
+    postData.addressId = updateData.addressId || data.data.addressId;
+    postData.address = updateData.address || data.data.address;
+    postData.longitude = updateData.longitude || data.data.longitude;
+    postData.latitude = updateData.latitude || data.data.latitude;
+    postData.amenityName = updateData.amenityName || amenityName;
 
-    if (updateData.photoImage?.length > 0) {
+    if (updateData.photoImage) {
       photoImage = updateData.photoImage;
     }
 
@@ -160,7 +174,7 @@ function PostDetail({
   };
 
   const handleUploadImage = (newPhotoUrl, file) => {
-    setUpdateData({ type: 'photoImage', value: file });
+    handleOnchnage({ type: 'photoImage', value: file });
     setDisplayImage(newPhotoUrl);
   };
 
@@ -182,7 +196,10 @@ function PostDetail({
         photoUrl={displayImage}
       >
         <InfoContainer>
-          <PostDetailLocation amenityName={amenityName} />
+          <PostEditLocation
+            onClick={handleLoactionSelectClick}
+            amenityName={updateData.amenityName}
+          />
           <ImageUploadButton onUplad={handleUploadImage}>
             이미지 업로드
           </ImageUploadButton>
