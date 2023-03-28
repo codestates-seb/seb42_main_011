@@ -59,7 +59,7 @@ const Footer = styled.div`
   gap: 8px;
 `;
 
-function ModalBase({ title, content, buttons }) {
+function ModalBase({ title, content, buttons, isFooterAnimaonClose = true }) {
   const { closeModal } = useModal();
   const [isExiting, setIsExiting] = useState(false);
 
@@ -80,7 +80,13 @@ function ModalBase({ title, content, buttons }) {
           </CancleButton>
         </Header>
         <Content>{content}</Content>
-        {buttons && <Footer onClick={handleExitAnimation}>{buttons}</Footer>}
+        {buttons && (
+          <Footer
+            onClikc={isFooterAnimaonClose ? handleExitAnimation : () => {}}
+          >
+            {buttons}
+          </Footer>
+        )}
       </Warapper>
     </ModalNonContent>
   );
