@@ -7,6 +7,7 @@ import { ReactComponent as IconCheck } from '../../assets/icons/icon-check.svg';
 
 import Card from '../UI/Card/Card';
 import EditAndRemoveButton from '../UI/EditAndRemoveButton';
+import useModal from '../../hooks/useModal';
 
 const StyledCommenstItem = styled(Card)`
   width: 100%;
@@ -136,6 +137,8 @@ function CommentsItem({
   const [editMode, setEditMode] = useState(false);
   const [showSeeMoreMenu, setShowSeeMoreMenu] = useState(false);
   const [newContent, setNewContent] = useState(commentContent);
+  const { closeModal } = useModal();
+
   const handleSeeMoreButton = () => {
     setShowSeeMoreMenu(true);
   };
@@ -176,8 +179,12 @@ function CommentsItem({
     <StyledCommenstItem borderRadius="5px" tag="li" data-comment-id={commentId}>
       <Avatar src={profileUrl} alt="" />
       <NameContainer>
-        <Nickname to={`/user/${memberId}`}>{nickName}</Nickname>
-        <DogName to={`/user/${memberId}`}>{dogName}</DogName>
+        <Nickname to={`/user/${memberId}`} onClick={closeModal}>
+          {nickName}
+        </Nickname>
+        <DogName to={`/user/${memberId}`} onClick={closeModal}>
+          {dogName}
+        </DogName>
       </NameContainer>
       {editMode ? (
         <Fragment>

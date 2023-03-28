@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useQueryClient } from 'react-query';
 
@@ -155,7 +155,6 @@ function PostDetail({ userId, bulletinId, onClose }) {
   };
 
   const handleClose = () => {
-    queryClient.removeQueries(queryKey);
     onClose();
   };
 
@@ -169,6 +168,8 @@ function PostDetail({ userId, bulletinId, onClose }) {
   const handleEditClick = () => {
     setIsEditMode(true);
   };
+
+  useEffect(() => () => queryClient.removeQueries(queryKey), []);
 
   const handleDeleteClick = bulletinPostId => {
     openModal(

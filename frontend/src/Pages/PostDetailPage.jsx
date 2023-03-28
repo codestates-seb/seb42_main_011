@@ -1,10 +1,11 @@
-import React, { Suspense } from 'react';
+import React, { lazy, Suspense } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
 import Card from '../components/UI/Card/Card';
-import PostDetail from '../components/PostDetail';
 import RetryErrorBoundary from '../components/RetryErrorBoundary';
+
+const PostDetail = lazy(() => import('../components/PostDetail'));
 
 const PostDetailContainer = styled(Card)`
   display: flex;
