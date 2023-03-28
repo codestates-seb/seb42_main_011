@@ -71,15 +71,16 @@ function FindPasswordPage() {
         );
         navigate('/login');
       })
-      .catch(
+      .catch(() => {
+        // if(error.response && error.response.status === )
         openModal(
           <ModalBase
             title="이메일 전송 실패"
-            content="오류가 발생했거나 잘못된 메일을 입력했습니다."
+            content="이메일 전송에 실패했습니다. 다시 시도해주세요."
             buttons={<Button onClick={closeModal}>확인</Button>}
           />,
-        ),
-      );
+        );
+      });
   };
 
   return (

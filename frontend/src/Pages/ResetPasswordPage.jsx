@@ -137,7 +137,16 @@ function ResetPasswordPage() {
               <ModalBase
                 title="실패"
                 content="권한이 만료되었습니다. 이메일을 다시 전송해주세요."
-                buttons={<Button onClick={closeModal}>확인</Button>}
+                buttons={
+                  <Button
+                    onClick={() => {
+                      closeModal();
+                      navigate('/password/find');
+                    }}
+                  >
+                    확인
+                  </Button>
+                }
               />,
             );
           } else {

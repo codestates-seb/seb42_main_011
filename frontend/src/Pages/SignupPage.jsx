@@ -150,7 +150,6 @@ function SignupPage() {
             ...prev,
             email: '일시적인 오류가 발생했습니다.',
           }));
-          console.log(error);
         }
       });
 
@@ -172,7 +171,6 @@ function SignupPage() {
             ...prev,
             nickname: '일시적인 오류가 발생했습니다.',
           }));
-          console.log(error);
         }
       });
   }, [form.email, form.nickname]);
@@ -211,7 +209,28 @@ function SignupPage() {
           );
           navigate('/login');
         })
-        .catch(() => {});
+        .catch(error => {
+          if (
+            error.response &&
+            (error.response.status === 400 || error.response.status === 409)
+          ) {
+            openModal(
+              <ModalBase
+                title="실패"
+                content="조건에 맞게 입력했는지 다시 한번 확인해주세요."
+                buttons={<Button onClick={closeModal}>확인</Button>}
+              />,
+            );
+          } else {
+            openModal(
+              <ModalBase
+                title="실패"
+                content="일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요."
+                buttons={<Button onClick={closeModal}>확인</Button>}
+              />,
+            );
+          }
+        });
     }
   };
 

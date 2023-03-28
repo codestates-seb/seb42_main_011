@@ -6,6 +6,8 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import Input from '../components/UI/Input';
 import Button from '../components/UI/Button';
 import { login } from '../redux/actions/auth';
+import useModal from '../hooks/useModal';
+import ModalBase from '../components/UI/Modal/ModalBase';
 
 // 스타일
 const FormContainer = styled.section`
@@ -95,6 +97,7 @@ function LoginPage() {
   const dispatch = useDispatch();
 
   const [error, setError] = useState('');
+  const { openModal, closeModal } = useModal();
 
   const handleLogin = e => {
     e.preventDefault();
@@ -102,11 +105,15 @@ function LoginPage() {
     dispatch(login(email, password))
       .then(() => navigate('/'))
       .catch(err => {
-        if (err.response.status === 401) {
+        if (err.response && err.response.status === 401) {
           setError('등록되지 않은 이메일이거나 비밀번호가 일치하지 않습니다.');
         } else {
-          setError(
-            '일시적인 오류로 로그인에 실패했습니다. 잠시 후 다시 시도해주세요.',
+          openModal(
+            <ModalBase
+              title="실패"
+              content="일시적인 오류로 로그인에 실패했습니다. 잠시 후 다시 시도해주세요."
+              buttons={<Button onClick={closeModal}>확인</Button>}
+            />,
           );
         }
         setLoading(false);
