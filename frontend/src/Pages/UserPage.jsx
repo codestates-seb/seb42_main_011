@@ -2,7 +2,7 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { useLocation, useParams } from 'react-router-dom';
-/* import { useSelector } from 'react-redux'; */
+import { useSelector } from 'react-redux';
 import UserInfoComponent from '../components/User/UserInfoComponent';
 import UserProfileImg from '../components/User/UserProfileImg';
 import UserDeleteModal from '../components/User/UserDeleteModal';
@@ -59,12 +59,11 @@ function UserPage() {
   const { memberId: pageMemberId } = useParams();
   const location = useLocation();
 
-  /*  const currentUserMemberId = useSelector(state => state.auth.user); */ // 현재 사용자의 아이디
-  const currentUserMemberId = '8'; // 현재 사용자의 아이디
+  const currentUserMemberId = useSelector(state => state.auth.user); // 현재 사용자의 아이디
 
   let TitleImageUrl;
 
-  const isMyPage = pageMemberId === currentUserMemberId;
+  const isMyPage = String(pageMemberId) === String(currentUserMemberId);
 
   const PageLocation = location.pathname;
 
@@ -76,7 +75,7 @@ function UserPage() {
   }
 
   const handleDeleteButtnClick = () => {
-    openModal(<UserDeleteModal />);
+    openModal(<UserDeleteModal memberId={pageMemberId} />);
   };
 
   const {

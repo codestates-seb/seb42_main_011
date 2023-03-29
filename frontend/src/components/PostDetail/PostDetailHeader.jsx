@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { Fragment, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as IconCheck } from '../../assets/icons/icon-check.svg';
 import { ReactComponent as IconSeeMore } from '../../assets/icons/icon-see-more-small.svg';
 import { ReactComponent as IconCancle } from '../../assets/icons/icon-cancle.svg';
+import EditAndRemoveButton from '../UI/EditAndRemoveButton';
 
-const Header = styled.form`
+const Header = styled.section`
   position: absolute;
   width: calc(50% - 18px);
   right: 0;
@@ -40,14 +41,50 @@ const CompleteIcon = styled(IconCheck)`
   width: 32px;
 `;
 
+const CloseIcon = styled(IconCancle)`
+  height: 20px;
+  width: 20px;
+`;
+
 const SeeMoreIcon = styled(IconSeeMore)`
   height: 20px;
   width: 32px;
 `;
 
+const EditMenu = styled(EditAndRemoveButton)`
+  position: absolute;
+  right: 50px;
+  bottom: -40px;
+  z-index: 999;
+`;
+
 const MenuButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   ${CompleteIcon} {
     color: var(--color-dark-0);
+
+    :hover {
+      color: var(--color-primary);
+    }
+  }
+
+  ${CloseIcon} {
+    color: var(--color-dark-0);
+
+    :hover {
+      color: var(--color-tertiary);
+    }
+  }
+
+  ${SeeMoreIcon} {
+    color: var(--color-dark-0);
+
+    :hover {
+      color: var(--color-primary);
+    }
   }
 
   &:disabled {
@@ -59,29 +96,50 @@ const MenuButton = styled.button`
   }
 `;
 
-const CloseIcon = styled(IconCancle)`
-  height: 20px;
-  width: 20px;
-`;
-
 function PostDetailContentsHeader({
   createdAt,
   dogName,
-  disabledSubmit = false,
   onClose,
-  onSubmit,
-  isEdit = false,
+  onDelete,
+  onEdit,
+  menuButtonType = 'new',
 }) {
   const displayDate = new Date(createdAt).toISOString().split('T')[0];
   const displayTitleText = `${displayDate} ${dogName}의 일기`;
+  const [showSeeMoreMenu, setShowSeeMoreMenu] = useState(false);
+
+  const handleOusideClick = () => {
+    setShowSeeMoreMenu(false);
+  };
+
+  const handleSeeMoreButtonClick = () => {
+    setShowSeeMoreMenu(true);
+  };
 
   return (
     <Header>
       <Title>{displayTitleText}</Title>
       <ButtonContainer>
-        <MenuButton type="button" onClick={onSubmit} disabled={disabledSubmit}>
-          {isEdit ? <CompleteIcon /> : <SeeMoreIcon />}
-        </MenuButton>
+        {
+          {
+            none: null,
+            edit: (
+              <Fragment>
+                <MenuButton type="button" onClick={handleSeeMoreButtonClick}>
+                  <SeeMoreIcon />
+                </MenuButton>
+                {showSeeMoreMenu && (
+                  <EditMenu
+                    onOutsideClick={handleOusideClick}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                  />
+                )}
+              </Fragment>
+            ),
+          }[menuButtonType]
+        }
+
         <MenuButton type="button" onClick={onClose}>
           <CloseIcon />
         </MenuButton>

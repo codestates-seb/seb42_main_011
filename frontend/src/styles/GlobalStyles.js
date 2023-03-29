@@ -58,6 +58,7 @@ const GlobalStyles = createGlobalStyle`
     list-style: none;
   }
 
+  /* Modalbase animation */
   @keyframes roadRunnerIn {
     0% {
       transform: translateX(-1500px) skewX(30deg) scaleX(1.3);
@@ -69,7 +70,6 @@ const GlobalStyles = createGlobalStyle`
       transform: translateX(0px) skewX(0deg) scaleX(1);
     }
   }
-  /* 모달 콘텐츠 반동 효과로 숨기기 */
   @keyframes roadRunnerOut {
     0% {
       transform: translateX(0px) skewX(0deg) scaleX(1);
@@ -79,6 +79,28 @@ const GlobalStyles = createGlobalStyle`
     }
     100% {
       transform: translateX(1500px) skewX(30deg) scaleX(1.3);
+    }
+  }
+
+  /* Info page animation */
+  @keyframes Loop {
+    0% {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      -webkit-transform: translate3d(-270%, 0, 0);
+      transform: translate3d(-270%, 0, 0);
+    }
+  }
+  @keyframes TextLoop {
+    0% {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      -webkit-transform: translate3d(-100%, 0, 0);
+      transform: translate3d(-100%, 0, 0);
     }
   }
 `;

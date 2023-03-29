@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import Input from '../components/UI/Input';
 import Button from '../components/UI/Button';
 import { resetPassword } from '../api/authApi';
+import useModal from '../hooks/useModal';
+import ModalBase from '../components/UI/Modal/ModalBase';
 
 const FormContainer = styled.section`
   display: flex;
@@ -21,22 +23,31 @@ const Title = styled.h3`
 `;
 
 const Caption = styled.p`
+  width: 400px;
+  @media screen and (min-width: 1174px) {
+    width: 400px;
+  }
+  @media screen and (max-width: 625px) {
+    width: 280px;
+  }
   font-size: var(--font-size-16);
   white-space: pre-line;
   color: var(--color-tertiary);
   font-weight: 700;
   line-height: 40px;
-  align-self: flex-start;
+  /* align-self: flex-start; */
 `;
 
 const CaptionText = '새로운 비밀번호를 입력해주세요.';
 
 const ResetForm = styled.form`
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   row-gap: 30px;
+  align-items: center;
 `;
 
 const ButtonContainer = styled.div`
@@ -51,6 +62,8 @@ function ResetPasswordPage() {
   const [password, setPassword] = useState('');
   const [passwordRetype, setPasswordRetype] = useState('');
   const [errors, setErrors] = useState({});
+
+  const { openModal, closeModal } = useModal();
 
   const navigate = useNavigate();
 
@@ -101,11 +114,59 @@ function ResetPasswordPage() {
     if (passwordVerify(password) && password === passwordRetype) {
       await resetPassword(token, email, password)
         .then(() => {
+          openModal(
+            <ModalBase
+              title="성공"
+              content="비밀번호가 변경되었습니다."
+              buttons={<Button onClick={closeModal}>확인</Button>}
+            />,
+          );
           setTimeout(navigate('/login'), 1000);
         })
-        .catch(error => console.log(error));
+        .catch(error => {
+          if (error.response.status === 400) {
+            openModal(
+              <ModalBase
+                title="실패"
+                content="변경에 실패했습니다. 입력하신 비밀번호를 다시 확인해주세요."
+                buttons={<Button onClick={closeModal}>확인</Button>}
+              />,
+            );
+          } else if (error.response.status === 401) {
+            openModal(
+              <ModalBase
+                title="실패"
+                content="권한이 만료되었습니다. 이메일을 다시 전송해주세요."
+                buttons={
+                  <Button
+                    onClick={() => {
+                      closeModal();
+                      navigate('/password/find');
+                    }}
+                  >
+                    확인
+                  </Button>
+                }
+              />,
+            );
+          } else {
+            openModal(
+              <ModalBase
+                title="실패"
+                content="일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요."
+                buttons={<Button onClick={closeModal}>확인</Button>}
+              />,
+            );
+          }
+        });
     } else {
-      alert('입력하신 비밀번호를 다시 확인해주세요.');
+      openModal(
+        <ModalBase
+          title="실패"
+          content="변경에 실패했습니다. 입력하신 비밀번호를 다시 확인해주세요."
+          buttons={<Button onClick={closeModal}>확인</Button>}
+        />,
+      );
     }
   };
 
@@ -120,16 +181,20 @@ function ResetPasswordPage() {
           id="password"
           type="password"
           onChange={handlePasswordChange}
-        />
-        {errors.password && <p>{errors.password}</p>}
+          isFade
+        >
+          {[errors.password]}
+        </Input>
         <Input
           variant="regular"
           label="비밀번호 확인"
           id="password-retype"
           type="password"
           onChange={handlePasswordRetypeChange}
-        />
-        {errors.passwordRetype && <p>{errors.passwordRetype}</p>}
+          isFade
+        >
+          {[errors.passwordRetype]}
+        </Input>
         <ButtonContainer>
           <Button variant="large">비밀번호 변경</Button>
         </ButtonContainer>

@@ -1,11 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useInfiniteQuery } from 'react-query';
 
 import PostList from '../UI/PostList';
-import PostProfileItem from '../UI/PostProfileItem';
-
-import searchFriends from '../../api/searchApi';
 
 const StyledFriendSearchList = styled(PostList)`
   margin-top: 10px;
@@ -16,36 +12,7 @@ const StyledFriendSearchList = styled(PostList)`
   }
 `;
 
-function FriendSearchList({
-  searchType,
-  searchName,
-  onClick,
-  colWidth = '280px',
-}) {
-  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery(
-    'friendSearch',
-    ({ pageParam = 1 }) =>
-      searchFriends({
-        page: pageParam,
-        size: 10,
-        type: searchType,
-        name: searchName,
-      }),
-    {
-      suspense: true,
-      getNextPageParam: (lastPage, pages) => {
-        if (pages.length === lastPage.pageInfo.totalPages) {
-          return undefined;
-        }
-
-        return lastPage.pageInfo.page + 1;
-      },
-    },
-    {
-      suspense: true,
-    },
-  );
-
+function FriendSearchList({ children, onClick, colWidth = '280px' }) {
   const handleClick = event => {
     const $li = event.target.closest('li');
     if (!$li) {
@@ -58,23 +25,7 @@ function FriendSearchList({
 
   return (
     <StyledFriendSearchList colWidth={colWidth} onClick={handleClick}>
-      {!!data &&
-        data.pages.map(({ data: fetchData }, pageIndex) =>
-          fetchData.map(({ memberId, nickname, dogName, photoUrl }, idx) => {
-            const props = {
-              memberId,
-              photoUrl,
-              name: searchType === 'dogName' ? dogName : nickname,
-              key: memberId,
-              isLastItem:
-                pageIndex === Number(data.pages.length) - 1 &&
-                idx === fetchData.length - 1,
-              onFetch: hasNextPage ? fetchNextPage : () => {},
-            };
-
-            return <PostProfileItem {...props} />;
-          }),
-        )}
+      {children}
     </StyledFriendSearchList>
   );
 }

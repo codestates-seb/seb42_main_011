@@ -4,15 +4,34 @@ import styled from 'styled-components';
 import newMarker from '../../assets/marker.svg';
 import memo from '../../assets/memo_image.svg';
 
+const MapWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  position: relative;
+`;
+
 const Map = styled.div`
   border: var(--border);
+`;
+
+const InfoText = styled.p`
+  position: absolute;
+  top: -20px;
+  right: 0;
+  z-index: 10;
+  font-size: 13.5px;
+
+  & span {
+    color: var(--color-primary);
+    font-weight: bold;
+  }
 `;
 
 const NoData = styled.div`
   border: var(--border);
   width: 100%;
   height: 100%;
-  max-height: 53vh;
+  max-height: 56vh;
   overflow: hidden;
   position: relative;
 `;
@@ -52,7 +71,6 @@ function LocationMap({ data }) {
   }
 
   const SelectData = data.data.data;
-  console.log(SelectData);
   useEffect(() => {
     const container = document.getElementById('myMap');
     const DEFAULT_LOCATION = new kakao.maps.LatLng(
@@ -61,7 +79,8 @@ function LocationMap({ data }) {
     );
     const options = {
       center: DEFAULT_LOCATION,
-      level: 4,
+      level: 3,
+      draggable: true,
     };
     const map = new kakao.maps.Map(container, options);
 
@@ -76,35 +95,48 @@ function LocationMap({ data }) {
       });
 
       const overlayContent = `<div style=" background-image: url(${memo});
-      background-size: cover;
-      color: var(--color-dark-0);
-      font-size: 15px;
-      width: 280px;
-      height: 70px;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      margin:0px 0px 10px 5px;
-      text-indent:-5px;
-      padding-top: 5px;
-      font-wieght:500;
-      ">
-    ${place.amenityName}
-    </div>`;
+        background-size: cover;
+        color: var(--color-dark-0);
+        font-size: 15px;
+        width: 280px;
+        height: 70px;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        margin:0px 0px 10px 5px;
+        text-indent:-5px;
+        padding-top: 5px;
+        font-wieght:500;
+        ">
+      ${place.amenityName}
+      </div>`;
+
+      const contentWrapper = document.createElement('div');
+      contentWrapper.innerHTML = overlayContent;
 
       const overlay = new kakao.maps.CustomOverlay({
-        content: overlayContent,
+        content: contentWrapper,
         map,
         position: new kakao.maps.LatLng(place.latitude, place.longitude),
         yAnchor: 1.5,
       });
+
       overlay.setPosition(
         new kakao.maps.LatLng(place.latitude, place.longitude),
       );
       overlay.setMap(map);
 
+      console.log(place);
+      const placeUrl = `http://place.map.kakao.com/${place.addressId}`;
       kakao.maps.event.addListener(marker, 'click', () => {
-        window.open(place.url, '_blank');
+        window.open(placeUrl, '_blank');
+      });
+
+      const ammenityFeed = `/amenity/${
+        place.amenityId
+      }?name=${encodeURIComponent(place.amenityName)}`;
+      contentWrapper.addEventListener('click', () => {
+        window.open(ammenityFeed, '_target');
       });
     }
 
@@ -118,13 +150,19 @@ function LocationMap({ data }) {
   }, [data]);
 
   return (
-    <Map
-      id="myMap"
-      style={{
-        width: '100%',
-        height: '100%',
-      }}
-    />
+    <MapWrapper>
+      <InfoText>
+        <span>마커</span>를 클릭하시면 장소 상세 페이지로,{' '}
+        <span>타이틀 이미지</span>를 클릭하시면 관련 게시글로 이동해요!
+      </InfoText>
+      <Map
+        id="myMap"
+        style={{
+          width: '100%',
+          height: '100%',
+        }}
+      />
+    </MapWrapper>
   );
 }
 

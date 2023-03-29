@@ -1,10 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useQuery } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 import Modal from '../UI/Modal/Modal';
 import Card from '../UI/Card/Card';
 import followersLogo from '../../assets/logo/followers_logo.svg';
 import { getUserFollower } from '../../api/userApi';
+import useModal from '../../hooks/useModal';
 
 const NoFollowers = styled.div`
   width: 100%;
@@ -89,6 +91,8 @@ const NickName = styled.p`
 `;
 
 function FollowerModal() {
+  const { closeModal } = useModal();
+  const navigate = useNavigate();
   const {
     isLoading,
     error,
@@ -97,7 +101,6 @@ function FollowerModal() {
     getUserFollower({
       page: 1,
       size: 10,
-      accessToken: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjo4LCJ1c2VybmFtZSI6ImF3ZWFzZEBtdW5nZmx1ZW5jZXIuY29tIiwic3ViIjoiYXdlYXNkQG11bmdmbHVlbmNlci5jb20iLCJpYXQiOjE2Nzk2MjAzMjgsImV4cCI6MTY3OTk2NTkyOH0.PrPMxPM5jFZF8fpiuCbuzcgtUZ-vfwyvg8u49TslrD0WwK_eMNaaoLG3o-QJJbZAuggZyJ-4YildiF4dPs1Aeg`,
     }),
   );
 
@@ -108,6 +111,12 @@ function FollowerModal() {
   if (error) {
     return <p>Error: {error.message}</p>;
   }
+
+  const handleCardClick = memberId => {
+    navigate(`/user/${memberId}`);
+    closeModal();
+  };
+
   return (
     <Modal titleImage={followersLogo}>
       <FollowerListCard>
@@ -116,10 +125,13 @@ function FollowerModal() {
         ) : (
           follower.data.map(({ memberId, nickname, dogName, profileUrl }) => (
             <FollowerWrapper key={memberId}>
-              <FollowerCard>
+              <FollowerCard onClick={() => handleCardClick(memberId)}>
                 <Profile>
                   <ProfileImg
-                    src={profileUrl}
+                    src={
+                      profileUrl ??
+                      'https://cdn-icons-png.flaticon.com/512/1130/1130933.png?w=2000&t=st=1680005925~exp=1680006525~hmac=8e8077d62e937c5ca56e24827f856a436440d7fb244eff53af34fffddc88d213'
+                    }
                     alt={`${dogName}의 프로필 이미지`}
                   />
                 </Profile>

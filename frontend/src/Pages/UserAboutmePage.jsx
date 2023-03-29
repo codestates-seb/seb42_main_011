@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useMutation } from 'react-query';
+import { useSelector } from 'react-redux';
 import Button from '../components/UI/Button';
 import {
   deleteUserFollow,
@@ -49,30 +50,43 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
   const userData = userdata;
   const { openModal } = useModal();
   const [isFollowing, setIsFollowing] = useState(false);
+  const [isLoadingFollowingStatus, setIsLoadingFollowingStatus] =
+    useState(true);
+  const { user: currentUser } = useSelector(state => state.auth);
 
   // Button change
   const userFollowMutation = useMutation(postUserFollow, {
     onSettled: () => {
       setIsFollowing(true);
+      localStorage.setItem(`following_${memberId}`, true);
     },
   });
 
   const userFollowDeleteMutation = useMutation(deleteUserFollow, {
     onSettled: () => {
       setIsFollowing(false);
+      localStorage.setItem(`following_${memberId}`, false);
     },
   });
 
+  // Check following status from local storage
   useEffect(() => {
     async function checkFollowingStatus() {
       try {
-        const followingStatus = await getUserFollowing({
-          memberId,
-          accessToken: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjo4LCJ1c2VybmFtZSI6ImF3ZWFzZEBtdW5nZmx1ZW5jZXIuY29tIiwic3ViIjoiYXdlYXNkQG11bmdmbHVlbmNlci5jb20iLCJpYXQiOjE2Nzk2MjAzMjgsImV4cCI6MTY3OTk2NTkyOH0.PrPMxPM5jFZF8fpiuCbuzcgtUZ-vfwyvg8u49TslrD0WwK_eMNaaoLG3o-QJJbZAuggZyJ-4YildiF4dPs1Aeg`,
-        });
-        setIsFollowing(followingStatus);
+        setIsLoadingFollowingStatus(true);
+        const storedFollowingStatus = localStorage.getItem(
+          `following_${memberId}`,
+        );
+        if (storedFollowingStatus !== null) {
+          setIsFollowing(JSON.parse(storedFollowingStatus));
+        } else {
+          const data = await getUserFollowing({ memberId });
+          setIsFollowing(data.isFollowing);
+        }
       } catch (error) {
         console.error('Failed to check following status:', error);
+      } finally {
+        setIsLoadingFollowingStatus(false);
       }
     }
 
@@ -86,7 +100,6 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
         await userFollowDeleteMutation.mutateAsync(
           {
             memberId,
-            accessToken: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjo4LCJ1c2VybmFtZSI6ImF3ZWFzZEBtdW5nZmx1ZW5jZXIuY29tIiwic3ViIjoiYXdlYXNkQG11bmdmbHVlbmNlci5jb20iLCJpYXQiOjE2Nzk2MjAzMjgsImV4cCI6MTY3OTk2NTkyOH0.PrPMxPM5jFZF8fpiuCbuzcgtUZ-vfwyvg8u49TslrD0WwK_eMNaaoLG3o-QJJbZAuggZyJ-4YildiF4dPs1Aeg`,
           },
           {
             onSuccess: () => {
@@ -94,7 +107,11 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
                 <ModalBase
                   title="UNFOLLOW"
                   content="팔로우를 끊었어요 :)"
-                  buttons={<Button>확인</Button>}
+                  buttons={
+                    <Button onClick={() => window.location.reload()}>
+                      확인
+                    </Button>
+                  }
                 />,
               );
             },
@@ -103,7 +120,11 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
                 <ModalBase
                   title="UNFOLLOW"
                   content="팔로우 끊기에 실패했어요 :/"
-                  buttons={<Button>확인</Button>}
+                  buttons={
+                    <Button onClick={() => window.location.reload()}>
+                      확인
+                    </Button>
+                  }
                 />,
               );
             },
@@ -113,7 +134,6 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
         await userFollowMutation.mutateAsync(
           {
             memberId,
-            accessToken: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjo4LCJ1c2VybmFtZSI6ImF3ZWFzZEBtdW5nZmx1ZW5jZXIuY29tIiwic3ViIjoiYXdlYXNkQG11bmdmbHVlbmNlci5jb20iLCJpYXQiOjE2Nzk2MjAzMjgsImV4cCI6MTY3OTk2NTkyOH0.PrPMxPM5jFZF8fpiuCbuzcgtUZ-vfwyvg8u49TslrD0WwK_eMNaaoLG3o-QJJbZAuggZyJ-4YildiF4dPs1Aeg`,
           },
           {
             onSuccess: () => {
@@ -121,7 +141,11 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
                 <ModalBase
                   title="FOLLOW"
                   content="팔로우 했어요! :)"
-                  buttons={<Button>확인</Button>}
+                  buttons={
+                    <Button onClick={() => window.location.reload()}>
+                      확인
+                    </Button>
+                  }
                 />,
               );
             },
@@ -130,7 +154,11 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
                 <ModalBase
                   title="FOLLOW"
                   content="팔로우에 실패했어요 :/"
-                  buttons={<Button>확인</Button>}
+                  buttons={
+                    <Button onClick={() => window.location.reload()}>
+                      확인
+                    </Button>
+                  }
                 />,
               );
             },
@@ -146,6 +174,16 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
     return null;
   }
 
+  const getFollowButtonText = () => {
+    if (isLoadingFollowingStatus) {
+      return '로딩중...';
+    }
+    if (isFollowing) {
+      return '팔로우끊기';
+    }
+    return '팔로우';
+  };
+
   // Button change by location
   if (isMyPage) {
     AboumeButton = (
@@ -154,11 +192,15 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
       </Link>
     );
   } else {
-    AboumeButton = (
-      <FollowButton variant="medium" onClick={handleFollowClick}>
-        {isFollowing ? '팔로우끊기' : '팔로우'}
+    AboumeButton = currentUser ? (
+      <FollowButton
+        variant="medium"
+        onClick={handleFollowClick}
+        disabled={isLoadingFollowingStatus}
+      >
+        {getFollowButtonText()}
       </FollowButton>
-    );
+    ) : null;
   }
   return (
     <div>

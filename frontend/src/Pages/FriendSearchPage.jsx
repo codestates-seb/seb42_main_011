@@ -1,15 +1,13 @@
-import React, { Suspense } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useInfiniteQuery } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import searchFriends from '../api/searchApi';
 
 import FriendSearch from '../components/FriendSearch';
 import FriendSearchHeader from '../components/FriendSearch/FriendSearchHeader';
 import FriendSearchList from '../components/FriendSearch/FriendSearchList';
-import RetryErrorBoundary from '../components/RetryErrorBoundary';
-
-function UserProfileLoading() {
-  return <div> 사용자 정보를 불러오는 중입니다. </div>;
-}
+import PostProfileItem from '../components/UI/PostProfileItem';
 
 const Container = styled.section`
   width: 100%;
@@ -18,40 +16,97 @@ const Container = styled.section`
 `;
 
 function FriendSearchPage() {
-  const [searchParams] = useSearchParams();
-  const searchType = searchParams.get('searchType');
-  const searchName = searchParams.get('searchName');
+  const navigate = useNavigate();
+  const [searchOptions, setSearchOptions] = useState({
+    searchName: '',
+    searchType: '',
+  });
 
-  const handleClick = event => {
-    const $li = event.target.closest('li');
-
-    if (!$li) {
-      return;
-    }
-
-    const { memberId } = $li.dataset;
-    console.log(memberId);
+  const handleClick = memberId => {
+    navigate(`/user/${memberId}`);
   };
+
+  console.log('1111', searchOptions.searchName, searchOptions.searchType);
+
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isError,
+    isLoading,
+    refetch,
+    remove,
+  } = useInfiniteQuery(
+    'friendSearch',
+    ({ pageParam = 1 }) =>
+      searchFriends({
+        page: pageParam,
+        size: 10,
+        type: searchOptions.searchType,
+        name: searchOptions.searchName,
+      }),
+    {
+      enabled: false,
+      getNextPageParam: (lastPage, pages) => {
+        if (pages.length === lastPage.pageInfo.totalPages) {
+          return undefined;
+        }
+
+        return lastPage.pageInfo.page + 1;
+      },
+    },
+  );
+
+  const handleSumbit = (newSearchName, newSearchType) => {
+    setSearchOptions({ searchName: newSearchName, searchType: newSearchType });
+  };
+
+  useEffect(() => {
+    remove();
+    if (searchOptions.searchName.length > 0) refetch();
+  }, [searchOptions]);
 
   return (
     <Container>
       <FriendSearchHeader
-        initialType={searchType || 'dogName'}
-        initialName={searchName || ''}
+        initialType={searchOptions.searchType || 'dogName'}
+        initialName={searchOptions.searchName || ''}
+        onSubmit={handleSumbit}
       />
 
       <FriendSearch>
-        {searchName && searchType && (
-          <RetryErrorBoundary>
-            <Suspense fallback={<UserProfileLoading />}>
-              <FriendSearchList
-                searchType={searchType}
-                searchName={searchName}
-                colWidth="280px"
-                onClick={handleClick}
-              />
-            </Suspense>
-          </RetryErrorBoundary>
+        {searchOptions.searchName && searchOptions.searchType && (
+          <FriendSearchList
+            searchType={searchOptions.searchType}
+            searchName={searchOptions.searchName}
+            colWidth="280px"
+            onClick={handleClick}
+          >
+            {!isError &&
+              !isLoading &&
+              !!data &&
+              data.pages.map(({ data: fetchData }, pageIndex) =>
+                fetchData.map(
+                  ({ memberId, nickname, dogName, profileUrl }, idx) => {
+                    const props = {
+                      memberId,
+                      profileUrl,
+                      name:
+                        searchOptions.searchType === 'dogName'
+                          ? dogName
+                          : nickname,
+                      key: memberId,
+                      isLastItem:
+                        pageIndex === Number(data.pages.length) - 1 &&
+                        idx === fetchData.length - 1,
+                      onFetch: hasNextPage ? fetchNextPage : () => {},
+                    };
+
+                    return <PostProfileItem {...props} />;
+                  },
+                ),
+              )}
+          </FriendSearchList>
         )}
       </FriendSearch>
     </Container>

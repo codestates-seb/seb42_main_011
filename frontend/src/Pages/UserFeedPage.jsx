@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import useModal from '../hooks/useModal';
+import PostDetailPage from './PostDetailPage';
 
 const FeedImgWrapper = styled.section`
   width: 100%;
@@ -49,12 +51,20 @@ const NoDataText = styled.p`
   line-height: 3rem;
   font-size: var(--font-size-20);
   font-weight: 500;
-  margin-top: 20px;
+  margin-top: 15px;
 `;
 function UserFeedPage({ userdata, isMyPage }) {
+  const { openModal, closeModal } = useModal();
   if (!userdata) {
     return null;
   }
+
+  const handleItemClick = bulletinPostId => {
+    openModal(
+      <PostDetailPage bulletinId={bulletinPostId} onClose={closeModal} />,
+    );
+  };
+
   return (
     <FeedImgWrapper>
       <FeedImgInside>
@@ -62,7 +72,10 @@ function UserFeedPage({ userdata, isMyPage }) {
           {userdata?.bulletinPostForMyPageResponseDtos?.length ? (
             userdata.bulletinPostForMyPageResponseDtos.map(
               ({ bulletinPostId, photoUrl }) => (
-                <FeedImgBox key={bulletinPostId}>
+                <FeedImgBox
+                  key={bulletinPostId}
+                  onClick={() => handleItemClick(bulletinPostId)}
+                >
                   <FeedImg
                     src={photoUrl}
                     alt={`${userdata.dogName}의 게시글`}
@@ -72,7 +85,6 @@ function UserFeedPage({ userdata, isMyPage }) {
             )
           ) : (
             <TextWrapper>
-              {' '}
               {isMyPage ? (
                 <NoDataText>
                   아직 게시글이 없어요!

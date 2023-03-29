@@ -1,8 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import axios from 'axios';
+// import Button from '../components/UI/Button';
+// import ModalBase from '../components/UI/Modal/ModalBase';
+// import useModal from '../hooks/useModal';
 
 // 이메일, 닉네임 중복확인
-const emailVerify = async input => {
+async function emailVerify(input) {
   const params = { email: input };
   await axios.get(
     '/api/v1/members/check',
@@ -11,14 +14,14 @@ const emailVerify = async input => {
     },
     {
       headers: {
-        'ngrok-skip-browser-warning': '12',
+        'ngrok-skip-browser-warning': 'skip-browser-warning',
         withCredentials: true,
       },
     },
   );
-};
+}
 
-const nicknameVerify = async input => {
+async function nicknameVerify(input) {
   const params = { nickname: input };
   await axios.get(
     '/api/v1/members/check',
@@ -27,14 +30,14 @@ const nicknameVerify = async input => {
     },
     {
       headers: {
-        'ngrok-skip-browser-warning': '12',
+        'ngrok-skip-browser-warning': 'skip-browser-warning',
         withCredentials: true,
       },
     },
   );
-};
+}
 
-const sendEmail = async email => {
+async function sendEmail(email) {
   await axios.post(
     '/api/v1/password',
     { email },
@@ -45,32 +48,21 @@ const sendEmail = async email => {
       },
     },
   );
-};
+}
 
-const resetPassword = async (token, email, password) => {
-  await axios
-    .post(
-      '/api/v1/new-password',
-      { email, password },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'ngrok-skip-browser-warning': '12',
-          withCredentials: true,
-        },
+async function resetPassword(token, email, password) {
+  // const { openModal, closeModal } = useModal();
+  await axios.post(
+    '/api/v1/new-password',
+    { email, password },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'ngrok-skip-browser-warning': '12',
+        withCredentials: true,
       },
-    )
-    .then(response => {
-      alert(response.data.message);
-    })
-    .catch(error => {
-      console.log(error);
-      if (error.response.status === 400) {
-        alert('입력하신 비밀번호를 다시 확인해주세요.');
-      } else {
-        alert('일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
-      }
-    });
-};
+    },
+  );
+}
 
 export { emailVerify, nicknameVerify, sendEmail, resetPassword };

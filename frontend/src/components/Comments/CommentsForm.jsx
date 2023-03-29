@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import useInputs from '../../hooks/useInputs';
+import { useQueryClient } from 'react-query';
+
 import { ReactComponent as IconComments } from '../../assets/icons/icon-comments.svg';
+import useCreateComments from '../../hooks/comments/useCreateComments';
+import useAxiosErrorModal from '../../hooks/useAxiosErrorModal';
 
 const Form = styled.form`
   display: flex;
   align-items: center;
   position: relative;
+  width: 98.5%;
 
   ::before {
     content: '';
@@ -19,7 +23,7 @@ const Form = styled.form`
   }
 `;
 
-const Input = styled.textarea`
+const Input = styled.input`
   width: 100%;
   padding-left: 12px;
   font-size: var(--font-size-16);
@@ -28,6 +32,17 @@ const Input = styled.textarea`
 
   resize: none;
   height: 23px;
+
+  /* :invalid {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+  } */
+`;
+
+const Button = styled.button`
+  margin-left: -3px;
+  height: inherit;
 `;
 
 const StyledIconComments = styled(IconComments)`
@@ -36,10 +51,49 @@ const StyledIconComments = styled(IconComments)`
   height: inherit;
 `;
 
-function CommentsForm({ onSubmit }) {
-  const [{ commentInput }, onChange, reset] = useInputs({ commentInput: '' });
+function CommentsForm({ bulletinId }) {
+  const queryClient = useQueryClient();
+  const onError = useAxiosErrorModal();
 
-  const handleKetDown = event => {
+  const [commentContent, setCommentContent] = useState('');
+
+  const handleChange = event => {
+    const { value } = event.target;
+    if (value.length > 120) {
+      event.target.setCustomValidity('최대 120자까지만 입력하실 수 있습니다!');
+    } else {
+      event.target.setCustomValidity('');
+    }
+
+    setCommentContent(value);
+  };
+
+  const { mutateAsync: commentMutate } = useCreateComments({
+    onSuccess: () => {
+      queryClient.invalidateQueries('postDetail');
+    },
+    onError,
+  });
+
+  const handleCommentSubmit = async newCommentContent => {
+    await commentMutate({
+      commentContent: newCommentContent,
+      bulletinPostId: bulletinId,
+    });
+  };
+
+  const handleSubmit = async event => {
+    if (commentContent.length === 0 || commentContent.length > 120) {
+      return;
+    }
+
+    event.preventDefault();
+
+    await handleCommentSubmit(commentContent);
+    setCommentContent('');
+  };
+
+  const handleKetDown = async event => {
     if (event.nativeEvent.isComposing) {
       // isComposing 이 true 이면조합 중이므로 동작을 막는다.
       return;
@@ -50,23 +104,24 @@ function CommentsForm({ onSubmit }) {
     }
 
     if (event.key === 'Enter') {
-      event.preventDefault();
-      onSubmit(commentInput);
-      reset();
+      handleSubmit(event);
     }
   };
 
   return (
     <Form>
-      <StyledIconComments />
+      <Button onClick={handleSubmit}>
+        <StyledIconComments />
+      </Button>
       <Input
-        value={commentInput}
-        name="commentInput"
-        id="commentInput"
+        value={commentContent}
+        name="commentContent"
+        id="commentContent"
         placeholder="댓글 달기!"
-        onChange={onChange}
+        onChange={handleChange}
         onKeyDown={handleKetDown}
         row={1}
+        required
       />
     </Form>
   );

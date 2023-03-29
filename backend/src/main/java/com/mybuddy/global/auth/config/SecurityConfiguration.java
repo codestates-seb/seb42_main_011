@@ -106,27 +106,23 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
+        // CORS 구성
         CorsConfiguration configuration = new CorsConfiguration();
 
-        // 1차 CORS 문제 해결을 위해서 거의 모든 것을 허용시킨 상태입니다.
-        // 배포 후 리팩토링이 필요합니다. (2023.03.24 강지은)
-
-        configuration.addAllowedOriginPattern("*");
-//        configuration.addAllowedOriginPattern("http://localhost:3000");
+        configuration.addAllowedOrigin("https://my-buddy.co.kr");
+        configuration.addAllowedOrigin("https://my-buddy.shop");
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.addExposedHeader("*");
         configuration.addExposedHeader("Authorization");
         configuration.addExposedHeader("Access-Control-Allow-Credentials");
-        configuration.addExposedHeader("Access-Control-Allow-Origin");
 
-        // configuration.setAllowedOrigins(Arrays.asList("*"));
-        //configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE", "OPTIONS"));
-
+        //CORS 요청 처리시 자격 증명 포함 여부 명시적으로 지정 : Cookie-Axios를 위함
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
+
         return source;
     }
 

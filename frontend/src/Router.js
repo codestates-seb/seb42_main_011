@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Layout from './components/Layout/Layout';
 import LoginPage from './Pages/LoginPage';
 import SignupPage from './Pages/SignupPage';
@@ -14,8 +15,11 @@ import ByePage from './Pages/ByePage';
 import FriendSearchPage from './Pages/FriendSearchPage';
 import UserEditPage from './Pages/UserEditPage';
 import PlacePage from './Pages/PlacePage';
+import InfoPage from './Pages/InfoPage';
+import AmenityPage from './Pages/AmenityPage';
 
 function Router() {
+  const { user: currentUser } = useSelector(state => state.auth);
   return (
     <Routes>
       <Route element={<NonHeaderLayout displayBgimg />}>
@@ -27,9 +31,15 @@ function Router() {
         <Route path="/bye" element={<ByePage />} />
       </Route>
       <Route element={<Layout displayHeader />}>
-        <Route path="/" element={<HomePage />} />
+        {!currentUser ? (
+          <Route path="/" element={<InfoPage />} />
+        ) : (
+          <Route path="/" element={<HomePage />} />
+        )}
+        <Route path="/home" element={<HomePage />} />
         <Route path="/friend/search" element={<FriendSearchPage />} />
         <Route path="/place" element={<PlacePage />} />
+        <Route path="/amenity/:amenityId" element={<AmenityPage />} />
       </Route>
 
       <Route element={<Layout displayHeader displayProfile displayFlex />}>

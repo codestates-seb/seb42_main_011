@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { updateUser } from '../../api/userApi';
+import Fade from 'react-reveal/Fade';
 import Button from '../UI/Button';
-import useDebounce from '../../hooks/useDebounce';
 import ModalBase from '../UI/Modal/ModalBase';
+import useDebounce from '../../hooks/useDebounce';
 import useModal from '../../hooks/useModal';
+import { updateUser } from '../../api/userApi';
 
 const EditBox = styled.form`
   width: 100%;
@@ -49,6 +50,7 @@ const NicknameInput = styled.input`
 
 const ErrorMessage = styled.span`
   color: var(--color-tertiary);
+  display: block;
   margin-top: 10px;
 `;
 
@@ -89,7 +91,7 @@ const CancelBtn = styled(Button)`
   }
 `;
 
-function UserEditContent({ onCancel, memberId, nickname, aboutMe }) {
+function UserEditContent({ onCancel, memberId, nickname, aboutMe, file }) {
   const { openModal } = useModal();
   const [UserNickname, setUserNickname] = useState(nickname);
   const [UserAboutMe, setUserAboutMe] = useState(aboutMe);
@@ -105,8 +107,8 @@ function UserEditContent({ onCancel, memberId, nickname, aboutMe }) {
 
   // Debounce Nickname
   useEffect(() => {
-    if (debouncedNickname.length < 4 || debouncedNickname.length > 10) {
-      setNicknameError('닉네임은 4-10자 사이로 작성 해주세요.');
+    if (debouncedNickname.length < 2 || debouncedNickname.length > 10) {
+      setNicknameError('닉네임은 10자 이하로 작성 해주세요.');
     } else {
       setNicknameError('');
     }
@@ -114,11 +116,13 @@ function UserEditContent({ onCancel, memberId, nickname, aboutMe }) {
 
   // Debounce Aboutme
   useEffect(() => {
-    const lineCount = (debouncedAboutMe.match(/\n/g) || []).length + 1;
-    if (lineCount > MAX_LINES) {
-      setAboutMeError(`소개는 ${MAX_LINES}줄까지 입력 가능합니다.`);
-    } else {
-      setAboutMeError('');
+    if (debouncedAboutMe) {
+      const lineCount = (debouncedAboutMe.match(/\n/g) || []).length + 1;
+      if (lineCount > MAX_LINES) {
+        setAboutMeError(`소개는 ${MAX_LINES}줄까지 입력 가능합니다.`);
+      } else {
+        setAboutMeError('');
+      }
     }
   }, [debouncedAboutMe]);
 
@@ -138,9 +142,9 @@ function UserEditContent({ onCancel, memberId, nickname, aboutMe }) {
       await updateUserMutation.mutateAsync(
         {
           memberId,
+          profileImage: file,
           nickname: UserNickname,
           aboutMe: UserAboutMe,
-          accessToken: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjo4LCJ1c2VybmFtZSI6ImF3ZWFzZEBtdW5nZmx1ZW5jZXIuY29tIiwic3ViIjoiYXdlYXNkQG11bmdmbHVlbmNlci5jb20iLCJpYXQiOjE2Nzk2MjAzMjgsImV4cCI6MTY3OTk2NTkyOH0.PrPMxPM5jFZF8fpiuCbuzcgtUZ-vfwyvg8u49TslrD0WwK_eMNaaoLG3o-QJJbZAuggZyJ-4YildiF4dPs1Aeg`,
         },
         {
           onSuccess: () => {
@@ -183,7 +187,11 @@ function UserEditContent({ onCancel, memberId, nickname, aboutMe }) {
           autoFocus
           required
         />
-        {nicknameError && <ErrorMessage>{nicknameError}</ErrorMessage>}
+        {nicknameError && (
+          <Fade bottom>
+            <ErrorMessage>{nicknameError}</ErrorMessage>
+          </Fade>
+        )}
       </Nickname>
       <AboutMe>
         <Title>소개</Title>
@@ -196,7 +204,11 @@ function UserEditContent({ onCancel, memberId, nickname, aboutMe }) {
           onChange={handleAboutMeChange}
           required
         />
-        {aboutMeError && <ErrorMessage>{aboutMeError}</ErrorMessage>}
+        {aboutMeError && (
+          <Fade bottom>
+            <ErrorMessage>{aboutMeError}</ErrorMessage>
+          </Fade>
+        )}
       </AboutMe>
       <BtnWrapper>
         <ConfirmBtn variant="medium">확인</ConfirmBtn>

@@ -1,23 +1,42 @@
-import axios from 'axios';
+import authHeader from '../redux/services/auth-header';
+import api from './api';
 
-const BASE_URL = '/api/v1';
+async function updateBulletinPost({ bulletinId, postData, photoImage }) {
+  const form = new FormData();
 
-const api = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    'ngrok-skip-browser-warning': '12',
-  },
-});
+  form.append(
+    'patchDto',
+    new Blob([JSON.stringify(postData)], {
+      type: 'application/json',
+    }),
+  );
 
-async function updateBulletinPost({ bulletinId, postData }) {
+  if (photoImage) {
+    form.append('photoImage', photoImage);
+  }
+  console.log(photoImage);
+
   return api
-    .patchForm(`/bulletin-posts/${bulletinId}`, postData, {
-      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    .patch(`/bulletin-posts/${bulletinId}`, form, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        ...authHeader(),
+      },
     })
     .then(({ data }) => data);
 }
 
-async function createBulletinPost({ postData, photoImage, accessToken }) {
+async function deleteBulletinPost({ bulletinId }) {
+  return api
+    .delete(`/bulletin-posts/${bulletinId}`, {
+      headers: {
+        ...authHeader(),
+      },
+    })
+    .then(({ data }) => data);
+}
+
+async function createBulletinPost({ postData, photoImage }) {
   const form = new FormData();
 
   form.append(
@@ -33,25 +52,60 @@ async function createBulletinPost({ postData, photoImage, accessToken }) {
     .post(`/bulletin-posts`, form, {
       headers: {
         'Content-Type': 'multipart/form-data',
-        authorization: accessToken,
+        ...authHeader(),
       },
     })
     .then(({ data }) => data);
 }
 
 async function getBulletinPost({ bulletinId }) {
-  return api.get(`/bulletin-posts/${bulletinId}`).then(({ data }) => data);
+  return api
+    .get(`/bulletin-posts/${bulletinId}`, {
+      headers: {
+        ...authHeader(),
+      },
+    })
+    .then(({ data }) => data);
 }
 
 async function getBulletinPostList({ page = 1, size = 10 }) {
   return api
-    .get(`/bulletin-posts/feed?page=${page}&size=${size}`)
+    .get(`/bulletin-posts/feed?page=${page}&size=${size}`, {
+      headers: {
+        ...authHeader(),
+        'ngrok-skip-browser-warning': 'skip-browser-warning',
+        withCredentials: true,
+      },
+    })
+    .then(({ data }) => data);
+}
+
+async function createBulletinPostLike({ bulletinId }) {
+  return api
+    .post(`/bulletin-posts/${bulletinId}/likes`, null, {
+      headers: {
+        ...authHeader(),
+      },
+    })
+    .then(({ data }) => data);
+}
+
+async function deleteBulletinPostLike({ bulletinId }) {
+  return api
+    .delete(`/bulletin-posts/${bulletinId}/likes`, {
+      headers: {
+        ...authHeader(),
+      },
+    })
     .then(({ data }) => data);
 }
 
 export {
-  updateBulletinPost,
-  createBulletinPost,
   getBulletinPost,
+  createBulletinPost,
+  updateBulletinPost,
+  deleteBulletinPost,
   getBulletinPostList,
+  createBulletinPostLike,
+  deleteBulletinPostLike,
 };

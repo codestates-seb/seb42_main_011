@@ -1,16 +1,21 @@
-import React, { Fragment, Suspense, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useMutation } from 'react-query';
+import { useSelector } from 'react-redux';
 
 import Card from '../components/UI/Card/Card';
 import PostNewlnfo from '../components/PostNew/PostNewlnfo';
-import PostDetailHeader from '../components/PostDetail/PostDetailHeader';
 import PostNew from '../components/PostNew';
 import ModalBase from '../components/UI/Modal/ModalBase';
 
 import { createBulletinPost } from '../api/bulletinPostsApi';
 import useModal from '../hooks/useModal';
-import RetryErrorBoundary from '../components/RetryErrorBoundary';
+
+import useGetMembersInfo from '../hooks/members/useGetMembersInfo';
+import PostEditHeader from '../components/PostEdit/PostEditHeader';
+import PostDetailPage from './PostDetailPage';
+import Button from '../components/UI/Button';
+import useAxiosErrorModal from '../hooks/useAxiosErrorModal';
 
 const PostDetailContainer = styled(Card)`
   display: flex;
@@ -25,20 +30,10 @@ const PostDetailContainer = styled(Card)`
 
   gap: 18px;
   background-color: var(--color-light-0);
+  @media screen and (max-width: 1199px) {
+    scale: calc(0.9);
+  }
 `;
-
-const Button = styled.button`
-  padding: 8px;
-  border: var(--border);
-  border-radius: 5px;
-`;
-
-const DUMY = {
-  nickname: '알파벳',
-  dogName: '더닝크루거',
-  profileUrl:
-    'https://images.unsplash.com/photo-1561037404-61cd46aa615b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-};
 
 function PostNewPage({ onClose }) {
   const today = new Date();
@@ -46,32 +41,26 @@ function PostNewPage({ onClose }) {
   const [place, setPlace] = useState('');
   const [photoImage, setPhotoImage] = useState('');
   const [disabledSubmit, setDisabledSubmit] = useState(true);
+  const { openModal, closeModal, closeModalByIndex } = useModal();
+  const memberId = useSelector(state => state.auth.user);
+  const { data } = useGetMembersInfo({ memberId });
+  const onError = useAxiosErrorModal(true);
 
-  const { openModal, closeModal, closeAllModal } = useModal();
   const { mutateAsync } = useMutation(
     'creaetBulletinPosts',
     createBulletinPost,
     {
-      onSuccess: () => {
+      onSuccess: responseData => {
         openModal(
-          <ModalBase
-            title="성공"
-            content="게시글 등록에 성공했습니다"
-            buttons={<Button onClick={closeModal}>확인</Button>}
+          <PostDetailPage
+            bulletinId={responseData.data.bulletinPostId}
+            onClose={closeModal}
           />,
         );
 
-        closeAllModal();
+        closeModalByIndex(0);
       },
-      onError: () => {
-        openModal(
-          <ModalBase
-            title="실패"
-            content="게시글 등록에 실패했습니다"
-            buttons={<Button onClick={closeModal}>확인</Button>}
-          />,
-        );
-      },
+      onError,
     },
   );
 
@@ -105,9 +94,7 @@ function PostNewPage({ onClose }) {
       latitude: place.y,
     };
 
-    const accessToken =
-      'Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjo4LCJ1c2VybmFtZSI6ImF3ZWFzZEBtdW5nZmx1ZW5jZXIuY29tIiwic3ViIjoiYXdlYXNkQG11bmdmbHVlbmNlci5jb20iLCJpYXQiOjE2Nzk1Njg4NTIsImV4cCI6MTY3OTkxNDQ1Mn0.rxgfiu-_haGhQl474CcCyE2NkHaQDGmOm7beF3BCJgAEZ9FiTZ-8US3bIN9qLfoGEzCtG53JDPtTgj8M2m7HoQ';
-    mutateAsync({ postData, photoImage, accessToken });
+    mutateAsync({ postData, photoImage });
     closeModal();
   };
 
@@ -116,6 +103,7 @@ function PostNewPage({ onClose }) {
       <ModalBase
         title="게시글 등록"
         content="정말 등록하시겠습니까?"
+        isFooterAnimaonClose={false}
         buttons={
           <Fragment>
             <Button onClick={() => sendData()}>확인</Button>
@@ -127,32 +115,30 @@ function PostNewPage({ onClose }) {
   };
 
   return (
-    <RetryErrorBoundary>
-      <Suspense>
-        <PostDetailContainer tag="article" borderRadius="20px">
-          <PostDetailHeader
-            createdAt={today}
-            dogName={DUMY.dogName}
-            nickname={DUMY.nickname}
-            onClose={onClose}
-            onSubmit={handleSubmit}
-            disabledSubmit={disabledSubmit}
-            isEdit
-          />
-          <PostNewlnfo
-            profileUrl={DUMY.profileUrl}
-            dogName={DUMY.dogName}
-            nickname={DUMY.nickname}
-            onSelectImage={handleSelectImage}
-          />
+    data && (
+      <PostDetailContainer tag="article" borderRadius="20px">
+        <PostEditHeader
+          createdAt={today}
+          dogName={data.dogName}
+          nickname={data.nickname}
+          onClose={onClose}
+          onSubmit={handleSubmit}
+          disabledSubmit={disabledSubmit}
+          isEdit
+        />
+        <PostNewlnfo
+          profileUrl={data.profileUrl}
+          dogName={data.dogName}
+          nickname={data.nickname}
+          onSelectImage={handleSelectImage}
+        />
 
-          <PostNew
-            onContentChange={handleContentChange}
-            onSelectPlace={handleSelectPlace}
-          />
-        </PostDetailContainer>
-      </Suspense>
-    </RetryErrorBoundary>
+        <PostNew
+          onContentChange={handleContentChange}
+          onSelectPlace={handleSelectPlace}
+        />
+      </PostDetailContainer>
+    )
   );
 }
 

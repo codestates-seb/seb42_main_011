@@ -1,12 +1,14 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import styled from 'styled-components';
-import { useSelector , useDispatch } from 'react-redux';
+
+import styled, { css } from 'styled-components';
+import { useSelector, useDispatch } from 'react-redux';
 import Button from '../UI/Button';
 import { ReactComponent as MainLogo } from '../../assets/logo/logo.svg';
+import PostNewPage from '../../Pages/PostNewPage';
+import useModal from '../../hooks/useModal';
 
-import { logout } from "../../redux/actions/auth";
-import { clearMessage } from "../../redux/actions/message";
+import { logout } from '../../redux/actions/auth';
 import AuthVerify from '../../common/AuthVerify';
 
 const HeaderWrapper = styled.header`
@@ -36,10 +38,12 @@ const MenuWrapper = styled.div`
   width: 254px;
   height: 29px;
   margin: 21px 0;
+  ${({ loggedIn }) =>
+    loggedIn &&
+    css`
+      margin-left: 8%;
+    `}
 `;
-
-/* 나중에 조건부 렌더링 위해 남겨둠 */
-const MenuButtonWrapper = styled.div``;
 
 const MenuUl = styled.ul`
   display: flex;
@@ -68,6 +72,7 @@ const Login = styled(Button)`
   border-left: var(--border);
   border-bottom: var(--border);
   color: var(--color-dark-0);
+
   &:hover {
     border-left: var(--border);
     border-bottom: var(--border);
@@ -78,8 +83,19 @@ const Login = styled(Button)`
 const Logout = styled(Button)`
   border-left: var(--border);
   border-bottom: var(--border);
-  background-color: var(--color-dark-0);
-  color: var(--color-light-0);
+  background: var(--color-light-0);
+  color: var(--color-dark-0);
+  &:hover {
+    background: var(--color-tertiary);
+    border-left: var(--border);
+    border-bottom: var(--border);
+    cursor: pointer;
+  }
+`;
+
+const Mypage = styled(Button)`
+  border-left: var(--border);
+  border-bottom: var(--border);
   &:hover {
     border-left: var(--border);
     border-bottom: var(--border);
@@ -87,49 +103,63 @@ const Logout = styled(Button)`
   }
 `;
 
+const Write = styled(Button)`
+  border-left: var(--border);
+  border-bottom: var(--border);
+  background: var(--color-light-0);
+  color: var(--color-dark-0);
+  &:hover {
+    background: var(--color-primary);
+    border-left: var(--border);
+    border-bottom: var(--border);
+    cursor: pointer;
+  }
+`;
+
 function Header() {
-  const { user: currentUser } = useSelector((state) => state.auth);
-  // console.log(currentUser);
+  const { openModal, closeModal } = useModal();
+
+  const handleWriteButtonClick = () => {
+    openModal(<PostNewPage onClose={closeModal} />);
+  };
+
+  const { user: currentUser } = useSelector(state => state.auth);
+
   const dispatch = useDispatch();
 
   const location = useLocation();
 
-  useEffect(() => {
-    if (["/login", "/signup"].includes(location.pathname)) {
-      dispatch(clearMessage()); // clear message when changing location
-    }
-  }, [dispatch, location]);
+  const handleLogout = useCallback(() => {
+    dispatch(logout());
+  }, [dispatch]);
 
-  const handleLogout = useCallback(
-    () => {
-      dispatch(logout());
-    },
-    [dispatch],
-  )
-  
   return (
     <HeaderWrapper>
       <Nav>
-        <Link to="/">
+        <Link to="/home">
           <h1>
             <Logo />
           </h1>
         </Link>
-        <MenuWrapper>
+        <MenuWrapper loggedIn={!!currentUser}>
           <MenuUl>
             <LinkStyle>
               <NavLink
                 end
                 className={({ isActive }) => (isActive ? 'selected' : '')}
-                to="/"
+                to="/home"
               >
                 <Menu>홈</Menu>
               </NavLink>
             </LinkStyle>
             <LinkStyle>
               <NavLink
-                end
-                className={({ isActive }) => (isActive ? 'selected' : '')}
+                className={() =>
+                  location.pathname.startsWith('/friend/search') ||
+                  location.pathname.startsWith('/user')
+                    ? 'selected'
+                    : ''
+                }
                 to="/friend/search"
               >
                 <Menu>친구찾기</Menu>
@@ -137,8 +167,12 @@ function Header() {
             </LinkStyle>
             <LinkStyle>
               <NavLink
-                end
-                className={({ isActive }) => (isActive ? 'selected' : '')}
+                className={() =>
+                  location.pathname.startsWith('/place') ||
+                  location.pathname.startsWith('/amenity')
+                    ? 'selected'
+                    : ''
+                }
                 to="/place"
               >
                 <Menu>추천장소</Menu>
@@ -146,19 +180,32 @@ function Header() {
             </LinkStyle>
           </MenuUl>
         </MenuWrapper>
-        <MenuButtonWrapper>
+
+        <div>
           {!currentUser ? (
             <Link to="/login">
               <Login variant="headersecondary">로그인</Login>
             </Link>
           ) : (
-            <Link to="/login">
-              <Logout variant="headerprimary" onClick={handleLogout}>로그아웃</Logout>
-            </Link>
+            <div>
+              <Link to="/">
+                <Write onClick={handleWriteButtonClick} variant="headerprimary">
+                  작성
+                </Write>
+              </Link>
+              <Link to={`/user/${currentUser}`}>
+                <Mypage variant="headerprimary">마이페이지</Mypage>
+              </Link>
+              <Link to="/login">
+                <Logout variant="headerprimary" onClick={handleLogout}>
+                  로그아웃
+                </Logout>
+              </Link>
+            </div>
           )}
-          
+
           <AuthVerify handleLogout={handleLogout} />
-        </MenuButtonWrapper>
+        </div>
       </Nav>
     </HeaderWrapper>
   );

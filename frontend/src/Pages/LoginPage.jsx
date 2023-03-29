@@ -1,11 +1,14 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
+import Fade from 'react-reveal/Fade';
 import Input from '../components/UI/Input';
 import Button from '../components/UI/Button';
 import { login } from '../redux/actions/auth';
-
+import useModal from '../hooks/useModal';
+import ModalBase from '../components/UI/Modal/ModalBase';
 // 스타일
 const FormContainer = styled.section`
   display: flex;
@@ -73,6 +76,13 @@ const ButtonContainer = styled.div`
   margin-bottom: 100px;
 `;
 
+const ErrorMessage = styled.p`
+  color: var(--color-tertiary);
+  font-size: 0.867rem;
+  padding-left: 2px;
+  padding-top: 4px;
+`;
+
 function LoginPage() {
   // 기능구현
   const navigate = useNavigate();
@@ -83,25 +93,35 @@ function LoginPage() {
   const [loading, setLoading] = useState(false);
 
   const { isLoggedIn } = useSelector(state => state.auth);
-  const { message } = useSelector(state => state.message);
 
   const dispatch = useDispatch();
+
+  const [error, setError] = useState('');
+  const { openModal, closeModal } = useModal();
 
   const handleLogin = e => {
     e.preventDefault();
     setLoading(true);
     dispatch(login(email, password))
-      .then(() => {
-        navigate('/friendpage/feed');
-        // window.location.reload();
-      })
-      .catch(() => {
+      .then(() => navigate('/'))
+      .catch(err => {
+        if (err.response && err.response.status === 401) {
+          setError('등록되지 않은 이메일이거나 비밀번호가 일치하지 않습니다.');
+        } else {
+          openModal(
+            <ModalBase
+              title="실패"
+              content="일시적인 오류로 로그인에 실패했습니다. 잠시 후 다시 시도해주세요."
+              buttons={<Button onClick={closeModal}>확인</Button>}
+            />,
+          );
+        }
         setLoading(false);
       });
   };
 
   if (isLoggedIn) {
-    return <Navigate to="/friendpage/feed" />;
+    return <Navigate to="/" />;
   }
 
   return (
@@ -120,7 +140,6 @@ function LoginPage() {
           value={email}
           onChange={e => setEmail(e.target.value)}
         />
-
         <PasswordContainer>
           <Input
             required
@@ -135,8 +154,12 @@ function LoginPage() {
           <Link to="/password/find">
             <ForgotPassword>비밀번호를 잊어버렸나요?</ForgotPassword>
           </Link>
-        </PasswordContainer>
-        {message && <div>{message}</div>}
+        </PasswordContainer>{' '}
+        {error && (
+          <Fade bottom>
+            <ErrorMessage>{error}</ErrorMessage>
+          </Fade>
+        )}
         <ButtonContainer>
           <Button variant="large" disabled={loading}>
             {/* 로딩 시 여기에 spinner 추가할지? */}

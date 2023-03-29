@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
 import Card from '../components/UI/Card/Card';
-import PostDetail from '../components/PostDetail';
+import RetryErrorBoundary from '../components/RetryErrorBoundary';
+
+const PostDetail = lazy(() => import('../components/PostDetail'));
 
 const PostDetailContainer = styled(Card)`
   display: flex;
@@ -17,22 +20,32 @@ const PostDetailContainer = styled(Card)`
 
   gap: 18px;
   background-color: var(--color-light-0);
+
+  @media screen and (max-width: 1199px) {
+    scale: calc(0.9);
+  }
 `;
 
-function FirendDetailPage({ postId, onClose }) {
-  const handleClose = async () => {
-    onClose();
-  };
+function Loading() {
+  return <div> 로딩 중입니다. </div>;
+}
+
+function PostDetailPage({ bulletinId, onClose }) {
+  const userId = useSelector(state => state.auth.user);
 
   return (
-    <PostDetailContainer
-      tag="article"
-      borderRadius="20px"
-      data-post-id={postId}
-    >
-      <PostDetail handleClose={handleClose} />
+    <PostDetailContainer tag="article" borderRadius="20px">
+      <RetryErrorBoundary>
+        <Suspense fallback={<Loading />}>
+          <PostDetail
+            userId={userId}
+            bulletinId={bulletinId}
+            onClose={onClose}
+          />
+        </Suspense>
+      </RetryErrorBoundary>
     </PostDetailContainer>
   );
 }
 
-export default FirendDetailPage;
+export default PostDetailPage;

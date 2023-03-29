@@ -16,11 +16,10 @@ const StyledFeedList = styled(PostList)`
 `;
 
 function FeedList({ onClick, colWidth = '300px' }) {
-  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery(
+  const { isLoading, data, fetchNextPage, hasNextPage } = useInfiniteQuery(
     'feeds',
     ({ pageParam = 1 }) => getBulletinPostList({ page: pageParam, size: 12 }),
     {
-      suspense: true,
       getNextPageParam: (lastPage, pages) => {
         if (pages.length === lastPage.pageInfo.totalPages) {
           return undefined;
@@ -47,8 +46,9 @@ function FeedList({ onClick, colWidth = '300px' }) {
 
   return (
     <StyledFeedList colWidth={colWidth} onClick={handleClick}>
-      {!!data &&
-        data.pages.map(({ data: fetchData }, pageIndex) =>
+      {!isLoading &&
+        data &&
+        data.pages?.map(({ data: fetchData }, pageIndex) =>
           fetchData.map(
             (
               {

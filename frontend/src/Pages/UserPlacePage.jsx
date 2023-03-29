@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Card from '../components/UI/Card/Card';
 
@@ -87,10 +88,16 @@ const NoDataText = styled.p`
   line-height: 3rem;
   font-size: var(--font-size-20);
   font-weight: 500;
-  margin-top: 20px;
+  margin-top: 0px;
 `;
 
-function UserPlacePage({ userdata, isMypage }) {
+function UserPlacePage({ userdata, isMyPage }) {
+  const navigate = useNavigate();
+
+  const handlePlaceClick = (amenityId, amenityName) => {
+    navigate(`/amenity/${amenityId}`, { state: { amenityName } });
+  };
+
   if (!userdata) {
     return null;
   }
@@ -100,7 +107,10 @@ function UserPlacePage({ userdata, isMypage }) {
         {userdata?.amenityForMyPageResponseDtos?.length ? (
           userdata.amenityForMyPageResponseDtos.map(
             ({ amenityId, amenityName, address, photoUrl }) => (
-              <PlaceCard key={amenityId}>
+              <PlaceCard
+                key={amenityId}
+                onClick={() => handlePlaceClick(amenityId, amenityName)}
+              >
                 <Place>
                   <PlaceImg
                     src={photoUrl}
@@ -116,14 +126,16 @@ function UserPlacePage({ userdata, isMypage }) {
           )
         ) : (
           <TextWrapper>
-            {isMypage ? (
+            {isMyPage ? (
               <NoDataText>
                 아직 추천한 장소가 없어요!
-                <br />
-                위치를 추가해 장소를 추천해보세요 :)
+                <br />글 작성시 위치를 추가해 장소를 추천해보세요 :)
               </NoDataText>
             ) : (
-              <NoDataText>아직 친구가 추천한 장소가 없어요! :)</NoDataText>
+              <NoDataText>
+                <br />
+                아직 친구가 추천한 장소가 없어요! :)
+              </NoDataText>
             )}
           </TextWrapper>
         )}
