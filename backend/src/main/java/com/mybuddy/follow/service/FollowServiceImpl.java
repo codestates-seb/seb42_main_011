@@ -51,7 +51,8 @@ public class FollowServiceImpl implements FollowService {
         // LoginUser가 followeeId로 저장되어 있는 리스트 불러오기.
         List<Follow> followList = followRepository.findFollowListByFolloweeId(loginUserId);
         List<Member> followerList = followList.stream()
-                .map(following -> memberService.getMember(following.getFollower().getMemberId()))
+                .map(following -> memberService.getAllStatusMember(following.getFollower().getMemberId()))
+                .filter(member -> member.getMemberStatus() == Member.MemberStatus.ACTIVE)
                 .sorted(Comparator.comparingLong(Member::getMemberId).reversed())
                 .collect(Collectors.toList());
 
@@ -64,7 +65,8 @@ public class FollowServiceImpl implements FollowService {
         // LoginUser가 followerId로 저장되어 있는 리스트 불러오기.
         List<Follow> followList = followRepository.findFollowListByFollowerId(loginUserId);
         List<Member> followeeList = followList.stream()
-                .map(following -> memberService.getMember(following.getFollowee().getMemberId()))
+                .map(following -> memberService.getAllStatusMember(following.getFollowee().getMemberId()))
+                .filter(member -> member.getMemberStatus() == Member.MemberStatus.ACTIVE)
                 .sorted(Comparator.comparingLong(Member::getMemberId).reversed())
                 .collect(Collectors.toList());
 
