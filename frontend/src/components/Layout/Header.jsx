@@ -136,7 +136,7 @@ function Header() {
   return (
     <HeaderWrapper>
       <Nav>
-        <Link to="/">
+        <Link to="/home">
           <h1>
             <Logo />
           </h1>
@@ -147,7 +147,7 @@ function Header() {
               <NavLink
                 end
                 className={({ isActive }) => (isActive ? 'selected' : '')}
-                to="/"
+                to="/home"
               >
                 <Menu>홈</Menu>
               </NavLink>

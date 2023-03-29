@@ -76,7 +76,7 @@ function MyBuddyInfoCard() {
           소중한 반려 강아지를 자랑해보세요! <br />
           마이버디는 강아지 전용, 강아지 중심 SNS입니다. <br />
         </InfoText>
-        <Link to="/">
+        <Link to="/home">
           <Button variant="large">마이버디 둘러보기</Button>
         </Link>
       </MybuddyCard>

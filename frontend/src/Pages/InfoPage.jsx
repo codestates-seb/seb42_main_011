@@ -15,9 +15,15 @@ import InfoCard from '../components/Info/InfoCard';
 
 const MainWrapper = styled.div`
   width: 100%;
+  height: max-content;
+  background-color: var(--color-dark-0);
+`;
+
+const MainInfo = styled.div`
+  width: 100%;
   min-width: 900px;
-  height: calc(100vh - 200px);
-  padding-bottom: 30px;
+  height: calc(100vh - 150px);
+  padding-bottom: 80px;
   background-color: var(--color-dark-0);
   overflow-x: hidden;
   overflow-y: auto;
@@ -84,34 +90,36 @@ const CardWrapper = styled.div`
 function InfoPage() {
   return (
     <MainWrapper>
-      <MainTitleComponent>
-        <DogLeftImg />
-        <LogoImg src={InfoLogo} alt="마이버디 타이틀" />
-        <DogRightImg />
-      </MainTitleComponent>
-      <MainTitleFLow />
-      <MainContentWrapper>
-        <CardWrapper>
-          <Zoom>
-            <MyBuddyInfoCard />
-          </Zoom>
-          <Zoom>
-            <FeedInfoCard />
-          </Zoom>
-          <Fade left>
-            <ColorCard />
-          </Fade>
-          <Zoom>
-            <PlaceCard />
-          </Zoom>
-          <Fade right>
-            <ColorLargeCard />
-          </Fade>
-          <Zoom>
-            <InfoCard />
-          </Zoom>
-        </CardWrapper>
-      </MainContentWrapper>
+      <MainInfo>
+        <MainTitleComponent>
+          <DogLeftImg />
+          <LogoImg src={InfoLogo} alt="마이버디 타이틀" />
+          <DogRightImg />
+        </MainTitleComponent>
+        <MainTitleFLow />
+        <MainContentWrapper>
+          <CardWrapper>
+            <Zoom>
+              <MyBuddyInfoCard />
+            </Zoom>
+            <Zoom>
+              <FeedInfoCard />
+            </Zoom>
+            <Fade left>
+              <ColorCard />
+            </Fade>
+            <Zoom>
+              <PlaceCard />
+            </Zoom>
+            <Fade right>
+              <ColorLargeCard />
+            </Fade>
+            <Zoom>
+              <InfoCard />
+            </Zoom>
+          </CardWrapper>
+        </MainContentWrapper>
+      </MainInfo>
     </MainWrapper>
   );
 }
