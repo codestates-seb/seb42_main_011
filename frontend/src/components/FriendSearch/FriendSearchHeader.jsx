@@ -33,8 +33,8 @@ const FriendSearchInput = styled(SearchInput)`
 `;
 
 const SEARCH_OPTIONS = [
-  { name: '닉네임', value: 'nickname' },
   { name: '강아지 이름', value: 'dogName' },
+  { name: '닉네임', value: 'nickname' },
 ];
 
 function FriendSearchHeader({ initialName = '', initialType = '', onSubmit }) {
