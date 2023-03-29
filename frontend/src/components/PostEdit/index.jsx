@@ -72,7 +72,7 @@ function PostDetail({
   const [updateData, setUpdateData] = useState({
     postContent,
     amenityName,
-    photoImage: '',
+    photoImage: null,
     addressId: data.data.addressId,
     address: data.data.address,
     longitude: data.data.longitude,
@@ -98,7 +98,7 @@ function PostDetail({
     if (
       updateData.postContent !== postContent ||
       updateData.addressId !== data.data.addressId ||
-      updateData.photoImage.length > 0
+      updateData.photoImage
     ) {
       setDisabledSubmit(false);
       return;
@@ -137,13 +137,13 @@ function PostDetail({
     const postData = {};
     let photoImage = '';
 
-    postData.postContent = updateData.content || postContent;
+    postData.postContent = updateData.postContent || postContent;
 
-    postData.addressId = updateData.addressId || data.data.addressId;
-    postData.address = updateData.address || data.data.address;
-    postData.longitude = updateData.longitude || data.data.longitude;
-    postData.latitude = updateData.latitude || data.data.latitude;
-    postData.amenityName = updateData.amenityName || amenityName;
+    postData.addressId = updateData.addressId || null;
+    postData.address = updateData.address || null;
+    postData.longitude = updateData.longitude || null;
+    postData.latitude = updateData.latitude || null;
+    postData.amenityName = updateData.amenityName || null;
 
     if (updateData.photoImage) {
       photoImage = updateData.photoImage;
@@ -157,13 +157,15 @@ function PostDetail({
         buttons={
           <Fragment>
             <Button
-              onClick={() =>
+              onClick={() => {
                 updateMutate({
                   bulletinId: bulletinPostId,
                   postData,
                   photoImage,
-                })
-              }
+                });
+
+                closeModal();
+              }}
             >
               확인
             </Button>
