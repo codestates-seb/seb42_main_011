@@ -30,7 +30,7 @@ public class BulletinPost extends Auditable {
 //    bulletinPost, amenity N:1
     @ManyToOne
     @JoinColumn(name = "AMENITY_ID")
-    private Amenity amenity;
+    private Amenity amenity = null;
 
     @Column(nullable = false)
     private String photoUrl;
