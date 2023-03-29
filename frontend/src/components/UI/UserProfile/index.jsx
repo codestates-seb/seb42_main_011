@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import useImageError from '../../../hooks/useImageError';
 
 const Profile = styled.div`
   display: flex;
@@ -24,10 +25,11 @@ const Name = styled.div`
 
 function UserProfile({ profileUrl, dogName, nickname }) {
   const displayNameText = `${nickname}🏠${dogName}`;
+  const [src, handleErrorImage] = useImageError(profileUrl);
 
   return (
     <Profile>
-      <Avatar src={profileUrl} alt="프로필 사진" />
+      <Avatar src={src} onError={handleErrorImage} alt="프로필 사진" />
       <Name>{displayNameText}</Name>
     </Profile>
   );
