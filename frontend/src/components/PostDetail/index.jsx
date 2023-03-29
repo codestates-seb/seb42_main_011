@@ -170,6 +170,7 @@ function PostDetail({ userId, bulletinId, onClose }) {
           dogName={dogName}
           nickname={nickname}
           photoUrl={photoUrl}
+          memberId={memberId}
         >
           <InfoContainer>
             <PostDetailHeart
