@@ -8,6 +8,7 @@ import com.mybuddy.global.auth.handler.MemberAuthenticationFailureHandler;
 import com.mybuddy.global.auth.handler.MemberAuthenticationSuccessHandler;
 import com.mybuddy.global.auth.jwt.JwtTokenizer;
 import com.mybuddy.global.auth.utils.MemberAuthorityUtils;
+import com.mybuddy.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,6 +40,8 @@ public class SecurityConfiguration {
     private final MemberAuthorityUtils authorityUtils;
 
     private final RedisTemplate<String, String> redisTemplate;
+
+    private final MemberRepository memberRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -133,7 +136,7 @@ public class SecurityConfiguration {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
             JwtAuthenticationFilter jwtAuthenticationFilter =
-                    new JwtAuthenticationFilter(authenticationManager, jwtTokenizer, redisTemplate);
+                    new JwtAuthenticationFilter(authenticationManager, jwtTokenizer, redisTemplate, memberRepository);
             jwtAuthenticationFilter.setFilterProcessesUrl("/api/v1/auth/login");
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler());
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
