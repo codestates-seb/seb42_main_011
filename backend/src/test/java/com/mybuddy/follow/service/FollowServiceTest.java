@@ -70,7 +70,7 @@ public class FollowServiceTest {
 
         given(followRepository.findFollowListByFolloweeId(Mockito.anyLong()))
                 .willReturn(followList);
-        given(memberService.getMember(Mockito.anyLong()))
+        given(memberService.getAllStatusMember(Mockito.anyLong()))
                 .willReturn(obtainedMember);
 
         // When
@@ -92,7 +92,7 @@ public class FollowServiceTest {
 
         given(followRepository.findFollowListByFollowerId(Mockito.anyLong()))
                 .willReturn(followList);
-        given(memberService.getMember(Mockito.anyLong()))
+        given(memberService.getAllStatusMember(Mockito.anyLong()))
                 .willReturn(obtainedMember);
 
         // When

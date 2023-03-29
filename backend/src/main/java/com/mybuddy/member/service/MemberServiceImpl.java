@@ -75,6 +75,11 @@ public class MemberServiceImpl implements MemberService {
         return findExistMemberById(memberId);
     }
 
+    @Override
+    public Member getAllStatusMember(Long memberId) {
+        return memberRepository.findById(memberId).get();
+    }
+
     @Override // ADMIN 조회용으로 탈퇴 회원의 정보까지 모두 조회 가능.
     public Page<Member> getMemberList(int page, int size) {
         return memberRepository.findAll(PageRequest.of(page, size,
