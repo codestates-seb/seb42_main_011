@@ -14,6 +14,8 @@ export function getBetweenTime(start, end, milliSeconds) {
 
 export function elapsedTime(date) {
   const compareTime = new Date(date);
+  compareTime.setHours(compareTime.getHours() + 9);
+
   const nowTime = new Date();
 
   const formatter = new Intl.RelativeTimeFormat('ko', {
