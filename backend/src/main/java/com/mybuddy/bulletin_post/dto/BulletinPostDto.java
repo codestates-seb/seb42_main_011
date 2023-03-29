@@ -51,27 +51,27 @@ public class BulletinPostDto {
     @Getter
     public static class Response {
 
-        private final long bulletinPostId;
+        private final Long bulletinPostId;
         private final String photoUrl;
         private final String postContent;
         private final LocalDateTime createdAt;
 
-        private final long memberId;
+        private final Long memberId;
         private final String nickname;
         private final String dogName;
         private final String profileUrl;
 
-        private final long amenityId;
+        private final Long amenityId;
         private final String amenityName;
 
-        private final long likeCount;
+        private final Long likeCount;
         private final int likeByUser;
 
         private final List<CommentResponseDto> commentList;
-        private final long commentCount;
+        private final int commentCount;
 
         @Builder
-        public Response(long bulletinPostId, String photoUrl, String postContent, LocalDateTime createdAt, long memberId, String nickname, String dogName, String profileUrl, long amenityId, String amenityName, long likeCount, int likeByUser, List<CommentResponseDto> commentList, long commentCount) {
+        public Response(Long bulletinPostId, String photoUrl, String postContent, LocalDateTime createdAt, Long memberId, String nickname, String dogName, String profileUrl, Long amenityId, String amenityName, Long likeCount, int likeByUser, List<CommentResponseDto> commentList, int commentCount) {
             this.bulletinPostId = bulletinPostId;
             this.photoUrl = photoUrl;
             this.postContent = postContent;
@@ -91,20 +91,20 @@ public class BulletinPostDto {
     @Getter
     public static class ResponseForFeed {
 
-        private final long bulletinPostId;
+        private final Long bulletinPostId;
         private final String photoUrl;
         private final String postContent;
         private final LocalDateTime createdAt;
 
-        private final long memberId;
+        private final Long memberId;
         private final String nickname;
         private final String dogName;
 
         private final List<CommentResponseDto> commentList;
-        private final long commentCount;
+        private final int commentCount;
 
         @Builder
-        public ResponseForFeed(long bulletinPostId, String photoUrl, String postContent, LocalDateTime createdAt, long memberId, String nickname, String dogName, List<CommentResponseDto> commentList, long commentCount) {
+        public ResponseForFeed(long bulletinPostId, String photoUrl, String postContent, LocalDateTime createdAt, long memberId, String nickname, String dogName, List<CommentResponseDto> commentList, int commentCount) {
             this.bulletinPostId = bulletinPostId;
             this.photoUrl = photoUrl;
             this.postContent = postContent;
