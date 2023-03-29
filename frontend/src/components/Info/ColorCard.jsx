@@ -119,23 +119,23 @@ function ColorCard() {
       <InfoRedCard className="colorcardWrapper">
         <CardTitle>mungspective</CardTitle>
         <TextWrapper>
-          <CardText>마이버디에서는 강아지 관점으로 이야기해요!</CardText>
+          <CardText>마이버디에서는 강아지의 눈으로 세상을 봐요</CardText>
         </TextWrapper>
         <RedDogImg src={Dog3} alt="강아지1 이미지" />
       </InfoRedCard>
       <InfoYellowCard className="colorcardWrapper">
-        <CardTitle>not for human</CardTitle>
+        <CardTitle>dogs first</CardTitle>
         <TextWrapper>
-          <CardText>마이버디에서는 견주 정보를 최소화해요!</CardText>
+          <CardText>마이버디에서는 견주 정보를 최소화해요</CardText>
         </TextWrapper>
-        <YellowDogImg src={Dog4} alt="강아지1 이미지" />
+        <YellowDogImg src={Dog4} alt="강아지2 이미지" />
       </InfoYellowCard>
       <InfoBlueCard className="colorcardWrapper">
         <TextWrapper>
           <CardTitle>dogs only</CardTitle>
-          <CardText>오직 강아지만을 위한 SNS예요!</CardText>
+          <CardText>강아지의, 강아지를 위한, 강아지에 의한 sns예요</CardText>
         </TextWrapper>
-        <BlueDogImg src={Dog2} alt="강아지1 이미지" />
+        <BlueDogImg src={Dog2} alt="강아지3 이미지" />
       </InfoBlueCard>
     </ColorCardWrapper>
   );
