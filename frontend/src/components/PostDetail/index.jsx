@@ -86,6 +86,7 @@ function PostDetail({ userId, bulletinId, onClose }) {
   const { mutateAsync: deleteMutate } = useDeleteBulletinPost({
     onSuccess: () => {
       queryClient.removeQueries(queryKey);
+      queryClient.invalidateQueries('feeds');
       closeAllModal();
 
       openModal(
