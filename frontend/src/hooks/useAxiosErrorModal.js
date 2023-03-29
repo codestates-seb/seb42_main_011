@@ -35,9 +35,14 @@ function useAxiosErrorModal(isAllErrorShow = false, errorCallback = () => {}) {
     if (error.response?.data?.status === 403) {
       openModal(
         <ModalBase
-          title="권한 확인"
-          content="접근 권한이 없습니다."
-          buttons={<Button onClick={errorCallback}>확인</Button>}
+          title="로그인 필요"
+          content="로그인이 필요합니다. 로그인 화면으로 이동하시겠습니까?"
+          buttons={
+            <Fragment>
+              <Button onClick={handleLoginClick}>예</Button>
+              <Button>아니요</Button>
+            </Fragment>
+          }
         />,
       );
 

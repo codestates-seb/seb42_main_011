@@ -14,7 +14,10 @@ export function getBetweenTime(start, end, milliSeconds) {
 
 export function elapsedTime(date) {
   const compareTime = new Date(date);
+  console.log(compareTime);
   compareTime.setHours(compareTime.getHours() + 9);
+
+  console.log(compareTime);
 
   const nowTime = new Date();
 
@@ -30,7 +33,7 @@ export function elapsedTime(date) {
     );
 
     if (
-      (TIMES[i].name === 'hour' || TIMES[i] === 'minute') &&
+      (TIMES[i].name === 'hour' || TIMES[i].name === 'minute') &&
       betweenTime > 0
     ) {
       return formatter.format(-betweenTime, TIMES[i].name);
