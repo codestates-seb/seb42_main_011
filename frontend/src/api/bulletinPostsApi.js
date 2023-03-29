@@ -70,7 +70,13 @@ async function getBulletinPost({ bulletinId }) {
 
 async function getBulletinPostList({ page = 1, size = 10 }) {
   return api
-    .get(`/bulletin-posts/feed?page=${page}&size=${size}`)
+    .get(`/bulletin-posts/feed?page=${page}&size=${size}`, {
+      headers: {
+        ...authHeader(),
+        'ngrok-skip-browser-warning': 'skip-browser-warning',
+        withCredentials: true,
+      },
+    })
     .then(({ data }) => data);
 }
 

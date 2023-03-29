@@ -69,7 +69,7 @@ function FriendSearchHeader({ initialName = '', initialType = '', onSubmit }) {
     <PostHeader
       title="friend find"
       img={FriendLogo}
-      description="친구들의 피드를 확인해보세요!"
+      description="다른 친구들을 찾아보세요!"
     >
       <FriendSearchWrapper>
         <FriendSearchForm onSubmit={handleSubmit}>
