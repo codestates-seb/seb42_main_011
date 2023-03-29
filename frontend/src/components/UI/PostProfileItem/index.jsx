@@ -59,7 +59,7 @@ const Button = styled.button`
 
 function ProfileItem({
   memberId,
-  photoUrl,
+  profileUrl,
   name,
   onClick,
   isLastItem,
@@ -69,7 +69,7 @@ function ProfileItem({
 
   return (
     <ProfileBox ref={ref} data-member-id={memberId}>
-      <ProifleImage src={photoUrl} alt={`${name} 프로필 사진`} />
+      <ProifleImage src={profileUrl} alt={`${name} 프로필 사진`} />
       <ProfileName>
         {name}
         <Button onClick={onClick}>

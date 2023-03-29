@@ -87,10 +87,10 @@ function FriendSearchPage() {
               !!data &&
               data.pages.map(({ data: fetchData }, pageIndex) =>
                 fetchData.map(
-                  ({ memberId, nickname, dogName, photoUrl }, idx) => {
+                  ({ memberId, nickname, dogName, profileUrl }, idx) => {
                     const props = {
                       memberId,
-                      photoUrl,
+                      profileUrl,
                       name:
                         searchOptions.searchType === 'dogName'
                           ? dogName
