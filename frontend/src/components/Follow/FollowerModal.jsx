@@ -19,7 +19,8 @@ const NoFollowers = styled.div`
 
 const FollowerListCard = styled.div`
   width: 371px;
-  height: 410px;
+  height: auto;
+  max-height: 410px;
   margin-top: 10px;
   display: flex;
   flex-direction: column;
@@ -38,7 +39,6 @@ const FollowerWrapper = styled.div`
   padding: 0 5px;
   display: flex;
   flex-wrap: wrap;
-
   cursor: pointer;
 `;
 
