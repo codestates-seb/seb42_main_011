@@ -4,7 +4,7 @@ import ModalNonContent from './ModalNonContent';
 import { ReactComponent as IconCancleSVG } from '../../../assets/icons/icon-cancle.svg';
 import useModal from '../../../hooks/useModal';
 
-const Warapper = styled.section`
+const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
   background-color: var(--color-light-0);
@@ -72,7 +72,7 @@ function ModalBase({ title, content, buttons, isFooterAnimaonClose = true }) {
 
   return (
     <ModalNonContent>
-      <Warapper isExiting={isExiting}>
+      <Wrapper isExiting={isExiting}>
         <Header>
           <Title>{title}</Title>
           <CancleButton onClick={handleExitAnimation}>
@@ -87,7 +87,7 @@ function ModalBase({ title, content, buttons, isFooterAnimaonClose = true }) {
             {buttons}
           </Footer>
         )}
-      </Warapper>
+      </Wrapper>
     </ModalNonContent>
   );
 }

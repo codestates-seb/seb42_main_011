@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Warapper = styled.div`
+const Wrapper = styled.div`
   width: 100%;
   font-weight: 500;
   font-size: 20px;
@@ -14,9 +14,9 @@ const Count = styled.span`
 
 function CommentsCount({ count }) {
   return (
-    <Warapper>
+    <Wrapper>
       댓글 <Count>{count}</Count>개
-    </Warapper>
+    </Wrapper>
   );
 }
 

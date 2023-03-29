@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Warapper = styled.ul`
+const Wrapper = styled.ul`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -11,7 +11,7 @@ const Warapper = styled.ul`
 `;
 
 function CommentsList({ onClick, children }) {
-  return <Warapper onClick={onClick}>{children}</Warapper>;
+  return <Wrapper onClick={onClick}>{children}</Wrapper>;
 }
 
 export default CommentsList;
