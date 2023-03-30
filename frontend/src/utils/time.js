@@ -14,10 +14,7 @@ export function getBetweenTime(start, end, milliSeconds) {
 
 export function elapsedTime(date) {
   const compareTime = new Date(date);
-  console.log(compareTime);
   compareTime.setHours(compareTime.getHours() + 9);
-
-  console.log(compareTime);
 
   const nowTime = new Date();
 
