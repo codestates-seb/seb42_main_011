@@ -10,6 +10,7 @@ import com.mybuddy.member.entity.Member;
 import com.mybuddy.member.entity.Member.MemberStatus;
 import com.mybuddy.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -84,6 +85,13 @@ public class MemberServiceImpl implements MemberService {
     public Page<Member> getMemberList(int page, int size) {
         return memberRepository.findAll(PageRequest.of(page, size,
                 Sort.by("memberId").descending()));
+    }
+
+    @Override
+    public Page<Member> getActiveMemberList(int page, int size) {
+        List<Member> activeMemberList = memberRepository.findByMemberStatus(MemberStatus.ACTIVE);
+        return new PageImpl<>(activeMemberList, PageRequest.of(page - 1, size,
+                Sort.by("memberId").descending()), activeMemberList.size());
     }
 
     @Override
