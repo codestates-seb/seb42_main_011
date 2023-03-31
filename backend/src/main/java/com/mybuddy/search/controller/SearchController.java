@@ -31,4 +31,9 @@ public class SearchController {
         return new ResponseEntity<>(compositeService.searchMembersByName(type, name, page, size), HttpStatus.OK);
     }
 
+    @GetMapping("/newest-members")
+    public ResponseEntity getActiveMemberListByOrder(@Positive @RequestParam int page,
+                                                     @Positive @RequestParam int size) {
+        return new ResponseEntity<>(compositeService.getActiveMemberListByOrder(page, size), HttpStatus.OK);
+    }
 }

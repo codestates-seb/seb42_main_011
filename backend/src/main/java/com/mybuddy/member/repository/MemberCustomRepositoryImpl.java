@@ -5,6 +5,7 @@ import com.mybuddy.member.entity.QMember;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -64,5 +65,16 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository {
                                 .and(member.memberStatus.eq(memberStatus)))
                         .fetchOne()
         );
+    }
+
+    @Override
+    public List<Member> findByMemberStatus(Member.MemberStatus memberStatus) {
+        QMember member = new QMember("member1");
+
+        return queryFactory
+                .selectFrom(member)
+                .where(member.memberStatus.eq(memberStatus)
+                        .and(member.memberId.goe(2)))
+                .fetch();
     }
 }
