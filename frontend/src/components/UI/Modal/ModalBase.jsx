@@ -85,7 +85,7 @@ function ModalBase({ title, content, buttons, isFooterAnimaonClose = true }) {
         </Header>
         <Content>{content}</Content>
         {buttons && <Footer {...props}>{buttons}</Footer>}
-      </Warapper>
+      </Wrapper>
     </ModalNonContent>
   );
 }
