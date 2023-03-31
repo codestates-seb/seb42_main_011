@@ -86,6 +86,7 @@ function PostDetail({ userId, bulletinId, onClose }) {
   const { mutateAsync: deleteMutate } = useDeleteBulletinPost({
     onSuccess: () => {
       queryClient.removeQueries(queryKey);
+      queryClient.invalidateQueries('feeds');
       closeAllModal();
 
       openModal(
@@ -170,6 +171,7 @@ function PostDetail({ userId, bulletinId, onClose }) {
           dogName={dogName}
           nickname={nickname}
           photoUrl={photoUrl}
+          memberId={memberId}
         >
           <InfoContainer>
             <PostDetailHeart
