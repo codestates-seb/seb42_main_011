@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 import { ReactComponent as MypageShape } from '../assets/shape/purple_shape.svg';
 import { ReactComponent as Stripeshape } from '../assets/shape/mypage_shape_stripe.svg';
 import Card from '../components/UI/Card/Card';
@@ -87,6 +88,7 @@ const StripeImg = styled(Stripeshape)`
 `;
 
 function UserEditPage() {
+  const { user: currentUser } = useSelector(state => state.auth);
   const { memberId } = useParams();
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
@@ -103,6 +105,10 @@ function UserEditPage() {
 
   if (error) {
     return <p>Error: {error.message}</p>;
+  }
+
+  if (currentUser !== memberId) {
+    return <p>권한이 없습니다.</p>;
   }
 
   const handleCancel = () => {
