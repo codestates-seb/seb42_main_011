@@ -30,7 +30,7 @@ public class S3StorageService implements StorageService {
     public String storeImage(MultipartFile multipartFile) {
 
         String fileExtension = getFileExtension(multipartFile.getOriginalFilename());
-        ArrayList<String> extensionList = new ArrayList<String>(List.of(".png",".jpg",".gif"));
+        ArrayList<String> extensionList = new ArrayList<String>(List.of(".png",".jpg",".gif",".jpeg"));
 
         if (!extensionList.contains(fileExtension)){
             throw new StorageException("Wrong file extension(" + fileExtension + ")");
