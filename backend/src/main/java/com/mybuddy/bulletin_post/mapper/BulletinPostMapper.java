@@ -67,6 +67,27 @@ public interface BulletinPostMapper {
         if (loginUserId != null) {
             likeByUser = likeService.findExistLikeByMemberId(postId, loginUserId);
         }
+        if (amenity == null) {
+
+        BulletinPostDto.Response bulletinPostResponseDto = new BulletinPostDto.Response(
+                postId,
+                bulletinPost.getPhotoUrl(),
+                bulletinPost.getPostContent(),
+                bulletinPost.getCreatedAt(),
+                member.getMemberId(),
+                member.getNickname(),
+                member.getDogName(),
+                member.getProfileUrl(),
+                null,
+                null,
+                likeCount,
+                likeByUser,
+                commentLists,
+                commentLists.size()
+        );
+        return bulletinPostResponseDto;
+        }
+
         BulletinPostDto.Response bulletinPostResponseDto = new BulletinPostDto.Response(
                 postId,
                 bulletinPost.getPhotoUrl(),
@@ -83,7 +104,6 @@ public interface BulletinPostMapper {
                 commentLists,
                 commentLists.size()
         );
-
         return bulletinPostResponseDto;
     }
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../UI/Button';
+import infovideo from '../../assets/Info/info_video.gif';
 
 const MyBuddyInfo = styled.div`
   width: 100%;
@@ -11,6 +12,7 @@ const MyBuddyInfo = styled.div`
   border-radius: 15px;
   padding: 40px;
   display: flex;
+  overflow: hidden;
 
   @media screen and (max-width: 1199px) {
     height: 500px;
@@ -28,10 +30,17 @@ const MybuddyCard = styled.div`
 `;
 
 const MyBuddyVideo = styled.div`
-  width: 300px;
-  height: 300px;
-  background-color: pink;
   width: 55vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Video = styled.img`
+  width: 85%;
+  @media screen and (max-width: 1199px) {
+    width: 100%;
+  }
 `;
 
 const InfoTitle = styled.h2`
@@ -65,18 +74,21 @@ const InfoText = styled.p`
 function MyBuddyInfoCard() {
   return (
     <MyBuddyInfo>
-      <MyBuddyVideo>영상자리</MyBuddyVideo>
+      <MyBuddyVideo>
+        <Video src={infovideo} alt="마이버디 이용 화면 gif" />
+      </MyBuddyVideo>
       <MybuddyCard>
         <InfoTitle>
           let&apos;s <span>paw</span>-ty!
         </InfoTitle>
         <InfoTextMain>오직 강아지들을 위한 SNS 마이버디</InfoTextMain>
         <InfoText>
-          🐶 545만명 반려 강아지 집사들을 위한 SNS 🐶 <br />
+          🐶 545만명 반려 강아지 집사들을 위한 SNS
+          <br />
           소중한 반려 강아지를 자랑해보세요! <br />
-          마이버디는 강아지 전용, 강아지 중심 SNS입니다. <br />
+          강아지 전용, 강아지 중심 SNS입니다. <br />
         </InfoText>
-        <Link to="/">
+        <Link to="/home">
           <Button variant="large">마이버디 둘러보기</Button>
         </Link>
       </MybuddyCard>

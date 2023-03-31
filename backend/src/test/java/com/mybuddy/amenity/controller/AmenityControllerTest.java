@@ -181,6 +181,7 @@ public class AmenityControllerTest {
                                         fieldWithPath("data[].dogName").type(JsonFieldType.STRING).description("강아지 이름"),
                                         fieldWithPath("data[].commentList").type(JsonFieldType.ARRAY).description("댓글 리스트"),
                                         fieldWithPath("data[].commentCount").type(JsonFieldType.NUMBER).description("댓글 수"),
+                                        fieldWithPath("data[].createdAt").type(JsonFieldType.NULL).description("등록일"),
 
                                         fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보"),
                                         fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("현재 페이지"),

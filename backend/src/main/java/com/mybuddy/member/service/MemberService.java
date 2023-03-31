@@ -12,6 +12,8 @@ public interface MemberService {
 
     Member getMember(Long memberId);
 
+    Member getAllStatusMember(Long memberId);
+
     Page<Member> getMemberList(int page, int size);
 
     void deleteMember(Long memberId, long loginUserId);

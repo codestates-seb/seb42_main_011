@@ -54,7 +54,7 @@ function ColorLargeCard() {
   return (
     <ColorLargeCardWrapper>
       <InfoTitle>
-        🐶 why not <span>mybuudy</span>?! 🐶
+        🐶 why not <span>mybuddy</span>?! 🐶
       </InfoTitle>
       <InfoText>
         귀엽고 소중한 우리 강아지! 마이버디에서 일상 공유/자랑하고 다양한

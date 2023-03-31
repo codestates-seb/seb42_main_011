@@ -26,6 +26,10 @@ const MainWrapper = styled.div`
   ::-webkit-scrollbar {
     display: none;
   }
+
+  @media screen and (max-width: 950px) {
+    overflow-x: auto;
+  }
 `;
 
 const MainTitleComponent = styled.div`

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
+import useImageError from '../../hooks/useImageError';
 
 import UserName from '../UI/UserName';
 
@@ -42,10 +43,12 @@ const Picture = styled.img`
 `;
 
 function PostDetailnfo({ profileUrl, dogName, nickname, photoUrl, children }) {
+  const [src, handleErrorImage] = useImageError(profileUrl);
+
   return (
     <Container>
       <Profile>
-        <Avatar src={profileUrl} alt="프로필 사진" />
+        <Avatar onError={handleErrorImage} src={src} alt="프로필 사진" />
         <UserName dogName={dogName} nickname={nickname} />
       </Profile>
       <Picture src={photoUrl} alt="게시글 사진" />

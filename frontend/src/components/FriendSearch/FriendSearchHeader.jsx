@@ -33,8 +33,8 @@ const FriendSearchInput = styled(SearchInput)`
 `;
 
 const SEARCH_OPTIONS = [
-  { name: '닉네임', value: 'nickname' },
   { name: '강아지 이름', value: 'dogName' },
+  { name: '닉네임', value: 'nickname' },
 ];
 
 function FriendSearchHeader({ initialName = '', initialType = '', onSubmit }) {
@@ -69,7 +69,7 @@ function FriendSearchHeader({ initialName = '', initialType = '', onSubmit }) {
     <PostHeader
       title="friend find"
       img={FriendLogo}
-      description="친구들의 피드를 확인해보세요!"
+      description="다른 친구들을 찾아보세요!"
     >
       <FriendSearchWrapper>
         <FriendSearchForm onSubmit={handleSubmit}>

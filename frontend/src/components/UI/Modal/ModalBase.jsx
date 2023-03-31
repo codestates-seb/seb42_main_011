@@ -70,6 +70,10 @@ function ModalBase({ title, content, buttons, isFooterAnimaonClose = true }) {
     }, 300); // Wait for the animation to complete
   };
 
+  const props = {
+    ...(isFooterAnimaonClose && { onClick: handleExitAnimation }),
+  };
+
   return (
     <ModalNonContent>
       <Wrapper isExiting={isExiting}>
@@ -80,14 +84,8 @@ function ModalBase({ title, content, buttons, isFooterAnimaonClose = true }) {
           </CancleButton>
         </Header>
         <Content>{content}</Content>
-        {buttons && (
-          <Footer
-            onClick={isFooterAnimaonClose ? handleExitAnimation : () => {}}
-          >
-            {buttons}
-          </Footer>
-        )}
-      </Wrapper>
+        {buttons && <Footer {...props}>{buttons}</Footer>}
+      </Warapper>
     </ModalNonContent>
   );
 }

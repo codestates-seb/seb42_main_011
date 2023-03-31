@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import IconArrow from '../../../assets/icons/icon-arrow-right.svg';
+import useImageError from '../../../hooks/useImageError';
 import useObserverFetch from '../../../hooks/useObserverFetch';
 
 const ProfileBox = styled.li`
@@ -59,17 +60,22 @@ const Button = styled.button`
 
 function ProfileItem({
   memberId,
-  photoUrl,
+  profileUrl,
   name,
   onClick,
   isLastItem,
   onFetch,
 }) {
   const { ref } = useObserverFetch({ isLastItem, onFetch });
+  const [src, handleErrorImage] = useImageError(profileUrl);
 
   return (
     <ProfileBox ref={ref} data-member-id={memberId}>
-      <ProifleImage src={photoUrl} alt={`${name} 프로필 사진`} />
+      <ProifleImage
+        src={src}
+        onError={handleErrorImage}
+        alt={`${name} 프로필 사진`}
+      />
       <ProfileName>
         {name}
         <Button onClick={onClick}>

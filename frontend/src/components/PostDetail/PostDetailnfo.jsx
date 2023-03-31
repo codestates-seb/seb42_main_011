@@ -1,5 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
+import useImageError from '../../hooks/useImageError';
+import useModal from '../../hooks/useModal';
 
 import UserName from '../UI/UserName';
 
@@ -41,12 +44,24 @@ const Picture = styled.img`
   width: inherit;
 `;
 
-function PostDetailnfo({ profileUrl, dogName, nickname, photoUrl, children }) {
+function PostDetailnfo({
+  profileUrl,
+  dogName,
+  nickname,
+  photoUrl,
+  memberId,
+  children,
+}) {
+  const [src, handleErrorImage] = useImageError(profileUrl);
+  const { closeAllModal } = useModal();
+
   return (
     <Container>
       <Profile>
-        <Avatar src={profileUrl} alt="프로필 사진" />
-        <UserName dogName={dogName} nickname={nickname} />
+        <Avatar src={src} onError={handleErrorImage} alt="프로필 사진" />
+        <Link to={`/user/${memberId}`} onClick={() => closeAllModal()}>
+          <UserName dogName={dogName} nickname={nickname} />
+        </Link>
       </Profile>
       <Picture src={photoUrl} alt="게시글 사진" />
       {children}

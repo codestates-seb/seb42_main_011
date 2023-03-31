@@ -21,19 +21,19 @@ public class Amenity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long amenityId;
 
-    @Column(nullable = false)
+    @Column
     private String amenityName;
 
-    @Column(nullable = false)
+    @Column
     private Long addressId;
 
-    @Column(nullable = false)
+    @Column
     private String address;
 
-    @Column(nullable = false)
+    @Column
     private Double latitude;
 
-    @Column(nullable = false)
+    @Column
     private Double longitude;
 
     @Setter

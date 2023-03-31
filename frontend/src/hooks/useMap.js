@@ -1,4 +1,6 @@
 import { useLayoutEffect, useState } from 'react';
+import memo from '../assets/memo_image.svg';
+import newMarker from '../assets/marker.svg';
 /* global kakao */
 
 function useMap({ mapRef, centerX, centerY }) {
@@ -8,23 +10,9 @@ function useMap({ mapRef, centerX, centerY }) {
   const [infowindow, setInfowindow] = useState();
 
   // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
-  function addMarker(position, idx) {
-    const imageSrc =
-      'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png'; // 마커 이미지 url, 스프라이트 이미지를 씁니다
-
-    const imageSize = new kakao.maps.Size(36, 37); // 마커 이미지의 크기
-
-    const imgOptions = {
-      spriteSize: new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
-      spriteOrigin: new kakao.maps.Point(0, idx * 46 + 10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
-      offset: new kakao.maps.Point(13, 37), // 마커 좌표에 일치시킬 이미지 내에서의 좌표
-    };
-
-    const markerImage = new kakao.maps.MarkerImage(
-      imageSrc,
-      imageSize,
-      imgOptions,
-    );
+  function addMarker(position) {
+    const imageSize = new kakao.maps.Size(40, 40);
+    const markerImage = new kakao.maps.MarkerImage(newMarker, imageSize);
 
     const marker = new kakao.maps.Marker({
       position, // 마커의 위치
@@ -45,7 +33,23 @@ function useMap({ mapRef, centerX, centerY }) {
   // 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
   // 인포윈도우에 장소명을 표시합니다
   function displayInfowindow(marker, title) {
-    const content = `<div style="padding:5px;z-index:1;">${title}</div>`;
+    const content = `
+    <div style=" background-image: url(${memo});
+      background-size: cover;
+      color: var(--color-dark-0);
+      font-size: 15px;
+      width: 280px;
+      height: 70px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      margin:0px 0px 10px 5px;
+      text-indent:-5px;
+      padding-top: 5px;
+      font-wieght:500;
+      ">
+      ${title}
+    </div>`;
 
     infowindow.setContent(content);
     infowindow.open(map, marker);
