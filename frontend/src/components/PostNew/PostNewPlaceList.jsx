@@ -62,11 +62,22 @@ const SelecteButton = styled.button`
   height: 32px;
 `;
 
+const MoreButton = styled.button`
+  width: 100%;
+  padding: 12px 0;
+  color: #136ecd;
+
+  &:hover {
+    background-color: var(--color-dark-2);
+  }
+`;
+
 function PostNewPlaceList({
   markers,
+  pages,
   onClick,
-  onMouseOver,
-  onMouseOut,
+  onMouseOver = () => {},
+  onMouseOut = () => {},
   onSelect,
 }) {
   const getTargetIdx = event => {
@@ -139,6 +150,11 @@ function PostNewPlaceList({
           </SelecteButton>
         </Item>
       ))}
+      {pages?.hasNextPage ? (
+        <MoreButton type="button" onClick={() => pages.nextPage()}>
+          더 불러오기
+        </MoreButton>
+      ) : null}
     </List>
   );
 }
