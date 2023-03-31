@@ -38,7 +38,7 @@ public class BulletinPostCustomRepositoryImpl implements BulletinPostCustomRepos
 
         List<Long> followees = meAsFollowerList.stream()
                 .map(followee -> followee.getFollowee().getMemberId())
-                .toList();
+                .collect(Collectors.toList());
 
         //날짜 기준 내림차순 정렬
         QueryResults<BulletinPost> queryResults = queryFactory
