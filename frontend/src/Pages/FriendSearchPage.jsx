@@ -15,6 +15,12 @@ const Container = styled.section`
   gap: 16px;
 `;
 
+const NoResultsMessage = styled.p`
+  text-align: center;
+  margin-top: 100px;
+  font-size: 20px;
+`;
+
 function FriendSearchPage() {
   const navigate = useNavigate();
   const [searchOptions, setSearchOptions] = useState({
@@ -26,7 +32,7 @@ function FriendSearchPage() {
     navigate(`/user/${memberId}`);
   };
 
-  console.log('1111', searchOptions.searchName, searchOptions.searchType);
+  // console.log('1111', searchOptions.searchName, searchOptions.searchType);
 
   const {
     data,
@@ -66,6 +72,25 @@ function FriendSearchPage() {
     if (searchOptions.searchName.length > 0) refetch();
   }, [searchOptions]);
 
+  if (
+    !isError &&
+    !isLoading &&
+    !!data &&
+    data.pages[0].pageInfo.totalElements === 0
+  ) {
+    return (
+      <Container>
+        <FriendSearchHeader
+          initialType={searchOptions.searchType || 'dogName'}
+          initialName={searchOptions.searchName || ''}
+          onSubmit={handleSumbit}
+        />
+        <FriendSearch>
+          <NoResultsMessage>검색결과가 없습니다.</NoResultsMessage>
+        </FriendSearch>
+      </Container>
+    );
+  }
   return (
     <Container>
       <FriendSearchHeader
