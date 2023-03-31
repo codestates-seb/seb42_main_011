@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useQueryClient } from 'react-query';
 import styled from 'styled-components';
 
@@ -38,8 +38,16 @@ function PostDetailHeart({ likeCount, likeByUser, bulletinId }) {
   const [heart, setHeart] = useState(likeByUser);
   const [count, setCount] = useState(likeCount);
   const onError = useAxiosErrorModal(true);
+  const debounceRef = useRef();
+  const heartRef = useRef(heart);
+  const likeByUserRef = useRef(likeByUser);
 
-  // const debounceRef = useRef();
+  useEffect(() => {
+    setHeart(likeByUser);
+    setCount(likeCount);
+
+    likeByUserRef.current = likeByUser;
+  }, [likeCount, likeByUser]);
 
   const { mutateAsync: likeMutate } = useCreateBulletinPostLike({
     onSuccess: responseData => {
@@ -81,43 +89,41 @@ function PostDetailHeart({ likeCount, likeByUser, bulletinId }) {
     if (heart === 0) {
       setCount(preCount => preCount + 1);
       setHeart(1);
-      handleLike(1);
       return;
     }
 
     if (heart === 1) {
       setCount(preCount => preCount - 1);
       setHeart(0);
-      handleLike(0);
     }
   };
 
-  // useEffect(() => {
-  //   // debounceRef.current = setTimeout(() => {
-  //   //   if (likeByUser !== heart) {
-  //   //     handleLike(heart);
-  //   //   }
-  //   // }, 0);
+  useEffect(() => {
+    heartRef.current = heart;
+    debounceRef.current = setTimeout(() => {
+      if (likeByUser !== heart) {
+        handleLike(heart);
+      }
+    }, 3000);
 
-  //   // return () => clearTimeout(debounceRef.current);
+    return () => {
+      clearTimeout(debounceRef.current);
+    };
+  }, [heart]);
 
-  //   handleLike(heart);
-  // }, [heart]);
+  useEffect(() => {
+    const timerId = debounceRef.current;
 
-  // useEffect(() => {
-  //   const timerId = debounceRef.current;
+    return () => {
+      if (timerId) {
+        clearTimeout(timerId);
+      }
 
-  //   return async () => {
-  //     setTimeout(() => {
-  //       if (timerId) {
-  //         clearTimeout(timerId);
-  //       }
-  //       if (likeByUser !== heart) {
-  //         handleLike(heart);
-  //       }
-  //     });
-  //   };
-  // }, []);
+      if (likeByUserRef.current !== heartRef.current) {
+        handleLike(heartRef.current);
+      }
+    };
+  }, []);
 
   return (
     <HeartContainer>

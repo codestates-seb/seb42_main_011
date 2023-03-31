@@ -77,7 +77,7 @@ function PostNewPage({ onClose }) {
   };
 
   useEffect(() => {
-    if (content && place && photoImage) {
+    if (content && photoImage) {
       setDisabledSubmit(false);
     } else {
       setDisabledSubmit(true);

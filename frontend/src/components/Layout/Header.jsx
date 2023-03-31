@@ -136,11 +136,20 @@ function Header() {
   return (
     <HeaderWrapper>
       <Nav>
-        <Link to="/home">
-          <h1>
-            <Logo />
-          </h1>
-        </Link>
+        {currentUser ? (
+          <Link to="/home">
+            <h1>
+              <Logo />
+            </h1>
+          </Link>
+        ) : (
+          <Link to="/">
+            <h1>
+              <Logo />
+            </h1>
+          </Link>
+        )}
+
         <MenuWrapper loggedIn={!!currentUser}>
           <MenuUl>
             <LinkStyle>
