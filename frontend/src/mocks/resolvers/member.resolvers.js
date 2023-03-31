@@ -5,19 +5,27 @@ import FEED_DUMY from '../../data/FEED_DUMY';
 import FRIEND_DUMY from '../../data/FRIEND_DUMY';
 
 export const postLogin = async (req, res, ctx) => {
-  const { email, password } = await req.json();
+  const { username, password } = await req.json();
+  console.log(username, password);
 
-  if (!email || !password) {
+  if (!username || !password) {
     return res(ctx.status(401));
   }
 
   return res(
     // Respond with a 200 status code
-    ctx.set('Authorization', 'Bearer aiwu4e8237918279awoieZKLwje129039182'),
+    ctx.set(
+      'Authorization',
+      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjozLCJ1c2VybmFtZSI6IndqZHdqZHRuOTJAZ21haWwuY29tIiwic3ViIjoid2pkd2pkdG45MkBnbWFpbC5jb20iLCJpYXQiOjE2ODAxOTM5NjEsImV4cCI6MTY4MDE5NDU2MX0.b1n1YlsFr3hVS6-JZv-1f1iQNIVOq5AtrJD8xSTESyc',
+    ),
     ctx.status(200),
     ctx.json({
       message: '정상적으로 로그인 되었습니다.',
     }),
+    ctx.cookie(
+      'refeshToken',
+      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjozLCJ1c2VybmFtZSI6IndqZHdqZHRuOTJAZ21haWwuY29tIiwic3ViIjoid2pkd2pkdG45MkBnbWFpbC5jb20iLCJpYXQiOjE2ODAxOTQxNDYsImV4cCI6MTY4MDE5NDc0Nn0.gq66WViDQFFcqB6Obpx7A4DZGXlBY0OZ-BvsX93ekCU',
+    ),
   );
 };
 
@@ -168,22 +176,6 @@ export const deleteMember = (req, res, ctx) => {
 
   // If authenticated, return a mocked user details
   return res(ctx.status(204));
-};
-
-export const getPosts = (req, res, ctx) => {
-  // Check if the user is authenticated in this session
-  const { page } = req.url.searchParams.get('page');
-  const { size } = req.url.searchParams.get('size');
-
-  console.log(page, size, req, FEED_DUMY);
-
-  // If authenticated, return a mocked user details
-  return res(
-    ctx.status(200),
-    ctx.delay(2000),
-    ctx.json(FEED_DUMY),
-    ctx.set('Content-Type', 'application/json'),
-  );
 };
 
 export const getSearchs = (req, res, ctx) => {

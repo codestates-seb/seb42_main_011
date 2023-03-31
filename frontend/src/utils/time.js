@@ -30,7 +30,7 @@ export function elapsedTime(date) {
     );
 
     if (
-      (TIMES[i].name === 'hour' || TIMES[i] === 'minute') &&
+      (TIMES[i].name === 'hour' || TIMES[i].name === 'minute') &&
       betweenTime > 0
     ) {
       return formatter.format(-betweenTime, TIMES[i].name);

@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useQueryClient } from 'react-query';
 import styled from 'styled-components';
 
 import { ReactComponent as IconHeartSvg } from '../../assets/icons/icon-heart.svg';
 
-import useDebounce from '../../hooks/useDebounce';
 import useCreateBulletinPostLike from '../../hooks/bulletinPostsLike/useCreateBulletinPostLike';
 import useDeleteBulletinPostLike from '../../hooks/bulletinPostsLike/useDeleteBulletinPostLike';
 import useAxiosErrorModal from '../../hooks/useAxiosErrorModal';
@@ -38,8 +37,17 @@ function PostDetailHeart({ likeCount, likeByUser, bulletinId }) {
   const queryClient = useQueryClient();
   const [heart, setHeart] = useState(likeByUser);
   const [count, setCount] = useState(likeCount);
-  const debouncedHeart = useDebounce(heart, 3000);
-  const onError = useAxiosErrorModal();
+  const onError = useAxiosErrorModal(true);
+  const debounceRef = useRef();
+  const heartRef = useRef(heart);
+  const likeByUserRef = useRef(likeByUser);
+
+  useEffect(() => {
+    setHeart(likeByUser);
+    setCount(likeCount);
+
+    likeByUserRef.current = likeByUser;
+  }, [likeCount, likeByUser]);
 
   const { mutateAsync: likeMutate } = useCreateBulletinPostLike({
     onSuccess: responseData => {
@@ -69,7 +77,7 @@ function PostDetailHeart({ likeCount, likeByUser, bulletinId }) {
     onError,
   });
 
-  const handleLike = newLikeByUser => {
+  const handleLike = async newLikeByUser => {
     if (newLikeByUser === 0) {
       unlikeMutate({ bulletinId });
       return;
@@ -91,10 +99,31 @@ function PostDetailHeart({ likeCount, likeByUser, bulletinId }) {
   };
 
   useEffect(() => {
-    if (likeByUser !== debouncedHeart) {
-      handleLike(debouncedHeart);
-    }
-  }, [debouncedHeart]);
+    heartRef.current = heart;
+    debounceRef.current = setTimeout(() => {
+      if (likeByUser !== heart) {
+        handleLike(heart);
+      }
+    }, 3000);
+
+    return () => {
+      clearTimeout(debounceRef.current);
+    };
+  }, [heart]);
+
+  useEffect(() => {
+    const timerId = debounceRef.current;
+
+    return () => {
+      if (timerId) {
+        clearTimeout(timerId);
+      }
+
+      if (likeByUserRef.current !== heartRef.current) {
+        handleLike(heartRef.current);
+      }
+    };
+  }, []);
 
   return (
     <HeartContainer>

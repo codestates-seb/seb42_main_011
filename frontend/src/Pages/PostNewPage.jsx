@@ -30,7 +30,11 @@ const PostDetailContainer = styled(Card)`
 
   gap: 18px;
   background-color: var(--color-light-0);
+
   @media screen and (max-width: 1199px) {
+    scale: calc(0.9);
+  }
+  @media screen and (max-height: 800px) {
     scale: calc(0.9);
   }
 `;
@@ -77,7 +81,7 @@ function PostNewPage({ onClose }) {
   };
 
   useEffect(() => {
-    if (content && place && photoImage) {
+    if (content && photoImage) {
       setDisabledSubmit(false);
     } else {
       setDisabledSubmit(true);
@@ -87,11 +91,11 @@ function PostNewPage({ onClose }) {
   const sendData = async () => {
     const postData = {
       postContent: content,
-      addressId: place.id,
-      amenityName: place.place_name,
-      address: place.address_name,
-      longitude: place.x,
-      latitude: place.y,
+      addressId: place.id || null,
+      amenityName: place.place_name || null,
+      address: place.address_name || null,
+      longitude: place.x || null,
+      latitude: place.y || null,
     };
 
     mutateAsync({ postData, photoImage });

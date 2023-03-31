@@ -23,6 +23,9 @@ const PostDetailContainer = styled(Card)`
   @media screen and (max-width: 1199px) {
     scale: calc(0.9);
   }
+  @media screen and (max-height: 800px) {
+    scale: calc(0.9);
+  }
 `;
 
 function Loading() {

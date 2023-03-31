@@ -6,7 +6,13 @@ import Router from './Router';
 import GlobalStyles from './styles/GlobalStyles';
 import { onSilentRefresh } from './redux/services/auth.service';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function App() {
   if (localStorage.getItem('accessToken')) {
