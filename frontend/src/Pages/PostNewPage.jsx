@@ -87,11 +87,11 @@ function PostNewPage({ onClose }) {
   const sendData = async () => {
     const postData = {
       postContent: content,
-      addressId: place.id,
-      amenityName: place.place_name,
-      address: place.address_name,
-      longitude: place.x,
-      latitude: place.y,
+      addressId: place.id || null,
+      amenityName: place.place_name || null,
+      address: place.address_name || null,
+      longitude: place.x || null,
+      latitude: place.y || null,
     };
 
     mutateAsync({ postData, photoImage });
