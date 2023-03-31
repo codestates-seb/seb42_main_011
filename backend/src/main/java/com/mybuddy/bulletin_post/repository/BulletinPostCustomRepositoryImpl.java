@@ -28,8 +28,32 @@ public class BulletinPostCustomRepositoryImpl implements BulletinPostCustomRepos
 
     private final JPAQueryFactory queryFactory;
 
+    public Page<BulletinPost> findAllFollowingPostsByMemberId(List<Follow> meAsFollowerList, PageRequest pageRequest) {
+        QBulletinPost bulletinPost = QBulletinPost.bulletinPost;
+        List<BulletinPost> posts = new ArrayList<>();
+
+        if (meAsFollowerList.size() == 0) {
+            return new PageImpl<>(posts, pageRequest, posts.size());
+        }
+
+        List<Long> followees = meAsFollowerList.stream()
+                .map(followee -> followee.getFollowee().getMemberId())
+                .toList();
+
+        //날짜 기준 내림차순 정렬
+        QueryResults<BulletinPost> queryResults = queryFactory
+                .selectFrom(bulletinPost)
+                .where(bulletinPost.member.memberId.in(followees))
+                .offset(pageRequest.getOffset())
+                .limit(pageRequest.getPageSize())
+                .orderBy(bulletinPost.createdAt.desc())
+                .fetchResults();
+
+        return new PageImpl<>(queryResults.getResults(), pageRequest, queryResults.getTotal());
+    }
+
     //follow 구현 후 수정
-    @Override
+    /*@Override
     public Page<BulletinPost> findAllFollowingPostsByMemberId(List<Follow> meAsFollowerList, PageRequest pageRequest) {
 
         QBulletinPost bulletinPost = QBulletinPost.bulletinPost;
@@ -64,7 +88,7 @@ public class BulletinPostCustomRepositoryImpl implements BulletinPostCustomRepos
         int end = Math.min((start + pageRequest.getPageSize()), posts.size());
 
         return new PageImpl<>(posts.subList(start, end), pageRequest, posts.size());
-    }
+    }*/
 
     @Override
     public PageImpl<BulletinPost> findByAmenityId(Long amenityId, PageRequest pageRequest) {
