@@ -59,7 +59,13 @@ const Footer = styled.div`
   gap: 8px;
 `;
 
-function ModalBase({ title, content, buttons, isFooterAnimaonClose = true }) {
+function ModalBase({
+  title,
+  content,
+  buttons,
+  isFooterAnimaonClose = true,
+  isEscClose = false,
+}) {
   const { closeModal } = useModal();
   const [isExiting, setIsExiting] = useState(false);
 
@@ -75,7 +81,7 @@ function ModalBase({ title, content, buttons, isFooterAnimaonClose = true }) {
   };
 
   return (
-    <ModalNonContent>
+    <ModalNonContent isEscClose={isEscClose}>
       <Wrapper isExiting={isExiting}>
         <Header>
           <Title>{title}</Title>

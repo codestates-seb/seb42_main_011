@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import useMap from '../../hooks/useMap';
 
@@ -43,39 +43,50 @@ const ContentContainer = styled.section`
   overflow: hidden;
 `;
 
+const CurrentLocationSearchButton = styled.button`
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  z-index: 299;
+  padding: 10px 20px;
+
+  border-radius: 25px;
+  background-color: #0475f4;
+  color: var(--color-light-0);
+`;
+
 function PostNewMap({ onSelect, onClose }) {
   const mapRef = useRef();
+  const [searchKeyword, setSearchKeyword] = useState(null);
 
-  const { moveLocation, markers, searchPlaces, displayInfowindow, infowindow } =
-    useMap({
-      mapRef,
-      centerX: '37.566826',
-      centerY: '126.9786567',
-    });
+  const {
+    moveLocation,
+    markers,
+    searchPlaces,
+    handleOverlay,
+    closeOverlay,
+    pages,
+  } = useMap({
+    mapRef,
+    centerX: '37.566826',
+    centerY: '126.9786567',
+  });
 
   const handleSubmit = keyword => {
     searchPlaces({ keyword });
+    setSearchKeyword(keyword);
+  };
+
+  const handleCurrentLocationSumbit = () => {
+    searchPlaces({ keyword: searchKeyword, useMapBounds: true });
   };
 
   const handleClick = idx => {
     const { x, y } = markers[idx].place;
-
-    moveLocation({ x, y });
-  };
-
-  const handleMouseOver = idx => {
     const { place } = markers[idx];
-    const { marker } = markers[idx];
-
-    if (place && marker) {
-      displayInfowindow(marker, place.place_name);
-      const { x, y } = place;
-      moveLocation({ x, y });
-    }
-  };
-
-  const handleMouseOut = () => {
-    infowindow.close();
+    closeOverlay();
+    handleOverlay({ x, y, title: place.place_name });
+    moveLocation({ x, y });
   };
 
   const handleSelectClick = idx => {
@@ -89,16 +100,24 @@ function PostNewMap({ onSelect, onClose }) {
     <Container>
       <PostNewPlaceHeader onClose={onClose} />
       <MapContainer ref={mapRef} />
+
       <ContentContainer>
         <PostNewPlaceSearch onSubmit={handleSubmit} />
         <PostNewPlaceList
           markers={markers}
           onClick={handleClick}
-          onMouseOver={handleMouseOver}
-          onMouseOut={handleMouseOut}
           onSelect={handleSelectClick}
+          pages={pages}
         />
       </ContentContainer>
+      {searchKeyword && (
+        <CurrentLocationSearchButton
+          type="button"
+          onClick={handleCurrentLocationSumbit}
+        >
+          현 위치에서 재검색
+        </CurrentLocationSearchButton>
+      )}
     </Container>
   );
 }
