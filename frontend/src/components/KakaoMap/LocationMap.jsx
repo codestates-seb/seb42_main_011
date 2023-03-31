@@ -126,7 +126,6 @@ function LocationMap({ data }) {
       );
       overlay.setMap(map);
 
-      console.log(place);
       const placeUrl = `http://place.map.kakao.com/${place.addressId}`;
       kakao.maps.event.addListener(marker, 'click', () => {
         window.open(placeUrl, '_blank');
