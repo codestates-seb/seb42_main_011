@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface BulletinPostCustomRepository {
 
-    Page<BulletinPost> findAllFollowingPostsByMemberId(List<Follow> meAsFollowerList, PageRequest pageRequest);
+    Page<BulletinPost> findAllFollowingPostsByMemberId(Long loginUserId, List<Follow> meAsFollowerList, PageRequest pageRequest);
 
     Page<BulletinPost> findByAmenityId(Long amenityId, PageRequest pageRequest);
 
