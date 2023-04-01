@@ -1,19 +1,9 @@
 import React from 'react';
 import { useInfiniteQuery } from 'react-query';
-import styled from 'styled-components';
 
 import PostList from '../UI/PostList';
 import PostItem from '../UI/PostItem';
 import { getBulletinPostList } from '../../api/bulletinPostsApi';
-
-const StyledFeedList = styled(PostList)`
-  @media (max-width: 1363px) {
-    width: 90vw;
-    grid-template-columns: repeat(auto-fill, 280px);
-    padding-left: 30px;
-    grid-gap: 0px 1px;
-  }
-`;
 
 function FeedList({ onClick, colWidth = '300px' }) {
   const { isLoading, data, fetchNextPage, hasNextPage } = useInfiniteQuery(
@@ -31,7 +21,7 @@ function FeedList({ onClick, colWidth = '300px' }) {
   );
 
   return (
-    <StyledFeedList colWidth={colWidth}>
+    <PostList colWidth={colWidth}>
       {!isLoading &&
         data &&
         data.pages?.map(({ data: fetchData }, pageIndex) =>
@@ -70,7 +60,7 @@ function FeedList({ onClick, colWidth = '300px' }) {
             },
           ),
         )}
-    </StyledFeedList>
+    </PostList>
   );
 }
 

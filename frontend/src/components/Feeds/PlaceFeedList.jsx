@@ -1,19 +1,9 @@
 import React from 'react';
 import { useInfiniteQuery } from 'react-query';
-import styled from 'styled-components';
 
 import PostList from '../UI/PostList';
 import PostItem from '../UI/PostItem';
 import getAmenityFeeds from '../../api/placeApi';
-
-const StyledFeedList = styled(PostList)`
-  @media (max-width: 1363px) {
-    width: 90vw;
-    grid-template-columns: repeat(auto-fill, 280px);
-    padding-left: 30px;
-    grid-gap: 0px 1px;
-  }
-`;
 
 function PlaceFeedList({ amenityId, onClick, colWidth = '300px' }) {
   const { isLoading, data, fetchNextPage, hasNextPage, isError } =
@@ -47,7 +37,7 @@ function PlaceFeedList({ amenityId, onClick, colWidth = '300px' }) {
   };
 
   return (
-    <StyledFeedList colWidth={colWidth} onClick={handleClick}>
+    <PostList colWidth={colWidth} onClick={handleClick}>
       {!isError &&
         !isLoading &&
         data.pages?.map(({ data: fetchData }, pageIndex) =>
@@ -83,7 +73,7 @@ function PlaceFeedList({ amenityId, onClick, colWidth = '300px' }) {
             },
           ),
         )}
-    </StyledFeedList>
+    </PostList>
   );
 }
 

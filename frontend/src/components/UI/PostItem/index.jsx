@@ -12,31 +12,41 @@ const ItemBox = styled.li`
   border-radius: 5px;
   display: flex;
   flex-direction: column;
-  width: 300px;
+  width: inherit;
+  height: inherit;
   background-color: var(--color-light-0);
   z-index: 10;
+  height: 472px;
 
   &:hover {
     box-shadow: 10px 10px 0 0 var(--color-dark-0);
   }
 
   @media (max-width: 1363px) {
-    width: 85%;
-    height: 88%;
+    height: 400px;
   }
 `;
 
 const PostBody = styled.section`
-  height: 100%;
   cursor: pointer;
+  height: calc(100% - 43px);
+
+  @media (max-width: 1363px) {
+    height: calc(100% - 33px);
+  }
 `;
 
 const PostImage = styled.img`
   width: 100%;
-  height: 299px;
-  min-height: 299px;
+  height: 300px;
+  min-height: 300px;
   aspect-ratio: 1/1;
   object-fit: cover;
+
+  @media (max-width: 1363px) {
+    height: 240px;
+    min-height: 240px;
+  }
 `;
 
 const PostBox = styled.div`
@@ -50,8 +60,8 @@ const PostBox = styled.div`
   gap: 10px;
 
   @media (max-width: 1363px) {
-    height: 35%;
     font-size: 14px;
+    padding: 6px 6px 9px 6px;
   }
 `;
 
@@ -79,10 +89,6 @@ const CommentBox = styled.div`
   flex-direction: row;
   align-items: center;
   padding-left: 3px;
-
-  @media (max-width: 1363px) {
-    margin-top: -10px;
-  }
 `;
 
 const Comment = styled.span`
@@ -95,6 +101,11 @@ const PostFooter = styled.section`
   display: flex;
   justify-content: space-between;
   padding: 11px 10px 10px 12px;
+
+  @media (max-width: 1363px) {
+    font-size: 14px;
+    padding: 8px 6px;
+  }
 `;
 
 const PostUsername = styled.div`
