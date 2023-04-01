@@ -46,7 +46,7 @@ const FollowButton = styled(Button)`
 `;
 
 function UserAboutmePage({ userdata, memberId, isMyPage }) {
-  let AboumeButton;
+  let AboutmeButton;
   const userData = userdata;
   const { openModal } = useModal();
   const [isFollowing, setIsFollowing] = useState(false);
@@ -186,13 +186,13 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
 
   // Button change by location
   if (isMyPage) {
-    AboumeButton = (
+    AboutmeButton = (
       <Link to={`/user/${memberId}/edit`}>
         <Button variant="medium">수정</Button>
       </Link>
     );
   } else {
-    AboumeButton = currentUser ? (
+    AboutmeButton = currentUser ? (
       <FollowButton
         variant="medium"
         onClick={handleFollowClick}
@@ -212,7 +212,7 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
             <p>{userData.aboutMe}</p>
           )}
         </AboutMeContent>
-        {AboumeButton}
+        {AboutmeButton}
       </AboutMe>
     </div>
   );
