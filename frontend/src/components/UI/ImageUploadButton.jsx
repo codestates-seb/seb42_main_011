@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { FlexJustifyAlignCenter } from '../../styles/shared';
 import Button from './Button';
 
 const UploadButton = styled(Button)`
@@ -7,9 +8,7 @@ const UploadButton = styled(Button)`
   background-color: var(--color-dark-0);
   width: 120px;
   height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  ${FlexJustifyAlignCenter}
   text-align: center;
 
   &:hover {

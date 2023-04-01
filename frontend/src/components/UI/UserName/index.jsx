@@ -8,7 +8,7 @@ const Name = styled.div`
 `;
 
 function UserName({ dogName, nickname }) {
-  const displayNameText = `${nickname}🏠${dogName}의 일기`;
+  const displayNameText = `${nickname}🏠${dogName}`;
 
   return <Name>{displayNameText}</Name>;
 }

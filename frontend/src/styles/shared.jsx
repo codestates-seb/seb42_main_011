@@ -19,11 +19,17 @@ export const FONT_SIZE = {
   `,
 };
 
-export const StyleScrollNone = css`
+export const ScrollNone = css`
   -ms-overflow-style: none;
   scrollbar-width: none;
 
   ::-webkit-scrollbar {
     display: none;
   }
+`;
+
+export const FlexJustifyAlignCenter = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
