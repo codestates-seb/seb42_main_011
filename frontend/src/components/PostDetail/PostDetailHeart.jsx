@@ -7,6 +7,8 @@ import { ReactComponent as IconHeartSvg } from '../../assets/icons/icon-heart.sv
 import useCreateBulletinPostLike from '../../hooks/bulletinPostsLike/useCreateBulletinPostLike';
 import useDeleteBulletinPostLike from '../../hooks/bulletinPostsLike/useDeleteBulletinPostLike';
 import useAxiosErrorModal from '../../hooks/useAxiosErrorModal';
+import useModal from '../../hooks/useModal';
+import LoginRequestModal from '../UI/LoginRequestModal';
 
 const HeartContainer = styled.div`
   display: flex;
@@ -33,11 +35,12 @@ const HeartCount = styled.p`
   color: var(--color-tertiary);
 `;
 
-function PostDetailHeart({ likeCount, likeByUser, bulletinId }) {
+function PostDetailHeart({ userId, likeCount, likeByUser, bulletinId }) {
   const queryClient = useQueryClient();
   const [heart, setHeart] = useState(likeByUser);
   const [count, setCount] = useState(likeCount);
   const onError = useAxiosErrorModal(true);
+  const { openModal } = useModal();
   const debounceRef = useRef();
   const heartRef = useRef(heart);
   const likeByUserRef = useRef(likeByUser);
@@ -86,6 +89,11 @@ function PostDetailHeart({ likeCount, likeByUser, bulletinId }) {
   };
 
   const handleHeartClick = () => {
+    if (!userId) {
+      openModal(<LoginRequestModal />);
+      return;
+    }
+
     if (heart === 0) {
       setCount(preCount => preCount + 1);
       setHeart(1);

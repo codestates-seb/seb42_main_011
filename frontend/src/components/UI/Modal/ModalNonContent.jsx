@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import ModalContext from '../../../context/ModalContext';
+import { FlexJustifyAlignCenter } from '../../../styles/shared';
 import ModalPortal from './ModalPortal';
 
 const ModalContainer = styled.section`
@@ -10,9 +11,7 @@ const ModalContainer = styled.section`
   inset: 0;
   z-index: 199;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  ${FlexJustifyAlignCenter}
   background-color: rgba(0, 0, 0, 0.3);
   animation: fadeIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 `;

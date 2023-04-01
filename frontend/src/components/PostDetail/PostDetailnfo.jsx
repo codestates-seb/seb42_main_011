@@ -58,7 +58,11 @@ function PostDetailnfo({
   return (
     <Container>
       <Profile>
-        <Avatar src={src} onError={handleErrorImage} alt="프로필 사진" />
+        <Avatar
+          src={src}
+          onError={handleErrorImage}
+          alt={`${nickname} 프로필 사진`}
+        />
         <Link to={`/user/${memberId}`} onClick={() => closeAllModal()}>
           <UserName dogName={dogName} nickname={nickname} />
         </Link>

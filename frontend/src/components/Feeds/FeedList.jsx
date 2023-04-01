@@ -1,19 +1,9 @@
 import React from 'react';
 import { useInfiniteQuery } from 'react-query';
-import styled from 'styled-components';
 
 import PostList from '../UI/PostList';
 import PostItem from '../UI/PostItem';
 import { getBulletinPostList } from '../../api/bulletinPostsApi';
-
-const StyledFeedList = styled(PostList)`
-  @media (max-width: 1363px) {
-    width: 90vw;
-    grid-template-columns: repeat(auto-fill, 280px);
-    padding-left: 30px;
-    grid-gap: 0px 1px;
-  }
-`;
 
 function FeedList({ onClick, colWidth = '300px' }) {
   const { isLoading, data, fetchNextPage, hasNextPage } = useInfiniteQuery(
@@ -30,22 +20,8 @@ function FeedList({ onClick, colWidth = '300px' }) {
     },
   );
 
-  const handleClick = event => {
-    const $li = event.target.closest('li');
-
-    if (!$li) {
-      return;
-    }
-
-    const { postId } = $li.dataset;
-
-    if (postId) {
-      onClick(postId);
-    }
-  };
-
   return (
-    <StyledFeedList colWidth={colWidth} onClick={handleClick}>
+    <PostList colWidth={colWidth}>
       {!isLoading &&
         data &&
         data.pages?.map(({ data: fetchData }, pageIndex) =>
@@ -59,6 +35,7 @@ function FeedList({ onClick, colWidth = '300px' }) {
                 nickname,
                 dogName,
                 createdAt,
+                memberId,
               },
               idx,
             ) => {
@@ -70,6 +47,8 @@ function FeedList({ onClick, colWidth = '300px' }) {
                 nickname,
                 dogName,
                 createdAt,
+                memberId,
+                onClick,
                 isLastItem:
                   pageIndex === Number(data.pages.length) - 1 &&
                   idx === fetchData.length - 1,
@@ -81,7 +60,7 @@ function FeedList({ onClick, colWidth = '300px' }) {
             },
           ),
         )}
-    </StyledFeedList>
+    </PostList>
   );
 }
 

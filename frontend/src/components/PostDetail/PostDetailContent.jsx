@@ -15,12 +15,12 @@ const Content = styled(Card)`
   white-space: pre-wrap;
   word-wrap: break-word;
   word-break: keep-all;
-  resize: none;
+  overflow: auto;
 `;
 
 function PostDetailContent({ postContent }) {
   return (
-    <Content tag="div" borderRadius="5px">
+    <Content tag="p" borderRadius="5px">
       {postContent}
     </Content>
   );

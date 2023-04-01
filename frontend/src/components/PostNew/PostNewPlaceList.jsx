@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { StyleScrollNone } from '../../styles/shared';
+import { FlexJustifyAlignCenter, ScrollNone } from '../../styles/shared';
 
 const List = styled.ul`
+  ${ScrollNone}
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -12,7 +13,6 @@ const List = styled.ul`
   opacity: 0.85;
 
   overflow-y: auto;
-  ${StyleScrollNone}
 `;
 
 const Item = styled.li`
@@ -33,10 +33,8 @@ const ItemInfo = styled.div`
   height: 100%;
   cursor: pointer;
 
-  display: flex;
+  ${FlexJustifyAlignCenter}
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `;
 
 const ItemPlace = styled.p`

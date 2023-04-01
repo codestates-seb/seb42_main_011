@@ -1,7 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { elapsedTime } from '../../../utils/time';
+import { Link } from 'react-router-dom';
+
 import { ReactComponent as Commentlogo } from '../../../assets/icons/icon-comment.svg';
+import { elapsedTime } from '../../../utils/time';
+
 import useObserverFetch from '../../../hooks/useObserverFetch';
 
 const ItemBox = styled.li`
@@ -9,33 +12,36 @@ const ItemBox = styled.li`
   border-radius: 5px;
   display: flex;
   flex-direction: column;
-  width: 300px;
+  width: inherit;
+  height: inherit;
   background-color: var(--color-light-0);
+  z-index: 10;
+  height: 472px;
 
   &:hover {
     box-shadow: 10px 10px 0 0 var(--color-dark-0);
   }
 
   @media (max-width: 1363px) {
-    width: 85%;
-    height: 88%;
+    height: 410px;
   }
-  z-index: 10;
-  &:hover {
-    cursor: pointer;
-  }
+`;
+
+const PostBody = styled.section`
+  cursor: pointer;
+  height: calc(100% - 45px);
 `;
 
 const PostImage = styled.img`
   width: 100%;
-  height: 299px;
-  aspect-ratio: 1/1;
-  /* 정사각형 아닌 사진은 비율 그대로 확대되도록 */
+  height: 300px;
+  min-height: 300px;
+  vertical-align: bottom;
   object-fit: cover;
 
   @media (max-width: 1363px) {
-    width: 100%;
-    object-fit: cover;
+    height: 250px;
+    min-height: 250px;
   }
 `;
 
@@ -50,8 +56,8 @@ const PostBox = styled.div`
   gap: 10px;
 
   @media (max-width: 1363px) {
-    height: 35%;
     font-size: 14px;
+    padding: 6px 6px 9px 6px;
   }
 `;
 
@@ -63,7 +69,6 @@ const ContentBox = styled.p`
   width: 100%;
   display: inline-block;
 
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 
@@ -73,6 +78,11 @@ const ContentBox = styled.p`
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+
+  @media (max-width: 1363px) {
+    height: 64px;
+    -webkit-line-clamp: 2;
+  }
 `;
 
 const CommentBox = styled.div`
@@ -80,10 +90,6 @@ const CommentBox = styled.div`
   flex-direction: row;
   align-items: center;
   padding-left: 3px;
-
-  @media (max-width: 1363px) {
-    margin-top: -10px;
-  }
 `;
 
 const Comment = styled.span`
@@ -92,18 +98,28 @@ const Comment = styled.span`
   line-height: 19px;
 `;
 
-const FeedInfos = styled.div`
+const PostFooter = styled.section`
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   padding: 11px 10px 10px 12px;
+  height: 45px;
+
+  @media (max-width: 1363px) {
+    font-size: 13px;
+    padding: 8px;
+  }
 `;
 
-const FeedInfosName = styled.div`
+const PostUsername = styled.p`
   font-weight: 500;
+  display: flex;
+
+  @media (max-width: 1363px) {
+  }
 `;
 
-const FeedInfosCreateAt = styled.span`
+const PostCreatedAt = styled.span`
   font-size: 13px;
   line-height: 22px;
   opacity: 0.5;
@@ -117,28 +133,38 @@ function PostItem({
   nickname,
   dogName,
   createdAt,
+  memberId,
   isLastItem,
   onFetch,
+  onClick,
 }) {
   const displayTimeText = elapsedTime(createdAt);
   const { ref } = useObserverFetch({ isLastItem, onFetch });
 
+  const handleBodyClick = () => {
+    onClick(bulletinPostId);
+  };
+
   return (
     <ItemBox ref={ref} data-post-id={bulletinPostId}>
-      <PostImage src={photoUrl} />
-      <PostBox>
-        <ContentBox>{postContent}</ContentBox>
-        <CommentBox>
-          <Commentlogo alt="" />
-          <Comment>{commentCount}개</Comment>
-        </CommentBox>
-      </PostBox>
-      <FeedInfos>
-        <FeedInfosName>
-          {nickname}🏠{dogName}
-        </FeedInfosName>
-        <FeedInfosCreateAt>{displayTimeText}</FeedInfosCreateAt>
-      </FeedInfos>
+      <PostBody onClick={handleBodyClick}>
+        <PostImage src={photoUrl} alt={`${nickname} 게시글 사진`} />
+        <PostBox>
+          <ContentBox>{postContent}</ContentBox>
+          <CommentBox>
+            <Commentlogo />
+            <Comment>{commentCount}개</Comment>
+          </CommentBox>
+        </PostBox>
+      </PostBody>
+      <PostFooter>
+        <Link to={`/user/${memberId}`}>
+          <PostUsername>
+            {nickname}🏠{dogName}
+          </PostUsername>
+        </Link>
+        <PostCreatedAt>{displayTimeText}</PostCreatedAt>
+      </PostFooter>
     </ItemBox>
   );
 }

@@ -7,6 +7,7 @@ import Card from '../UI/Card/Card';
 import FollowLogo from '../../assets/logo/following_logo.svg';
 import { getUserFollowing } from '../../api/userApi';
 import useModal from '../../hooks/useModal';
+import Loading from '../UI/Loading';
 
 const NoFollowing = styled.div`
   width: 100%;
@@ -105,7 +106,7 @@ function FollowModal() {
   );
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (error) {

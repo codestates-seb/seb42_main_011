@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import Card from '../components/UI/Card/Card';
 
 const FeedPlaceWrapper = styled.section`
-  margin-top: 20px;
   width: 100%;
   height: 100%;
   display: flex;
@@ -12,6 +11,7 @@ const FeedPlaceWrapper = styled.section`
   flex-direction: column;
   flex-wrap: wrap;
   overflow: hidden;
+  position: relative;
 `;
 const PlaceWrapper = styled.div`
   width: 100%;
@@ -78,9 +78,10 @@ const Address = styled.p`
 `;
 
 const TextWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  padding-top: 30%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 const NoDataText = styled.p`
@@ -88,7 +89,10 @@ const NoDataText = styled.p`
   line-height: 3rem;
   font-size: var(--font-size-20);
   font-weight: 500;
-  margin-top: 0px;
+
+  @media screen and (max-height: 750px) {
+    font-size: var(--font-size-16);
+  }
 `;
 
 function UserPlacePage({ userdata, isMyPage }) {
@@ -132,10 +136,7 @@ function UserPlacePage({ userdata, isMyPage }) {
                 <br />글 작성시 위치를 추가해 장소를 추천해보세요 :)
               </NoDataText>
             ) : (
-              <NoDataText>
-                <br />
-                아직 친구가 추천한 장소가 없어요! :)
-              </NoDataText>
+              <NoDataText>아직 친구가 추천한 장소가 없어요! :)</NoDataText>
             )}
           </TextWrapper>
         )}

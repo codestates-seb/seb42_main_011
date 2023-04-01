@@ -7,6 +7,7 @@ import Card from '../UI/Card/Card';
 import followersLogo from '../../assets/logo/followers_logo.svg';
 import { getUserFollower } from '../../api/userApi';
 import useModal from '../../hooks/useModal';
+import Loading from '../UI/Loading';
 
 const NoFollowers = styled.div`
   width: 100%;
@@ -105,7 +106,7 @@ function FollowerModal() {
   );
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (error) {
