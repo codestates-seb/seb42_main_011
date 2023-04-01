@@ -16,7 +16,7 @@ export default {
     amenityId: 1,
     amenityName: '카페 가고싶다',
     likeCount: 1,
-    likeByUser: 2,
+    likeByUser: 0,
     commentList: [
       {
         commentId: 1,

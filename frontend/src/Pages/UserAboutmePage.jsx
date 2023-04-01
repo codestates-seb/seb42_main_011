@@ -54,29 +54,30 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
     useState(true);
   const { user: currentUser } = useSelector(state => state.auth);
 
+  // Compare following status by currentuser annd memberid
+  const storageKey = `following_${currentUser}_${memberId}`;
+
   // Button change
   const userFollowMutation = useMutation(postUserFollow, {
     onSettled: () => {
       setIsFollowing(true);
-      localStorage.setItem(`following_${memberId}`, true);
+      localStorage.setItem(storageKey, true);
     },
   });
 
   const userFollowDeleteMutation = useMutation(deleteUserFollow, {
     onSettled: () => {
       setIsFollowing(false);
-      localStorage.setItem(`following_${memberId}`, false);
+      localStorage.setItem(storageKey, false);
     },
   });
 
-  // Check following status from local storage
+  // Check following status(memberId, currentUser) from local storage
   useEffect(() => {
     async function checkFollowingStatus() {
       try {
         setIsLoadingFollowingStatus(true);
-        const storedFollowingStatus = localStorage.getItem(
-          `following_${memberId}`,
-        );
+        const storedFollowingStatus = localStorage.getItem(storageKey);
         if (storedFollowingStatus !== null) {
           setIsFollowing(JSON.parse(storedFollowingStatus));
         } else {
@@ -91,7 +92,7 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
     }
 
     checkFollowingStatus();
-  }, [memberId]);
+  }, [memberId, storageKey]);
 
   // Click api call (delete, follow)
   const handleFollowClick = async () => {

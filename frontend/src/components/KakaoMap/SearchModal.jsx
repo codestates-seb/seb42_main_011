@@ -13,12 +13,21 @@ const LocationDropdown = styled.div`
   margin: 80px 0 100px;
   text-align: center;
 `;
+
 const Search = styled.div`
-  width: 300px;
+  width: 400px;
   height: 180px;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  & span {
+    display: block;
+    color: #777;
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+  }
 `;
 
 const SearchInput = styled.input`
@@ -29,7 +38,7 @@ const SearchInput = styled.input`
   margin-bottom: 50px;
 `;
 
-function SearchModal() {
+function SearchModal({ handleOpenSearchModal }) {
   const [inputText, setInputText] = useState('');
   const [place, setPlace] = useState('');
   const { closeModal } = useContext(ModalContext);
@@ -54,14 +63,21 @@ function SearchModal() {
       <LocationDropdown>
         <Search>
           <form className="inputForm" onSubmit={handleSubmit}>
-            <figcaption>키워드나 주소를 검색해보세요!</figcaption>
+            <figcaption>
+              키워드나 주소를 검색해보세요! <br />{' '}
+              <span>* 키워드 검색은 상세 페이지로만 이동이 가능합니다!</span>
+            </figcaption>
             <SearchInput
-              placeholder="검색해주세요!"
+              placeholder="검색해주세요! ex) 서울시 애견카페"
               onChange={onChange}
               value={inputText}
               required
             />
-            <Button variant="medium" type="submit">
+            <Button
+              variant="medium"
+              type="submit"
+              onClick={handleOpenSearchModal}
+            >
               검색
             </Button>
           </form>
