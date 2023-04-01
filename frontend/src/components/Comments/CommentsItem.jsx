@@ -199,7 +199,11 @@ function CommentsItem({
 
   return (
     <StyledCommenstItem borderRadius="5px" tag="li" data-comment-id={commentId}>
-      <Avatar src={src} onError={handleErrorImage} alt="" />
+      <Avatar
+        src={src}
+        onError={handleErrorImage}
+        alt={`${nickName} 프로필 사진`}
+      />
       <NameContainer>
         <Nickname to={`/user/${memberId}`} onClick={closeModal}>
           {nickName}

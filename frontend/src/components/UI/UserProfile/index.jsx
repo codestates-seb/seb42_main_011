@@ -29,7 +29,11 @@ function UserProfile({ profileUrl, dogName, nickname }) {
 
   return (
     <Profile>
-      <Avatar src={src} onError={handleErrorImage} alt="프로필 사진" />
+      <Avatar
+        src={src}
+        onError={handleErrorImage}
+        alt={`${nickname} 프로필 사진`}
+      />
       <Name>{displayNameText}</Name>
     </Profile>
   );
