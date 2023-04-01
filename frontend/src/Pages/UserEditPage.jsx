@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 import { ReactComponent as MypageShape } from '../assets/shape/purple_shape.svg';
 import { ReactComponent as Stripeshape } from '../assets/shape/mypage_shape_stripe.svg';
 import Card from '../components/UI/Card/Card';
@@ -9,6 +10,7 @@ import ImageUpload from '../components/User/ImageUpload';
 import UserEditHeader from '../components/User/UserEditHeader';
 import UserEditContent from '../components/User/UserEditContent';
 import { getUserProfile } from '../api/userApi';
+import Loading from '../components/UI/Loading';
 
 const MyPageComponent = styled.section`
   width: 100%;
@@ -87,6 +89,7 @@ const StripeImg = styled(Stripeshape)`
 `;
 
 function UserEditPage() {
+  const { user: currentUser } = useSelector(state => state.auth);
   const { memberId } = useParams();
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
@@ -98,11 +101,15 @@ function UserEditPage() {
   } = useQuery(['userData', memberId], () => getUserProfile({ memberId }));
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (error) {
     return <p>Error: {error.message}</p>;
+  }
+
+  if (currentUser !== memberId) {
+    return <p>권한이 없습니다.</p>;
   }
 
   const handleCancel = () => {
