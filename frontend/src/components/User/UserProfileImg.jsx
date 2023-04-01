@@ -4,26 +4,29 @@ import UserpageProfile from '../UI/UserpageProfile';
 import { ReactComponent as Mountshape } from '../../assets/shape/mypage_shape_mount.svg';
 
 const Profile = styled.aside`
-  width: 47vw;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: columns;
+  flex-direction: column;
   overflow: hidden;
-  padding: 20px 20px 20px 25px;
+  padding: 20px;
+
+  @media screen and (max-height: 750px) {
+    padding-top: 40px;
+  }
 `;
 
 const ImageBox = styled.div`
   position: relative;
   width: 100%;
-  min-width: 400px;
-  max-width: 550px;
   aspect-ratio: 7.9 / 10;
-  object-fit: cover;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 50px;
+  min-width: 270px;
 `;
 
 const MountImg = styled(Mountshape)`
@@ -36,9 +39,6 @@ const UserpageProfileComponent = styled(UserpageProfile)`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  min-width: 400px;
-  max-width: 700px;
-  max-height: 720px;
 `;
 
 function UserProfileImg({ Userdata, TitleImageUrl }) {

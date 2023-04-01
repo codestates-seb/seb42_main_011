@@ -5,34 +5,39 @@ import { useLocation, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import UserInfoComponent from '../components/User/UserInfoComponent';
 import UserProfileImg from '../components/User/UserProfileImg';
-import UserDeleteModal from '../components/User/UserDeleteModal';
-import useModal from '../hooks/useModal';
 import { ReactComponent as ProfileTitle } from '../assets/logo/mypage_logo.svg';
 import { ReactComponent as FriendProfileTitle } from '../assets/logo/friend_mypage_logo.svg';
 import { getUserProfile } from '../api/userApi';
 
 const MyPageComponent = styled.section`
   width: 100%;
-  min-width: 1017px;
   max-width: 1700px;
   height: 100%;
-  min-height: calc(100vh - 196px);
-  display: flex;
-  justify-content: start;
+  min-height: calc(100vh - 220px);
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
-const UserDelete = styled.div`
-  position: absolute;
-  top: 20px;
-  right: 45px;
-  opacity: 0.5;
-  &:hover {
-    color: var(--color-tertiary);
-    font-weight: 500;
-    opacity: 1;
-    cursor: pointer;
-  }
+const UserWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  min-height: calc(100vh - 200px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const UserProfileWrapper = styled.div`
+  padding-top: 10px;
+  width: 55vmin;
+  aspect-ratio: 9 / 13;
+`;
+
+const UserInfoWrapper = styled.div`
+  width: 80vmin;
+  aspect-ratio: 1 /0.99;
 `;
 
 const TitleLogo = styled(ProfileTitle)`
@@ -50,12 +55,11 @@ const FriendTitleLogo = styled(FriendProfileTitle)`
   height: 27%;
   position: absolute;
   top: -10.5%;
-  left: -10%;
+  left: -8%;
   z-index: 10;
 `;
 
 function UserPage() {
-  const { openModal } = useModal();
   const { memberId: pageMemberId } = useParams();
   const location = useLocation();
 
@@ -73,10 +77,6 @@ function UserPage() {
   } else {
     TitleImageUrl = <FriendTitleLogo alt="Friend page" />;
   }
-
-  const handleDeleteButtnClick = () => {
-    openModal(<UserDeleteModal memberId={pageMemberId} />);
-  };
 
   const {
     isLoading,
@@ -96,16 +96,22 @@ function UserPage() {
 
   return (
     <MyPageComponent>
-      <UserDelete onClick={handleDeleteButtnClick}>
-        {isMyPage ? '회원탈퇴' : null}
-      </UserDelete>
-      <UserProfileImg Userdata={Userdata.data} TitleImageUrl={TitleImageUrl} />
-      <UserInfoComponent
-        PageLocation={PageLocation}
-        Userdata={Userdata.data}
-        memberId={pageMemberId}
-        isMyPage={isMyPage}
-      />
+      <UserWrapper>
+        <UserProfileWrapper>
+          <UserProfileImg
+            Userdata={Userdata.data}
+            TitleImageUrl={TitleImageUrl}
+          />
+        </UserProfileWrapper>
+        <UserInfoWrapper>
+          <UserInfoComponent
+            PageLocation={PageLocation}
+            Userdata={Userdata.data}
+            memberId={pageMemberId}
+            isMyPage={isMyPage}
+          />
+        </UserInfoWrapper>
+      </UserWrapper>
     </MyPageComponent>
   );
 }

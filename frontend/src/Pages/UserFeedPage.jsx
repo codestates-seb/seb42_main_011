@@ -16,7 +16,9 @@ const FeedImgWrapper = styled.section`
 `;
 
 const FeedImgInside = styled.div`
-  aspect-ratio: 1/1;
+  /*   aspect-ratio: 1/0.7; */
+  width: 100%;
+  height: 100%;
   cursor: pointer;
 `;
 
@@ -51,7 +53,6 @@ const NoDataText = styled.p`
   line-height: 3rem;
   font-size: var(--font-size-20);
   font-weight: 500;
-  margin-top: 15px;
 `;
 function UserFeedPage({ userdata, isMyPage }) {
   const { openModal, closeModal } = useModal();

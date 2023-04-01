@@ -12,6 +12,10 @@ const UserTab = styled.div`
   justify-content: center;
   align-items: center;
   margin: 0 auto;
+
+  @media screen and (max-height: 750px) {
+    transform: scaleY(0.95);
+  }
 `;
 
 const Tabmenu = styled.ul`

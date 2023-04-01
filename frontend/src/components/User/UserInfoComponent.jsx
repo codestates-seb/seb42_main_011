@@ -8,69 +8,97 @@ import UserPlacePage from '../../Pages/UserPlacePage';
 import Card from '../UI/Card/Card';
 import UserHeader from './UserHeader';
 import UserTabMenu from './UserTabMenu';
+import UserDeleteModal from './UserDeleteModal';
+import useModal from '../../hooks/useModal';
 
 const MyPageContent = styled.section`
-  width: 53vw;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  padding: 20px 10px;
+  position: relative;
+
+  @media screen and (max-height: 750px) {
+    padding: 0px 15px;
+    margin-top: 15px;
+  }
+`;
+
+const UserDelete = styled.div`
+  position: absolute;
+  top: 45px;
+  right: 30px;
+  opacity: 0.5;
+  &:hover {
+    color: var(--color-tertiary);
+    font-weight: 500;
+    opacity: 1;
+    cursor: pointer;
+  }
 `;
 
 const UserInfoWrapper = styled.div`
-  width: 90%;
-  min-width: 400px;
-  max-width: 850px;
   position: relative;
+  width: 95%;
+  aspect-ratio: 2 / 1.6;
   z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const MypagePurpleShape = styled(MypageShape)`
   position: absolute;
-  top: -100px;
-  left: -50px;
+  top: -15%;
+  left: -8%;
   width: 25%;
-  min-width: 170px;
-  max-width: 208px;
-  max-height: 168px;
   z-index: -1;
+
+  @media screen and (max-height: 750px) {
+    top: -13%;
+  }
 `;
 const ContentBox = styled(Card)`
   z-index: 1;
   background-color: var(--color-light-0);
-  aspect-ratio: 1/1;
   width: 100%;
-  min-width: 490px;
-  max-width: 850px;
   height: 100%;
-  min-height: 300px;
-  max-height: 660px;
   border: var(--border);
   border-radius: 5px;
   padding: 20px;
   box-shadow: 10px 10px var(--color-dark-0);
   overflow: hidden;
+  aspect-ratio: 2 / 1.6;
 `;
 
 const StripeImg = styled(Stripeshape)`
   width: 80%;
-  max-width: 154px;
   height: 25%;
-  max-height: 180px;
   position: absolute;
   bottom: -10%;
-  right: -11.6%;
+  right: -37%;
   z-index: 1000;
-  background-image: ${props => props.backgroundImage};
 `;
 
 const Contents = styled.div`
   margin-top: 3%;
   width: 100%;
-  height: 87.5%;
+  aspect-ratio: 2 / 1.35;
+
+  @media screen and (max-height: 750px) {
+    aspect-ratio: 2 / 1.32;
+  }
+
+  @media screen and (max-height: 650px) {
+    aspect-ratio: 2 / 1.3;
+  }
 `;
 
 function UserInfoComponent({ PageLocation, Userdata, memberId, isMyPage }) {
+  const { openModal } = useModal();
   let CardContents;
 
   if (PageLocation === `/user/${memberId}`) {
@@ -87,8 +115,15 @@ function UserInfoComponent({ PageLocation, Userdata, memberId, isMyPage }) {
     CardContents = <UserPlacePage userdata={Userdata} isMyPage={isMyPage} />;
   }
 
+  const handleDeleteButtnClick = () => {
+    openModal(<UserDeleteModal memberId={memberId} />);
+  };
+
   return (
     <MyPageContent>
+      <UserDelete onClick={handleDeleteButtnClick}>
+        {isMyPage ? '회원탈퇴' : null}
+      </UserDelete>
       <UserHeader userdata={Userdata} memberId={memberId} isMyPage={isMyPage} />
       <UserInfoWrapper>
         <MypagePurpleShape />
