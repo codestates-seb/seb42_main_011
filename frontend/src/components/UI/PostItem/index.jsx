@@ -29,17 +29,14 @@ const ItemBox = styled.li`
 
 const PostBody = styled.section`
   cursor: pointer;
-  height: calc(100% - 43px);
-
-  @media (max-width: 1363px) {
-    height: calc(100% - 33px);
-  }
+  height: calc(100% - 45px);
 `;
 
 const PostImage = styled.img`
   width: 100%;
   height: 300px;
   min-height: 300px;
+  vertical-align: bottom;
   object-fit: cover;
 
   @media (max-width: 1363px) {
@@ -106,10 +103,11 @@ const PostFooter = styled.section`
   justify-content: space-between;
   align-items: center;
   padding: 11px 10px 10px 12px;
+  height: 45px;
 
   @media (max-width: 1363px) {
     font-size: 13px;
-    padding: 8px 6px;
+    padding: 8px;
   }
 `;
 
