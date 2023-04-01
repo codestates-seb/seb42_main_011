@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import Card from '../components/UI/Card/Card';
 import RetryErrorBoundary from '../components/RetryErrorBoundary';
+import Loading from '../components/UI/Loading';
 
 const PostDetailEdit = lazy(() => import('../components/PostEdit'));
 
@@ -27,10 +28,6 @@ const PostDetailContainer = styled(Card)`
     scale: calc(0.9);
   }
 `;
-
-function Loading() {
-  return <div> 로딩 중입니다. </div>;
-}
 
 function PostEditPage({
   createdAt,

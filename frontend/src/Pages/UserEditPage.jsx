@@ -10,6 +10,7 @@ import ImageUpload from '../components/User/ImageUpload';
 import UserEditHeader from '../components/User/UserEditHeader';
 import UserEditContent from '../components/User/UserEditContent';
 import { getUserProfile } from '../api/userApi';
+import Loading from '../components/UI/Loading';
 
 const MyPageComponent = styled.section`
   width: 100%;
@@ -100,7 +101,7 @@ function UserEditPage() {
   } = useQuery(['userData', memberId], () => getUserProfile({ memberId }));
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (error) {

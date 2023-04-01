@@ -10,6 +10,7 @@ import useModal from '../hooks/useModal';
 import { ReactComponent as ProfileTitle } from '../assets/logo/mypage_logo.svg';
 import { ReactComponent as FriendProfileTitle } from '../assets/logo/friend_mypage_logo.svg';
 import { getUserProfile } from '../api/userApi';
+import Loading from '../components/UI/Loading';
 
 const MyPageComponent = styled.section`
   width: 100%;
@@ -87,7 +88,7 @@ function UserPage() {
   );
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (error) {

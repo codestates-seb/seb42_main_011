@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 
 import Card from '../components/UI/Card/Card';
 import RetryErrorBoundary from '../components/RetryErrorBoundary';
+import Loading from '../components/UI/Loading';
 
 const PostDetail = lazy(() => import('../components/PostDetail'));
 
@@ -28,10 +29,6 @@ const PostDetailContainer = styled(Card)`
     scale: calc(0.9);
   }
 `;
-
-function Loading() {
-  return <div> 로딩 중입니다. </div>;
-}
 
 function PostDetailPage({ bulletinId, onClose }) {
   const userId = useSelector(state => state.auth.user);
