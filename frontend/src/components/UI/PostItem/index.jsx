@@ -23,7 +23,7 @@ const ItemBox = styled.li`
   }
 
   @media (max-width: 1363px) {
-    height: 400px;
+    height: 410px;
   }
 `;
 
@@ -67,6 +67,7 @@ const PostBox = styled.div`
 const ContentBox = styled.p`
   line-height: 1.4rem;
   padding-bottom: 12px;
+  height: 72px;
 
   width: 100%;
   display: inline-block;
