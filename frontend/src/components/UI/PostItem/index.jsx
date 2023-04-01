@@ -40,12 +40,11 @@ const PostImage = styled.img`
   width: 100%;
   height: 300px;
   min-height: 300px;
-  aspect-ratio: 1/1;
   object-fit: cover;
 
   @media (max-width: 1363px) {
-    height: 240px;
-    min-height: 240px;
+    height: 250px;
+    min-height: 250px;
   }
 `;
 
@@ -68,7 +67,6 @@ const PostBox = styled.div`
 const ContentBox = styled.p`
   line-height: 1.4rem;
   padding-bottom: 12px;
-  height: 72px;
 
   width: 100%;
   display: inline-block;
@@ -82,6 +80,11 @@ const ContentBox = styled.p`
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+
+  @media (max-width: 1363px) {
+    height: 64px;
+    -webkit-line-clamp: 2;
+  }
 `;
 
 const CommentBox = styled.div`
@@ -100,16 +103,21 @@ const Comment = styled.span`
 const PostFooter = styled.section`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 11px 10px 10px 12px;
 
   @media (max-width: 1363px) {
-    font-size: 14px;
+    font-size: 13px;
     padding: 8px 6px;
   }
 `;
 
-const PostUsername = styled.div`
+const PostUsername = styled.p`
   font-weight: 500;
+  display: flex;
+
+  @media (max-width: 1363px) {
+  }
 `;
 
 const PostCreatedAt = styled.span`

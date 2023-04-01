@@ -14,7 +14,7 @@ const StyledPostList = styled.ul`
   margin-bottom: 16px;
 
   @media (max-width: 1363px) {
-    grid-template-columns: repeat(auto-fill, 240px);
+    grid-template-columns: repeat(auto-fill, 280px);
     grid-gap: 20px 40px;
     padding: 0 30px;
   }
