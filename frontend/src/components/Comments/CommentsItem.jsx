@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
+
 import { ReactComponent as IconSeeMore } from '../../assets/icons/icon-see-more-small.svg';
 import { ReactComponent as IconCancle } from '../../assets/icons/icon-cancle.svg';
 import { ReactComponent as IconCheck } from '../../assets/icons/icon-check.svg';
@@ -8,6 +9,7 @@ import { ReactComponent as IconCheck } from '../../assets/icons/icon-check.svg';
 import Card from '../UI/Card/Card';
 import EditAndRemoveButton from '../UI/EditAndRemoveButton';
 import useModal from '../../hooks/useModal';
+import useImageError from '../../hooks/useImageError';
 
 const StyledCommenstItem = styled(Card)`
   width: 100%;
@@ -155,6 +157,8 @@ function CommentsItem({
   const [editMode, setEditMode] = useState(false);
   const [showSeeMoreMenu, setShowSeeMoreMenu] = useState(false);
   const [newContent, setNewContent] = useState(commentContent);
+  const [src, handleErrorImage] = useImageError(profileUrl);
+
   const { closeModal } = useModal();
 
   const handleSeeMoreButton = () => {
@@ -195,7 +199,11 @@ function CommentsItem({
 
   return (
     <StyledCommenstItem borderRadius="5px" tag="li" data-comment-id={commentId}>
-      <Avatar src={profileUrl} alt="" />
+      <Avatar
+        src={src}
+        onError={handleErrorImage}
+        alt={`${nickName} 프로필 사진`}
+      />
       <NameContainer>
         <Nickname to={`/user/${memberId}`} onClick={closeModal}>
           {nickName}

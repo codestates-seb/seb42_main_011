@@ -16,6 +16,8 @@ public interface MemberService {
 
     Page<Member> getMemberList(int page, int size);
 
+    Page<Member> getActiveMemberList(int page, int size);
+
     void deleteMember(Long memberId, long loginUserId);
 
     void verifyIfEmailExists(String email);

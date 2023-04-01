@@ -88,7 +88,7 @@ function ImageUpload({ profileUrl, nickname, setFile }) {
     <ImageWrapper>
       <input
         type="file"
-        accept="image/jpg, image/png, image/gif"
+        accept="image/jpg, image/jpeg, image/png, image/gif"
         onChange={handleFileSelection}
         ref={imageUploader}
         style={{

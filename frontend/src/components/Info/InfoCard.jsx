@@ -14,6 +14,12 @@ const InfoCardWrapper = styled.div`
   @media screen and (max-width: 1199px) {
     height: 400px;
   }
+
+  a {
+    &:hover {
+      color: var(--color-tertiary);
+    }
+  }
 `;
 
 const InfoLogo = styled.h3`
@@ -85,12 +91,6 @@ const InfoText = styled.div`
   height: 60px;
   font-size: 18px;
 
-  a {
-    &:hover {
-      color: var(--color-tertiary);
-    }
-  }
-
   @media screen and (max-width: 1199px) {
     margin-bottom: 33px;
     font-size: 16px;
@@ -105,13 +105,25 @@ function InfoCard() {
       </InfoLogo>
       <NameWrapper>
         <NameTitle>frontend</NameTitle>
-        <Name>🐶 notplastic</Name>
-        <Name>🐶 wjdwjdtn92</Name>
-        <Name>🐶 wangamy</Name>
+        <Name>
+          🐶 &nbsp;<a href="https://github.com/notplastic2">notplastic</a>
+        </Name>
+        <Name>
+          🐶 &nbsp;<a href="https://github.com/wjdwjdtn92">wjdwjdtn92</a>
+        </Name>
+        <Name>
+          🐶 &nbsp;<a href="https://github.com/wangamy0222">wangamy</a>
+        </Name>
         <NameTitle>backend</NameTitle>
-        <Name>🐶 sdoaolo</Name>
-        <Name>🐶 JihooKang-KOR</Name>
-        <Name>🐶 chicchicDawny</Name>
+        <Name>
+          🐶 &nbsp;<a href="https://github.com/sdoaolo">sdoaolo</a>
+        </Name>
+        <Name>
+          🐶 &nbsp;<a href="https://github.com/JihooKang-KOR">JihooKang-KOR</a>
+        </Name>
+        <Name>
+          🐶 &nbsp;<a href="https://github.com/Daw-Jeong">chicchicDawny</a>
+        </Name>
       </NameWrapper>
       <InfoWrapper>
         <InfoText>

@@ -84,6 +84,7 @@ function PlacePage() {
   };
 
   const handleKeywordBtnClick = () => {
+    setSelectedLocation(null);
     openModal(<SearchModal />);
   };
 
