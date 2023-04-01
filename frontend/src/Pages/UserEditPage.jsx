@@ -108,12 +108,20 @@ const StripeImg = styled(Stripeshape)`
   z-index: 1000;
 `;
 
+const ErrorText = styled.p`
+  font-size: var(--font-size-24);
+  font-weight: 500;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
 function UserEditPage() {
   const { user: currentUser } = useSelector(state => state.auth);
   const { memberId } = useParams();
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
-  console.log(file);
   const {
     isLoading,
     error,
@@ -125,11 +133,13 @@ function UserEditPage() {
   }
 
   if (error) {
-    return <p>Error: {error.message}</p>;
+    return <ErrorText>Error: {error.message}</ErrorText>;
   }
+  console.log(currentUser);
+  console.log(memberId);
 
-  if (currentUser !== memberId) {
-    return <p>권한이 없습니다.</p>;
+  if (String(currentUser) !== String(memberId)) {
+    return <ErrorText>권한이 없습니다.</ErrorText>;
   }
 
   const handleCancel = () => {

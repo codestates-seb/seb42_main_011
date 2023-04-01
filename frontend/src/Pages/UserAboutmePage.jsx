@@ -37,6 +37,7 @@ const AboutMeContent = styled.div`
 
   @media screen and (max-height: 750px) {
     margin-bottom: 10px;
+    font-size: var(--font-size-16);
   }
 `;
 
