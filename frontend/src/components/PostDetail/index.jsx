@@ -175,6 +175,7 @@ function PostDetail({ userId, bulletinId, onClose }) {
         >
           <InfoContainer>
             <PostDetailHeart
+              userId={userId}
               likeCount={likeCount}
               bulletinId={bulletinPostId}
               likeByUser={likeByUser}

@@ -22,7 +22,7 @@ const FriendSearchContainer = styled.div`
   }
 `;
 
-const FreindGreenShpate = styled(FriendShape)`
+const FriendGreenShape = styled(FriendShape)`
   position: fixed;
   width: 250px;
   height: 400px;
@@ -33,7 +33,7 @@ const FreindGreenShpate = styled(FriendShape)`
 function FriendSearch({ children }) {
   return (
     <FriendSearchWrapper>
-      <FreindGreenShpate />
+      <FriendGreenShape />
       <FriendSearchContainer>{children}</FriendSearchContainer>
     </FriendSearchWrapper>
   );

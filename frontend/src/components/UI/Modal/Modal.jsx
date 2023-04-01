@@ -3,6 +3,7 @@ import React, { Fragment, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import IconClose from '../../../assets/icons/icon-close.svg';
 import ModalContext from '../../../context/ModalContext';
+import { FlexJustifyAlignCenter } from '../../../styles/shared';
 
 const ModalContainer = styled.aside`
   position: fixed;
@@ -10,9 +11,7 @@ const ModalContainer = styled.aside`
   height: 100%;
   inset: 0;
   z-index: 199;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  ${FlexJustifyAlignCenter}
 `;
 
 const ModalBg = styled.div`
@@ -28,9 +27,7 @@ const ModalBg = styled.div`
 
 const ModalOutside = styled.div`
   /* 안쪽 박스 가운데정렬 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  ${FlexJustifyAlignCenter}
 
   width: 448px;
   height: 622px;
@@ -57,9 +54,7 @@ const ModalInside = styled.div`
 
 const Title = styled.div`
   flex-basis: 105px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  ${FlexJustifyAlignCenter}
   width: 100%;
 `;
 

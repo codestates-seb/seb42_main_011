@@ -13,10 +13,12 @@ const UserHeaderWrapper = styled.section`
   justify-content: center;
   font-weight: 500;
   z-index: 10;
-  width: 90%;
-  min-width: 490px;
-  max-width: 850px;
+  width: 95%;
   padding-right: 10px;
+
+  @media screen and (max-height: 800px) {
+    margin-bottom: 5px;
+  }
 `;
 
 const UserHeaderContent = styled.div`
@@ -33,6 +35,11 @@ const Name = styled.div`
   font-size: 40px;
   margin-top: 12px;
   flex-grow: 0.05;
+
+  @media screen and (max-height: 800px) {
+    margin-top: 23px;
+    font-size: 30px;
+  }
 `;
 
 const Nickname = styled.div`

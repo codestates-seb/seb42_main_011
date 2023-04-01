@@ -13,10 +13,13 @@ const FeedImgWrapper = styled.section`
   ::-webkit-scrollbar {
     display: none;
   }
+  position: relative;
 `;
 
 const FeedImgInside = styled.div`
-  aspect-ratio: 1/1;
+  /*   aspect-ratio: 1/0.7; */
+  width: 100%;
+  height: 100%;
   cursor: pointer;
 `;
 
@@ -41,9 +44,10 @@ const FeedImg = styled.img`
 `;
 
 const TextWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  padding-top: 30%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 const NoDataText = styled.p`
@@ -51,7 +55,10 @@ const NoDataText = styled.p`
   line-height: 3rem;
   font-size: var(--font-size-20);
   font-weight: 500;
-  margin-top: 15px;
+
+  @media screen and (max-height: 750px) {
+    font-size: var(--font-size-16);
+  }
 `;
 function UserFeedPage({ userdata, isMyPage }) {
   const { openModal, closeModal } = useModal();

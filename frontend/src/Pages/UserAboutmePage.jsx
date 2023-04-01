@@ -15,9 +15,7 @@ import useModal from '../hooks/useModal';
 const AboutMe = styled.section`
   text-align: center;
   width: 100%;
-  height: 100%;
-  aspect-ratio: 1/0.85;
-  max-height: 580px;
+  aspect-ratio: 2 / 1.25;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -26,9 +24,8 @@ const AboutMe = styled.section`
 `;
 
 const AboutMeContent = styled.div`
-  width: 90%;
-  min-width: 376px;
-  white-space: pre-wrap;
+  width: 100%;
+  white-space: pre-line;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,6 +33,12 @@ const AboutMeContent = styled.div`
   font-weight: 500;
   line-height: 40px;
   margin-bottom: 20px;
+  word-wrap: break-word;
+
+  @media screen and (max-height: 750px) {
+    margin-bottom: 10px;
+    font-size: var(--font-size-16);
+  }
 `;
 
 const FollowButton = styled(Button)`
@@ -46,7 +49,7 @@ const FollowButton = styled(Button)`
 `;
 
 function UserAboutmePage({ userdata, memberId, isMyPage }) {
-  let AboumeButton;
+  let AboutmeButton;
   const userData = userdata;
   const { openModal } = useModal();
   const [isFollowing, setIsFollowing] = useState(false);
@@ -187,13 +190,13 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
 
   // Button change by location
   if (isMyPage) {
-    AboumeButton = (
+    AboutmeButton = (
       <Link to={`/user/${memberId}/edit`}>
         <Button variant="medium">수정</Button>
       </Link>
     );
   } else {
-    AboumeButton = currentUser ? (
+    AboutmeButton = currentUser ? (
       <FollowButton
         variant="medium"
         onClick={handleFollowClick}
@@ -213,7 +216,7 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
             <p>{userData.aboutMe}</p>
           )}
         </AboutMeContent>
-        {AboumeButton}
+        {AboutmeButton}
       </AboutMe>
     </div>
   );

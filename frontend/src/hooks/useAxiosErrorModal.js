@@ -1,50 +1,23 @@
-import React, { Fragment, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import useModal from './useModal';
 
 import Button from '../components/UI/Button';
 import ModalBase from '../components/UI/Modal/ModalBase';
+import LoginRequestModal from '../components/UI/LoginRequestModal';
 
 function useAxiosErrorModal(isAllErrorShow = false, errorCallback = () => {}) {
-  const { openModal, closeAllModal } = useModal();
-  const navigate = useNavigate();
-
-  const handleLoginClick = useCallback(() => {
-    navigate('/login');
-    closeAllModal();
-  }, [navigate]);
+  const { openModal } = useModal();
 
   const handleError = error => {
+    console.log(error.response);
     if (error.response?.data?.status === 401) {
-      openModal(
-        <ModalBase
-          title="로그인 필요"
-          content="로그인이 필요합니다. 로그인 화면으로 이동하시겠습니까?"
-          buttons={
-            <Fragment>
-              <Button onClick={handleLoginClick}>예</Button>
-              <Button>아니요</Button>
-            </Fragment>
-          }
-        />,
-      );
+      openModal(<LoginRequestModal />);
 
       return;
     }
 
-    if (error.response?.data?.status === 403) {
-      openModal(
-        <ModalBase
-          title="로그인 필요"
-          content="로그인이 필요합니다. 로그인 화면으로 이동하시겠습니까?"
-          buttons={
-            <Fragment>
-              <Button onClick={handleLoginClick}>예</Button>
-              <Button>아니요</Button>
-            </Fragment>
-          }
-        />,
-      );
+    if (error.response?.status === 403) {
+      openModal(<LoginRequestModal />);
 
       return;
     }

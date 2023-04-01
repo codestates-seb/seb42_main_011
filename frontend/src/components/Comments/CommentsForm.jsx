@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useQueryClient } from 'react-query';
+import { useSelector } from 'react-redux';
 
+import LoginRequestModal from '../UI/LoginRequestModal';
 import { ReactComponent as IconComments } from '../../assets/icons/icon-comments.svg';
+
 import useCreateComments from '../../hooks/comments/useCreateComments';
 import useAxiosErrorModal from '../../hooks/useAxiosErrorModal';
+import useModal from '../../hooks/useModal';
 
 const Form = styled.form`
   display: flex;
@@ -32,12 +36,6 @@ const Input = styled.input`
 
   resize: none;
   height: 23px;
-
-  /* :invalid {
-    position: absolute;
-    bottom: 100%;
-    left: 0;
-  } */
 `;
 
 const Button = styled.button`
@@ -54,6 +52,8 @@ const StyledIconComments = styled(IconComments)`
 function CommentsForm({ bulletinId }) {
   const queryClient = useQueryClient();
   const onError = useAxiosErrorModal();
+  const userId = useSelector(state => state.auth.user);
+  const { openModal } = useModal();
 
   const [commentContent, setCommentContent] = useState('');
 
@@ -76,6 +76,11 @@ function CommentsForm({ bulletinId }) {
   });
 
   const handleCommentSubmit = async newCommentContent => {
+    if (!userId) {
+      openModal(<LoginRequestModal />);
+      return;
+    }
+
     await commentMutate({
       commentContent: newCommentContent,
       bulletinPostId: bulletinId,

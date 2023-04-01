@@ -3,17 +3,18 @@ import styled from 'styled-components';
 
 import Card from '../components/UI/Card/Card';
 import RetryErrorBoundary from '../components/RetryErrorBoundary';
+import Loading from '../components/UI/Loading';
+import { FlexJustifyAlignCenter } from '../styles/shared';
 
 const PostDetailEdit = lazy(() => import('../components/PostEdit'));
 
 const PostDetailContainer = styled(Card)`
-  display: flex;
+  ${FlexJustifyAlignCenter}
   max-width: 1163px;
   max-height: 800px;
   height: 100%;
   width: 100%;
-  justify-content: center;
-  align-items: center;
+
   position: relative;
   overflow: hidden;
 
@@ -27,10 +28,6 @@ const PostDetailContainer = styled(Card)`
     scale: calc(0.9);
   }
 `;
-
-function Loading() {
-  return <div> 로딩 중입니다. </div>;
-}
 
 function PostEditPage({
   createdAt,
