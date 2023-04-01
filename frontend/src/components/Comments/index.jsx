@@ -7,7 +7,7 @@ import CommentsItem from './CommentsItem';
 import CommentsList from './CommentsList';
 import useUpdateComments from '../../hooks/comments/useUpdateComments';
 import useDeleteComments from '../../hooks/comments/useDeleteComments';
-import { StyleScrollNone } from '../../styles/shared';
+import { ScrollNone } from '../../styles/shared';
 import useAxiosErrorModal from '../../hooks/useAxiosErrorModal';
 
 const Wrapper = styled.section`
@@ -22,8 +22,7 @@ const CommentListWrapper = styled.div`
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
-
-  ${StyleScrollNone}
+  ${ScrollNone}
 `;
 
 function Comments({ userId, commentList, commentCount }) {

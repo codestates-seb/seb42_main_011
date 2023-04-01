@@ -7,6 +7,7 @@ import { ReactComponent as PlaceShape } from '../../assets/shape/place_shape.svg
 
 import FeedsHeader from './FeedsHeader';
 import PlaceHeader from '../Place/PlaceHeader';
+import { ScrollNone } from '../../styles/shared';
 
 const Container = styled.article`
   width: 100%;
@@ -23,17 +24,11 @@ const FeesdWrapper = styled.article`
 const FeedsContainer = styled.div`
   padding: 0 90px;
   height: 100%;
+  overflow-y: auto;
+  ${ScrollNone}
 
   @media (max-width: 1363px) {
     padding: 0 1%;
-  }
-
-  overflow-y: auto;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-
-  ::-webkit-scrollbar {
-    display: none;
   }
 `;
 
