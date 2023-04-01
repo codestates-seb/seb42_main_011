@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import Card from '../components/UI/Card/Card';
 
 const FeedPlaceWrapper = styled.section`
-  margin-top: 20px;
   width: 100%;
   height: 100%;
   display: flex;

@@ -4,24 +4,25 @@ import Button from '../UI/Button';
 import UserpageProfile from '../UI/UserpageProfile';
 
 const ImageWrapper = styled.section`
-  align-items: center;
   width: 100%;
-  min-width: 400px;
-  max-width: 550px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 20px;
 `;
 
 const ProfilePicture = styled.div`
   position: relative;
   width: 100%;
-  min-width: 400px;
-  max-width: 550px;
-  height: 100%;
   aspect-ratio: 7.9 / 10;
-  object-fit: cover;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 50px;
+  min-width: 270px;
 `;
 
 const ProfileImg = styled(
@@ -30,8 +31,6 @@ const ProfileImg = styled(
   width: 100%;
   height: 100%;
   object-fit: cover;
-  min-width: 400px;
-  max-height: 666px;
 `;
 
 const BtnWrapper = styled.div`
@@ -45,9 +44,6 @@ const ImageChangeBtn = styled(Button)`
   margin-top: 5px;
   margin-left: -15px;
   background-color: var(--color-dark-0);
-  &:first-of-type {
-    margin-right: 20px;
-  }
   &:hover {
     background-color: var(--color-primary);
   }

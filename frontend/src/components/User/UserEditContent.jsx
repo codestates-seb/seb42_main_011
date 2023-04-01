@@ -18,6 +18,10 @@ const Nickname = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
+
+  @media screen and (max-height: 750px) {
+    margin-bottom: 10px;
+  }
 `;
 
 const AboutMe = styled.div`
@@ -26,6 +30,10 @@ const AboutMe = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
+
+  @media screen and (max-height: 750px) {
+    margin-bottom: 10px;
+  }
 `;
 
 const Title = styled.label`
@@ -33,6 +41,11 @@ const Title = styled.label`
   font-weight: 500;
   color: var(--color-tertiary);
   margin-bottom: 20px;
+
+  @media screen and (max-height: 750px) {
+    font-size: var(--font-size-20);
+    margin-bottom: 10px;
+  }
 `;
 
 const NicknameInput = styled.input`
@@ -46,6 +59,10 @@ const NicknameInput = styled.input`
     border: none;
     outline: 1.5px solid var(--color-primary);
   }
+
+  @media screen and (max-height: 750px) {
+    height: 50px;
+  }
 `;
 
 const ErrorMessage = styled.span`
@@ -56,7 +73,7 @@ const ErrorMessage = styled.span`
 
 const AboutmeTextarea = styled.textarea`
   width: 100%;
-  min-height: 150px;
+  min-height: 140px;
   max-height: 600px;
   border: var(--border);
   font-size: var(--font-size-20);
@@ -67,6 +84,10 @@ const AboutmeTextarea = styled.textarea`
   &:focus {
     border: none;
     outline: 1.5px solid var(--color-primary);
+  }
+
+  @media screen and (max-height: 750px) {
+    height: 50px;
   }
 `;
 
@@ -99,7 +120,7 @@ function UserEditContent({ onCancel, memberId, nickname, aboutMe, file }) {
   const [nicknameError, setNicknameError] = useState('');
   const updateUserMutation = useMutation(updateUser);
   const navigate = useNavigate();
-  const MAX_LINES = 7;
+  const MAX_LINES = 5;
 
   // Debounce input changes
   const debouncedNickname = useDebounce(UserNickname, 100);
@@ -119,7 +140,9 @@ function UserEditContent({ onCancel, memberId, nickname, aboutMe, file }) {
     if (debouncedAboutMe) {
       const lineCount = (debouncedAboutMe.match(/\n/g) || []).length + 1;
       if (lineCount > MAX_LINES) {
-        setAboutMeError(`소개는 ${MAX_LINES}줄까지 입력 가능합니다.`);
+        setAboutMeError(
+          `소개는 100자 이하, ${MAX_LINES}줄까지 입력 가능합니다.`,
+        );
       } else {
         setAboutMeError('');
       }
@@ -174,6 +197,9 @@ function UserEditContent({ onCancel, memberId, nickname, aboutMe, file }) {
     }
   };
 
+  const isFormValid = () =>
+    !nicknameError && !aboutMeError && UserNickname.length > 1;
+
   return (
     <EditBox onSubmit={handleUpdate}>
       <Nickname>
@@ -199,7 +225,7 @@ function UserEditContent({ onCancel, memberId, nickname, aboutMe, file }) {
           type="textarea"
           name="UserAboutMe"
           value={UserAboutMe}
-          maxLength={250}
+          maxLength={100}
           placeholder="내용을 입력해주세요!"
           onChange={handleAboutMeChange}
           required
@@ -211,7 +237,9 @@ function UserEditContent({ onCancel, memberId, nickname, aboutMe, file }) {
         )}
       </AboutMe>
       <BtnWrapper>
-        <ConfirmBtn variant="medium">확인</ConfirmBtn>
+        <ConfirmBtn variant="medium" disabled={!isFormValid()}>
+          확인
+        </ConfirmBtn>
         <CancelBtn variant="medium" onClick={onCancel}>
           취소
         </CancelBtn>
