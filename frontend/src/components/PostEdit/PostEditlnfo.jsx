@@ -48,7 +48,11 @@ function PostDetailnfo({ profileUrl, dogName, nickname, photoUrl, children }) {
   return (
     <Container>
       <Profile>
-        <Avatar onError={handleErrorImage} src={src} alt="프로필 사진" />
+        <Avatar
+          onError={handleErrorImage}
+          src={src}
+          alt={`${nickname} 프로필 사진`}
+        />
         <UserName dogName={dogName} nickname={nickname} />
       </Profile>
       <Picture src={photoUrl} alt="게시글 사진" />

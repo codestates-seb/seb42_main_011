@@ -26,7 +26,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 //@Service service여야하나
 @Component
@@ -122,6 +124,15 @@ public class CompositeService {
 
         return new ApiMultiResponse<>(HttpStatus.OK, "해당 타입의 검색 결과를 조회합니다.", searchMapper.membersToSearchResponseDtos(members), pageMembers);
 
+    }
+
+    public ApiMultiResponse getActiveMemberListByOrder(int page, int size) {
+        Page<Member> pagedActiveMemberList = memberService.getActiveMemberList(page, size);
+        List<Member> activeMemberList = pagedActiveMemberList.getContent().stream()
+                .sorted(Comparator.comparingLong(Member::getMemberId).reversed())
+                .collect(Collectors.toList());
+        return new ApiMultiResponse<>(HttpStatus.OK, "해당 타입의 검색 결과를 조회합니다.",
+                searchMapper.membersToSearchResponseDtos(activeMemberList), pagedActiveMemberList);
     }
 
 }

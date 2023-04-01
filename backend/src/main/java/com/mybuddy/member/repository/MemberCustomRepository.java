@@ -2,6 +2,7 @@ package com.mybuddy.member.repository;
 
 import com.mybuddy.member.entity.Member;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface MemberCustomRepository {
@@ -13,4 +14,6 @@ public interface MemberCustomRepository {
     Optional<Member> findByMemberIdAndMemberStatusIs(Long memberId, Member.MemberStatus memberStatus);
 
     Optional<Member> findByMemberEmailAndMemberStatusIs(String email, Member.MemberStatus memberStatus);
+
+    List<Member> findByMemberStatus(Member.MemberStatus memberStatus);
 }
