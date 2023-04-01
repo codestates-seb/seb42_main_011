@@ -16,7 +16,7 @@ import InfoCard from '../components/Info/InfoCard';
 const MainWrapper = styled.div`
   width: 100%;
   min-width: 900px;
-  height: calc(100vh - 200px);
+  height: calc(100vh - 180px);
   padding-bottom: 30px;
   background-color: var(--color-dark-0);
   overflow-x: hidden;
