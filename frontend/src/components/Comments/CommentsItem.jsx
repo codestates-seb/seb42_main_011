@@ -6,6 +6,7 @@ import { ReactComponent as IconSeeMore } from '../../assets/icons/icon-see-more-
 import { ReactComponent as IconCancle } from '../../assets/icons/icon-cancle.svg';
 import { ReactComponent as IconCheck } from '../../assets/icons/icon-check.svg';
 
+import { FlexJustifyAlignCenter } from '../../styles/shared';
 import Card from '../UI/Card/Card';
 import EditAndRemoveButton from '../UI/EditAndRemoveButton';
 import useModal from '../../hooks/useModal';
@@ -122,9 +123,7 @@ const EditMenu = styled(EditAndRemoveButton)`
 
 const MenuButton = styled.button`
   align-self: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  ${FlexJustifyAlignCenter}
   position: relative;
   z-index: 999;
 
@@ -137,9 +136,7 @@ const MenuButton = styled.button`
 const EditMenuWrapper = styled.div`
   width: 24px;
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  ${FlexJustifyAlignCenter}
   align-self: center;
 `;
 
