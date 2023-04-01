@@ -30,22 +30,8 @@ function FeedList({ onClick, colWidth = '300px' }) {
     },
   );
 
-  const handleClick = event => {
-    const $li = event.target.closest('li');
-
-    if (!$li) {
-      return;
-    }
-
-    const { postId } = $li.dataset;
-
-    if (postId) {
-      onClick(postId);
-    }
-  };
-
   return (
-    <StyledFeedList colWidth={colWidth} onClick={handleClick}>
+    <StyledFeedList colWidth={colWidth}>
       {!isLoading &&
         data &&
         data.pages?.map(({ data: fetchData }, pageIndex) =>
@@ -59,6 +45,7 @@ function FeedList({ onClick, colWidth = '300px' }) {
                 nickname,
                 dogName,
                 createdAt,
+                memberId,
               },
               idx,
             ) => {
@@ -70,6 +57,8 @@ function FeedList({ onClick, colWidth = '300px' }) {
                 nickname,
                 dogName,
                 createdAt,
+                memberId,
+                onClick,
                 isLastItem:
                   pageIndex === Number(data.pages.length) - 1 &&
                   idx === fetchData.length - 1,

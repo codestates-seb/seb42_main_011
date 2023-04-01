@@ -1,7 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { elapsedTime } from '../../../utils/time';
+import { Link } from 'react-router-dom';
+
 import { ReactComponent as Commentlogo } from '../../../assets/icons/icon-comment.svg';
+import { elapsedTime } from '../../../utils/time';
+
 import useObserverFetch from '../../../hooks/useObserverFetch';
 
 const ItemBox = styled.li`
@@ -11,6 +14,7 @@ const ItemBox = styled.li`
   flex-direction: column;
   width: 300px;
   background-color: var(--color-light-0);
+  z-index: 10;
 
   &:hover {
     box-shadow: 10px 10px 0 0 var(--color-dark-0);
@@ -20,23 +24,19 @@ const ItemBox = styled.li`
     width: 85%;
     height: 88%;
   }
-  z-index: 10;
-  &:hover {
-    cursor: pointer;
-  }
+`;
+
+const PostBody = styled.section`
+  height: 100%;
+  cursor: pointer;
 `;
 
 const PostImage = styled.img`
   width: 100%;
   height: 299px;
+  min-height: 299px;
   aspect-ratio: 1/1;
-  /* 정사각형 아닌 사진은 비율 그대로 확대되도록 */
   object-fit: cover;
-
-  @media (max-width: 1363px) {
-    width: 100%;
-    object-fit: cover;
-  }
 `;
 
 const PostBox = styled.div`
@@ -63,7 +63,6 @@ const ContentBox = styled.p`
   width: 100%;
   display: inline-block;
 
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 
@@ -92,18 +91,17 @@ const Comment = styled.span`
   line-height: 19px;
 `;
 
-const FeedInfos = styled.div`
+const PostFooter = styled.section`
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   padding: 11px 10px 10px 12px;
 `;
 
-const FeedInfosName = styled.div`
+const PostUsername = styled.div`
   font-weight: 500;
 `;
 
-const FeedInfosCreateAt = styled.span`
+const PostCreatedAt = styled.span`
   font-size: 13px;
   line-height: 22px;
   opacity: 0.5;
@@ -117,28 +115,38 @@ function PostItem({
   nickname,
   dogName,
   createdAt,
+  memberId,
   isLastItem,
   onFetch,
+  onClick,
 }) {
   const displayTimeText = elapsedTime(createdAt);
   const { ref } = useObserverFetch({ isLastItem, onFetch });
 
+  const handleBodyClick = () => {
+    onClick(bulletinPostId);
+  };
+
   return (
     <ItemBox ref={ref} data-post-id={bulletinPostId}>
-      <PostImage src={photoUrl} />
-      <PostBox>
-        <ContentBox>{postContent}</ContentBox>
-        <CommentBox>
-          <Commentlogo alt="" />
-          <Comment>{commentCount}개</Comment>
-        </CommentBox>
-      </PostBox>
-      <FeedInfos>
-        <FeedInfosName>
-          {nickname}🏠{dogName}
-        </FeedInfosName>
-        <FeedInfosCreateAt>{displayTimeText}</FeedInfosCreateAt>
-      </FeedInfos>
+      <PostBody onClick={handleBodyClick}>
+        <PostImage src={photoUrl} alt={`${nickname} 게시글 사진`} />
+        <PostBox>
+          <ContentBox>{postContent}</ContentBox>
+          <CommentBox>
+            <Commentlogo />
+            <Comment>{commentCount}개</Comment>
+          </CommentBox>
+        </PostBox>
+      </PostBody>
+      <PostFooter>
+        <Link to={`/user/${memberId}`}>
+          <PostUsername>
+            {nickname}🏠{dogName}
+          </PostUsername>
+        </Link>
+        <PostCreatedAt>{displayTimeText}</PostCreatedAt>
+      </PostFooter>
     </ItemBox>
   );
 }
