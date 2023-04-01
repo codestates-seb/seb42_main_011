@@ -11,6 +11,13 @@ const StyledPostList = styled.ul`
   grid-template-columns: repeat(auto-fill, var(--col-width));
   justify-content: center;
   grid-gap: 40px 90px;
+  margin-bottom: 16px;
+
+  @media (max-width: 1363px) {
+    grid-template-columns: repeat(auto-fill, 280px);
+    grid-gap: 20px 40px;
+    padding: 0 30px;
+  }
 `;
 
 function PostList({ children, onClick, colWidth = '300px', className }) {
