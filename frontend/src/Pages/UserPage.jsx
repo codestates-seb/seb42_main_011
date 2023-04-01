@@ -60,6 +60,15 @@ const FriendTitleLogo = styled(FriendProfileTitle)`
   z-index: 10;
 `;
 
+const ErrorText = styled.p`
+  font-size: var(--font-size-24);
+  font-weight: 500;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
 function UserPage() {
   const { memberId: pageMemberId } = useParams();
   const location = useLocation();
@@ -92,7 +101,7 @@ function UserPage() {
   }
 
   if (error) {
-    return <p>Error: {error.message}</p>;
+    return <ErrorText>Error: {error.message}</ErrorText>;
   }
 
   return (
