@@ -19,6 +19,7 @@ public class MemberResponseDto {
     private final DogGender dogGender;
 
     private final String aboutMe;
+    private final int followByUser;
 
     private final Long followerNumber;
 
@@ -32,12 +33,13 @@ public class MemberResponseDto {
 
     @Builder
     public MemberResponseDto(String nickname, String dogName, DogGender dogGender,
-                             String aboutMe, Long followerNumber, Long followeeNumber, String profileUrl,
+                             String aboutMe, int followByUser, Long followerNumber, Long followeeNumber, String profileUrl,
                              List<BulletinPostForMyPageResponseDto> bulletinPostForMyPageResponseDtos, List<AmenityForMyPageResponseDto> amenityForMyPageResponseDtos) {
         this.nickname = nickname;
         this.dogName = dogName;
         this.dogGender = dogGender;
         this.aboutMe = aboutMe;
+        this.followByUser = followByUser;
         this.followerNumber = followerNumber;
         this.followeeNumber = followeeNumber;
         this.profileUrl = profileUrl;
