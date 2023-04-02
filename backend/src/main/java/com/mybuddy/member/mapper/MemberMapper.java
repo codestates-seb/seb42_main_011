@@ -39,6 +39,7 @@ public interface MemberMapper {
 
         List<AmenityForMyPageResponseDto> amenityForMyPageResponseDtos =
                 member.getBulletinPosts().stream()
+                        .filter(bulletinPost -> bulletinPost.getAmenity() != null)
                         .map(bulletinPost -> {
                             AmenityForMyPageResponseDto amenityForMyPageResponseDto =
                                     AmenityForMyPageResponseDto.builder()
