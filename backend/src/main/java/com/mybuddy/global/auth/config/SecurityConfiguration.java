@@ -83,6 +83,7 @@ public class SecurityConfiguration {
 
                                 // Search
                                 .antMatchers(HttpMethod.GET, "/api/*/search").permitAll()
+                                .antMatchers(HttpMethod.GET, "/api/*/search/**").permitAll()
 
                                 // Amenity
                                 .antMatchers(HttpMethod.GET, "/api/*/amenities").permitAll()
@@ -91,7 +92,6 @@ public class SecurityConfiguration {
                                 // Password (Email전송)
                                 .antMatchers(HttpMethod.POST, "/api/*/password").permitAll()
                                 .antMatchers(HttpMethod.POST, "/api/*/new-password").hasRole("USER")
-
 
                                 // Comment, Follower
                                 .anyRequest().authenticated()

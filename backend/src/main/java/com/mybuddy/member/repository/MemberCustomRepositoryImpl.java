@@ -2,8 +2,12 @@ package com.mybuddy.member.repository;
 
 import com.mybuddy.member.entity.Member;
 import com.mybuddy.member.entity.QMember;
+import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -68,13 +72,18 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository {
     }
 
     @Override
-    public List<Member> findByMemberStatus(Member.MemberStatus memberStatus) {
+    public Page<Member> findByMemberStatus(Member.MemberStatus memberStatus, PageRequest pageRequest) {
         QMember member = new QMember("member1");
 
-        return queryFactory
+        QueryResults<Member> queryResults = queryFactory
                 .selectFrom(member)
                 .where(member.memberStatus.eq(memberStatus)
                         .and(member.memberId.goe(2)))
-                .fetch();
+                .offset(pageRequest.getOffset())
+                .limit(pageRequest.getPageSize())
+                .orderBy(member.memberId.desc())
+                .fetchResults();
+
+        return new PageImpl<>(queryResults.getResults(), pageRequest, queryResults.getTotal());
     }
 }
