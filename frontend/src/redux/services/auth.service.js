@@ -8,9 +8,9 @@
 // import { useMutation } from 'react-query';
 // useMutation은 POST, PUT, PATCH, DELETE 요청에 사용된다. 즉 서버사이드 데이터를 '수정'하는 경우에.
 
-import axios from 'axios';
 import Cookies from 'js-cookie';
 import jwtDecode from 'jwt-decode';
+import api from '../../api/api';
 import authHeader from './auth-header';
 
 const register = (email, password, nickname, dogName, dogGender) => {
@@ -32,7 +32,7 @@ const register = (email, password, nickname, dogName, dogGender) => {
       },
     ),
   );
-  return axios.postForm(`/api/v1/members`, form, {
+  return api.postForm(`/members`, form, {
     headers: {
       'Content-Type': 'multipart/form-data',
       'ngrok-skip-browser-warning': '12',
@@ -44,9 +44,9 @@ const register = (email, password, nickname, dogName, dogGender) => {
 // 2. login() : POST { 이메일, 비밀번호 } & JWT를 로컬스토리지에 저장
 
 const login = (username, password) =>
-  axios
+  api
     .post(
-      `/api/v1/auth/login`,
+      `/auth/login`,
       {
         username,
         password,
@@ -71,8 +71,8 @@ const JWT_EXPIRY_TIME = 2 * 60 * 1000;
 // 2-1. onSilentRefresh() : /refresh로 POST 요청 -> onLoginSuccess 실행
 
 const onSilentRefresh = () => {
-  axios
-    .post(`/api/v1/auth/refresh`, null, {
+  api
+    .post(`/auth/refresh`, null, {
       headers: authHeader(),
       'ngrok-skip-browser-warning': '12',
       withCredentials: true,
@@ -102,7 +102,7 @@ const onLoginSuccess = response => {
 
 const logout = () => {
   // const accessToken = localStorage.getItem('user');
-  axios.post(`/api/v1/auth/logout`, null, {
+  api.post(`/auth/logout`, null, {
     headers: authHeader(),
     'ngrok-skip-browser-warning': '12',
   });

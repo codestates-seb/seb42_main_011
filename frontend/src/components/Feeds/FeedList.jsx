@@ -28,6 +28,7 @@ function FeedList({ onClick, colWidth = '300px' }) {
     return <Loading />;
   }
 
+
   return (
     <PostList colWidth={colWidth}>
       {data &&
