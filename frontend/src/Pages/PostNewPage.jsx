@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { useSelector } from 'react-redux';
 
 import Card from '../components/UI/Card/Card';
@@ -45,6 +45,7 @@ function PostNewPage({ onClose }) {
   const memberId = useSelector(state => state.auth.user);
   const { data } = useGetMembersInfo({ memberId });
   const onError = useAxiosErrorModal(true);
+  const queryClient = useQueryClient();
 
   const { mutateAsync } = useMutation(
     'creaetBulletinPosts',
@@ -58,6 +59,8 @@ function PostNewPage({ onClose }) {
           />,
         );
 
+        queryClient.removeQueries('feeds');
+        queryClient.invalidateQueries('feeds');
         closeModalByIndex(0);
       },
       onError,

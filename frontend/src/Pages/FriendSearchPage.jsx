@@ -7,8 +7,8 @@ import FriendSearch from '../components/FriendSearch';
 import FriendSearchHeader from '../components/FriendSearch/FriendSearchHeader';
 import FriendSearchList from '../components/FriendSearch/FriendSearchList';
 import PostProfileItem from '../components/UI/PostProfileItem';
-import api from '../api/api';
 import FriendSearchDefault from '../components/FriendSearch/FriendSearchDefault';
+import Loading from '../components/UI/Loading';
 
 const Container = styled.section`
   width: 100%;
@@ -69,23 +69,15 @@ function FriendSearchPage() {
   };
 
   useEffect(() => {
-    api
-      .get('/search/newest-members?page=1&size=10')
-      .then(response => console.log(response.data))
-      .catch(error => console.log(error));
-  }, []);
-
-  useEffect(() => {
     remove();
     if (searchOptions.searchName.length > 0) refetch();
   }, [searchOptions]);
 
-  if (
-    !isError &&
-    !isLoading &&
-    !!data &&
-    data.pages[0].pageInfo.totalElements === 0
-  ) {
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (!isError && !!data && data.pages[0].pageInfo.totalElements === 0) {
     return (
       <Container>
         <FriendSearchHeader
