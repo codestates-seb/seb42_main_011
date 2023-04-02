@@ -33,8 +33,6 @@ function FriendSearchPage() {
     navigate(`/user/${memberId}`);
   };
 
-  // console.log('1111', searchOptions.searchName, searchOptions.searchType);
-
   const {
     data,
     fetchNextPage,
