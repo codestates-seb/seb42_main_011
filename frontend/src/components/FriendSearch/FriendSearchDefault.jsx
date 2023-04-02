@@ -6,7 +6,7 @@ import PostProfileItem from '../UI/PostProfileItem';
 import searchDefault from '../../api/searchDefaultApi';
 import Loading from '../UI/Loading';
 
-function FriendSearchDefault() {
+function FriendSearchDefault({ onClick }) {
   const {
     data,
     fetchNextPage,
@@ -44,7 +44,7 @@ function FriendSearchDefault() {
   }
 
   return (
-    <FriendSearchList colWidth="280px">
+    <FriendSearchList onClick={onClick} colWidth="280px">
       {!isError &&
         !!data &&
         data.pages.map(({ data: fetchData }, pageIndex) =>
