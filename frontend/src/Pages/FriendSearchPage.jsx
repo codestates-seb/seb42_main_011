@@ -133,7 +133,7 @@ function FriendSearchPage() {
               )}
           </FriendSearchList>
         ) : (
-          <FriendSearchDefault />
+          <FriendSearchDefault onClick={handleClick} />
         )}
       </FriendSearch>
     </Container>
