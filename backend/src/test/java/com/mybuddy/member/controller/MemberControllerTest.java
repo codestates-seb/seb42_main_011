@@ -223,7 +223,7 @@ public class MemberControllerTest {
 
         given(memberService.getMember(Mockito.anyLong()))
                 .willReturn(new Member());
-        given(mapper.memberToMemberResponseDto(Mockito.any(Member.class)))
+        given(mapper.memberToMemberResponseDto(Mockito.any(Member.class),Mockito.anyLong()))
                 .willReturn(responseDto);
 
         // When
@@ -248,6 +248,8 @@ public class MemberControllerTest {
                         .value(responseDto.getDogGender().toString()))
                 .andExpect(jsonPath("$.data.aboutMe")
                         .value(responseDto.getAboutMe()))
+                .andExpect(jsonPath("$.data.followByUser")
+                        .value(responseDto.getFollowByUser()))
                 .andExpect(jsonPath("$.data.followerNumber")
                         .value(responseDto.getFollowerNumber()))
                 .andExpect(jsonPath("$.data.followeeNumber")
@@ -296,6 +298,9 @@ public class MemberControllerTest {
                                         fieldWithPath("data.aboutMe")
                                                 .type(JsonFieldType.STRING)
                                                 .description("강아지 소개"),
+                                        fieldWithPath("data.followByUser")
+                                                .type(JsonFieldType.NUMBER)
+                                                .description("로그인한 유저가 마이페이지 회원을 팔로우 했는지 여부"),
                                         fieldWithPath("data.followerNumber")
                                                 .type(JsonFieldType.NUMBER)
                                                 .description("팔로워 수"),

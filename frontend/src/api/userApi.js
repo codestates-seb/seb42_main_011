@@ -2,7 +2,17 @@ import authHeader from '../redux/services/auth-header';
 import api from './api';
 
 async function getUserProfile({ memberId, userData }) {
-  return api.get(`/members/${memberId}`, userData).then(({ data }) => data);
+  return api
+    .get(
+      `/members/${memberId}`,
+      {
+        headers: {
+          ...authHeader(),
+        },
+      },
+      userData,
+    )
+    .then(({ data }) => data);
 }
 
 async function updateUser({ memberId, nickname, aboutMe, profileImage }) {

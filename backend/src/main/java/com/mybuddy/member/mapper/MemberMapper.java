@@ -22,7 +22,7 @@ public interface MemberMapper {
 
     Member memberUpdateDtoToMember(MemberUpdateDto patchDto);
 
-    default MemberResponseDto memberToMemberResponseDto(Member member) {
+    default MemberResponseDto memberToMemberResponseDto(Member member, Long loginUserId) {
         if (member == null) {
             return null;
         }
@@ -67,11 +67,24 @@ public interface MemberMapper {
         Long numberOfUserAsFollower = (long) member.getMeAsFollowerList().size();
         Long numberOfUserAsFollowee = (long) member.getMeAsFolloweeList().size();
 
+        int followByUser = 0;
+        if (loginUserId != null) {
+
+            boolean isFollowedByUser = member.getMeAsFolloweeList().stream()
+                    .anyMatch(
+                            follow -> loginUserId.equals(follow.getFollower().getMemberId())
+                    );
+
+            if (isFollowedByUser)
+                followByUser = 1;
+        }
+
         MemberResponseDto memberResponseDto = MemberResponseDto.builder()
                 .nickname(member.getNickname())
                 .dogName(member.getDogName())
                 .dogGender(member.getDogGender())
                 .aboutMe(member.getAboutMe())
+                .followByUser(followByUser)
                 .followerNumber(numberOfUserAsFollowee)
                 .followeeNumber(numberOfUserAsFollower)
                 .profileUrl(member.getProfileUrl())

@@ -1,5 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import { FlexJustifyAlignCenter } from '../../styles/shared';
+
+const LoadingWrapper = styled.div`
+  ${FlexJustifyAlignCenter}
+  height: 100%;
+  width: 100%;
+`;
 
 const Text = styled.p`
   font-family: var(--font-title);
@@ -8,7 +15,11 @@ const Text = styled.p`
 `;
 
 function Loading() {
-  return <Text>Loading</Text>;
+  return (
+    <LoadingWrapper>
+      <Text>Loading</Text>
+    </LoadingWrapper>
+  );
 }
 
 export default Loading;

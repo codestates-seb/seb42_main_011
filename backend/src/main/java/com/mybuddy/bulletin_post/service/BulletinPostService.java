@@ -93,7 +93,7 @@ public class BulletinPostService {
         if (loginUserId != null) {
             List<Follow> meAsFollowerList = memberService.getMember(loginUserId).getMeAsFollowerList();
 
-            Page<BulletinPost> result = bulletinPostRepository.findAllFollowingPostsByMemberId(meAsFollowerList, pageRequest);
+            Page<BulletinPost> result = bulletinPostRepository.findAllFollowingPostsByMemberId(loginUserId, meAsFollowerList, pageRequest);
 
             //게시물이 없으면 비로그인 유저 피드와 같은 결과 나오도록 if 필터
             if (!result.isEmpty())

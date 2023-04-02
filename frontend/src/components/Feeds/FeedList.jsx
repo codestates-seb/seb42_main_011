@@ -4,6 +4,7 @@ import { useInfiniteQuery, useQueryClient } from 'react-query';
 import PostList from '../UI/PostList';
 import PostItem from '../UI/PostItem';
 import { getBulletinPostList } from '../../api/bulletinPostsApi';
+import Loading from '../UI/Loading';
 
 function FeedList({ onClick, colWidth = '300px' }) {
   const queryClient = useQueryClient();
@@ -21,17 +22,16 @@ function FeedList({ onClick, colWidth = '300px' }) {
     },
   );
 
-  useEffect(
-    () => () => () => {
-      queryClient.removeQueries('feeds');
-    },
-    [],
-  );
+  useEffect(() => () => queryClient.removeQueries('feeds'), []);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
 
   return (
     <PostList colWidth={colWidth}>
-      {!isLoading &&
-        data &&
+      {data &&
         data.pages?.map(({ data: fetchData }, pageIndex) =>
           fetchData.map(
             (
