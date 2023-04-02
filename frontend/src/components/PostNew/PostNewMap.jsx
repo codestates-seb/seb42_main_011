@@ -5,6 +5,7 @@ import useMap from '../../hooks/useMap';
 import PostNewPlaceList from './PostNewPlaceList';
 import PostNewPlaceHeader from './PostNewPlaceHeader';
 import PostNewPlaceSearch from './PostNewPlaceSearch';
+import { FlexJustifyAlignCenter } from '../../styles/shared';
 
 const MapContainer = styled.article`
   border: var(--border);
@@ -22,13 +23,24 @@ const Container = styled.div`
   height: 100%;
   width: 100%;
 
-  display: flex;
+  ${FlexJustifyAlignCenter}
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+
   position: relative;
   overflow: hidden;
   background-color: var(--color-light-0);
+
+  @media screen and (max-width: 1363px) {
+    scale: calc(0.9);
+  }
+
+  @media (max-width: 1024px) {
+    scale: calc(0.8);
+  }
+
+  @media (max-width: 765px) {
+    scale: calc(0.7);
+  }
 `;
 
 const ContentContainer = styled.section`
