@@ -23,20 +23,6 @@ function PlaceFeedList({ amenityId, onClick, colWidth = '300px' }) {
       },
     );
 
-  const handleClick = event => {
-    const $li = event.target.closest('li');
-
-    if (!$li) {
-      return;
-    }
-
-    const { postId } = $li.dataset;
-
-    if (postId) {
-      onClick(postId);
-    }
-  };
-
   useEffect(
     () => () => {
       queryClient.removeQueries('feeds');
@@ -45,7 +31,7 @@ function PlaceFeedList({ amenityId, onClick, colWidth = '300px' }) {
   );
 
   return (
-    <PostList colWidth={colWidth} onClick={handleClick}>
+    <PostList colWidth={colWidth}>
       {!isError &&
         !isLoading &&
         data.pages?.map(({ data: fetchData }, pageIndex) =>
@@ -59,6 +45,7 @@ function PlaceFeedList({ amenityId, onClick, colWidth = '300px' }) {
                 nickname,
                 dogName,
                 createdAt,
+                memberId,
               },
               idx,
             ) => {
@@ -70,6 +57,8 @@ function PlaceFeedList({ amenityId, onClick, colWidth = '300px' }) {
                 nickname,
                 dogName,
                 createdAt,
+                onClick,
+                memberId,
                 isLastItem:
                   pageIndex === Number(data.pages.length) - 1 &&
                   idx === fetchData.length - 1,
