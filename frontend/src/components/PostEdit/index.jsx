@@ -65,7 +65,7 @@ function PostDetail({
   const queryClient = useQueryClient();
   const { openModal, closeModal, closeModalByIndex } = useModal();
   const [disabledSubmit, setDisabledSubmit] = useState(true);
-  const { data } = useGetAmenity({ amenityId });
+  const { data } = useGetAmenity({ amenityId, enabled: amenityId !== null });
   const [displayImage, setDisplayImage] = useState(photoUrl);
   const onError = useAxiosErrorModal(true);
 
