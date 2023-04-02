@@ -14,7 +14,6 @@ async function updateBulletinPost({ bulletinId, postData, photoImage }) {
   if (photoImage) {
     form.append('photoImage', photoImage);
   }
-  console.log(photoImage);
 
   return api
     .patch(`/bulletin-posts/${bulletinId}`, form, {
