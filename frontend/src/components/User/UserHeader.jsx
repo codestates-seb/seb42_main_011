@@ -14,7 +14,6 @@ const UserHeaderWrapper = styled.section`
   font-weight: 500;
   z-index: 10;
   width: 95%;
-  padding-right: 10px;
 
   @media screen and (max-height: 800px) {
     margin-bottom: 5px;
@@ -80,13 +79,13 @@ const FollowSection = styled.div`
 
 const Follower = styled.p`
   font-size: var(--font-size-20);
-  padding-top: 35px;
+  margin-top: 35px;
   padding-right: 10px;
 `;
 
 const Follow = styled.p`
   font-size: var(--font-size-20);
-  padding-top: 35px;
+  margin-top: 35px;
 `;
 
 const Number = styled.span`

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import { ReactComponent as MybuddyLogo } from '../assets/logo/logo_navy.svg';
-import MybuddyBackground from "../assets/mybuddy_background_nologo.svg";
+import MybuddyBackground from '../assets/mybuddy_background_nologo.svg';
 
 const ImagePageWrapper = styled.section`
   display: flex;
@@ -14,6 +14,11 @@ const InputComponent = styled.div`
   width: 55vw;
   padding: 20px 53px;
   position: relative;
+`;
+
+const Logo = styled.h2`
+  width: 160px;
+  height: 100px;
 `;
 
 const ImageWrapper = styled.aside`
@@ -53,18 +58,15 @@ function ImagePage() {
   return (
     <ImagePageWrapper>
       <InputComponent>
-        <Link to="/">
-          <h2>
+        <Logo>
+          <Link to="/">
             <MainLogo />
-          </h2>
-        </Link>
+          </Link>
+        </Logo>
         <Outlet />
       </InputComponent>
       <ImageWrapper>
-        <BackgroundImage
-          src={MybuddyBackground}
-          alt="마이버디 배경"
-        />
+        <BackgroundImage src={MybuddyBackground} alt="마이버디 배경" />
         <ImageLogo />
       </ImageWrapper>
     </ImagePageWrapper>

@@ -180,7 +180,7 @@ function PostDetail({ userId, bulletinId, onClose }) {
               bulletinId={bulletinPostId}
               likeByUser={likeByUser}
             />
-            <PostDetailLocation amenityName={amenityName} />
+            {amenityName && <PostDetailLocation amenityName={amenityName} />}
           </InfoContainer>
         </PostDetailnfo>
         <ContentsContainer>
