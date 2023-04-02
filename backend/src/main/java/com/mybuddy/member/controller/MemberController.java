@@ -66,9 +66,11 @@ public class MemberController {
     }
 
     @GetMapping("/{member-id}")
-    public ResponseEntity<ApiSingleResponse> getMember(@Min(2L) @PathVariable("member-id") Long memberId) {
+    public ResponseEntity<ApiSingleResponse> getMember(@Min(2L) @PathVariable("member-id") Long memberId,
+                                                       HttpServletRequest request) {
+        Long loginUserId = (Long) request.getAttribute("loginUserId");
         return new ResponseEntity(new ApiSingleResponse<>(HttpStatus.OK, "회원 정보입니다.",
-                mapper.memberToMemberResponseDto(memberService.getMember(memberId))), HttpStatus.OK);
+                mapper.memberToMemberResponseDto(memberService.getMember(memberId), loginUserId)), HttpStatus.OK);
     }
 
     @GetMapping
