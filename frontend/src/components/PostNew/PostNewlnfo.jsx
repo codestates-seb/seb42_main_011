@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import UserProfile from '../UI/UserProfile';
 import ImageUploadButton from '../UI/ImageUploadButton';
@@ -16,20 +16,30 @@ const Container = styled.section`
   gap: 10px;
 `;
 
-const PictureBox = styled.div`
-  border: var(--border);
+const PictureShare = css`
   background-color: var(--color-dark-2);
-  height: 500px;
+  height: 100%;
+  max-height: 500px;
   width: inherit;
+  border: var(--border);
+
+  @media (max-width: 1024px) {
+    max-height: 450px;
+  }
+
+  @media (max-width: 765px) {
+    max-height: 420px;
+  }
+`;
+
+const PictureBox = styled.div`
+  ${PictureShare}
 `;
 
 const Picture = styled.img`
-  border: var(--border);
+  ${PictureShare}
   object-fit: cover;
   object-position: center;
-
-  height: 500px;
-  width: inherit;
 `;
 
 const InfoContainer = styled.div`

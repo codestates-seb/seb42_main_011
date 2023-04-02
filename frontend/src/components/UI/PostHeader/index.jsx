@@ -13,6 +13,14 @@ const PostHeaderWrapper = styled.section`
   background-color: unset;
   z-index: 99;
   padding-bottom: 16px;
+
+  @media (max-width: 1363px) {
+    height: 162px;
+  }
+
+  @media (max-width: 1024px) {
+    height: 144px;
+  }
 `;
 
 const PostHeaderConatiner = styled.div`
@@ -32,6 +40,14 @@ const Title = styled.h2`
   position: relative;
   height: 85px;
   padding: 24px 55px;
+
+  @media (max-width: 1363px) {
+    height: 76.5px;
+  }
+
+  @media (max-width: 1024px) {
+    height: 68px;
+  }
 `;
 
 const LogoImage = styled.img`
@@ -39,6 +55,16 @@ const LogoImage = styled.img`
   width: 170px;
   height: 130px;
   left: 40px;
+
+  @media (max-width: 1363px) {
+    width: 153px;
+    height: 117px;
+  }
+
+  @media (max-width: 1024px) {
+    width: 136px;
+    height: 108px;
+  }
 `;
 
 const PageDescription = styled.div`
@@ -48,6 +74,15 @@ const PageDescription = styled.div`
   z-index: 99;
   padding-left: 87px;
   padding-top: 25px;
+
+  @media (max-width: 1363px) {
+    padding-top: 22.5px;
+  }
+
+  @media (max-width: 1024px) {
+    padding-top: 22.5px;
+    font-size: 18px;
+  }
 `;
 
 function PostHeader({ title, img, description, children }) {

@@ -5,6 +5,7 @@ import useMap from '../../hooks/useMap';
 import PostNewPlaceList from './PostNewPlaceList';
 import PostNewPlaceHeader from './PostNewPlaceHeader';
 import PostNewPlaceSearch from './PostNewPlaceSearch';
+import { FlexJustifyAlignCenter, PopupScale } from '../../styles/shared';
 
 const MapContainer = styled.article`
   border: var(--border);
@@ -22,13 +23,14 @@ const Container = styled.div`
   height: 100%;
   width: 100%;
 
-  display: flex;
+  ${FlexJustifyAlignCenter}
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+
   position: relative;
   overflow: hidden;
   background-color: var(--color-light-0);
+
+  ${PopupScale}
 `;
 
 const ContentContainer = styled.section`

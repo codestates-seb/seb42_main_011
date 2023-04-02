@@ -16,7 +16,7 @@ function AmenityPage() {
     openModal(<PostDetailPage bulletinId={id} onClose={closeModal} />);
   };
   return (
-    <Feeds amenityId={amenityId} amenityName={amenityName}>
+    <Feeds amenityName={amenityName}>
       <PlaceFeedList onClick={handleItemClick} amenityId={amenityId} />
     </Feeds>
   );

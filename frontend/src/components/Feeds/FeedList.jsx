@@ -1,11 +1,12 @@
-import React from 'react';
-import { useInfiniteQuery } from 'react-query';
+import React, { useEffect } from 'react';
+import { useInfiniteQuery, useQueryClient } from 'react-query';
 
 import PostList from '../UI/PostList';
 import PostItem from '../UI/PostItem';
 import { getBulletinPostList } from '../../api/bulletinPostsApi';
 
 function FeedList({ onClick, colWidth = '300px' }) {
+  const queryClient = useQueryClient();
   const { isLoading, data, fetchNextPage, hasNextPage } = useInfiniteQuery(
     'feeds',
     ({ pageParam = 1 }) => getBulletinPostList({ page: pageParam, size: 12 }),
@@ -19,6 +20,10 @@ function FeedList({ onClick, colWidth = '300px' }) {
       },
     },
   );
+
+  useEffect(() => {
+    queryClient.removeQueries('feeds');
+  }, []);
 
   return (
     <PostList colWidth={colWidth}>
