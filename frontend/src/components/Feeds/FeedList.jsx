@@ -21,9 +21,12 @@ function FeedList({ onClick, colWidth = '300px' }) {
     },
   );
 
-  useEffect(() => {
-    queryClient.removeQueries('feeds');
-  }, []);
+  useEffect(
+    () => () => () => {
+      queryClient.removeQueries('feeds');
+    },
+    [],
+  );
 
   return (
     <PostList colWidth={colWidth}>
