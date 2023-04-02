@@ -3,11 +3,12 @@ import { useInfiniteQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import searchFriends from '../api/searchApi';
-
 import FriendSearch from '../components/FriendSearch';
 import FriendSearchHeader from '../components/FriendSearch/FriendSearchHeader';
 import FriendSearchList from '../components/FriendSearch/FriendSearchList';
 import PostProfileItem from '../components/UI/PostProfileItem';
+import api from '../api/api';
+import FriendSearchDefault from '../components/FriendSearch/FriendSearchDefault';
 
 const Container = styled.section`
   width: 100%;
@@ -68,6 +69,13 @@ function FriendSearchPage() {
   };
 
   useEffect(() => {
+    api
+      .get('/search/newest-members?page=1&size=10')
+      .then(response => console.log(response.data))
+      .catch(error => console.log(error));
+  }, []);
+
+  useEffect(() => {
     remove();
     if (searchOptions.searchName.length > 0) refetch();
   }, [searchOptions]);
@@ -100,7 +108,7 @@ function FriendSearchPage() {
       />
 
       <FriendSearch>
-        {searchOptions.searchName && searchOptions.searchType && (
+        {searchOptions.searchName.length > 0 && searchOptions.searchType ? (
           <FriendSearchList
             searchType={searchOptions.searchType}
             searchName={searchOptions.searchName}
@@ -132,6 +140,8 @@ function FriendSearchPage() {
                 ),
               )}
           </FriendSearchList>
+        ) : (
+          <FriendSearchDefault />
         )}
       </FriendSearch>
     </Container>
