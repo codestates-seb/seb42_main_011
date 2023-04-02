@@ -41,6 +41,7 @@ const UserpageProfileComponent = styled(UserpageProfile)`
   height: 100%;
   max-height: 797px;
   object-fit: cover;
+  aspect-ratio: 7.9 / 10;
 `;
 
 function UserProfileImg({ Userdata, TitleImageUrl }) {
