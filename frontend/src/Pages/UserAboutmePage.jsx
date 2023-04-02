@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { useSelector } from 'react-redux';
 import Button from '../components/UI/Button';
-import {
-  deleteUserFollow,
-  getUserFollowing,
-  postUserFollow,
-} from '../api/userApi';
+import { deleteUserFollow, postUserFollow } from '../api/userApi';
 import ModalBase from '../components/UI/Modal/ModalBase';
 import useModal from '../hooks/useModal';
 
@@ -50,131 +46,94 @@ const FollowButton = styled(Button)`
 
 function UserAboutmePage({ userdata, memberId, isMyPage }) {
   let AboutmeButton;
-  const userData = userdata;
   const { openModal } = useModal();
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [isLoadingFollowingStatus, setIsLoadingFollowingStatus] =
-    useState(true);
-  const { user: currentUser } = useSelector(state => state.auth);
+  const queryClient = useQueryClient();
+  console.log(userdata);
 
-  // Compare following status by currentuser annd memberid
-  const storageKey = `following_${currentUser}_${memberId}`;
+  const [isLoadingFollowingStatus, setIsLoadingFollowingStatus] =
+    useState(false);
+  const { user: currentUser } = useSelector(state => state.auth);
 
   // Button change
   const userFollowMutation = useMutation(postUserFollow, {
-    onSettled: () => {
-      setIsFollowing(true);
-      localStorage.setItem(storageKey, true);
+    onSuccess: () => {
+      queryClient.setQueriesData(['userData', memberId], oldData => ({
+        ...oldData,
+        data: {
+          ...oldData.data,
+          followByUser: 1,
+        },
+      }));
+
+      openModal(
+        <ModalBase
+          title="FOLLOW"
+          content="팔로우 했어요! :)"
+          buttons={<Button>확인</Button>}
+        />,
+      );
+    },
+    onError: () => {
+      openModal(
+        <ModalBase
+          title="FOLLOW"
+          content="팔로우에 실패했어요 :/"
+          buttons={<Button>확인</Button>}
+        />,
+      );
     },
   });
 
   const userFollowDeleteMutation = useMutation(deleteUserFollow, {
-    onSettled: () => {
-      setIsFollowing(false);
-      localStorage.setItem(storageKey, false);
+    onSuccess: () => {
+      queryClient.setQueriesData(['userData', memberId], oldData => ({
+        ...oldData,
+        data: {
+          ...oldData.data,
+          followByUser: 0,
+        },
+      }));
+      openModal(
+        <ModalBase
+          title="UNFOLLOW"
+          content="팔로우를 끊었어요 :)"
+          buttons={<Button>확인</Button>}
+        />,
+      );
+    },
+    onError: () => {
+      openModal(
+        <ModalBase
+          title="UNFOLLOW"
+          content="팔로우 끊기에 실패했어요 :/"
+          buttons={<Button>확인</Button>}
+        />,
+      );
     },
   });
-
-  // Check following status(memberId, currentUser) from local storage
-  useEffect(() => {
-    async function checkFollowingStatus() {
-      try {
-        setIsLoadingFollowingStatus(true);
-        const storedFollowingStatus = localStorage.getItem(storageKey);
-        if (storedFollowingStatus !== null) {
-          setIsFollowing(JSON.parse(storedFollowingStatus));
-        } else {
-          const data = await getUserFollowing({ memberId });
-          setIsFollowing(data.isFollowing);
-        }
-      } catch (error) {
-        console.error('Failed to check following status:', error);
-      } finally {
-        setIsLoadingFollowingStatus(false);
-      }
-    }
-
-    checkFollowingStatus();
-  }, [memberId, storageKey]);
 
   // Click api call (delete, follow)
   const handleFollowClick = async () => {
     try {
-      if (isFollowing) {
-        await userFollowDeleteMutation.mutateAsync(
-          {
-            memberId,
-          },
-          {
-            onSuccess: () => {
-              openModal(
-                <ModalBase
-                  title="UNFOLLOW"
-                  content="팔로우를 끊었어요 :)"
-                  buttons={
-                    <Button onClick={() => window.location.reload()}>
-                      확인
-                    </Button>
-                  }
-                />,
-              );
-            },
-            onError: () => {
-              openModal(
-                <ModalBase
-                  title="UNFOLLOW"
-                  content="팔로우 끊기에 실패했어요 :/"
-                  buttons={
-                    <Button onClick={() => window.location.reload()}>
-                      확인
-                    </Button>
-                  }
-                />,
-              );
-            },
-          },
-        );
-      } else {
-        await userFollowMutation.mutateAsync(
-          {
-            memberId,
-          },
-          {
-            onSuccess: () => {
-              openModal(
-                <ModalBase
-                  title="FOLLOW"
-                  content="팔로우 했어요! :)"
-                  buttons={
-                    <Button onClick={() => window.location.reload()}>
-                      확인
-                    </Button>
-                  }
-                />,
-              );
-            },
-            onError: () => {
-              openModal(
-                <ModalBase
-                  title="FOLLOW"
-                  content="팔로우에 실패했어요 :/"
-                  buttons={
-                    <Button onClick={() => window.location.reload()}>
-                      확인
-                    </Button>
-                  }
-                />,
-              );
-            },
-          },
-        );
+      setIsLoadingFollowingStatus(true);
+
+      if (userdata.followByUser === 1) {
+        await userFollowDeleteMutation.mutateAsync({
+          memberId,
+        });
+      } else if (userdata.followByUser === 0) {
+        await userFollowMutation.mutateAsync({
+          memberId,
+        });
       }
     } catch (error) {
       console.error('Failed to update following status:', error);
+    } finally {
+      setIsLoadingFollowingStatus(false);
     }
   };
 
-  if (!userData) {
+  if (!userdata) {
     return null;
   }
 
@@ -182,7 +141,7 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
     if (isLoadingFollowingStatus) {
       return '로딩중...';
     }
-    if (isFollowing) {
+    if (userdata.followByUser === 1) {
       return '팔로우끊기';
     }
     return '팔로우';
@@ -210,10 +169,10 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
     <div>
       <AboutMe>
         <AboutMeContent>
-          {!userData.aboutMe ? (
+          {!userdata.aboutMe ? (
             <p>아직 소개글이 없네요!</p>
           ) : (
-            <p>{userData.aboutMe}</p>
+            <p>{userdata.aboutMe}</p>
           )}
         </AboutMeContent>
         {AboutmeButton}

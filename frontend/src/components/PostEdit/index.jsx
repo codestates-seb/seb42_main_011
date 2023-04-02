@@ -65,7 +65,7 @@ function PostDetail({
   const queryClient = useQueryClient();
   const { openModal, closeModal, closeModalByIndex } = useModal();
   const [disabledSubmit, setDisabledSubmit] = useState(true);
-  const { data } = useGetAmenity({ amenityId });
+  const { data } = useGetAmenity({ amenityId, enabled: amenityId !== null });
   const [displayImage, setDisplayImage] = useState(photoUrl);
   const onError = useAxiosErrorModal(true);
 
@@ -73,10 +73,10 @@ function PostDetail({
     postContent,
     amenityName,
     photoImage: null,
-    addressId: data.data.addressId,
-    address: data.data.address,
-    longitude: data.data.longitude,
-    latitude: data.data.latitude,
+    addressId: data?.data?.addressId || null,
+    address: data?.data?.address || null,
+    longitude: data?.data?.longitude || null,
+    latitude: data?.data?.latitude || null,
   });
 
   const handleSelect = newPlace => {
