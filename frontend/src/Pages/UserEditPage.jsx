@@ -135,8 +135,6 @@ function UserEditPage() {
   if (error) {
     return <ErrorText>Error: {error.message}</ErrorText>;
   }
-  console.log(currentUser);
-  console.log(memberId);
 
   if (String(currentUser) !== String(memberId)) {
     return <ErrorText>권한이 없습니다.</ErrorText>;
