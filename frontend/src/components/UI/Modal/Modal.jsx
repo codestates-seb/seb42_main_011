@@ -3,7 +3,7 @@ import React, { Fragment, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import IconClose from '../../../assets/icons/icon-close.svg';
 import ModalContext from '../../../context/ModalContext';
-import { FlexJustifyAlignCenter } from '../../../styles/shared';
+import { FlexJustifyAlignCenter, PopupScale } from '../../../styles/shared';
 
 const ModalContainer = styled.aside`
   position: fixed;
@@ -12,6 +12,7 @@ const ModalContainer = styled.aside`
   inset: 0;
   z-index: 199;
   ${FlexJustifyAlignCenter}
+  ${PopupScale}
 `;
 
 const ModalBg = styled.div`
