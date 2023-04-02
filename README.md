@@ -1,7 +1,10 @@
 
-##  MY BUDDY
+
+![Frame 17 (4)](https://user-images.githubusercontent.com/48430781/229368899-f33fbfd3-7ba4-4ff2-aac6-494eb62b1b09.png)
 
 <br>
+
+
 
 ## 🐶 애견 소셜 네트워크 서비스, 마이버디
 - 팀 명 : 유명한 웰시코기
@@ -23,6 +26,7 @@
 
 <br><br>
 
+
 ### 👨‍👩‍👧‍👦 Team
 
 | [<img src="https://github.com/sdoaolo.png" width="100px;"/>](https://github.com/sdoaolo) | [<img src="https://github.com/JihooKang-KOR.png" width="100px;"/>](https://github.com/JihooKang-KOR) | [<img src="https://github.com/wangamy0222.png" width="100px;"/>](https://github.com/wangamy0222) | [<img src="https://github.com/Daw-Jeong.png" width="100px;"/>](https://github.com/Daw-Jeong) | [<img src="https://github.com/notplastic2.png" width="100px;"/>](https://github.com/notplastic2) | [<img src="https://github.com/wjdwjdtn92.png" width="100px;"/>](https://github.com/wjdwjdtn92) |
@@ -33,11 +37,12 @@
 
 <br><br>
 
+
 ### 📺 서비스 소개 및 기술 영상
 [![서비스 소개 및 기술 영상](https://img.youtube.com/vi/nP-d38dl_ag/0.jpg)](https://www.youtube.com/watch?v=nP-d38dl_ag)
 
+<br>
 
-<br><br>
 
 ### 📄 Archetecture
 ![archetecture](https://user-images.githubusercontent.com/48430781/229366885-89aaf02e-a2fc-473c-b6f1-26b1fc0b7db4.png)
@@ -68,7 +73,6 @@
 <br><br>
 
 
-
 ### 🔖 Git 
 - **Branch**
     - main : 배포 및 버저닝을 위한 브랜치입니다.
@@ -84,6 +88,7 @@
     - 병합 : 병합시 사용, (# PR 번호 살리기)
 
 <br>
+
 
 ```text
 ✅ Commit
@@ -106,3 +111,11 @@
 - Design : Figma
 
 <br><br>
+
+### 🎨 Demo Image
+<img width="500" height="250" alt="Screen Shot 2023-04-03 at 2 29 35 AM" src="https://user-images.githubusercontent.com/48430781/229369075-9dc92737-7aa4-48eb-b523-697bb9ee9983.png"><img width="500" height="250" alt="Screen Shot 2023-04-03 at 2 31 43 AM" src="https://user-images.githubusercontent.com/48430781/229369176-7b573ff7-b694-4552-b318-6793bf6d3c29.png">
+<img width="500" height="250" alt="Screen Shot 2023-04-03 at 2 33 44 AM" src="https://user-images.githubusercontent.com/48430781/229369253-c452b5fe-b694-432f-bc88-387f74359203.png"><img width="500" height="250" alt="Screen Shot 2023-04-03 at 2 42 22 AM" src="https://user-images.githubusercontent.com/48430781/229369690-c7b7b273-141a-4e81-9bae-fcb799478ada.png">
+<img width="500" height="250" alt="Screen Shot 2023-04-03 at 2 38 58 AM" src="https://user-images.githubusercontent.com/48430781/229369482-86037246-04d9-4577-9a3a-969f57e8e4c7.png"><img width="500" height="250" alt="Screen Shot 2023-04-03 at 2 41 16 AM" src="https://user-images.githubusercontent.com/48430781/229369623-b60e5221-4ac2-4f5e-847b-69b6e62cccf0.png">
+
+<br><br>
+
