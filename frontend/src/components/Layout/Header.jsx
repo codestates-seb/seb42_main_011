@@ -62,9 +62,9 @@ const LinkStyle = styled.li`
 const Menu = styled.div`
   font-size: var(--font-size-20);
   font-weight: 500;
+
   &:hover {
     color: var(--color-tertiary);
-    cursor: pointer;
   }
 `;
 
@@ -76,7 +76,6 @@ const Login = styled(Button)`
   &:hover {
     border-left: var(--border);
     border-bottom: var(--border);
-    cursor: pointer;
   }
 `;
 
@@ -85,21 +84,21 @@ const Logout = styled(Button)`
   border-bottom: var(--border);
   background: var(--color-light-0);
   color: var(--color-dark-0);
+
   &:hover {
     background: var(--color-tertiary);
     border-left: var(--border);
     border-bottom: var(--border);
-    cursor: pointer;
   }
 `;
 
 const Mypage = styled(Button)`
   border-left: var(--border);
   border-bottom: var(--border);
+
   &:hover {
     border-left: var(--border);
     border-bottom: var(--border);
-    cursor: pointer;
   }
 `;
 
@@ -108,11 +107,11 @@ const Write = styled(Button)`
   border-bottom: var(--border);
   background: var(--color-light-0);
   color: var(--color-dark-0);
+
   &:hover {
     background: var(--color-primary);
     border-left: var(--border);
     border-bottom: var(--border);
-    cursor: pointer;
   }
 `;
 
