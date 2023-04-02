@@ -31,9 +31,9 @@ const UserWrapper = styled.div`
 `;
 
 const UserProfileWrapper = styled.div`
-  padding-top: 10px;
   width: 55vmin;
   aspect-ratio: 9 / 13;
+  margin-top: 5px;
 `;
 
 const UserInfoWrapper = styled.div`

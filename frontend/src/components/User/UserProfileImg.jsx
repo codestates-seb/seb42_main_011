@@ -32,12 +32,14 @@ const ImageBox = styled.div`
 const MountImg = styled(Mountshape)`
   position: absolute;
   width: 85%;
-  bottom: -5%;
+  bottom: -35px;
 `;
 
 const UserpageProfileComponent = styled(UserpageProfile)`
   width: 100%;
+  max-width: 630px;
   height: 100%;
+  max-height: 797px;
   object-fit: cover;
 `;
 
