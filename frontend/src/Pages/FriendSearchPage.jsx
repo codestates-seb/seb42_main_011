@@ -3,11 +3,12 @@ import { useInfiniteQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import searchFriends from '../api/searchApi';
-
 import FriendSearch from '../components/FriendSearch';
 import FriendSearchHeader from '../components/FriendSearch/FriendSearchHeader';
 import FriendSearchList from '../components/FriendSearch/FriendSearchList';
 import PostProfileItem from '../components/UI/PostProfileItem';
+import FriendSearchDefault from '../components/FriendSearch/FriendSearchDefault';
+import Loading from '../components/UI/Loading';
 
 const Container = styled.section`
   width: 100%;
@@ -72,12 +73,11 @@ function FriendSearchPage() {
     if (searchOptions.searchName.length > 0) refetch();
   }, [searchOptions]);
 
-  if (
-    !isError &&
-    !isLoading &&
-    !!data &&
-    data.pages[0].pageInfo.totalElements === 0
-  ) {
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (!isError && !!data && data.pages[0].pageInfo.totalElements === 0) {
     return (
       <Container>
         <FriendSearchHeader
@@ -100,7 +100,7 @@ function FriendSearchPage() {
       />
 
       <FriendSearch>
-        {searchOptions.searchName && searchOptions.searchType && (
+        {searchOptions.searchName.length > 0 && searchOptions.searchType ? (
           <FriendSearchList
             searchType={searchOptions.searchType}
             searchName={searchOptions.searchName}
@@ -132,6 +132,8 @@ function FriendSearchPage() {
                 ),
               )}
           </FriendSearchList>
+        ) : (
+          <FriendSearchDefault />
         )}
       </FriendSearch>
     </Container>
