@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { ReactComponent as FriendShape } from '../../assets/shape/friend_shape.svg';
+import { ScrollNone } from '../../styles/shared';
 
 const FriendSearchWrapper = styled.article`
   width: 100%;
@@ -14,12 +15,8 @@ const FriendSearchContainer = styled.div`
   padding: 0 3.5%;
   height: 100%;
   overflow-y: auto;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-
-  ::-webkit-scrollbar {
-    display: none;
-  }
+  overflow-x: hidden;
+  ${ScrollNone}
 `;
 
 const FriendGreenShape = styled(FriendShape)`
