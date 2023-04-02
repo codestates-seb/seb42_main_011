@@ -81,7 +81,6 @@ const ContentBox = styled.p`
 
   @media (max-width: 1363px) {
     height: 64px;
-    -webkit-line-clamp: 2;
   }
 `;
 
@@ -114,9 +113,6 @@ const PostFooter = styled.section`
 const PostUsername = styled.p`
   font-weight: 500;
   display: flex;
-
-  @media (max-width: 1363px) {
-  }
 `;
 
 const PostCreatedAt = styled.span`

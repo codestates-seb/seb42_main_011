@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Outlet, useLocation } from 'react-router-dom';
 
 import { ReactComponent as HomeShape } from '../../assets/shape/home_shape.svg';
 import { ReactComponent as PlaceShape } from '../../assets/shape/place_shape.svg';
@@ -46,16 +45,14 @@ const PlaceOrangeShape = styled(PlaceShape)`
   -webkit-transform: scale(1.3);
 `;
 
-function Feeds({ children, amenityId, amenityName }) {
-  const location = useLocation();
-  const isAmenityPage = location.pathname.includes('/amenity');
-
+function Feeds({ children, amenityName = '' }) {
+  const isAmenityPage = amenityName.length > 0;
   const Shape = isAmenityPage ? PlaceOrangeShape : HomeYellowShape;
 
   return (
     <Container>
       {isAmenityPage ? (
-        <PlaceHeader amenityId={amenityId} amenityName={amenityName} />
+        <PlaceHeader amenityName={amenityName} />
       ) : (
         <FeedsHeader />
       )}
@@ -65,7 +62,6 @@ function Feeds({ children, amenityId, amenityName }) {
           {children}
         </FeedsContainer>
       </FeesdWrapper>
-      <Outlet />
     </Container>
   );
 }

@@ -33,3 +33,17 @@ export const FlexJustifyAlignCenter = css`
   justify-content: center;
   align-items: center;
 `;
+
+export const PopupScale = css`
+  @media screen and (max-width: 1363px), (max-height: 900px) {
+    scale: calc(0.9);
+  }
+
+  @media (max-width: 1024px), (max-height: 800px) {
+    scale: calc(0.8);
+  }
+
+  @media (max-width: 765px) {
+    scale: calc(0.7);
+  }
+`;

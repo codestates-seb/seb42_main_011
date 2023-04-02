@@ -89,9 +89,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Page<Member> getActiveMemberList(int page, int size) {
-        List<Member> activeMemberList = memberRepository.findByMemberStatus(MemberStatus.ACTIVE);
-        return new PageImpl<>(activeMemberList, PageRequest.of(page - 1, size,
-                Sort.by("memberId").descending()), activeMemberList.size());
+        PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.by("memberId").descending());
+        Page<Member> activeMemberPage = memberRepository.findByMemberStatus(MemberStatus.ACTIVE, pageRequest);
+        return activeMemberPage;
     }
 
     @Override

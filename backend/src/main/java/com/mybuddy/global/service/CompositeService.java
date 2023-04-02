@@ -129,9 +129,8 @@ public class CompositeService {
     public ApiMultiResponse getActiveMemberListByOrder(int page, int size) {
         Page<Member> pagedActiveMemberList = memberService.getActiveMemberList(page, size);
         List<Member> activeMemberList = pagedActiveMemberList.getContent().stream()
-                .sorted(Comparator.comparingLong(Member::getMemberId).reversed())
                 .collect(Collectors.toList());
-        return new ApiMultiResponse<>(HttpStatus.OK, "해당 타입의 검색 결과를 조회합니다.",
+        return new ApiMultiResponse<>(HttpStatus.OK, "최신 회원을 조회합니다",
                 searchMapper.membersToSearchResponseDtos(activeMemberList), pagedActiveMemberList);
     }
 
