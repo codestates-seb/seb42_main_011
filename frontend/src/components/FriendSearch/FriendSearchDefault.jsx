@@ -4,6 +4,7 @@ import { useInfiniteQuery } from 'react-query';
 import FriendSearchList from './FriendSearchList';
 import PostProfileItem from '../UI/PostProfileItem';
 import searchDefault from '../../api/searchDefaultApi';
+import Loading from '../UI/Loading';
 
 function FriendSearchDefault() {
   const {
@@ -38,10 +39,13 @@ function FriendSearchDefault() {
     refetch();
   }, []);
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <FriendSearchList colWidth="280px">
       {!isError &&
-        !isLoading &&
         !!data &&
         data.pages.map(({ data: fetchData }, pageIndex) =>
           fetchData.map(({ memberId, dogName, profileUrl }, idx) => {
