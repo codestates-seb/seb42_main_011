@@ -85,7 +85,6 @@ function Modal({ titleImage, onClose = () => {}, children }) {
   const handleClose = () => {
     onClose();
     closeModal();
-    console.log(showModal);
   };
 
   useEffect(() => {

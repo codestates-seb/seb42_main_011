@@ -48,7 +48,6 @@ function UserAboutmePage({ userdata, memberId, isMyPage }) {
   let AboutmeButton;
   const { openModal } = useModal();
   const queryClient = useQueryClient();
-  console.log(userdata);
 
   const [isLoadingFollowingStatus, setIsLoadingFollowingStatus] =
     useState(false);
