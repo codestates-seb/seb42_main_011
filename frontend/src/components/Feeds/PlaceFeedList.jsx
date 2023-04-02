@@ -1,11 +1,12 @@
-import React from 'react';
-import { useInfiniteQuery } from 'react-query';
+import React, { useEffect } from 'react';
+import { useInfiniteQuery, useQueryClient } from 'react-query';
 
 import PostList from '../UI/PostList';
 import PostItem from '../UI/PostItem';
 import getAmenityFeeds from '../../api/placeApi';
 
 function PlaceFeedList({ amenityId, onClick, colWidth = '300px' }) {
+  const queryClient = useQueryClient();
   const { isLoading, data, fetchNextPage, hasNextPage, isError } =
     useInfiniteQuery(
       'feeds',
@@ -35,6 +36,13 @@ function PlaceFeedList({ amenityId, onClick, colWidth = '300px' }) {
       onClick(postId);
     }
   };
+
+  useEffect(
+    () => () => {
+      queryClient.removeQueries('feeds');
+    },
+    [],
+  );
 
   return (
     <PostList colWidth={colWidth} onClick={handleClick}>
