@@ -30,6 +30,7 @@ const ProfileImg = styled(
 )`
   width: 100%;
   height: 100%;
+  aspect-ratio: 7.9 / 10;
   object-fit: cover;
 `;
 

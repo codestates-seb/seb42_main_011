@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useMutation } from 'react-query';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Fade from 'react-reveal/Fade';
 import Button from '../UI/Button';
-import ModalBase from '../UI/Modal/ModalBase';
-import useDebounce from '../../hooks/useDebounce';
-import useModal from '../../hooks/useModal';
-import { updateUser } from '../../api/userApi';
+import useUserInput from '../../hooks/useUserInuput';
+import useUserUpdate from '../../hooks/useUserUpdate';
 
 const EditBox = styled.form`
   width: 100%;
@@ -41,6 +38,12 @@ const Title = styled.label`
   font-weight: 500;
   color: var(--color-tertiary);
   margin-bottom: 20px;
+
+  & span {
+    color: var(--color-primary);
+    font-size: var(--font-size-16);
+    margin-left: 10px;
+  }
 
   @media screen and (max-height: 750px) {
     font-size: var(--font-size-20);
@@ -99,13 +102,18 @@ const BtnWrapper = styled.div`
 
 const ConfirmBtn = styled(Button)`
   background-color: var(--color-primary);
+  margin-right: 10px;
   &:hover {
     background-color: var(--color-primary);
   }
-  margin-right: 10px;
+
+  &:disabled {
+    opacity: 0.5;
+  }
 `;
 
 const CancelBtn = styled(Button)`
+  background-color: pink;
   background-color: var(--color-dark-0);
   &:hover {
     background-color: var(--color-tertiary);
@@ -113,41 +121,18 @@ const CancelBtn = styled(Button)`
 `;
 
 function UserEditContent({ onCancel, memberId, nickname, aboutMe, file }) {
-  const { openModal } = useModal();
-  const [UserNickname, setUserNickname] = useState(nickname);
-  const [UserAboutMe, setUserAboutMe] = useState(aboutMe);
-  const [aboutMeError, setAboutMeError] = useState('');
-  const [nicknameError, setNicknameError] = useState('');
-  const updateUserMutation = useMutation(updateUser);
+  const {
+    UserNickname,
+    setUserNickname,
+    UserAboutMe,
+    setUserAboutMe,
+    aboutMeError,
+    nicknameError,
+    inputCount,
+  } = useUserInput(nickname, aboutMe);
+
   const navigate = useNavigate();
-  const MAX_LINES = 5;
-
-  // Debounce input changes
-  const debouncedNickname = useDebounce(UserNickname, 100);
-  const debouncedAboutMe = useDebounce(UserAboutMe, 100);
-
-  // Debounce Nickname
-  useEffect(() => {
-    if (debouncedNickname.length < 2 || debouncedNickname.length > 10) {
-      setNicknameError('닉네임은 10자 이하로 작성 해주세요.');
-    } else {
-      setNicknameError('');
-    }
-  }, [debouncedNickname]);
-
-  // Debounce Aboutme
-  useEffect(() => {
-    if (debouncedAboutMe) {
-      const lineCount = (debouncedAboutMe.match(/\n/g) || []).length + 1;
-      if (lineCount > MAX_LINES) {
-        setAboutMeError(
-          `소개는 100자 이하, ${MAX_LINES}줄까지 입력 가능합니다.`,
-        );
-      } else {
-        setAboutMeError('');
-      }
-    }
-  }, [debouncedAboutMe]);
+  const { handleUpdate } = useUserUpdate(memberId, file, navigate);
 
   const handleAboutMeChange = event => {
     const { value } = event.target;
@@ -159,49 +144,16 @@ function UserEditContent({ onCancel, memberId, nickname, aboutMe, file }) {
     setUserNickname(value);
   };
 
-  const handleUpdate = async e => {
-    e.preventDefault();
-    try {
-      await updateUserMutation.mutateAsync(
-        {
-          memberId,
-          profileImage: file,
-          nickname: UserNickname,
-          aboutMe: UserAboutMe,
-        },
-        {
-          onSuccess: () => {
-            openModal(
-              <ModalBase
-                title="INFO"
-                content="회원정보 변경 완료! :)"
-                buttons={<Button>확인</Button>}
-              />,
-            );
-          },
-          onError: () => {
-            openModal(
-              <ModalBase
-                title="INFO"
-                content="회원정보 변경에 실패했어요 :/"
-                buttons={<Button>확인</Button>}
-              />,
-            );
-          },
-        },
-      );
-
-      navigate(`/user/${memberId}`);
-    } catch (error) {
-      console.log(error);
-    }
+  const handleSubmit = event => {
+    event.preventDefault();
+    handleUpdate(UserNickname, UserAboutMe);
   };
 
   const isFormValid = () =>
     !nicknameError && !aboutMeError && UserNickname.length > 1;
 
   return (
-    <EditBox onSubmit={handleUpdate}>
+    <EditBox onSubmit={handleSubmit}>
       <Nickname>
         <Title>닉네임</Title>
         <NicknameInput
@@ -220,7 +172,9 @@ function UserEditContent({ onCancel, memberId, nickname, aboutMe, file }) {
         )}
       </Nickname>
       <AboutMe>
-        <Title>소개</Title>
+        <Title>
+          소개 <span>{inputCount}/ 100자</span>
+        </Title>
         <AboutmeTextarea
           type="textarea"
           name="UserAboutMe"

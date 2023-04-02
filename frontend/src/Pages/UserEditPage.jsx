@@ -100,11 +100,11 @@ const ContentBox = styled(Card)`
 `;
 
 const StripeImg = styled(Stripeshape)`
-  width: 80%;
+  width: 20%;
   height: 25%;
   position: absolute;
   bottom: -10%;
-  right: -37%;
+  right: -8%;
   z-index: 1000;
 `;
 
