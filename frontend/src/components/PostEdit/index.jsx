@@ -73,10 +73,10 @@ function PostDetail({
     postContent,
     amenityName,
     photoImage: null,
-    addressId: data?.data?.addressId || null,
-    address: data?.data?.address || null,
-    longitude: data?.data?.longitude || null,
-    latitude: data?.data?.latitude || null,
+    addressId: data ? data.data?.addressId : null,
+    address: data ? data.data?.address : null,
+    longitude: data ? data.data?.longitude : null,
+    latitude: data ? data.data?.latitude : null,
   });
 
   const handleSelect = newPlace => {
@@ -97,7 +97,7 @@ function PostDetail({
   useEffect(() => {
     if (
       updateData.postContent !== postContent ||
-      updateData.addressId !== data.data.addressId ||
+      (data && updateData.addressId !== data.data.addressId) ||
       updateData.photoImage
     ) {
       setDisabledSubmit(false);
