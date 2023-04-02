@@ -7,7 +7,6 @@ import FriendSearch from '../components/FriendSearch';
 import FriendSearchHeader from '../components/FriendSearch/FriendSearchHeader';
 import FriendSearchList from '../components/FriendSearch/FriendSearchList';
 import PostProfileItem from '../components/UI/PostProfileItem';
-import api from '../api/api';
 import FriendSearchDefault from '../components/FriendSearch/FriendSearchDefault';
 
 const Container = styled.section`
@@ -67,13 +66,6 @@ function FriendSearchPage() {
   const handleSumbit = (newSearchName, newSearchType) => {
     setSearchOptions({ searchName: newSearchName, searchType: newSearchType });
   };
-
-  useEffect(() => {
-    api
-      .get('/search/newest-members?page=1&size=10')
-      .then(response => console.log(response.data))
-      .catch(error => console.log(error));
-  }, []);
 
   useEffect(() => {
     remove();
