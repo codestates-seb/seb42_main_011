@@ -16,6 +16,7 @@ import PostEditHeader from '../components/PostEdit/PostEditHeader';
 import PostDetailPage from './PostDetailPage';
 import Button from '../components/UI/Button';
 import useAxiosErrorModal from '../hooks/useAxiosErrorModal';
+import { PopupScale } from '../styles/shared';
 
 const PostDetailContainer = styled(Card)`
   display: flex;
@@ -31,17 +32,7 @@ const PostDetailContainer = styled(Card)`
   gap: 18px;
   background-color: var(--color-light-0);
 
-  @media (max-width: 1363px) {
-    scale: calc(0.9);
-  }
-
-  @media (max-width: 1024px) {
-    scale: calc(0.8);
-  }
-
-  @media (max-width: 765px) {
-    scale: calc(0.7);
-  }
+  ${PopupScale}
 `;
 
 function PostNewPage({ onClose }) {

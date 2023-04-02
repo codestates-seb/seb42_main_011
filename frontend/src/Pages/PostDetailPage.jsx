@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import Card from '../components/UI/Card/Card';
 import RetryErrorBoundary from '../components/RetryErrorBoundary';
 import Loading from '../components/UI/Loading';
-import { FlexJustifyAlignCenter } from '../styles/shared';
+import { FlexJustifyAlignCenter, PopupScale } from '../styles/shared';
 
 const PostDetail = lazy(() => import('../components/PostDetail'));
 
@@ -21,17 +21,7 @@ const PostDetailContainer = styled(Card)`
   gap: 18px;
   background-color: var(--color-light-0);
 
-  @media (max-width: 1363px) {
-    scale: calc(0.9);
-  }
-
-  @media (max-width: 1024px) {
-    scale: calc(0.8);
-  }
-
-  @media (max-width: 765px) {
-    scale: calc(0.7);
-  }
+  ${PopupScale}
 `;
 
 function PostDetailPage({ bulletinId, onClose }) {
