@@ -25,7 +25,7 @@
 
 ### 👨‍👩‍👧‍👦 Team
 
-| ![sdoaolo](https://github.com/sdoaolo.png) | ![JihooKang-KOR](https://github.com/JihooKang-KOR.png) | ![wangamy0222](https://github.com/wangamy0222.png) | ![Daw-Jeong](https://github.com/Daw-Jeong.png) | ![notplastic2](https://github.com/notplastic2.png) | ![wjdwjdtn92](https://github.com/wjdwjdtn92.png) |
+| [<img src="https://github.com/sdoaolo.png" width="100px;"/>](https://github.com/sdoaolo) | [<img src="https://github.com/JihooKang-KOR.png" width="100px;"/>](https://github.com/JihooKang-KOR) | [<img src="https://github.com/wangamy0222.png" width="100px;"/>](https://github.com/wangamy0222) | [<img src="https://github.com/Daw-Jeong.png" width="100px;"/>](https://github.com/Daw-Jeong) | [<img src="https://github.com/notplastic2.png" width="100px;"/>](https://github.com/notplastic2) | [<img src="https://github.com/wjdwjdtn92.png" width="100px;"/>](https://github.com/wjdwjdtn92) |
 | --- | --- | --- | --- | --- | --- |
 | 강지은 | 강지후 | 왕지호 | 정다운 | 정시원 | 정정수 |
 | BE | BE | FE | BE | FE | FE |
