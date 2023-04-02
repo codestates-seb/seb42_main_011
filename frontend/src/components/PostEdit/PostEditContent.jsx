@@ -8,8 +8,10 @@ const ContentEdit = styled(Card)`
   font-weight: 500;
   font-size: var(--font-size-16);
   line-height: 23px;
-  min-height: 280px;
+  min-height: 180px;
   padding: 12px 14px;
+
+  flex: 1 1 280px;
 `;
 
 function PostDetailContent({ postContent, onChange }) {
