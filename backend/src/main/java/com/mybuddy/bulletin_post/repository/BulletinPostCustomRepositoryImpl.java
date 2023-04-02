@@ -28,7 +28,7 @@ public class BulletinPostCustomRepositoryImpl implements BulletinPostCustomRepos
 
     private final JPAQueryFactory queryFactory;
 
-    public Page<BulletinPost> findAllFollowingPostsByMemberId(List<Follow> meAsFollowerList, PageRequest pageRequest) {
+    public Page<BulletinPost> findAllFollowingPostsByMemberId(Long loginUserId, List<Follow> meAsFollowerList, PageRequest pageRequest) {
         QBulletinPost bulletinPost = QBulletinPost.bulletinPost;
         List<BulletinPost> posts = new ArrayList<>();
 
@@ -39,6 +39,7 @@ public class BulletinPostCustomRepositoryImpl implements BulletinPostCustomRepos
         List<Long> followees = meAsFollowerList.stream()
                 .map(followee -> followee.getFollowee().getMemberId())
                 .collect(Collectors.toList());
+        followees.add(loginUserId);
 
         //날짜 기준 내림차순 정렬
         QueryResults<BulletinPost> queryResults = queryFactory

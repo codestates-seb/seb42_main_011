@@ -20,10 +20,10 @@ public class SearchService {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "memberId"));
 
         if (type.equals("nickname")) {
-            return searchRepository.findByNicknameContaining(keyword, pageRequest);
+            return searchRepository.findByNicknameExceptAdmin(keyword, pageRequest);
         }
         else if (type.equals("dogName")) {
-            return searchRepository.findByDogNameContaining(keyword, pageRequest);
+            return searchRepository.findByDogNameExceptAdmin(keyword, pageRequest);
         }
         else throw new LogicException(LogicExceptionCode.TYPE_NOT_FOUND);
 
