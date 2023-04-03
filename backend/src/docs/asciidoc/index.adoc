@@ -1,0 +1,266 @@
+= My Buddy
+:sectnums:
+:toc: left
+:toclevels: 4
+:toc-title: API Specification
+:source-highlighter: prettify
+
+== 회원
+=== 회원 등록
+.curl-request
+include::{snippets}/create-member/curl-request.adoc[]
+
+.http-request
+include::{snippets}/create-member/http-request.adoc[]
+
+.request-fields
+include::{snippets}/create-member/request-part-createDto-fields.adoc[]
+
+.request-part
+include::{snippets}/create-member/request-parts.adoc[]
+
+.http-response
+include::{snippets}/create-member/http-response.adoc[]
+
+.response-header
+include::{snippets}/create-member/response-headers.adoc[]
+
+=== 회원 수정
+.curl-request
+include::{snippets}/update-member/curl-request.adoc[]
+
+.http-request
+include::{snippets}/update-member/http-request.adoc[]
+
+.request-headers
+include::{snippets}/update-member/request-headers.adoc[]
+
+// RestDocs의 문제로 path-parameter의 정보를 get에서 가지고 옴.
+.request-path-parameters
+include::{snippets}/get-member/path-parameters.adoc[]
+
+.request-fields
+include::{snippets}/update-member/request-part-updateDto-fields.adoc[]
+
+.request-part
+include::{snippets}/update-member/request-parts.adoc[]
+
+.http-response
+include::{snippets}/update-member/http-response.adoc[]
+
+=== 회원 상세 조회
+.curl-request
+include::{snippets}/get-member/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-member/http-request.adoc[]
+
+.request-path-parameters
+include::{snippets}/get-member/path-parameters.adoc[]
+
+.request-headers
+include::{snippets}/get-member/request-headers.adoc[]
+
+.http-response
+include::{snippets}/get-member/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-member/response-fields.adoc[]
+
+=== 회원 리스트 조회 (운영자용)
+.curl-request
+include::{snippets}/get-members-for-admin/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-members-for-admin/http-request.adoc[]
+
+.request-query-parameters
+include::{snippets}/get-members-for-admin/request-parameters.adoc[]
+
+.request-headers
+include::{snippets}/get-members-for-admin/request-headers.adoc[]
+
+.http-response
+include::{snippets}/get-members-for-admin/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-members-for-admin/response-fields.adoc[]
+
+=== 회원 탈퇴
+.curl-request
+include::{snippets}/delete-member/curl-request.adoc[]
+
+.http-request
+include::{snippets}/delete-member/http-request.adoc[]
+
+.request-headers
+include::{snippets}/delete-member/request-headers.adoc[]
+
+.request-path-parameters
+include::{snippets}/delete-member/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/delete-member/http-response.adoc[]
+
+
+
+== 댓글
+
+=== 댓글 등록
+.http-request
+include::{snippets}/create-comment/http-request.adoc[]
+
+.request-fields
+include::{snippets}/create-comment/request-fields.adoc[]
+
+.http-response
+include::{snippets}/create-comment/http-response.adoc[]
+
+.response-fields
+include::{snippets}/create-comment/response-fields.adoc[]
+
+
+=== 댓글 수정
+.http-request
+include::{snippets}/update-comment/http-request.adoc[]
+
+.request-fields
+include::{snippets}/update-comment/request-fields.adoc[]
+
+.path-parameters
+include::{snippets}/update-comment/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/update-comment/http-response.adoc[]
+
+.response-fields
+include::{snippets}/update-comment/response-fields.adoc[]
+
+
+=== 댓글 삭제
+.http-request
+include::{snippets}/delete-comment/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/delete-comment/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/delete-comment/http-response.adoc[]
+
+
+
+
+== 장소
+
+=== 장소 1개 정보 얻기
+.http-request
+include::{snippets}/get-amenity/http-request.adoc[]
+
+.http-response
+include::{snippets}/get-amenity/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-amenity/response-fields.adoc[]
+
+
+=== 장소가 태그된 게시물 정보 얻기
+.http-request
+include::{snippets}/get-tagged-bulletin-post-list/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/get-tagged-bulletin-post-list/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/get-tagged-bulletin-post-list/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-tagged-bulletin-post-list/response-fields.adoc[]
+
+
+=== 지역 필터링을 이용한 추천 장소 리스트 가져오기
+.http-request
+include::{snippets}/get-recommend-amenity-state-region/http-request.adoc[]
+
+.request-parameters
+include::{snippets}/get-recommend-amenity-state-region/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/get-recommend-amenity-state-region/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-recommend-amenity-state-region/response-fields.adoc[]
+
+
+== 팔로우
+=== 회원 팔로우
+.curl-request
+include::{snippets}/create-follow/curl-request.adoc[]
+
+.http-request
+include::{snippets}/create-follow/http-request.adoc[]
+
+.request-headers
+include::{snippets}/create-follow/request-headers.adoc[]
+
+.request-query-parameter
+include::{snippets}/create-follow/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/create-follow/http-response.adoc[]
+
+.response-header
+include::{snippets}/create-follow/response-headers.adoc[]
+
+=== 팔로워 목록 조회
+.curl-request
+include::{snippets}/get-follower-list/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-follower-list/http-request.adoc[]
+
+.request-headers
+include::{snippets}/get-follower-list/request-headers.adoc[]
+
+.request-query-parameters
+include::{snippets}/get-follower-list/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/get-follower-list/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-follower-list/response-fields.adoc[]
+
+=== 팔로우 회원 목록 조회
+.curl-request
+include::{snippets}/get-followee-list/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-followee-list/http-request.adoc[]
+
+.request-headers
+include::{snippets}/get-followee-list/request-headers.adoc[]
+
+.request-query-parameters
+include::{snippets}/get-followee-list/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/get-followee-list/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-followee-list/response-fields.adoc[]
+
+=== 회원 탈퇴
+.curl-request
+include::{snippets}/delete-follow/curl-request.adoc[]
+
+.http-request
+include::{snippets}/delete-follow/http-request.adoc[]
+
+.request-headers
+include::{snippets}/delete-follow/request-headers.adoc[]
+
+.request-query-parameters
+include::{snippets}/delete-follow/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/delete-follow/http-response.adoc[]

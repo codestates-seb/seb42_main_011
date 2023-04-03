@@ -1,21 +1,52 @@
 spring:
-  h2:
-    console:
+  servlet:
+    multipart:
       enabled: true
-      path: /h2
+      max-file-size: 10MB
+      max-request-size: 10MB
 
-  datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:test
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
 
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: create
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${ADMIN_MAIL_ADDRESS}
+    password: ${ADMIN_MAIL_PASSWORD}
     properties:
-      hibernate:
-        format_sql: true
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+mail:
+  address:
+    admin: ${ADMIN_MAIL_ADDRESS}
 
 logging:
   level:
     org.hibernate.type: trace
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: error
+
+jwt:
+  key: ${JWT_SECRET_KEY}
+  access-token-expiration-minutes: 20
+  refresh-token-expiration-minutes: 200
+
+cloud:
+  aws:
+    credentials:
+      accessKey: ${AWS_ACCESS_KEY_ID}       # AWS IAM AccessKey
+      secretKey: ${AWS_SECRET_ACCESS_KEY}   # AWS IAM SecretKey
+    s3:
+      bucket: mybuddy-image    # 버킷 이름
+      dir: mybuddy-image-directory # S3 디렉토리 이름
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false

@@ -1,0 +1,74 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@redux-devtools/extension": "^3.2.5",
+    "@reduxjs/toolkit": "^1.9.3",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^13.0.0",
+    "@testing-library/user-event": "^13.2.1",
+    "axios": "^1.3.4",
+    "cropperjs": "^1.5.13",
+    "hoist-non-react-statics": "^3.3.2",
+    "http-proxy-middleware": "^2.0.6",
+    "js-cookie": "^3.0.1",
+    "jwt-decode": "^3.1.2",
+    "msw": "^1.1.0",
+    "react": "^18.2.0",
+    "react-cropper": "^2.3.2",
+    "react-dom": "^18.2.0",
+    "react-error-boundary": "^4.0.0",
+    "react-image-crop": "^10.0.9",
+    "react-kakao-maps": "^0.0.13",
+    "react-kakao-maps-sdk": "^1.1.6",
+    "react-query": "^3.39.3",
+    "react-redux": "^8.0.5",
+    "react-reveal": "^1.2.2",
+    "react-router-dom": "^6.8.2",
+    "react-scripts": "5.0.1",
+    "redux": "^4.2.1",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.4.2",
+    "styled-components": "^5.3.8",
+    "styled-normalize": "^8.0.7",
+    "web-vitals": "^2.1.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0 || ^8.2.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.7.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0"
+  },
+  "msw": {
+    "workerDirectory": "public"
+  }
+}
