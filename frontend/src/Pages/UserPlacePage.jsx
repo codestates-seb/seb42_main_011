@@ -99,7 +99,7 @@ function UserPlacePage({ userdata, isMyPage }) {
   const navigate = useNavigate();
 
   const handlePlaceClick = (amenityId, amenityName) => {
-    navigate(`/amenity/${amenityId}`, { state: { amenityName } });
+    navigate(`/amenity/${amenityId}?name=${encodeURIComponent(amenityName)}`);
   };
 
   if (!userdata) {
