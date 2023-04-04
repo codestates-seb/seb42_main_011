@@ -46,6 +46,7 @@ public interface BulletinPostMapper {
         List<CommentResponseDto> commentLists = new ArrayList<>();
         if (bulletinPost.getComments() != null) {
             commentLists = bulletinPost.getComments().stream()
+                    .filter(comment -> comment.getMember().getMemberStatus() != Member.MemberStatus.DELETED)
                     .map(comment -> {
                                 CommentResponseDto commentResponse = new CommentResponseDto(
                                         comment.getCommentId(),
@@ -139,7 +140,8 @@ public interface BulletinPostMapper {
 
         List<BulletinPostDto.ResponseForFeed> list = new ArrayList<BulletinPostDto.ResponseForFeed>(bulletinPosts.size());
         for (BulletinPost bulletinPost : bulletinPosts) {
-            list.add(bulletinPostToBulletinPostResponseForFeedDto(bulletinPost));
+            if (bulletinPost.getMember().getMemberStatus() != Member.MemberStatus.DELETED)
+                list.add(bulletinPostToBulletinPostResponseForFeedDto(bulletinPost));
         }
 
         List<BulletinPostDto.ResponseForFeed> result = list.stream()

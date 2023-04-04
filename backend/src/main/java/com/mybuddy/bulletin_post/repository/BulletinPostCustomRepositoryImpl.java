@@ -100,7 +100,8 @@ public class BulletinPostCustomRepositoryImpl implements BulletinPostCustomRepos
         //해당 장소 id를 파라미터로 받는 findFirstPost()메서드가 있다고 가정하고 해당 사진의 URL을 반환하는걸 작성
         QueryResults<BulletinPost> queryResults = queryFactory
                 .selectFrom(bulletinPost)
-                .where(bulletinPost.amenity.amenityId.eq(amenityId))
+                .where(bulletinPost.amenity.amenityId.eq(amenityId)
+                        .and(bulletinPost.member.memberStatus.ne(Member.MemberStatus.DELETED)))
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
                 .orderBy(bulletinPost.bulletinPostId.desc())
