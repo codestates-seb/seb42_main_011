@@ -17,11 +17,10 @@
 
 ### 🌷 Intro
 ```text
-오직 강아지들을 위한 SNS 마이버디
+오직 강아지들을 위한 SNS, 마이버디
 
-🐶 545만명 반려 강아지 집사들을 위한 SNS
-소중한 반려 강아지를 자랑해보세요!
-강아지 전용, 강아지 중심 SNS입니다.
+- 🐶 강아지 전용, 강아지 중심 SNS입니다
+- 유저의 활동을 기반으로 <강아지와 함께 방문 가능한 장소>를 찾아볼 수 있습니다.
 ```
 
 <br><br>
@@ -37,14 +36,7 @@
 
 <br><br>
 
-
-### 📺 서비스 소개 및 기술 영상
-[![서비스 소개 및 기술 영상](https://img.youtube.com/vi/nP-d38dl_ag/0.jpg)](https://www.youtube.com/watch?v=nP-d38dl_ag)
-
-<br>
-
-
-### 📄 Archetecture
+### 📄 Architecture
 ![archetecture](https://user-images.githubusercontent.com/48430781/229366885-89aaf02e-a2fc-473c-b6f1-26b1fc0b7db4.png)
 
 <br>
@@ -54,6 +46,7 @@
 - **Back-End**
     - Java, Spring Boot, Spring Rest Docs, Spring Security
     - JWT, JPA(Hibernate), QueryDSL, JUNIT5, Redis, MySQL
+    - Gmail SMTP Server
     
 - **Front-End**
     - React.js, React Query, React Router
@@ -63,15 +56,25 @@
 - **Infra**
     - Server
         - Docker, Docker-compose
-        - EC2, S3, RDS
-        - ELB
+        - EC2, S3, RDS, ELB
     - Web
-        - S3, CloudFront, Route53
-        - Certificate Manager
+        - S3, CloudFront, Route53, Certificate Manager
+
 
 
 <br><br>
 
+### 📄 ERD
+<img src="https://user-images.githubusercontent.com/48430781/231970123-461e7441-de2c-4141-90e6-4a29d97d0373.png" alt="이미지 설명" width="75%">
+
+
+<br><br>
+
+### 📺 서비스 소개 및 기술 영상
+[![서비스 소개 및 기술 영상](https://img.youtube.com/vi/nP-d38dl_ag/0.jpg)](https://www.youtube.com/watch?v=nP-d38dl_ag)
+
+
+<br><br>
 
 ### 🔖 Git 
 - **Branch**
@@ -113,9 +116,9 @@
 <br><br>
 
 ### 🎨 Demo Image
-<img width="500" height="250" alt="Screen Shot 2023-04-03 at 2 29 35 AM" src="https://user-images.githubusercontent.com/48430781/229369075-9dc92737-7aa4-48eb-b523-697bb9ee9983.png"><img width="500" height="250" alt="Screen Shot 2023-04-03 at 2 31 43 AM" src="https://user-images.githubusercontent.com/48430781/229369176-7b573ff7-b694-4552-b318-6793bf6d3c29.png">
-<img width="500" height="250" alt="Screen Shot 2023-04-03 at 2 33 44 AM" src="https://user-images.githubusercontent.com/48430781/229369253-c452b5fe-b694-432f-bc88-387f74359203.png"><img width="500" height="250" alt="Screen Shot 2023-04-03 at 2 42 22 AM" src="https://user-images.githubusercontent.com/48430781/229369690-c7b7b273-141a-4e81-9bae-fcb799478ada.png">
-<img width="500" height="250" alt="Screen Shot 2023-04-03 at 2 38 58 AM" src="https://user-images.githubusercontent.com/48430781/229369482-86037246-04d9-4577-9a3a-969f57e8e4c7.png"><img width="500" height="250" alt="Screen Shot 2023-04-03 at 2 41 16 AM" src="https://user-images.githubusercontent.com/48430781/229369623-b60e5221-4ac2-4f5e-847b-69b6e62cccf0.png">
+<img width="400" height="225" alt="Screen Shot 2023-04-03 at 2 29 35 AM" src="https://user-images.githubusercontent.com/48430781/229369075-9dc92737-7aa4-48eb-b523-697bb9ee9983.png"><img width="400" height="225" alt="Screen Shot 2023-04-03 at 2 31 43 AM" src="https://user-images.githubusercontent.com/48430781/229369176-7b573ff7-b694-4552-b318-6793bf6d3c29.png">
+<img width="400" height="225" alt="Screen Shot 2023-04-03 at 2 33 44 AM" src="https://user-images.githubusercontent.com/48430781/229369253-c452b5fe-b694-432f-bc88-387f74359203.png"><img width="400" height="225" alt="Screen Shot 2023-04-03 at 2 42 22 AM" src="https://user-images.githubusercontent.com/48430781/229369690-c7b7b273-141a-4e81-9bae-fcb799478ada.png">
+<img width="400" height="225" alt="Screen Shot 2023-04-03 at 2 38 58 AM" src="https://user-images.githubusercontent.com/48430781/229369482-86037246-04d9-4577-9a3a-969f57e8e4c7.png"><img width="400" height="225" alt="Screen Shot 2023-04-03 at 2 41 16 AM" src="https://user-images.githubusercontent.com/48430781/229369623-b60e5221-4ac2-4f5e-847b-69b6e62cccf0.png">
 
 <br><br>
 
