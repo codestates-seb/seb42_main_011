@@ -8,6 +8,8 @@ import com.mybuddy.global.auth.handler.MemberAuthenticationFailureHandler;
 import com.mybuddy.global.auth.handler.MemberAuthenticationSuccessHandler;
 import com.mybuddy.global.auth.jwt.JwtTokenizer;
 import com.mybuddy.global.auth.utils.MemberAuthorityUtils;
+import com.mybuddy.global.validation.filter.AmenityDataValidationFilter;
+import com.mybuddy.global.validation.validator.RegionValidator;
 import com.mybuddy.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +25,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -43,6 +46,8 @@ public class SecurityConfiguration {
 
     private final MemberRepository memberRepository;
 
+    private final RegionValidator regionValidator;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -60,6 +65,8 @@ public class SecurityConfiguration {
                 .authenticationEntryPoint(new MemberAuthenticationEntryPoint())
                 .accessDeniedHandler(new MemberAccessDeniedHandler())
                 .and()
+
+                .addFilterBefore(new AmenityDataValidationFilter(regionValidator),  UsernamePasswordAuthenticationFilter.class)
 
                 .apply(new CustomFilterConfigurer())
                 .and()
